@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Through the Ages - Self Study</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .input-blank {
+            border: none;
+            border-bottom: 2px solid #9ca3af;
+            background: transparent;
+            outline: none;
+            text-align: center;
+            padding: 0.25rem;
+            transition: border-color 0.2s, background-color 0.2s;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .input-blank:focus { border-bottom-color: #0ea5e9; }
+        .correct { border-bottom-color: #22c55e !important; color: #166534; background-color: #f0fdf4; }
+        .incorrect { border-bottom-color: #ef4444 !important; color: #991b1b; background-color: #fef2f2; }
+        
+        /* Tab & Interactivity Styles */
+        .tab-btn { transition: all 0.2s ease-in-out; }
+        .tab-btn.active { border-bottom-width: 4px; border-color: #0ea5e9; color: #0369a1; font-weight: 700; background-color: #f0f9ff; }
+        .section-hidden { display: none; }
+        .word-used { text-decoration: line-through; opacity: 0.4; transition: all 0.2s; }
+        
+        /* Click & Match Styles */
+        .word-choice { transition: all 0.2s; cursor: pointer; padding: 0.25rem 0.75rem; border-radius: 0.375rem; border: 2px solid transparent; font-weight: 600; background-color: transparent; }
+        .word-choice:hover:not(.used) { background-color: #e0f2fe; border-color: #7dd3fc; }
+        .word-choice.selected { background-color: #bae6fd; border-color: #0ea5e9; transform: scale(1.05); }
+        .word-choice.used { opacity: 0.4; text-decoration: line-through; pointer-events: none; }
+        .match-slot { display: inline-block; min-width: 10rem; height: 1.75rem; border-bottom: 2px solid #9ca3af; text-align: center; cursor: pointer; padding: 0 0.5rem; font-weight: 600; color: #0369a1; vertical-align: bottom; transition: all 0.2s; line-height: 1.75rem; }
+        .match-slot:hover { border-bottom-color: #0ea5e9; background-color: #f8fafc; border-radius: 0.25rem 0.25rem 0 0; }
+        .match-slot:empty::after { content: '...'; color: #cbd5e1; font-weight: normal; }
+        
+        /* Vocabulary Highlight & Tooltip Styles */
+        .vocab-word {
+            position: relative;
+            cursor: pointer;
+            border-bottom: 2px dashed #0ea5e9;
+            color: #0284c7;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            padding-bottom: 1px;
+        }
+        .vocab-word:hover {
+            background-color: #f0f9ff;
+            border-bottom-style: solid;
+        }
+        .vocab-tooltip {
+            visibility: hidden;
+            background-color: #1f2937;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 6px 12px;
+            position: absolute;
+            z-index: 50;
+            bottom: 130%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-size: 0.85rem;
+            font-family: sans-serif;
+            white-space: nowrap;
+            font-weight: 500;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+        }
+        .vocab-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #1f2937 transparent transparent transparent;
+        }
+        .vocab-word:hover .vocab-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .toast {
+            position: fixed; top: 20px; right: 20px;
+            padding: 15px 25px; border-radius: 8px;
+            color: white; font-weight: bold;
+            opacity: 0; transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000; pointer-events: none;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.error { background-color: #ef4444; }
+        .toast.success { background-color: #22c55e; }
+        .toast.warning { background-color: #f59e0b; }
+    </style>
+</head>
+<body class="text-gray-800 antialiased pb-20">
+
+    <div id="toast" class="toast shadow-lg">Message</div>
+
+    <div class="max-w-5xl mx-auto mt-8 px-4">
+        
+        <!-- Header / Intro -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-8 border-l-4 border-sky-500">
+            <h1 class="text-3xl font-bold mb-2 text-sky-900">Unit 8: Through the ages</h1>
+            <h2 class="text-xl font-semibold text-gray-700">Time, history</h2>
+            <p class="mt-4 text-gray-600 leading-relaxed">Explore how we describe historical periods, time measurement, and archaeology.</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex overflow-x-auto bg-white rounded-t-xl shadow-sm border-b-2 border-gray-200 mb-6 custom-scrollbar">
+            <button onclick="openTab(0)" id="tab-0" class="tab-btn active flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">1. Time Phrases</button>
+            <button onclick="openTab(1)" id="tab-1" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">2. History Vocabulary</button>
+            <button onclick="openTab(2)" id="tab-2" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">3. History Context</button>
+            <button onclick="openTab(3)" id="tab-3" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">4. Error Correction</button>
+            <button onclick="openTab(4)" id="tab-4" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">5. Dentistry History</button>
+        </div>
+
+        <!-- Section 0: Time Phrases -->
+        <div id="section-0" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">1. Punctuality & Time Phrases</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
+            </div>
+
+            <!-- Audio Player 8a -->
+            <div class="custom-audio-player bg-white border-2 border-sky-100 rounded-xl px-6 py-4 mb-6 shadow-sm" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A1583784791&color=%2300aabb&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true">
+                <div class="flex flex-col sm:flex-row items-center gap-4">
+                    <div class="text-sm text-sky-600 font-bold whitespace-nowrap shrink-0">Track 8a 🎧</div>
+                    <div class="w-full flex items-center bg-gray-50 border border-gray-200 rounded-full px-4 py-2 shadow-inner">
+                        <button class="audio-play-btn w-9 h-9 flex items-center justify-center bg-sky-600 hover:bg-sky-700 text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400 shrink-0">
+                            <svg class="play-icon h-5 w-5 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                            <svg class="pause-icon h-5 w-5 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                        </button>
+                        <div class="flex-1 mx-4 flex items-center space-x-3">
+                            <span class="audio-current-time text-xs font-mono text-gray-500 w-10 text-right">00:00</span>
+                            <div class="relative w-full h-2 bg-gray-300 rounded-full cursor-pointer flex-1 flex items-center group">
+                                 <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                 <div class="audio-progress-bar absolute h-full bg-sky-500 rounded-full pointer-events-none group-hover:bg-sky-600 transition-colors" style="width: 0%;"></div>
+                            </div>
+                            <span class="audio-total-time text-xs font-mono text-gray-500 w-10">00:00</span>
+                        </div>
+                    </div>
+                </div>
+                <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+            </div>
+
+            <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6 text-sm text-gray-700">
+                <h4 class="font-bold mb-1 text-blue-900">Vocabulary Note</h4>
+                <p>We use <strong>take + time</strong> in several ways: <i>Take your time</i> (don't hurry), <i>It took a long time</i>. Be careful: <i>It took too long</i> (Correct) vs <i>It took too long time</i> (Incorrect).</p>
+            </div>
+
+            <p class="mb-4 text-gray-700 font-medium">1.3 Complete the sentences using the phrases from the box below. <br><strong class="text-sky-600 text-sm">Click a phrase to select, then click a blank.</strong></p>
+            
+            <div class="bg-sky-50 text-sky-800 p-4 rounded-lg mb-6 flex flex-wrap gap-3 font-mono text-sm justify-center select-none" id="wb-0">
+                <button class="word-choice" onclick="selectWord(this)" data-word="on time">on time</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="in time">in time</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="took so long">took so long</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="take my time">take my time</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="the right time">the right time</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="spend time">spend time</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="save time">save time</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="lose track of time">lose track of time</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="time-consuming">time-consuming</button>
+            </div>
+
+            <ol class="list-decimal list-inside space-y-5 mb-6 leading-loose select-none text-gray-800">
+                <li>When I surf the net I often <span class="match-slot" onclick="placeWord(this)" data-ex="0" data-ans='["lose track of time"]'></span>. Before I know it hours have gone by.</li>
+                <li>I try to make my lunch the night before to <span class="match-slot" onclick="placeWord(this)" data-ex="0" data-ans='["save time"]'></span>.</li>
+                <li>At the weekend I try to <span class="match-slot" onclick="placeWord(this)" data-ex="0" data-ans='["spend time"]'></span> with my family.</li>
+                <li>I find writing notes by hand very <span class="match-slot" onclick="placeWord(this)" data-ex="0" data-ans='["time-consuming"]'></span>.</li>
+                <li>The taxi <span class="match-slot" onclick="placeWord(this)" data-ex="0" data-ans='["took so long"]'></span> to arrive that we were 15 minutes late.</li>
+                <li>Excuse me, do you have <span class="match-slot" onclick="placeWord(this)" data-ex="0" data-ans='["the right time"]'></span>? I want to get there <span class="match-slot" onclick="placeWord(this)" data-ex="0" data-ans='["on time"]'></span>.</li>
+                <li>I ran for the bus, but I didn't get there <span class="match-slot" onclick="placeWord(this)" data-ex="0" data-ans='["in time"]'></span>.</li>
+                <li>I got up early so that I could <span class="match-slot" onclick="placeWord(this)" data-ex="0" data-ans='["take my time"]'></span> getting ready.</li>
+            </ol>
+            
+            <div class="flex items-center gap-4">
+                <button id="btn-0" onclick="checkExercise(0, 0)" class="check-btn bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
+                <span id="score-0" class="font-bold text-lg hidden"></span>
+            </div>
+        </div>
+
+        <!-- Section 1: Vocabulary Matching (Contains Reading) -->
+        <div id="section-1" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">2. History Vocabulary</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
+            </div>
+
+            <!-- Reading Passage Block -->
+            <div class="bg-sky-50 border border-sky-200 rounded-xl p-6 mb-8 shadow-inner text-gray-700 leading-relaxed">
+                <h4 class="text-xl font-bold mb-4 text-sky-900 border-b border-sky-200 pb-2">The History of Stonehenge</h4>
+                <p class="text-sm text-sky-600 italic mb-4">Hover over highlighted words for definitions. Click to hear pronunciation.</p>
+                <div class="space-y-4">
+                    <p>Stonehenge was built over a long <span class="vocab-word" onclick="speakWord('period')">period<span class="vocab-tooltip">an interval of time 🔊</span></span>. If we consider only the <span class="vocab-word" onclick="speakWord('ancient')">ancient<span class="vocab-tooltip">very old 🔊</span></span> stones themselves, the work <span class="vocab-word" onclick="speakWord('spanned')">spanned<span class="vocab-tooltip">extended over 🔊</span></span> seventy generations - some 1,600 years. However, the first construction at this site began in <span class="vocab-word" onclick="speakWord('prehistoric')">prehistoric<span class="vocab-tooltip">before written records 🔊</span></span> times.</p>
+                    <p>If we consider the structure <span class="vocab-word" onclick="speakWord('chronologically')">chronologically<span class="vocab-tooltip">ordered by time 🔊</span></span>, construction took place in several <span class="vocab-word" onclick="speakWord('phases')">phases<span class="vocab-tooltip">stages of development 🔊</span></span> over more than a thousand years. Dates are inferred from minute changes in physical measurements, such as the radiocarbon dating method. Many visitors fail to notice the 'henge' since the bank has been greatly <span class="vocab-word" onclick="speakWord('eroded')">eroded<span class="vocab-tooltip">worn away over time 🔊</span></span> over the passing <span class="vocab-word" onclick="speakWord('millennia')">millennia<span class="vocab-tooltip">thousands of years 🔊</span></span>.</p>
+                    <p>Stones arrived in this <span class="vocab-word" onclick="speakWord('era')">era<span class="vocab-tooltip">a period of history 🔊</span></span> and the circular pattern of these stones, which <span class="vocab-word" onclick="speakWord('predate')">predate<span class="vocab-tooltip">exist earlier than 🔊</span></span> all other known structures, is still standing today.</p>
+                </div>
+            </div>
+
+            <p class="mb-4 text-gray-600 font-medium">Match the words from the passage above to these definitions.</p>
+            
+            <div class="bg-sky-50 text-sky-800 p-4 rounded-lg mb-6 flex flex-wrap gap-3 font-mono text-sm justify-center select-none" id="wb-1">
+                <button class="word-choice" onclick="selectWord(this)" data-word="period">period</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="ancient">ancient</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="spanned">spanned</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="prehistoric">prehistoric</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="chronologically">chronologically</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="phase">phase</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="eroded">eroded</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="millennia">millennia</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="excavation">excavation</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="era">era</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="predate">predate</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4 mb-6 leading-loose select-none">
+                <div>1. interval of time: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["period"]'></span></div>
+                <div>2. very old: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["ancient"]'></span></div>
+                <div>3. extended over: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["spanned"]'></span></div>
+                <div>4. before written records: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["prehistoric"]'></span></div>
+                <div>5. actual order of events: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["chronologically"]'></span></div>
+                <div>6. stage of development: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["phase"]'></span></div>
+                <div>7. worn away over time: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["eroded"]'></span></div>
+                <div>8. thousands of years: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["millennia"]'></span></div>
+                <div>9. digging for artefacts: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["excavation"]'></span></div>
+                <div>10. a period of history: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["era"]'></span></div>
+                <div>11. exist earlier than: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["predate"]'></span></div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <button id="btn-1" onclick="checkExercise(1, 1)" class="check-btn bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
+                <span id="score-1" class="font-bold text-lg hidden"></span>
+            </div>
+        </div>
+
+        <!-- Section 2: History Context -->
+        <div id="section-2" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">3. Historical Context</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
+            </div>
+            
+            <div class="bg-sky-50 border-l-4 border-sky-400 p-4 mb-6 text-sm text-gray-700">
+                <h4 class="font-bold mb-1 text-sky-900">Age vs Era</h4>
+                <p><strong>Age:</strong> A particular period of history (the Victorian age, the digital age).</p>
+                <p><strong>Era:</strong> A period remembered for particular events (The arrival of moving pictures marked the end of an era).</p>
+            </div>
+
+            <p class="mb-4 text-gray-600">Complete the sentences with words from the box.</p>
+            
+            <div class="bg-sky-50 text-sky-800 p-4 rounded-lg mb-6 flex flex-wrap gap-3 font-mono text-sm justify-center select-none" id="wb-2">
+                <button class="word-choice" onclick="selectWord(this)" data-word="age">age</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="ancient">ancient</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="chronological">chronological</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="consecutive">consecutive</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="era">era</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="the Middle Ages">the Middle Ages</button>
+            </div>
+
+            <ol class="list-decimal list-inside space-y-5 mb-6 leading-loose select-none">
+                <li>Organise the dates into <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["chronological"]'></span> order from oldest to newest.</li>
+                <li>The museum has an exhibition about life during <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["the middle ages"]'></span>.</li>
+                <li>I much prefer studying <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["ancient"]'></span> history to modern history.</li>
+                <li>The moon landing marked the beginning of an exciting <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["era"]'></span>.</li>
+                <li>My grandparents are refusing to adapt to the computer <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["age"]'></span>.</li>
+                <li>It would be better if the meetings were on <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["consecutive"]'></span> days.</li>
+            </ol>
+            
+            <div class="flex items-center gap-4">
+                <button id="btn-2" onclick="checkExercise(2, 2)" class="check-btn bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
+                <span id="score-2" class="font-bold text-lg hidden"></span>
+            </div>
+        </div>
+
+        <!-- Section 3: Error Correction -->
+        <div id="section-3" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">4. Precision in English</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
+            </div>
+
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 text-sm text-gray-700">
+                <h4 class="font-bold mb-1">Common Mistakes:</h4>
+                <ul class="list-disc list-inside space-y-1">
+                    <li>Use <strong>nostalgic</strong> (adj) not nostalgia (noun) for people.</li>
+                    <li>Use <strong>historical</strong> events not history events.</li>
+                    <li>Use <strong>go back in time</strong> not back in times.</li>
+                </ul>
+            </div>
+
+            <div class="space-y-6 text-gray-800 text-lg leading-relaxed bg-gray-50 p-6 rounded border border-gray-200">
+                <p><strong>Speaker 1:</strong> I am a very <input type="text" class="input-blank w-32" data-ex="3" data-ans='["nostalgic"]'> person, so I often <input type="text" class="input-blank w-32" data-ex="3" data-ans='["look back"]'> at my life. (nostalgia / look backwards)</p>
+                
+                <p><strong>Speaker 2:</strong> Teenagers are more interested in the <input type="text" class="input-blank w-40" data-ex="3" data-ans='["modern age", "modern times"]'>. We need to know about <input type="text" class="input-blank w-32" data-ex="3" data-ans='["historical"]'> events. (modern time / history events)</p>
+
+                <p><strong>Speaker 3:</strong> I'd like to <input type="text" class="input-blank w-48" data-ex="3" data-ans='["go back in time"]'>. I would miss the digital <input type="text" class="input-blank w-24" data-ex="3" data-ans='["age", "period"]'> too much! (go back in times / digital period)</p>
+            </div>
+            
+            <div class="flex items-center gap-4 mt-6">
+                <button id="btn-3" onclick="checkExercise(3, 3)" class="check-btn bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
+                <span id="score-3" class="font-bold text-lg hidden"></span>
+            </div>
+        </div>
+
+        <!-- Section 4: Dentistry History -->
+        <div id="section-4" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">5. Listening: History of Dentistry</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
+            </div>
+            
+            <!-- Audio Player 8b -->
+            <div class="custom-audio-player bg-white border-2 border-sky-100 rounded-xl px-6 py-4 mb-6 shadow-sm" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A1583784771&color=%2300aabb&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true">
+                <div class="flex flex-col sm:flex-row items-center gap-4">
+                    <div class="text-sm text-sky-600 font-bold whitespace-nowrap shrink-0">Track 8b 🎧</div>
+                    <div class="w-full flex items-center bg-gray-50 border border-gray-200 rounded-full px-4 py-2 shadow-inner">
+                        <button class="audio-play-btn w-9 h-9 flex items-center justify-center bg-sky-600 hover:bg-sky-700 text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400 shrink-0">
+                            <svg class="play-icon h-5 w-5 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                            <svg class="pause-icon h-5 w-5 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                        </button>
+                        <div class="flex-1 mx-4 flex items-center space-x-3">
+                            <span class="audio-current-time text-xs font-mono text-gray-500 w-10 text-right">00:00</span>
+                            <div class="relative w-full h-2 bg-gray-300 rounded-full cursor-pointer flex-1 flex items-center group">
+                                 <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                 <div class="audio-progress-bar absolute h-full bg-sky-500 rounded-full pointer-events-none group-hover:bg-sky-600 transition-colors" style="width: 0%;"></div>
+                            </div>
+                            <span class="audio-total-time text-xs font-mono text-gray-500 w-10">00:00</span>
+                        </div>
+                    </div>
+                </div>
+                <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+            </div>
+
+            <p class="mb-4 text-gray-600">Complete the notes using <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong>.</p>
+
+            <div class="border-2 border-gray-300 rounded p-6 bg-gray-50 max-w-2xl mx-auto shadow-sm">
+                <h4 class="text-center font-bold text-xl mb-4">The History of Dentistry</h4>
+                
+                <h5 class="font-bold mt-4 mb-2 underline">Early history</h5>
+                <ul class="space-y-4 pl-4 list-disc marker:text-sky-500">
+                    <li>Earliest reference to tooth problems was in (1) <input type="text" class="input-blank w-32" data-ex="4" data-ans='["5000 bc", "5000bc"]'>.</li>
+                    <li>Sumerians called problems 'tooth (2) <input type="text" class="input-blank w-32" data-ex="4" data-ans='["worms", "worm"]'>'.</li>
+                    <li>(3) <input type="text" class="input-blank w-48" data-ex="4" data-ans='["historical evidence"]'> shows Chinese used dental treatments.</li>
+                </ul>
+
+                <h5 class="font-bold mt-6 mb-2 underline">Remedies and treatment</h5>
+                <ul class="space-y-4 pl-4 list-disc marker:text-sky-500">
+                    <li>Text from (4) <input type="text" class="input-blank w-40" data-ex="4" data-ans='["ancient egypt"]'> reveals practices from 1700 BC.</li>
+                    <li>Relieved toothache with (5) <input type="text" class="input-blank w-32" data-ex="4" data-ans='["olive oil", "onions"]'> and (6) <input type="text" class="input-blank w-32" data-ex="4" data-ans='["onions", "olive oil"]'>.</li>
+                    <li>In 5th century BC, a Greek (7) <input type="text" class="input-blank w-32" data-ex="4" data-ans='["historian"]'> noted specialisation.</li>
+                    <li>A Greek doctor was the first to (8) <input type="text" class="input-blank w-32" data-ex="4" data-ans='["extract"]'> problem teeth.</li>
+                    <li>In Europe in the (9) <input type="text" class="input-blank w-40" data-ex="4" data-ans='["middle ages"]'>, dentists visited homes.</li>
+                    <li>A French dentist founded (10) <input type="text" class="input-blank w-32" data-ex="4" data-ans='["modern"]'> dentistry.</li>
+                </ul>
+            </div>
+            
+            <div class="flex items-center gap-4 mt-6">
+                <button id="btn-4" onclick="checkExercise(4, 4)" class="check-btn bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
+                <span id="score-4" class="font-bold text-lg hidden"></span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const REQUIRED_SCORE = 0.8;
+
+        function initAudioPlayer() {
+            const players = document.querySelectorAll('.custom-audio-player');
+            players.forEach((playerEl) => {
+                const scUrl = playerEl.getAttribute('data-sc-url');
+                const iframeElement = playerEl.querySelector('.sc-widget-iframe');
+                if (!iframeElement || !scUrl) return;
+                iframeElement.src = scUrl;
+                
+                const widget = SC.Widget(iframeElement);
+                const playBtn = playerEl.querySelector('.audio-play-btn');
+                const playIcon = playerEl.querySelector('.play-icon');
+                const pauseIcon = playerEl.querySelector('.pause-icon');
+                const progressBar = playerEl.querySelector('.audio-progress');
+                const progressFill = playerEl.querySelector('.audio-progress-bar');
+                const currentTimeEl = playerEl.querySelector('.audio-current-time');
+                const totalTimeEl = playerEl.querySelector('.audio-total-time');
+
+                let isPlaying = false;
+                let durationSec = 0;
+
+                const formatTime = (s) => {
+                    if (isNaN(s) || s === Infinity) return "00:00";
+                    const m = Math.floor(s / 60);
+                    const sec = Math.floor(s % 60);
+                    return `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+                };
+
+                widget.bind(SC.Widget.Events.READY, () => {
+                    widget.getDuration((ms) => {
+                        durationSec = ms / 1000;
+                        totalTimeEl.textContent = formatTime(durationSec);
+                        progressBar.max = durationSec;
+                    });
+                });
+
+                widget.bind(SC.Widget.Events.PLAY_PROGRESS, (info) => {
+                    const cur = info.currentPosition / 1000;
+                    currentTimeEl.textContent = formatTime(cur);
+                    progressBar.value = cur;
+                    progressFill.style.width = `${(cur / durationSec) * 100}%`;
+                });
+
+                widget.bind(SC.Widget.Events.PLAY, () => {
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                });
+
+                widget.bind(SC.Widget.Events.PAUSE, () => {
+                    pauseIcon.classList.add('hidden');
+                    playIcon.classList.remove('hidden');
+                });
+
+                playBtn.addEventListener('click', () => widget.toggle());
+                progressBar.addEventListener('input', () => widget.seekTo(progressBar.value * 1000));
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', initAudioPlayer);
+
+        function speakWord(word) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const u = new SpeechSynthesisUtterance(word);
+                u.lang = 'en-US';
+                u.rate = 0.9;
+                window.speechSynthesis.speak(u);
+            }
+        }
+
+        let selectedWordBtn = null;
+        function selectWord(btn) {
+            if (btn.classList.contains('used')) return;
+            document.querySelectorAll('.word-choice').forEach(b => b.classList.remove('selected'));
+            if (selectedWordBtn === btn) { selectedWordBtn = null; return; }
+            btn.classList.add('selected');
+            selectedWordBtn = btn;
+        }
+
+        function placeWord(slot) {
+            if (slot.innerText.trim() !== '') {
+                const word = slot.innerText.trim();
+                const bankBtn = Array.from(slot.closest('.exercise-section').querySelectorAll('.word-choice'))
+                                     .find(b => b.getAttribute('data-word') === word);
+                if (bankBtn) bankBtn.classList.remove('used');
+                slot.innerText = '';
+            }
+            if (selectedWordBtn && selectedWordBtn.closest('.exercise-section') === slot.closest('.exercise-section')) {
+                slot.innerText = selectedWordBtn.getAttribute('data-word');
+                selectedWordBtn.classList.add('used');
+                selectedWordBtn.classList.remove('selected');
+                selectedWordBtn = null;
+            }
+        }
+
+        function openTab(idx) {
+            document.querySelectorAll('.exercise-section').forEach(s => s.classList.add('section-hidden'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`section-${idx}`).classList.remove('section-hidden');
+            document.getElementById(`tab-${idx}`).classList.add('active');
+        }
+
+        function showToast(msg, type) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = `toast ${type} show`;
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        function checkExercise(exId, secIdx) {
+            const inputs = document.querySelectorAll(`[data-ex="${exId}"]`);
+            let filled = true;
+            inputs.forEach(i => {
+                const v = i.value !== undefined ? i.value : i.innerText;
+                if (!v.trim()) filled = false;
+            });
+
+            if (!filled) {
+                showToast("Please fill all blanks!", "warning");
+                return;
+            }
+
+            let correct = 0;
+            inputs.forEach(i => {
+                const v = (i.value !== undefined ? i.value : i.innerText).trim().toLowerCase().replace(/\s+/g, ' ');
+                const ans = JSON.parse(i.getAttribute('data-ans'));
+                if (ans.includes(v)) {
+                    correct++;
+                    i.classList.add('correct');
+                    i.classList.remove('incorrect');
+                } else {
+                    i.classList.add('incorrect');
+                    i.classList.remove('correct');
+                }
+            });
+
+            const scoreLabel = document.getElementById(`score-${exId}`);
+            const pct = correct / inputs.length;
+            scoreLabel.textContent = `${correct}/${inputs.length} (${Math.round(pct*100)}%)`;
+            scoreLabel.classList.remove('hidden');
+            
+            if (pct >= REQUIRED_SCORE) {
+                scoreLabel.className = "font-bold text-lg text-green-600";
+                showToast("Passed! Unlocking next section...", "success");
+                document.getElementById(`btn-${exId}`).disabled = true;
+                setTimeout(() => {
+                    const next = secIdx + 1;
+                    if (document.getElementById(`tab-${next}`)) openTab(next);
+                }, 1500);
+            } else {
+                scoreLabel.className = "font-bold text-lg text-red-600";
+                showToast("Try again to reach 80%.", "error");
+            }
+        }
+    </script>
+</body>
+</html>
