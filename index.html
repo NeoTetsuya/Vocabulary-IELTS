@@ -3,74 +3,412 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IELTS Vocabulary</title>
+    <title>Vocabulary for IELTS</title>
     <style>
-        body {
-            background: linear-gradient(to right, #6a0dad, #8a2be2);
-            color: white;
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-        .container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            padding: 20px;
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            color: #333;
         }
-        .topic {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px;
-            border-radius: 8px;
-            transition: transform 0.2s;
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .topic:hover {
-            transform: scale(1.05);
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        #search {
-            margin: 20px;
-            padding: 10px;
-            width: calc(100% - 40px);
+
+        .logo {
+            font-size: 2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+
+        #searchBox {
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 1.1em;
             border: none;
-            border-radius: 4px;
+            border-radius: 50px;
+            background: white;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        #searchBox:focus {
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            transform: scale(1.02);
+        }
+
+        .topics-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 80px;
+        }
+
+        .section-title {
+            text-align: center;
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 60px;
+            font-weight: 800;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .topic-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-left: 5px solid #667eea;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 60px rgba(102, 126, 234, 0.3);
+            border-left-color: #764ba2;
+        }
+
+        .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .topic-card h3 {
+            font-size: 1.4em;
+            color: #667eea;
+            margin-bottom: 12px;
+            transition: color 0.3s;
+        }
+
+        .topic-card:hover h3 {
+            color: #764ba2;
+        }
+
+        .topic-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+
+        .learn-btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .learn-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .topic-card.hidden {
+            display: none;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        footer p {
+            margin: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .hero p {
+                font-size: 1.1em;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .logo {
+                font-size: 1.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2em;
+            }
+
+            .icon {
+                font-size: 2.5em;
+            }
         }
     </style>
 </head>
 <body>
-    <input type="text" id="search" placeholder="Search topics..." oninput="filterTopics()">
-    <div class="container" id="topics">
-        <div class="topic">Education & Learning</div>
-        <div class="topic">Environment & Nature</div>
-        <div class="topic">Technology & Innovation</div>
-        <div class="topic">Health & Medical</div>
-        <div class="topic">Business & Economics</div>
-        <div class="topic">Travel & Tourism</div>
-        <div class="topic">Culture & Arts</div>
-        <div class="topic">Food & Cuisine</div>
-        <div class="topic">Sports & Recreation</div>
-        <div class="topic">Relationships & Society</div>
-        <div class="topic">Housing & Architecture</div>
-        <div class="topic">Work & Employment</div>
-        <div class="topic">Transportation & Vehicles</div>
-        <div class="topic">Crime & Law</div>
-        <div class="topic">Politics & Government</div>
-        <div class="topic">Media & Communications</div>
-        <div class="topic">Science & Research</div>
-        <div class="topic">Shopping & Commerce</div>
-        <div class="topic">Entertainment & Leisure</div>
-        <div class="topic">Animals & Wildlife</div>
-        <div class="topic">Weather & Climate</div>
-        <div class="topic">Time & Measurement</div>
+    <header>
+        <nav>
+            <div class="logo">📚 Vocabulary for IELTS</div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Master IELTS Vocabulary</h1>
+        <p>22 Comprehensive Topics to Ace Your IELTS Exam</p>
+    </section>
+
+    <div class="search-container">
+        <input 
+            type="text" 
+            id="searchBox" 
+            placeholder="🔍 Search topics..."
+            onkeyup="filterTopics()"
+        >
     </div>
+
+    <section class="topics-section">
+        <h2 class="section-title">Explore Topics</h2>
+        <div class="grid">
+            <div class="topic-card" data-topic="education">
+                <div class="icon">🎓</div>
+                <h3>Education & Learning</h3>
+                <p>Academic vocabulary, schools, universities, and learning environments</p>
+                <a href="topic-education.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="environment">
+                <div class="icon">🌍</div>
+                <h3>Environment & Nature</h3>
+                <p>Ecology, climate, animals, and natural resources vocabulary</p>
+                <a href="topic-environment.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="technology">
+                <div class="icon">💻</div>
+                <h3>Technology & Innovation</h3>
+                <p>Modern tech, gadgets, AI, and digital terminology</p>
+                <a href="topic-technology.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="health">
+                <div class="icon">⚕️</div>
+                <h3>Health & Medical</h3>
+                <p>Healthcare, diseases, fitness, and wellness vocabulary</p>
+                <a href="topic-health.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="business">
+                <div class="icon">💼</div>
+                <h3>Business & Economics</h3>
+                <p>Corporate, finance, marketing, and entrepreneurship terms</p>
+                <a href="topic-business.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="travel">
+                <div class="icon">✈️</div>
+                <h3>Travel & Tourism</h3>
+                <p>Traveling, accommodation, culture, and exploration vocabulary</p>
+                <a href="topic-travel.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="culture">
+                <div class="icon">🎨</div>
+                <h3>Culture & Arts</h3>
+                <p>Music, literature, painting, and creative field terminology</p>
+                <a href="topic-culture.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="food">
+                <div class="icon">🍽️</div>
+                <h3>Food & Cuisine</h3>
+                <p>Culinary vocabulary, cooking, and dining terminology</p>
+                <a href="topic-food.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="sports">
+                <div class="icon">⚽</div>
+                <h3>Sports & Recreation</h3>
+                <p>Athletic, games, competitions, and physical activities</p>
+                <a href="topic-sports.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="relationships">
+                <div class="icon">👥</div>
+                <h3>Relationships & Society</h3>
+                <p>Social structures, family, friendships, and community terms</p>
+                <a href="topic-relationships.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="housing">
+                <div class="icon">🏠</div>
+                <h3>Housing & Architecture</h3>
+                <p>Home vocabulary, buildings, and real estate terminology</p>
+                <a href="topic-housing.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="work">
+                <div class="icon">💼</div>
+                <h3>Work & Employment</h3>
+                <p>Career, job roles, workplace communication, and professions</p>
+                <a href="topic-work.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="transportation">
+                <div class="icon">🚗</div>
+                <h3>Transportation & Vehicles</h3>
+                <p>Transport modes, vehicle types, and commuting vocabulary</p>
+                <a href="topic-transportation.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="crime">
+                <div class="icon">⚖️</div>
+                <h3>Crime & Law</h3>
+                <p>Legal terminology and justice system vocabulary</p>
+                <a href="topic-crime.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="politics">
+                <div class="icon">🏛️</div>
+                <h3>Politics & Government</h3>
+                <p>Political systems, governance, and civic terminology</p>
+                <a href="topic-politics.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="media">
+                <div class="icon">📰</div>
+                <h3>Media & Communications</h3>
+                <p>News, journalism, broadcasting, and social media terms</p>
+                <a href="topic-media.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="science">
+                <div class="icon">🔬</div>
+                <h3>Science & Research</h3>
+                <p>Scientific methods, discoveries, and research terminology</p>
+                <a href="topic-science.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="shopping">
+                <div class="icon">🛍️</div>
+                <h3>Shopping & Commerce</h3>
+                <p>Retail, e-commerce, and consumer vocabulary</p>
+                <a href="topic-shopping.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="entertainment">
+                <div class="icon">🎬</div>
+                <h3>Entertainment & Leisure</h3>
+                <p>Movies, gaming, hobbies, and entertainment industry terms</p>
+                <a href="topic-entertainment.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="animals">
+                <div class="icon">🦁</div>
+                <h3>Animals & Wildlife</h3>
+                <p>Animal behavior, conservation, and zoology vocabulary</p>
+                <a href="topic-animals.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="weather">
+                <div class="icon">⛅</div>
+                <h3>Weather & Climate</h3>
+                <p>Meteorological and atmospheric terminology</p>
+                <a href="topic-weather.html" class="learn-btn">Learn More →</a>
+            </div>
+
+            <div class="topic-card" data-topic="time">
+                <div class="icon">⏰</div>
+                <h3>Time & Measurement</h3>
+                <p>Temporal expressions and quantitative vocabulary</p>
+                <a href="topic-time.html" class="learn-btn">Learn More →</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p><strong>Vocabulary for IELTS</strong></p>
+        <p>Your comprehensive guide to mastering IELTS vocabulary</p>
+        <p style="margin-top: 30px; opacity: 0.8;">&copy; 2026 Vocabulary for IELTS. Created by NeoTetsuya</p>
+    </footer>
+
     <script>
         function filterTopics() {
-            let input = document.getElementById('search');
-            let filter = input.value.toLowerCase();
-            let topics = document.getElementById('topics').getElementsByClassName('topic');
-            for (let i = 0; i < topics.length; i++) {
-                let txtValue = topics[i].textContent || topics[i].innerText;
-                topics[i].style.display = txtValue.toLowerCase().includes(filter) ? '' : 'none';
-            }
+            const searchInput = document.getElementById('searchBox').value.toLowerCase();
+            const cards = document.querySelectorAll('.topic-card');
+
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                const topic = card.getAttribute('data-topic').toLowerCase();
+
+                if (title.includes(searchInput) || description.includes(searchInput) || topic.includes(searchInput)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
         }
     </script>
 </body>
