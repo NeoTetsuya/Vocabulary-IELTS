@@ -3,51 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IELTS Vocabulary Lessons</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>IELTS Vocabulary</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #6a0dad, #8a2be2);
+            color: white;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 20px;
+        }
+        .topic {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        .topic:hover {
+            transform: scale(1.05);
+        }
+        #search {
+            margin: 20px;
+            padding: 10px;
+            width: calc(100% - 40px);
+            border: none;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>IELTS Vocabulary Lessons</h1>
-        <nav>
-            <ul>
-                <li><a href="#topic1">Topic 1</a></li>
-                <li><a href="#topic2">Topic 2</a></li>
-                <li><a href="#topic3">Topic 3</a></li>
-                <li><a href="#topic4">Topic 4</a></li>
-                <li><a href="#topic5">Topic 5</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main>
-        <section id="topic1" class="card">
-            <h2>Topic 1</h2>
-            <p>Brief description of Topic 1.</p>
-            <a href="#">Learn More</a>
-        </section>
-        <section id="topic2" class="card">
-            <h2>Topic 2</h2>
-            <p>Brief description of Topic 2.</p>
-            <a href="#">Learn More</a>
-        </section>
-        <section id="topic3" class="card">
-            <h2>Topic 3</h2>
-            <p>Brief description of Topic 3.</p>
-            <a href="#">Learn More</a>
-        </section>
-        <section id="topic4" class="card">
-            <h2>Topic 4</h2>
-            <p>Brief description of Topic 4.</p>
-            <a href="#">Learn More</a>
-        </section>
-        <section id="topic5" class="card">
-            <h2>Topic 5</h2>
-            <p>Brief description of Topic 5.</p>
-            <a href="#">Learn More</a>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2026 NeoTetsuya - All rights reserved.</p>
-    </footer>
+    <input type="text" id="search" placeholder="Search topics..." oninput="filterTopics()">
+    <div class="container" id="topics">
+        <div class="topic">Education & Learning</div>
+        <div class="topic">Environment & Nature</div>
+        <div class="topic">Technology & Innovation</div>
+        <div class="topic">Health & Medical</div>
+        <div class="topic">Business & Economics</div>
+        <div class="topic">Travel & Tourism</div>
+        <div class="topic">Culture & Arts</div>
+        <div class="topic">Food & Cuisine</div>
+        <div class="topic">Sports & Recreation</div>
+        <div class="topic">Relationships & Society</div>
+        <div class="topic">Housing & Architecture</div>
+        <div class="topic">Work & Employment</div>
+        <div class="topic">Transportation & Vehicles</div>
+        <div class="topic">Crime & Law</div>
+        <div class="topic">Politics & Government</div>
+        <div class="topic">Media & Communications</div>
+        <div class="topic">Science & Research</div>
+        <div class="topic">Shopping & Commerce</div>
+        <div class="topic">Entertainment & Leisure</div>
+        <div class="topic">Animals & Wildlife</div>
+        <div class="topic">Weather & Climate</div>
+        <div class="topic">Time & Measurement</div>
+    </div>
+    <script>
+        function filterTopics() {
+            let input = document.getElementById('search');
+            let filter = input.value.toLowerCase();
+            let topics = document.getElementById('topics').getElementsByClassName('topic');
+            for (let i = 0; i < topics.length; i++) {
+                let txtValue = topics[i].textContent || topics[i].innerText;
+                topics[i].style.display = txtValue.toLowerCase().includes(filter) ? '' : 'none';
+            }
+        }
+    </script>
 </body>
 </html>
