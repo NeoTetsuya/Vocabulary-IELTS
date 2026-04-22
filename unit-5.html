@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Life - Study, Education, Research</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .input-blank {
+            border: none;
+            border-bottom: 2px solid #9ca3af;
+            background: transparent;
+            outline: none;
+            text-align: center;
+            padding: 0.25rem;
+            transition: border-color 0.2s, background-color 0.2s;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .input-blank:focus { border-bottom-color: #3b82f6; }
+        select.input-blank {
+            text-align: left;
+            cursor: pointer;
+            padding-right: 1.5rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.25rem center;
+            background-size: 1em;
+        }
+        .correct { border-bottom-color: #22c55e !important; color: #166534; background-color: #f0fdf4; }
+        .incorrect { border-bottom-color: #ef4444 !important; color: #991b1b; background-color: #fef2f2; }
+        
+        /* Tab & Interactivity Styles */
+        .tab-btn { transition: all 0.2s ease-in-out; }
+        .tab-btn.active { border-bottom-width: 4px; border-color: #3b82f6; color: #1e3a8a; font-weight: 700; background-color: #eff6ff; }
+        .section-hidden { display: none; }
+        
+        /* Custom Table Styles */
+        .vocab-table th { background-color: #e5e7eb; color: #374151; font-weight: 600; padding: 0.75rem; border: 1px solid #d1d5db; }
+        .vocab-table td { padding: 0.75rem; border: 1px solid #d1d5db; text-align: center; }
+
+        .toast {
+            position: fixed; top: 20px; right: 20px;
+            padding: 15px 25px; border-radius: 8px;
+            color: white; font-weight: bold;
+            opacity: 0; transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000; pointer-events: none;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.error { background-color: #ef4444; }
+        .toast.success { background-color: #22c55e; }
+        .toast.warning { background-color: #f59e0b; }
+    </style>
+</head>
+<body class="text-gray-800 antialiased pb-20">
+
+    <div id="toast" class="toast shadow-lg">Message</div>
+
+    <div class="max-w-5xl mx-auto mt-8 px-4">
+        
+        <!-- Header / Intro -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-8 border-l-4 border-blue-600">
+            <h1 class="text-3xl font-bold mb-2 text-blue-900">Student Life</h1>
+            <h2 class="text-xl font-semibold text-gray-700">Study, Education, Research</h2>
+            <p class="mt-4 text-gray-600">Work through the exercises below to improve your vocabulary and reading skills regarding academic life and continuing education.</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex overflow-x-auto bg-white rounded-t-xl shadow-sm border-b-2 border-gray-200 mb-6 custom-scrollbar">
+            <button onclick="openTab(0)" id="tab-0" class="tab-btn active flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">1. Study Basics</button>
+            <button onclick="openTab(1)" id="tab-1" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">2. Study Focus</button>
+            <button onclick="openTab(2)" id="tab-2" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">3. Education</button>
+            <button onclick="openTab(3)" id="tab-3" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">4. Research</button>
+            <button onclick="openTab(4)" id="tab-4" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">5. Test Practice</button>
+        </div>
+
+        <!-- Section 0: Study Basics -->
+        <div id="section-0" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">1. Study</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
+            </div>
+            
+            <div class="mb-8">
+                <p class="mb-4 text-gray-700 font-medium">1.1 Complete the text with the <strong>correct form</strong> of the verbs in the box. You may need to change the tense or form (e.g. adding -ing or -ed).</p>
+                <div class="bg-blue-50 text-blue-800 p-4 rounded-lg mb-6 flex flex-wrap gap-4 font-mono text-sm justify-center font-bold">
+                    <span>concentrate</span> <span>do</span> <span>learn</span> <span>overcome</span> <span>organise</span>
+                    <span>study</span> <span>take</span> <span>teach</span> <span>review</span> <span>revise</span>
+                </div>
+                
+                <div class="space-y-4 text-gray-700 leading-loose text-lg">
+                    <p>Even the most studious among you will probably have difficulty studying at some stage in your academic career. If or when this happens, the only way to (1) <input type="text" class="input-blank w-32" data-ex="1.1" data-ans='["overcome"]'> this problem is to go back to basics. First, make sure you have a comfortable environment to (2) <input type="text" class="input-blank w-32" data-ex="1.1" data-ans='["study"]'> in. Some students need to have a quiet space to themselves and can't (3) <input type="text" class="input-blank w-32" data-ex="1.1" data-ans='["concentrate", "study"]'> if there are too many distractions. Others need some sort of background noise, such as music or the company of friends. Whatever your personal preference is, you need to (4) <input type="text" class="input-blank w-32" data-ex="1.1" data-ans='["organise"]'> this first of all.</p>
+                    <p>Next, make sure you have all of the equipment or tools that you need. For example, if you are (5) <input type="text" class="input-blank w-32" data-ex="1.1" data-ans='["taking", "studying"]'> a geography course and you have to (6) <input type="text" class="input-blank w-32" data-ex="1.1" data-ans='["learn"]'> about countries and their capital cities then you will need to have your atlas to hand. If you're (7) <input type="text" class="input-blank w-32" data-ex="1.1" data-ans='["doing"]'> your maths homework then be sure to find your calculator, ruler, protractor and compass before you start.</p>
+                    <p>Perhaps you're not preparing a homework assignment or project, but are trying to (8) <input type="text" class="input-blank w-32" data-ex="1.1" data-ans='["revise"]'> for an exam. If so, you need to know exactly what is on your curriculum. You should also (9) <input type="text" class="input-blank w-32" data-ex="1.1" data-ans='["review"]'> your notes and make sure that you have a clear understanding of what your lecturers have (10) <input type="text" class="input-blank w-32" data-ex="1.1" data-ans='["taught"]'> you. Of course, people with a learning disorder such as dyslexia may need to work harder than others at their studies as they often struggle to read even relatively simple texts.</p>
+                </div>
+                
+                <div class="flex items-center gap-4 mt-6">
+                    <button id="btn-1.1" onclick="checkExercise('1.1', 0)" class="check-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (1.1)</button>
+                    <span id="score-1.1" class="font-bold text-lg hidden"></span>
+                </div>
+            </div>
+
+            <hr class="my-8 border-gray-200">
+
+            <div>
+                <p class="mb-4 text-gray-700 font-medium">1.2 Now read the text above again and find a <strong>word or phrase</strong> to match these definitions.</p>
+                <ol class="list-decimal list-inside space-y-4 mb-6 text-gray-700">
+                    <li>describes someone who studies a lot: <input type="text" class="input-blank w-48" data-ex="1.2" data-ans='["studious"]'></li>
+                    <li>things that stop you from working: <input type="text" class="input-blank w-48" data-ex="1.2" data-ans='["distractions"]'></li>
+                    <li>a sound you can hear, but do not actively listen to: <input type="text" class="input-blank w-48" data-ex="1.2" data-ans='["background noise"]'></li>
+                    <li>two different types of homework or school task: <input type="text" class="input-blank w-48" data-ex="1.2" data-ans='["project", "assignment"]'> and <input type="text" class="input-blank w-48" data-ex="1.2" data-ans='["assignment", "project"]'></li>
+                    <li>to study for an exam: <input type="text" class="input-blank w-48" data-ex="1.2" data-ans='["revise"]'></li>
+                    <li>another word for syllabus: <input type="text" class="input-blank w-48" data-ex="1.2" data-ans='["curriculum"]'></li>
+                    <li>to check your work: <input type="text" class="input-blank w-48" data-ex="1.2" data-ans='["review"]'></li>
+                    <li>to do something with great difficulty: <input type="text" class="input-blank w-48" data-ex="1.2" data-ans='["struggle"]'></li>
+                </ol>
+
+                <div class="flex items-center gap-4 mt-4">
+                    <button id="btn-1.2" onclick="checkExercise('1.2', 0)" class="check-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (1.2)</button>
+                    <span id="score-1.2" class="font-bold text-lg hidden"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: Study Focus -->
+        <div id="section-1" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">2. Study Focus (Language Practice)</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 100%</span>
+            </div>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 text-sm text-gray-700">
+                <h4 class="font-bold mb-1">Error warning:</h4>
+                <ul class="list-disc list-inside space-y-1 ml-2">
+                    <li><strong>Know</strong> = already have the information; <strong>find out</strong> = get the information.</li>
+                    <li><strong>Study</strong> = learn about a subject through books/a course. We don't use any other prepositions after study. (NOT <i>I am studying about law</i>).</li>
+                    <li><strong>Learn</strong> = get new knowledge or skills. Note that we say you are <i>taking</i> a course, NOT learning a course. Prepositions after learn: <i>learn about, learn from, learn to</i>.</li>
+                </ul>
+            </div>
+
+            <p class="mb-4 text-gray-700 font-medium">Select the correct words to complete each sentence.</p>
+            
+            <ol class="list-decimal list-inside space-y-6 mb-6 text-gray-800 text-lg">
+                <li>I would really like to 
+                    <select class="input-blank font-bold text-blue-700" data-ex="2" data-ans='["learn about"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="learn about">learn about</option>
+                        <option value="study about">study about</option>
+                    </select> 
+                    the ancient Egyptians.
+                </li>
+                <li>We need to 
+                    <select class="input-blank font-bold text-blue-700" data-ex="2" data-ans='["find out"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="find out">find out</option>
+                        <option value="know">know</option>
+                    </select> 
+                    where to buy the tickets for the concert.
+                </li>
+                <li>I got into trouble at school because I didn't 
+                    <select class="input-blank font-bold text-blue-700" data-ex="2" data-ans='["know"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="know">know</option>
+                        <option value="find out">find out</option>
+                    </select> 
+                    my multiplication tables.
+                </li>
+                <li>I did well in the test because I had 
+                    <select class="input-blank font-bold text-blue-700" data-ex="2" data-ans='["learned"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="known">known</option>
+                        <option value="learned">learned</option>
+                    </select> 
+                    how to spell all of the words on the list.
+                </li>
+                <li>Excuse me, do you 
+                    <select class="input-blank font-bold text-blue-700" data-ex="2" data-ans='["know"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="find out">find out</option>
+                        <option value="know">know</option>
+                    </select> 
+                    where the nearest post office is?
+                </li>
+                <li>It was difficult for me to 
+                    <select class="input-blank font-bold text-blue-700" data-ex="2" data-ans='["study"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="learn">learn</option>
+                        <option value="study">study</option>
+                    </select> 
+                    at home, because we didn't have a lot of space.
+                </li>
+                <li>I want to 
+                    <select class="input-blank font-bold text-blue-700" data-ex="2" data-ans='["learn how"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="learn how">learn how</option>
+                        <option value="study how">study how</option>
+                    </select> 
+                    to drive a car.
+                </li>
+                <li>I think you can only really 
+                    <select class="input-blank font-bold text-blue-700" data-ex="2" data-ans='["learn from"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="learn from">learn from</option>
+                        <option value="learn with">learn with</option>
+                    </select> 
+                    experience.
+                </li>
+            </ol>
+            
+            <div class="flex items-center gap-4 mt-4">
+                <button id="btn-2" onclick="checkExercise('2', 1)" class="check-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
+                <span id="score-2" class="font-bold text-lg hidden"></span>
+            </div>
+        </div>
+
+        <!-- Section 2: Education -->
+        <div id="section-2" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">3. Education</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
+            </div>
+            
+            <!-- Audio Player 1 -->
+            <div class="custom-audio-player bg-white border-2 border-blue-100 rounded-xl px-6 py-4 mb-6 shadow-sm" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784859&auto_play=false&enable_api=1">
+                <div class="flex flex-col sm:flex-row items-center gap-4">
+                    <div class="text-sm text-blue-600 font-bold whitespace-nowrap shrink-0">Track 5a 🎧</div>
+                    <div class="w-full flex items-center bg-gray-50 border border-gray-200 rounded-full px-4 py-2 shadow-inner">
+                        <button class="audio-play-btn w-9 h-9 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 shrink-0">
+                            <svg class="play-icon h-5 w-5 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                            <svg class="pause-icon h-5 w-5 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                        </button>
+                        <div class="flex-1 mx-4 flex items-center space-x-3">
+                            <span class="audio-current-time text-xs font-mono text-gray-500 w-10 text-right">00:00</span>
+                            <div class="relative w-full h-2 bg-gray-300 rounded-full cursor-pointer flex-1 flex items-center group">
+                                 <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                 <div class="audio-progress-bar absolute h-full bg-blue-500 rounded-full pointer-events-none group-hover:bg-blue-600 transition-colors" style="width: 0%;"></div>
+                            </div>
+                            <span class="audio-total-time text-xs font-mono text-gray-500 w-10">00:00</span>
+                        </div>
+                        <div class="flex items-center space-x-2 ml-2 pl-4 border-l border-gray-200 hidden sm:flex shrink-0">
+                            <svg class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" /></svg>
+                            <div class="relative w-16 h-1.5 bg-gray-300 rounded-full cursor-pointer flex items-center group">
+                                 <input type="range" class="audio-volume absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="1" value="1" step="0.05">
+                                 <div class="audio-volume-bar absolute h-full bg-blue-500 rounded-full pointer-events-none group-hover:bg-blue-600 transition-colors" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+            </div>
+
+            <div class="mb-8">
+                <p class="mb-4 text-gray-700 font-medium">2.1 Listen to the recording. Replace the words in brackets with <strong>ONE</strong> word.</p>
+                <div class="p-6 bg-gray-50 border border-gray-200 rounded-lg text-gray-800 leading-loose">
+                    <p><strong>Teacher:</strong> Can you tell me about your early education?</p>
+                    <p class="mt-2"><strong>Student:</strong> Well, I went to a (1) [school for very young children] <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["kindergarten", "nursery"]'> from the age of four and I remember that I didn't enjoy it very much at all. My (2) [from the age of 5 to 11] <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["primary", "elementary"]'> school was a little better, especially because my mum was a teacher in the school. She taught in the (3) [younger part of the school] <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["junior"]'> and she was actually my teacher in (4) [first level] <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["grade"]'>, but when I went up to the (5) [older part of the school] <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["senior"]'> I didn't see very much of her. After that I was lucky enough to receive a (6) [chance to go to school without paying fees] <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["scholarship", "grant"]'> for a very good (7) [from age 11 to 18] <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["high", "secondary"]'> school. My parents couldn't have afforded to send me to a (8) [not free school] <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["private", "public"]'> so it was a really great opportunity for me. It was a (9) [only for one sex] <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["single-sex", "single sex"]'> school, so there were no boys. I'm glad I didn't go to a (10) [for boys and girls] <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["mixed"]'> school because I think there are fewer distractions so everyone can just concentrate on their studies.</p>
+                </div>
+                <div class="flex items-center gap-4 mt-4">
+                    <button id="btn-2.1" onclick="checkExercise('2.1', 2)" class="check-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (2.1)</button>
+                    <span id="score-2.1" class="font-bold text-lg hidden"></span>
+                </div>
+            </div>
+
+            <hr class="my-8 border-gray-200">
+
+            <div class="mb-8">
+                <p class="mb-4 text-gray-700 font-medium">2.2 Word Building: Complete the table.</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full vocab-table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Person</th>
+                                <th>Adjective</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>architecture</td>
+                                <td>architect</td>
+                                <td>architectural</td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["archaeology"]'></td>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["archaeologist"]'></td>
+                                <td>archaeological</td>
+                            </tr>
+                            <tr>
+                                <td>biology</td>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["biologist"]'></td>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["biological"]'></td>
+                            </tr>
+                            <tr>
+                                <td>economics</td>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["economist"]'></td>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["economic"]'></td>
+                            </tr>
+                            <tr>
+                                <td>geology</td>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["geologist"]'></td>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["geological"]'></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["geography"]'></td>
+                                <td>geographer</td>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["geographical"]'></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["journalism"]'></td>
+                                <td>journalist</td>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["journalistic"]'></td>
+                            </tr>
+                            <tr>
+                                <td>languages</td>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["linguist"]'></td>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["linguistic"]'></td>
+                            </tr>
+                            <tr>
+                                <td>law</td>
+                                <td>lawyer</td>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["legal"]'></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["mathematics", "maths"]'></td>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["mathematician"]'></td>
+                                <td>mathematical</td>
+                            </tr>
+                            <tr>
+                                <td>science</td>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["scientist"]'></td>
+                                <td><input type="text" class="input-blank w-full" data-ex="2.2" data-ans='["scientific"]'></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex items-center gap-4 mt-4">
+                    <button id="btn-2.2" onclick="checkExercise('2.2', 2)" class="check-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (2.2)</button>
+                    <span id="score-2.2" class="font-bold text-lg hidden"></span>
+                </div>
+            </div>
+
+            <hr class="my-8 border-gray-200">
+
+            <div>
+                <p class="mb-4 text-gray-700 font-medium">2.3 Complete the sentences with suitable words from the table above.</p>
+                <ol class="list-decimal list-inside space-y-4 text-gray-800 text-lg leading-loose">
+                    <li>I've always wanted to go on an <input type="text" class="input-blank w-40" data-ex="2.3" data-ans='["archaeological"]'> dig to try to find fossils and ancient artefacts.</li>
+                    <li>Have you seen a copy of the <input type="text" class="input-blank w-40" data-ex="2.3" data-ans='["architectural"]'> plan for the new building?</li>
+                    <li>My daughter is a <input type="text" class="input-blank w-40" data-ex="2.3" data-ans='["linguist"]'>; she speaks six different languages.</li>
+                    <li>The government has a good <input type="text" class="input-blank w-40" data-ex="2.3" data-ans='["economic"]'> policy. I'm sure the recession will be over soon.</li>
+                    <li>I'm studying <input type="text" class="input-blank w-40" data-ex="2.3" data-ans='["journalism"]'> to be a political writer.</li>
+                    <li>I'm not very familiar with the <input type="text" class="input-blank w-40" data-ex="2.3" data-ans='["geography"]'> of that part of the world.</li>
+                </ol>
+                <div class="flex items-center gap-4 mt-4">
+                    <button id="btn-2.3" onclick="checkExercise('2.3', 2)" class="check-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (2.3)</button>
+                    <span id="score-2.3" class="font-bold text-lg hidden"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Research -->
+        <div id="section-3" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">4. Research</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
+            </div>
+            
+            <!-- Audio Player 2 -->
+            <div class="custom-audio-player bg-white border-2 border-blue-100 rounded-xl px-6 py-4 mb-6 shadow-sm" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784847&auto_play=false&enable_api=1">
+                <div class="flex flex-col sm:flex-row items-center gap-4">
+                    <div class="text-sm text-blue-600 font-bold whitespace-nowrap shrink-0">Track 5b 🎧</div>
+                    <div class="w-full flex items-center bg-gray-50 border border-gray-200 rounded-full px-4 py-2 shadow-inner">
+                        <button class="audio-play-btn w-9 h-9 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 shrink-0">
+                            <svg class="play-icon h-5 w-5 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                            <svg class="pause-icon h-5 w-5 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                        </button>
+                        <div class="flex-1 mx-4 flex items-center space-x-3">
+                            <span class="audio-current-time text-xs font-mono text-gray-500 w-10 text-right">00:00</span>
+                            <div class="relative w-full h-2 bg-gray-300 rounded-full cursor-pointer flex-1 flex items-center group">
+                                 <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                 <div class="audio-progress-bar absolute h-full bg-blue-500 rounded-full pointer-events-none group-hover:bg-blue-600 transition-colors" style="width: 0%;"></div>
+                            </div>
+                            <span class="audio-total-time text-xs font-mono text-gray-500 w-10">00:00</span>
+                        </div>
+                    </div>
+                </div>
+                <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+            </div>
+
+            <div class="mb-8">
+                <p class="mb-4 text-gray-700 font-medium">3.1 You will hear part of a talk for students. Listen and complete the notes below. Write <strong>NO MORE THAN TWO WORDS</strong> for each answer.</p>
+                
+                <div class="border-2 border-gray-300 rounded-xl p-8 bg-blue-50 font-sans max-w-2xl mx-auto shadow-inner">
+                    <h4 class="text-center font-bold text-2xl mb-6 text-blue-900 border-b-2 border-blue-200 pb-4">Continuing your studies after graduation</h4>
+                    
+                    <h5 class="font-bold text-lg mb-4 text-blue-800">Writing your dissertation</h5>
+                    <p class="mb-4 text-gray-700"><strong>Important considerations:</strong></p>
+                    <ul class="list-disc pl-6 space-y-4 text-gray-800 text-lg">
+                        <li>Many students struggle to find a research (1) <input type="text" class="input-blank w-40" data-ex="3.1" data-ans='["topic"]'></li>
+                        <li>Writing a (2) <input type="text" class="input-blank w-40" data-ex="3.1" data-ans='["thesis"]'> is easier if you make the right choice.</li>
+                    </ul>
+
+                    <p class="mt-6 mb-4 text-gray-700"><strong>You need to:</strong></p>
+                    <ul class="list-disc pl-6 space-y-4 text-gray-800 text-lg">
+                        <li>Study the (3) <input type="text" class="input-blank w-48" data-ex="3.1" data-ans='["literature", "current literature"]'> of your field of study.</li>
+                        <li>Have a wide (4) <input type="text" class="input-blank w-48" data-ex="3.1" data-ans='["knowledge", "broad knowledge"]'>.</li>
+                        <li>Establish what is (5) <input type="text" class="input-blank w-40" data-ex="3.1" data-ans='["relevant"]'> in your field.</li>
+                        <li>Have a clear idea of the (6) <input type="text" class="input-blank w-40" data-ex="3.1" data-ans='["limits", "scope"]'> of your study.</li>
+                        <li>Consider whether there are any (7) <input type="text" class="input-blank w-48" data-ex="3.1" data-ans='["controversies"]'> in existing research.</li>
+                        <li>Think about your (8) <input type="text" class="input-blank w-48" data-ex="3.1" data-ans='["financial resources"]'> carefully.</li>
+                        <li>Ask about (9) <input type="text" class="input-blank w-40" data-ex="3.1" data-ans='["funding", "a grant", "grant"]'> from outside sources.</li>
+                        <li>Ask your (10) <input type="text" class="input-blank w-40" data-ex="3.1" data-ans='["tutor"]'> to check your results.</li>
+                    </ul>
+                </div>
+                <div class="flex items-center gap-4 mt-6">
+                    <button id="btn-3.1" onclick="checkExercise('3.1', 3)" class="check-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (3.1)</button>
+                    <span id="score-3.1" class="font-bold text-lg hidden"></span>
+                </div>
+            </div>
+
+            <hr class="my-10 border-gray-200">
+            
+            <!-- Pronunciation Section (Non-graded) -->
+            <div class="bg-purple-50 rounded-lg p-6 border border-purple-200">
+                <h3 class="text-lg font-bold text-purple-900 mb-2">Pronunciation Practice</h3>
+                <p class="text-sm text-purple-700 mb-4">Listen to the audio and practice saying the words below, paying attention to the stressed syllables.</p>
+                
+                <!-- Audio Player 3 -->
+                <div class="custom-audio-player bg-white border border-purple-200 rounded-lg px-4 py-3 mb-4 shadow-sm" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784839&auto_play=false&enable_api=1">
+                    <div class="flex items-center gap-3">
+                        <button class="audio-play-btn w-8 h-8 flex items-center justify-center bg-purple-600 hover:bg-purple-700 text-white rounded-full transition-colors shrink-0">
+                            <svg class="play-icon h-4 w-4 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                            <svg class="pause-icon h-4 w-4 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                        </button>
+                        <div class="relative w-full h-1.5 bg-gray-200 rounded-full cursor-pointer flex items-center group">
+                            <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                            <div class="audio-progress-bar absolute h-full bg-purple-500 rounded-full pointer-events-none group-hover:bg-purple-600" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 text-purple-900 font-medium">
+                    <div class="bg-white px-3 py-2 rounded text-center shadow-sm">a·ca·<strong>de</strong>·mic</div>
+                    <div class="bg-white px-3 py-2 rounded text-center shadow-sm">as·<strong>sign</strong>·ment</div>
+                    <div class="bg-white px-3 py-2 rounded text-center shadow-sm">con·sid·er·<strong>a</strong>·tion</div>
+                    <div class="bg-white px-3 py-2 rounded text-center shadow-sm"><strong>con</strong>·cen·trate</div>
+                    <div class="bg-white px-3 py-2 rounded text-center shadow-sm"><strong>con</strong>·tro·ver·sy</div>
+                    <div class="bg-white px-3 py-2 rounded text-center shadow-sm">con·<strong>duct</strong> (v)</div>
+                    <div class="bg-white px-3 py-2 rounded text-center shadow-sm">dis·<strong>trac</strong>·tion</div>
+                    <div class="bg-white px-3 py-2 rounded text-center shadow-sm">dis·ser·<strong>ta</strong>·tion</div>
+                    <div class="bg-white px-3 py-2 rounded text-center shadow-sm">e·<strong>con</strong>·o·mist</div>
+                    <div class="bg-white px-3 py-2 rounded text-center shadow-sm">e·du·<strong>ca</strong>·tion·al</div>
+                    <div class="bg-white px-3 py-2 rounded text-center shadow-sm"><strong>e</strong>·du·cat·ed</div>
+                    <div class="bg-white px-3 py-2 rounded text-center shadow-sm">re·<strong>search</strong> (n)</div>
+                    <div class="bg-white px-3 py-2 rounded text-center shadow-sm"><strong>the</strong>·sis</div>
+                    <div class="bg-white px-3 py-2 rounded text-center shadow-sm"><strong>the</strong>·o·ry</div>
+                    <div class="bg-white px-3 py-2 rounded text-center shadow-sm">the·o·<strong>ret</strong>·i·cal</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Test Practice -->
+        <div id="section-4" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">5. Test Practice</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
+            </div>
+            
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 text-gray-800 leading-relaxed font-serif text-lg">
+                <h4 class="font-bold text-xl mb-4 text-center">Work experience and internship programs</h4>
+                <p class="mb-4">Through our student work experience program, the education authority provides over 9,000 work experience placements for young people each year. Our program is designed to offer employment opportunities for students that will enrich their academic studies and help them gain valuable work-related skills thereby improving their chances of finding a good job after graduation. A placement does not need to be related to a particular field of study and so participants may even discover areas of work they have never considered before.</p>
+                <p class="mb-4">All secondary and post-secondary school students in full-time education are eligible to apply for the program. Individual case managers will determine the minimum level of academic achievement required for each job. During an academic term, a student may work part-time. During the summer holidays a student may work full-time or part-time. The education authority is responsible for the recruitment of all students under the work experience program. Applicants apply in person to our office and we refer candidates to the appropriate department.</p>
+                <p>Our internship program is designed specifically for post-secondary students, whether part-time or full-time. Students on the internship program are given an assignment related to their research area offering them the chance to use their academic knowledge in an actual work setting. The academic institution plays an important role in the placement of students under this program and they will determine the duration of a work assignment. These traditionally last four months but internship assignments may vary from 4 to 18 months. Students in this program normally work full-time.</p>
+            </div>
+
+            <div class="mb-8">
+                <h4 class="font-bold text-lg mb-4 text-gray-800">Questions 1-3</h4>
+                <p class="mb-4 text-gray-700">Complete the sentence with the correct ending <strong>A-E</strong>.</p>
+                
+                <div class="bg-white border border-gray-300 rounded p-4 mb-6 text-gray-700 max-w-xl">
+                    <ul class="space-y-2 font-medium">
+                        <li><strong>A</strong> if you have high academic results from your educational institution.</li>
+                        <li><strong>B</strong> if you are a full-time student.</li>
+                        <li><strong>C</strong> outside of normal term time.</li>
+                        <li><strong>D</strong> when you have graduated from university.</li>
+                        <li><strong>E</strong> if you have finished your secondary education.</li>
+                    </ul>
+                </div>
+
+                <ol class="list-decimal list-inside space-y-4 text-gray-800 text-lg">
+                    <li>You can apply for the work experience program 
+                        <select class="input-blank font-bold" data-ex="4.1" data-ans='["b"]'>
+                            <option value="" disabled selected>Select</option>
+                            <option value="a">A</option>
+                            <option value="b">B</option>
+                            <option value="c">C</option>
+                            <option value="d">D</option>
+                            <option value="e">E</option>
+                        </select>
+                    </li>
+                    <li>You can work on the student work experience program full-time 
+                        <select class="input-blank font-bold" data-ex="4.1" data-ans='["c"]'>
+                            <option value="" disabled selected>Select</option>
+                            <option value="a">A</option>
+                            <option value="b">B</option>
+                            <option value="c">C</option>
+                            <option value="d">D</option>
+                            <option value="e">E</option>
+                        </select>
+                    </li>
+                    <li>You can only join the internship program 
+                        <select class="input-blank font-bold" data-ex="4.1" data-ans='["e"]'>
+                            <option value="" disabled selected>Select</option>
+                            <option value="a">A</option>
+                            <option value="b">B</option>
+                            <option value="c">C</option>
+                            <option value="d">D</option>
+                            <option value="e">E</option>
+                        </select>
+                    </li>
+                </ol>
+                <div class="flex items-center gap-4 mt-4">
+                    <button id="btn-4.1" onclick="checkExercise('4.1', 4)" class="check-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (Qs 1-3)</button>
+                    <span id="score-4.1" class="font-bold text-lg hidden"></span>
+                </div>
+            </div>
+
+            <hr class="my-8 border-gray-200">
+
+            <div class="mb-8">
+                <h4 class="font-bold text-lg mb-4 text-gray-800">Questions 4-8</h4>
+                <p class="mb-4 text-gray-700">Complete the summary below. Choose <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong> from the text for each answer.</p>
+                
+                <div class="bg-gray-50 border border-gray-300 rounded p-6 text-gray-800 leading-loose text-lg shadow-inner">
+                    To take part in the work experience program, first you need to apply to the (4) <input type="text" class="input-blank w-48" data-ex="4.2" data-ans='["education authority"]'>. Your (5) <input type="text" class="input-blank w-48" data-ex="4.2" data-ans='["case manager"]'> will tell you what qualifications you need. The internship program allows undergraduates to gain work experience in their (6) <input type="text" class="input-blank w-40" data-ex="4.2" data-ans='["research area"]'>. The maximum length of an internship assignment is (7) <input type="text" class="input-blank w-32" data-ex="4.2" data-ans='["18 months"]'>. This is decided by the (8) <input type="text" class="input-blank w-48" data-ex="4.2" data-ans='["academic institution"]'>.
+                </div>
+                <div class="flex items-center gap-4 mt-4">
+                    <button id="btn-4.2" onclick="checkExercise('4.2', 4)" class="check-btn bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (Qs 4-8)</button>
+                    <span id="score-4.2" class="font-bold text-lg hidden"></span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const REQUIRED_SCORE = 0.8; // 80% to pass
+
+        // --- Audio Player Initialization via SoundCloud Widget API ---
+        function initAudioPlayer() {
+            const players = document.querySelectorAll('.custom-audio-player');
+            
+            players.forEach((playerEl, index) => {
+                const scUrl = playerEl.getAttribute('data-sc-url');
+                const iframeElement = playerEl.querySelector('.sc-widget-iframe');
+                
+                if (!iframeElement || !scUrl) return;
+                
+                // Set the src for the iframe based on the URL provided
+                iframeElement.src = scUrl;
+                
+                const widget = SC.Widget(iframeElement);
+                const playBtn = playerEl.querySelector('.audio-play-btn');
+                const playIcon = playerEl.querySelector('.play-icon');
+                const pauseIcon = playerEl.querySelector('.pause-icon');
+                const progressBar = playerEl.querySelector('.audio-progress');
+                const progressFill = playerEl.querySelector('.audio-progress-bar');
+                const currentTimeEl = playerEl.querySelector('.audio-current-time');
+                const totalTimeEl = playerEl.querySelector('.audio-total-time');
+                const volumeBar = playerEl.querySelector('.audio-volume');
+                const volumeFill = playerEl.querySelector('.audio-volume-bar');
+
+                let isPlaying = false;
+                let durationSec = 0;
+
+                const formatTime = (timeInSeconds) => {
+                    if (isNaN(timeInSeconds) || timeInSeconds === Infinity) return "00:00";
+                    const min = Math.floor(timeInSeconds / 60);
+                    const sec = Math.floor(timeInSeconds % 60);
+                    return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+                };
+
+                const updateDuration = () => {
+                    widget.getDuration((durationMs) => {
+                        if (durationMs) {
+                            durationSec = durationMs / 1000;
+                            if (totalTimeEl) totalTimeEl.textContent = formatTime(durationSec);
+                            if (progressBar) progressBar.max = durationSec;
+                        }
+                    });
+                };
+
+                widget.bind(SC.Widget.Events.READY, () => {
+                    updateDuration();
+                });
+
+                widget.bind(SC.Widget.Events.PLAY_PROGRESS, (info) => {
+                    if (!durationSec) updateDuration(); 
+                    const currentPositionSec = info.currentPosition / 1000;
+                    if (currentTimeEl) currentTimeEl.textContent = formatTime(currentPositionSec);
+                    if (progressBar) progressBar.value = currentPositionSec;
+                    if (durationSec > 0 && progressFill) {
+                        const percent = (currentPositionSec / durationSec) * 100;
+                        progressFill.style.width = `${percent}%`;
+                    }
+                });
+
+                widget.bind(SC.Widget.Events.PLAY, () => {
+                    isPlaying = true;
+                    if(playIcon) playIcon.classList.add('hidden');
+                    if(pauseIcon) pauseIcon.classList.remove('hidden');
+                    updateDuration();
+                });
+
+                widget.bind(SC.Widget.Events.PAUSE, () => {
+                    isPlaying = false;
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(playIcon) playIcon.classList.remove('hidden');
+                });
+
+                widget.bind(SC.Widget.Events.FINISH, () => {
+                    isPlaying = false;
+                    if(playIcon) playIcon.classList.remove('hidden');
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(progressFill) progressFill.style.width = '0%';
+                    if(progressBar) progressBar.value = 0;
+                    widget.seekTo(0);
+                });
+
+                if (playBtn) {
+                    playBtn.addEventListener('click', () => {
+                        widget.toggle();
+                    });
+                }
+
+                if (progressBar) {
+                    progressBar.addEventListener('input', () => {
+                        widget.seekTo(progressBar.value * 1000);
+                    });
+                }
+
+                if (volumeBar && volumeFill) {
+                    volumeBar.addEventListener('input', () => {
+                        const vol = volumeBar.value;
+                        widget.setVolume(vol * 100); 
+                        volumeFill.style.width = `${vol * 100}%`;
+                    });
+                }
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', initAudioPlayer);
+
+
+        // --- Tab Navigation Logic ---
+        function openTab(tabIndex) {
+            // Hide all sections
+            document.querySelectorAll('.exercise-section').forEach(sec => sec.classList.add('section-hidden'));
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(`section-${tabIndex}`).classList.remove('section-hidden');
+            // Set active class to selected tab
+            document.getElementById(`tab-${tabIndex}`).classList.add('active');
+        }
+
+        // --- Core UI logic ---
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function unlockNext(currentIndex) {
+            const nextIndex = currentIndex + 1;
+            const nextTab = document.getElementById(`tab-${nextIndex}`);
+            
+            if (nextTab) {
+                // Switch to the next tab after a slight delay
+                setTimeout(() => {
+                    openTab(nextIndex);
+                    // Scroll to top of tabs
+                    document.querySelector('.flex.overflow-x-auto').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 1000);
+            } else {
+                // Course completed!
+                showToast("🎉 Congratulations! You have completed all exercises!", "success");
+            }
+        }
+
+        function validateBlanks(inputs) {
+            let allFilled = true;
+            inputs.forEach(input => {
+                const val = input.value !== undefined ? input.value : input.innerText;
+                if (val.trim() === "") {
+                    allFilled = false;
+                    input.style.borderBottomColor = '#f59e0b';
+                    input.style.backgroundColor = '#fef3c7';
+                    setTimeout(() => {
+                        input.style.borderBottomColor = '';
+                        input.style.backgroundColor = '';
+                    }, 1500);
+                }
+            });
+            return allFilled;
+        }
+
+        function processScore(exerciseId, correctCount, totalCount, sectionIndex) {
+            const scoreLabel = document.getElementById(`score-${exerciseId}`);
+            const percentage = correctCount / totalCount;
+            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
+            
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (percentage >= REQUIRED_SCORE) {
+                scoreLabel.textContent = `✅ Passed! Score: ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
+                
+                // Disable button
+                const btn = document.getElementById(`btn-${exerciseId}`);
+                if (btn) {
+                    btn.disabled = true;
+                    btn.classList.add('opacity-50', 'cursor-not-allowed');
+                    btn.textContent = "Passed";
+                }
+
+                // Check if all exercises in this section are passed to unlock the next tab
+                if (sectionIndex !== undefined && sectionIndex !== null) {
+                    const section = document.getElementById(`section-${sectionIndex}`);
+                    if (section) {
+                        const allButtons = Array.from(section.querySelectorAll('.check-btn'));
+                        const allPassed = allButtons.every(b => b.disabled);
+                        if (allPassed) {
+                            showToast("Section Complete! Moving to the next section.", "success");
+                            unlockNext(sectionIndex);
+                        } else {
+                            showToast("Great job! Complete the other exercises in this section.", "success");
+                        }
+                    }
+                }
+            } else {
+                scoreLabel.textContent = `❌ Failed. Score: ${scoreText} (Need 80%)`;
+                scoreLabel.classList.add('text-red-600');
+                showToast(`You scored ${Math.round(percentage * 100)}%. Please try again.`, "error");
+            }
+        }
+
+        // Standard exercise checker (Handles text inputs and selects)
+        function checkExercise(exerciseId, sectionIndex) {
+            const inputs = document.querySelectorAll(`[data-ex="${exerciseId}"]`);
+            
+            // Check if all filled
+            if (!validateBlanks(inputs)) {
+                showToast("Please answer all questions before checking!", "warning");
+                return;
+            }
+
+            let correctCount = 0;
+
+            inputs.forEach(input => {
+                const rawVal = input.value !== undefined ? input.value : input.innerText;
+                const userVal = rawVal.trim().toLowerCase().replace(/\s+/g, ' '); // normalize spaces
+                const possibleAns = JSON.parse(input.getAttribute('data-ans'));
+                
+                if (possibleAns.includes(userVal)) {
+                    correctCount++;
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+
+            processScore(exerciseId, correctCount, inputs.length, sectionIndex);
+        }
+    </script>
+</body>
+</html>
