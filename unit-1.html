@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Families and Early Learning - Self Study</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
         .input-blank {
@@ -25,7 +26,6 @@
         /* Tab & Interactivity Styles */
         .tab-btn { transition: all 0.2s ease-in-out; }
         .tab-btn.active { border-bottom-width: 4px; border-color: #3b82f6; color: #1e3a8a; font-weight: 700; background-color: #eff6ff; }
-        .tab-btn.locked { cursor: not-allowed; opacity: 0.5; }
         .section-hidden { display: none; }
         .word-used { text-decoration: line-through; opacity: 0.4; transition: all 0.2s; }
         
@@ -120,13 +120,13 @@
             </div>
         </div>
 
-        <!-- Tab Navigation -->
-        <div class="flex overflow-x-auto bg-white rounded-t-xl shadow-sm border-b-2 border-gray-200 mb-6">
+        <!-- Tab Navigation (Unlocked) -->
+        <div class="flex overflow-x-auto bg-white rounded-t-xl shadow-sm border-b-2 border-gray-200 mb-6 custom-scrollbar">
             <button onclick="openTab(0)" id="tab-0" class="tab-btn active flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">Exercise 1</button>
-            <button onclick="openTab(1)" id="tab-1" class="tab-btn locked flex-1 py-3 px-4 text-center font-semibold text-gray-600 focus:outline-none whitespace-nowrap" disabled>Exercise 2 🔒</button>
-            <button onclick="openTab(2)" id="tab-2" class="tab-btn locked flex-1 py-3 px-4 text-center font-semibold text-gray-600 focus:outline-none whitespace-nowrap" disabled>Exercise 3 🔒</button>
-            <button onclick="openTab(3)" id="tab-3" class="tab-btn locked flex-1 py-3 px-4 text-center font-semibold text-gray-600 focus:outline-none whitespace-nowrap" disabled>Exercise 4 🔒</button>
-            <button onclick="openTab(4)" id="tab-4" class="tab-btn locked flex-1 py-3 px-4 text-center font-semibold text-gray-600 focus:outline-none whitespace-nowrap" disabled>Exercise 5 🔒</button>
+            <button onclick="openTab(1)" id="tab-1" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">Exercise 2</button>
+            <button onclick="openTab(2)" id="tab-2" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">Exercise 3</button>
+            <button onclick="openTab(3)" id="tab-3" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">Exercise 4</button>
+            <button onclick="openTab(4)" id="tab-4" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">Exercise 5</button>
         </div>
 
         <!-- Exercise 1 -->
@@ -296,12 +296,52 @@
                 <h3 class="text-xl font-bold text-gray-800">Exercise 5: Listening - Section 1</h3>
                 <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
             </div>
-            <p class="mb-4 text-gray-600">Listen to the audio and complete the form below using <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong> for each answer.</p>
             
-            <!-- YouTube Audio Integration -->
-            <div class="mb-8 w-full max-w-2xl mx-auto rounded-lg overflow-hidden shadow-lg border-4 border-gray-100">
-                <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/Ro2gAAphqBY?si=XDY1hLg5v3IN6-aV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <!-- Audio Player (Custom UI powered by SoundCloud) -->
+            <div class="bg-white border-2 border-blue-100 rounded-xl px-6 py-4 mb-6 shadow-sm">
+                <div class="flex flex-col sm:flex-row items-center gap-4">
+                    <div class="text-sm text-blue-600 font-bold whitespace-nowrap shrink-0">
+                        Listening Track 🎧
+                    </div>
+                    <div class="w-full flex items-center bg-gray-50 border border-gray-200 rounded-full px-4 py-2 shadow-inner">
+                        <button id="audio-play-btn" class="w-9 h-9 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 shrink-0">
+                            <!-- Play Icon -->
+                            <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-0.5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                            </svg>
+                            <!-- Pause Icon -->
+                            <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        
+                        <div class="flex-1 mx-4 flex items-center space-x-3">
+                            <span id="audio-current-time" class="text-xs font-mono text-gray-500 w-10 text-right">00:00</span>
+                            <div class="relative w-full h-2 bg-gray-300 rounded-full cursor-pointer flex-1 flex items-center group">
+                                 <input type="range" id="audio-progress" class="absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                 <div id="audio-progress-bar" class="absolute h-full bg-blue-500 rounded-full pointer-events-none group-hover:bg-blue-600 transition-colors" style="width: 0%;"></div>
+                            </div>
+                            <span id="audio-total-time" class="text-xs font-mono text-gray-500 w-10">00:00</span>
+                        </div>
+
+                        <!-- Volume Control -->
+                        <div class="flex items-center space-x-2 ml-2 pl-4 border-l border-gray-200 hidden sm:flex shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" />
+                            </svg>
+                            <div class="relative w-16 h-1.5 bg-gray-300 rounded-full cursor-pointer flex items-center group">
+                                 <input type="range" id="audio-volume" class="absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="1" value="1" step="0.05">
+                                 <div id="audio-volume-bar" class="absolute h-full bg-blue-500 rounded-full pointer-events-none group-hover:bg-blue-600 transition-colors" style="width: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hidden SoundCloud Widget to power the Custom Audio Player -->
+                <iframe id="sc-widget" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A1583784943&auto_play=false&enable_api=1" style="position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none;" frameborder="0" allow="autoplay"></iframe>
             </div>
+
+            <p class="mb-4 text-gray-600">Listen to the audio and complete the form below using <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong> for each answer.</p>
 
             <div class="border-2 border-gray-300 rounded p-6 bg-gray-50 font-sans max-w-2xl mx-auto">
                 <h4 class="text-center font-bold text-xl mb-4 uppercase">Ascot Child Care Centre Enrolment form</h4>
@@ -341,6 +381,99 @@
 
     <script>
         const REQUIRED_SCORE = 0.8; // 80% to pass
+
+        // --- Audio Player Initialization via SoundCloud Widget API ---
+        function initAudioPlayer() {
+            const iframeElement = document.getElementById('sc-widget');
+            if (!iframeElement) return;
+            
+            const widget = SC.Widget(iframeElement);
+            const playBtn = document.getElementById('audio-play-btn');
+            const playIcon = document.getElementById('play-icon');
+            const pauseIcon = document.getElementById('pause-icon');
+            const progressBar = document.getElementById('audio-progress');
+            const progressFill = document.getElementById('audio-progress-bar');
+            const currentTimeEl = document.getElementById('audio-current-time');
+            const totalTimeEl = document.getElementById('audio-total-time');
+            const volumeBar = document.getElementById('audio-volume');
+            const volumeFill = document.getElementById('audio-volume-bar');
+
+            let isPlaying = false;
+            let durationSec = 0;
+
+            const formatTime = (timeInSeconds) => {
+                if (isNaN(timeInSeconds) || timeInSeconds === Infinity) return "00:00";
+                const min = Math.floor(timeInSeconds / 60);
+                const sec = Math.floor(timeInSeconds % 60);
+                return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+            };
+
+            const updateDuration = () => {
+                widget.getDuration((durationMs) => {
+                    if (durationMs) {
+                        durationSec = durationMs / 1000;
+                        totalTimeEl.textContent = formatTime(durationSec);
+                        progressBar.max = durationSec;
+                    }
+                });
+            };
+
+            widget.bind(SC.Widget.Events.READY, () => {
+                updateDuration();
+            });
+
+            widget.bind(SC.Widget.Events.PLAY_PROGRESS, (info) => {
+                if (!durationSec) updateDuration(); 
+                const currentPositionSec = info.currentPosition / 1000;
+                currentTimeEl.textContent = formatTime(currentPositionSec);
+                progressBar.value = currentPositionSec;
+                if (durationSec > 0) {
+                    const percent = (currentPositionSec / durationSec) * 100;
+                    progressFill.style.width = `${percent}%`;
+                }
+            });
+
+            widget.bind(SC.Widget.Events.PLAY, () => {
+                isPlaying = true;
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+                updateDuration();
+            });
+
+            widget.bind(SC.Widget.Events.PAUSE, () => {
+                isPlaying = false;
+                pauseIcon.classList.add('hidden');
+                playIcon.classList.remove('hidden');
+            });
+
+            widget.bind(SC.Widget.Events.FINISH, () => {
+                isPlaying = false;
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+                progressFill.style.width = '0%';
+                progressBar.value = 0;
+                widget.seekTo(0);
+            });
+
+            playBtn.addEventListener('click', () => {
+                widget.toggle();
+            });
+
+            progressBar.addEventListener('input', () => {
+                widget.seekTo(progressBar.value * 1000);
+            });
+
+            if (volumeBar && volumeFill) {
+                volumeBar.addEventListener('input', () => {
+                    const vol = volumeBar.value;
+                    widget.setVolume(vol * 100); 
+                    volumeFill.style.width = `${vol * 100}%`;
+                });
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', initAudioPlayer);
+
 
         // --- Audio Pronunciation Logic ---
         function speakWord(word) {
@@ -446,12 +579,6 @@
             const nextTab = document.getElementById(`tab-${nextIndex}`);
             
             if (nextTab) {
-                // Unlock the tab visually
-                nextTab.disabled = false;
-                nextTab.classList.remove('locked');
-                // Remove the lock icon from the text
-                nextTab.innerText = nextTab.innerText.replace(' 🔒', '');
-                
                 // Switch to the next tab after a slight delay
                 setTimeout(() => {
                     openTab(nextIndex);
