@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Families and Early Learning - Self Study</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .input-blank {
+            border: none;
+            border-bottom: 2px solid #9ca3af;
+            background: transparent;
+            outline: none;
+            text-align: center;
+            padding: 0.25rem;
+            transition: border-color 0.2s;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .input-blank:focus { border-bottom-color: #3b82f6; }
+        .correct { border-bottom-color: #22c55e !important; color: #166534; background-color: #f0fdf4; }
+        .incorrect { border-bottom-color: #ef4444 !important; color: #991b1b; background-color: #fef2f2; }
+        
+        /* Tab & Interactivity Styles */
+        .tab-btn { transition: all 0.2s ease-in-out; }
+        .tab-btn.active { border-bottom-width: 4px; border-color: #3b82f6; color: #1e3a8a; font-weight: 700; background-color: #eff6ff; }
+        .tab-btn.locked { cursor: not-allowed; opacity: 0.5; }
+        .section-hidden { display: none; }
+        .word-used { text-decoration: line-through; opacity: 0.4; transition: all 0.2s; }
+        
+        /* Click & Match Styles */
+        .word-choice { transition: all 0.2s; cursor: pointer; padding: 0.25rem 0.75rem; border-radius: 0.375rem; border: 2px solid transparent; font-weight: 600; background-color: transparent; }
+        .word-choice:hover:not(.used) { background-color: #dbeafe; border-color: #93c5fd; }
+        .word-choice.selected { background-color: #bfdbfe; border-color: #3b82f6; transform: scale(1.05); }
+        .word-choice.used { opacity: 0.4; text-decoration: line-through; pointer-events: none; }
+        .match-slot { display: inline-block; min-width: 10rem; height: 1.75rem; border-bottom: 2px solid #9ca3af; text-align: center; cursor: pointer; padding: 0 0.5rem; font-weight: 600; color: #1e40af; vertical-align: bottom; transition: all 0.2s; line-height: 1.75rem; }
+        .match-slot:hover { border-bottom-color: #3b82f6; background-color: #f3f4f6; border-radius: 0.25rem 0.25rem 0 0; }
+        .match-slot:empty::after { content: '...'; color: #cbd5e1; font-weight: normal; }
+        
+        /* Vocabulary Highlight & Tooltip Styles */
+        .vocab-word {
+            position: relative;
+            cursor: pointer;
+            border-bottom: 2px dashed #3b82f6;
+            color: #1d4ed8;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            padding-bottom: 1px;
+        }
+        .vocab-word:hover {
+            background-color: #eff6ff;
+            border-bottom-style: solid;
+        }
+        .vocab-tooltip {
+            visibility: hidden;
+            background-color: #1f2937;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 6px 12px;
+            position: absolute;
+            z-index: 50;
+            bottom: 130%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+            font-size: 0.85rem;
+            font-family: sans-serif;
+            white-space: nowrap;
+            font-weight: 500;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+        }
+        .vocab-tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #1f2937 transparent transparent transparent;
+        }
+        .vocab-word:hover .vocab-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .toast {
+            position: fixed; top: 20px; right: 20px;
+            padding: 15px 25px; border-radius: 8px;
+            color: white; font-weight: bold;
+            opacity: 0; transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000; pointer-events: none;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.error { background-color: #ef4444; }
+        .toast.success { background-color: #22c55e; }
+        .toast.warning { background-color: #f59e0b; }
+    </style>
+</head>
+<body class="text-gray-800 antialiased pb-20">
+
+    <div id="toast" class="toast shadow-lg">Message</div>
+
+    <div class="max-w-4xl mx-auto mt-8 px-4">
+        
+        <!-- Reading Passage -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-8 border-l-4 border-blue-500">
+            <h1 class="text-2xl font-bold mb-4 text-blue-900">Families and early learning</h1>
+            <h2 class="text-lg font-semibold mb-3 text-gray-700">Study links early friendships with high-quality sibling relationships</h2>
+            <div class="space-y-4 text-gray-600 leading-relaxed">
+                <p class="text-sm text-blue-500 italic mb-2">Hover over highlighted words to see their definitions. Click on them to hear the pronunciation.</p>
+                <p>Children who experience a <span class="vocab-word" onclick="speakWord('rewarding')">rewarding<span class="vocab-tooltip">giving a lot of pleasure 🔊</span></span> friendship before the birth of a <span class="vocab-word" onclick="speakWord('sibling')">sibling<span class="vocab-tooltip">brother or sister 🔊</span></span> are likely to have a better relationship with that brother or sister that endures throughout their childhood, said Laurie Kramer in a University of Illinois study published in December's Journal of Family Psychology.</p>
+                <p>'When early friendships are successful, young children get the chance to master sophisticated social and emotional skills, even more than they do with a parent. When parents <span class="vocab-word" onclick="speakWord('relate')">relate<span class="vocab-tooltip">respond to somebody 🔊</span></span> to a child, they do a lot of the work, figuring out what the child needs and then <span class="vocab-word" onclick="speakWord('accommodating')">accommodating<span class="vocab-tooltip">agreeing to a demand 🔊</span></span> those needs,' says Kramer. However, this is not usually the case when two children are interacting.</p>
+                <p>The research showed that the benefits of early friends are long-lasting. Children who had a positive relationship with a best friend before the birth of a sibling ultimately had a good relationship with their sibling that lasted throughout <span class="vocab-word" onclick="speakWord('adolescence')">adolescence<span class="vocab-tooltip">the stage between childhood and adulthood 🔊</span></span>, Kramer said. And children who as preschoolers were able to coordinate play with a friend, manage conflicts, and keep an <span class="vocab-word" onclick="speakWord('interaction')">interaction<span class="vocab-tooltip">communication 🔊</span></span> positive in tone were most likely as teenagers to avoid the negative sibling interaction that can sometimes launch children on a path of anti-social behavior, she added. 'From birth, parents can <span class="vocab-word" onclick="speakWord('nurture')">nurture<span class="vocab-tooltip">help someone/something develop and grow 🔊</span></span> and help develop these social competencies (or skills) by making eye contact with their babies, offering toys and playing with them,' she said.</p>
+            </div>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex overflow-x-auto bg-white rounded-t-xl shadow-sm border-b-2 border-gray-200 mb-6">
+            <button onclick="openTab(0)" id="tab-0" class="tab-btn active flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">Exercise 1</button>
+            <button onclick="openTab(1)" id="tab-1" class="tab-btn locked flex-1 py-3 px-4 text-center font-semibold text-gray-600 focus:outline-none whitespace-nowrap" disabled>Exercise 2 🔒</button>
+            <button onclick="openTab(2)" id="tab-2" class="tab-btn locked flex-1 py-3 px-4 text-center font-semibold text-gray-600 focus:outline-none whitespace-nowrap" disabled>Exercise 3 🔒</button>
+            <button onclick="openTab(3)" id="tab-3" class="tab-btn locked flex-1 py-3 px-4 text-center font-semibold text-gray-600 focus:outline-none whitespace-nowrap" disabled>Exercise 4 🔒</button>
+            <button onclick="openTab(4)" id="tab-4" class="tab-btn locked flex-1 py-3 px-4 text-center font-semibold text-gray-600 focus:outline-none whitespace-nowrap" disabled>Exercise 5 🔒</button>
+        </div>
+
+        <!-- Exercise 1 -->
+        <div id="section-0" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Exercise 1: Vocabulary Matching</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
+            </div>
+            <p class="mb-4 text-gray-600">Read the text and match the words below to the following definitions. <br><strong class="text-blue-600 text-sm">Click a word in the blue box to select it, then click a blank line to place it.</strong></p>
+            
+            <div class="bg-blue-50 text-blue-800 p-4 rounded-lg mb-6 flex flex-wrap gap-3 font-mono text-sm justify-center select-none" id="wb-0">
+                <button class="word-choice" onclick="selectWord(this)" data-word="rewarding">rewarding</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="accommodating">accommodating</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="interaction">interaction</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="nurture">nurture</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="adolescence">adolescence</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="sibling">sibling</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="relate">relate</button>
+            </div>
+
+            <ol class="list-decimal list-inside space-y-5 mb-6 leading-loose select-none">
+                <li>help someone/something develop and grow: <span class="match-slot" onclick="placeWord(this)" data-ex="0" data-ans='["nurture"]'></span></li>
+                <li>agreeing to a demand: <span class="match-slot" onclick="placeWord(this)" data-ex="0" data-ans='["accommodating"]'></span></li>
+                <li>brother or sister: <span class="match-slot" onclick="placeWord(this)" data-ex="0" data-ans='["sibling"]'></span></li>
+                <li>respond to somebody: <span class="match-slot" onclick="placeWord(this)" data-ex="0" data-ans='["relate"]'></span></li>
+                <li>the stage between childhood and adulthood: <span class="match-slot" onclick="placeWord(this)" data-ex="0" data-ans='["adolescence"]'></span></li>
+                <li>giving a lot of pleasure: <span class="match-slot" onclick="placeWord(this)" data-ex="0" data-ans='["rewarding"]'></span></li>
+                <li>communication: <span class="match-slot" onclick="placeWord(this)" data-ex="0" data-ans='["interaction"]'></span></li>
+            </ol>
+            
+            <div class="flex items-center gap-4">
+                <button onclick="checkExercise(0)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
+                <span id="score-0" class="font-bold text-lg hidden"></span>
+            </div>
+        </div>
+
+        <!-- Exercise 2 -->
+        <div id="section-1" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Exercise 2: True or False</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
+            </div>
+            <p class="mb-6 text-gray-600">Read the text again and select <strong>True</strong> or <strong>False</strong> for these sentences.</p>
+            
+            <ol class="list-decimal list-inside space-y-6 mb-6">
+                <li class="flex flex-col sm:flex-row sm:items-center gap-2">
+                    <div class="flex-1">If young children have good friends then they will have a good relationship with their brother or sister.</div>
+                    <div class="flex gap-3 bg-gray-50 p-2 rounded border transition">
+                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="tf-1" value="true" class="w-4 h-4 text-blue-600"> True</label>
+                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="tf-1" value="false" class="w-4 h-4 text-blue-600"> False</label>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center gap-2">
+                    <div class="flex-1">Parents help their children develop more social and emotional skills than friends do.</div>
+                    <div class="flex gap-3 bg-gray-50 p-2 rounded border transition">
+                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="tf-2" value="true" class="w-4 h-4 text-blue-600"> True</label>
+                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="tf-2" value="false" class="w-4 h-4 text-blue-600"> False</label>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center gap-2">
+                    <div class="flex-1">Friends will give you what you want more often than your parents do.</div>
+                    <div class="flex gap-3 bg-gray-50 p-2 rounded border transition">
+                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="tf-3" value="true" class="w-4 h-4 text-blue-600"> True</label>
+                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="tf-3" value="false" class="w-4 h-4 text-blue-600"> False</label>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center gap-2">
+                    <div class="flex-1">Teenagers who fight with their brothers or sisters may behave in a way that is socially unacceptable.</div>
+                    <div class="flex gap-3 bg-gray-50 p-2 rounded border transition">
+                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="tf-4" value="true" class="w-4 h-4 text-blue-600"> True</label>
+                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="tf-4" value="false" class="w-4 h-4 text-blue-600"> False</label>
+                    </div>
+                </li>
+                <li class="flex flex-col sm:flex-row sm:items-center gap-2">
+                    <div class="flex-1">If parents play with their children more then they will learn how to be more sociable.</div>
+                    <div class="flex gap-3 bg-gray-50 p-2 rounded border transition">
+                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="tf-5" value="true" class="w-4 h-4 text-blue-600"> True</label>
+                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="tf-5" value="false" class="w-4 h-4 text-blue-600"> False</label>
+                    </div>
+                </li>
+            </ol>
+            
+            <div class="flex items-center gap-4">
+                <button onclick="checkExercise2()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
+                <span id="score-1" class="font-bold text-lg hidden"></span>
+            </div>
+        </div>
+
+        <!-- Exercise 3 -->
+        <div id="section-2" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Exercise 3: Sentence Completion</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
+            </div>
+            <p class="mb-4 text-gray-600">A lot of words connected with families and relationships can also be used in a different context. Complete the sentences with a word from the box. <br><strong class="text-purple-600 text-sm">Click a word in the purple box to select it, then click a blank line to place it.</strong></p>
+            
+            <div class="bg-purple-50 text-purple-800 p-4 rounded-lg mb-6 flex flex-wrap gap-3 font-mono text-sm justify-center select-none" id="wb-2">
+                <button class="word-choice" onclick="selectWord(this)" data-word="conflict">conflict</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="relationship">relationship</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="relative">relative</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="adopt">adopt</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="nurture">nurture</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="related">related</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="relation">relation</button>
+                <button class="word-choice" onclick="selectWord(this)" data-word="family">family</button>
+            </div>
+
+            <ol class="list-decimal list-inside space-y-5 mb-6 leading-loose select-none">
+                <li>The wolf is a member of the dog <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["family"]'></span>.</li>
+                <li>The company decided to <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["adopt"]'></span> a new approach to staff recruitment.</li>
+                <li>The study found a strong <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["relationship", "correlation"]'></span> between a lack of friends and sibling rivalry.</li>
+                <li>Whether you think the price of goods is high is <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["relative"]'></span> to the amount of money you earn.</li>
+                <li>Studies have shown that stress in adulthood can be <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["related"]'></span> to an unhappy childhood.</li>
+                <li>Good teachers identify the talents of their students and <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["nurture"]'></span> them.</li>
+                <li>This evidence seems to <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["conflict"]'></span> with the findings from previous studies.</li>
+                <li>I am writing in <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["relation"]'></span> to the job advertisement in yesterday's paper.</li>
+            </ol>
+            
+            <div class="flex items-center gap-4">
+                <button onclick="checkExercise(2)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
+                <span id="score-2" class="font-bold text-lg hidden"></span>
+            </div>
+        </div>
+
+        <!-- Exercise 4 -->
+        <div id="section-3" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Exercise 4: Compound Nouns</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
+            </div>
+            <p class="mb-4 text-gray-600">Match the words in box A with the words in box B to make 10 compound nouns. You will need to use some words more than once.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <h4 class="font-bold text-green-800 mb-2 border-b border-green-200 pb-1">Box A</h4>
+                    <p class="font-mono text-sm text-green-700 leading-relaxed">active, family, maternal, sibling, stable, extended, immediate, physical, striking</p>
+                </div>
+                <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                    <h4 class="font-bold text-orange-800 mb-2 border-b border-orange-200 pb-1">Box B</h4>
+                    <p class="font-mono text-sm text-orange-700 leading-relaxed">family, gatherings, instinct, resemblance, rivalry, role, upbringing</p>
+                </div>
+            </div>
+
+            <p class="text-sm text-gray-500 mb-3 italic">Write the 10 compound nouns below (order doesn't matter):</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                <input type="text" class="input-blank w-full ex4-input interactive-input" placeholder="1." data-ex="3">
+                <input type="text" class="input-blank w-full ex4-input interactive-input" placeholder="2." data-ex="3">
+                <input type="text" class="input-blank w-full ex4-input interactive-input" placeholder="3." data-ex="3">
+                <input type="text" class="input-blank w-full ex4-input interactive-input" placeholder="4." data-ex="3">
+                <input type="text" class="input-blank w-full ex4-input interactive-input" placeholder="5." data-ex="3">
+                <input type="text" class="input-blank w-full ex4-input interactive-input" placeholder="6." data-ex="3">
+                <input type="text" class="input-blank w-full ex4-input interactive-input" placeholder="7." data-ex="3">
+                <input type="text" class="input-blank w-full ex4-input interactive-input" placeholder="8." data-ex="3">
+                <input type="text" class="input-blank w-full ex4-input interactive-input" placeholder="9." data-ex="3">
+                <input type="text" class="input-blank w-full ex4-input interactive-input" placeholder="10." data-ex="3">
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <button onclick="checkExercise4()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
+                <span id="score-3" class="font-bold text-lg hidden"></span>
+            </div>
+        </div>
+
+        <!-- Exercise 5 -->
+        <div id="section-4" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Exercise 5: Listening - Section 1</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
+            </div>
+            <p class="mb-4 text-gray-600">Listen to the audio and complete the form below using <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong> for each answer.</p>
+            
+            <!-- YouTube Audio Integration -->
+            <div class="mb-8 w-full max-w-2xl mx-auto rounded-lg overflow-hidden shadow-lg border-4 border-gray-100">
+                <iframe class="w-full aspect-video" src="https://www.youtube.com/embed/Ro2gAAphqBY?si=XDY1hLg5v3IN6-aV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+
+            <div class="border-2 border-gray-300 rounded p-6 bg-gray-50 font-sans max-w-2xl mx-auto">
+                <h4 class="text-center font-bold text-xl mb-4 uppercase">Ascot Child Care Centre Enrolment form</h4>
+                
+                <h5 class="font-bold mt-4 mb-2 underline">Personal details</h5>
+                <ul class="space-y-3 pl-4 list-none">
+                    <li><strong>Family name:</strong> Cullen</li>
+                    <li><strong>Child's first name:</strong> (1) <input type="text" class="input-blank w-48 interactive-input" data-ex="4" data-ans='["alex", "alexandra"]'></li>
+                    <li><strong>Age:</strong> (2) <input type="text" class="input-blank w-24 interactive-input" data-ex="4" data-ans='["3", "three"]'></li>
+                    <li><strong>Birthday:</strong> (3) <input type="text" class="input-blank w-48 interactive-input" data-ex="4" data-ans='["8 november", "november 8", "8.11", "11.8", "8th november", "november 8th"]'></li>
+                    <li><strong>Other children in the family:</strong> a brother aged (4) <input type="text" class="input-blank w-24 interactive-input" data-ex="4" data-ans='["5", "five"]'></li>
+                    <li><strong>Address:</strong> (5) <input type="text" class="input-blank w-48 interactive-input" data-ex="4" data-ans='["108 park road"]'>, Brisbane</li>
+                    <li><strong>Emergency contact number:</strong> 3467 8890</li>
+                    <li><strong>Relationship to child:</strong> (6) <input type="text" class="input-blank w-48 interactive-input" data-ex="4" data-ans='["grandmother", "grandma"]'></li>
+                </ul>
+
+                <h5 class="font-bold mt-6 mb-2 underline">Development</h5>
+                <ul class="space-y-3 pl-4 list-none">
+                    <li>Has difficulty (7) <input type="text" class="input-blank w-48 interactive-input" data-ex="4" data-ans='["sleeping", "falling asleep"]'></li>
+                    <li>Is able to (8) <input type="text" class="input-blank w-48 interactive-input" data-ex="4" data-ans='["dress", "get dressed", "dressing"]'> herself</li>
+                </ul>
+
+                <h5 class="font-bold mt-6 mb-2 underline">Child-care arrangements</h5>
+                <ul class="space-y-3 pl-4 list-none">
+                    <li>Days required: (9) <input type="text" class="input-blank w-32 interactive-input" data-ex="4" data-ans='["monday"]'> and <input type="text" class="input-blank w-32 interactive-input" data-ex="4" data-ans='["tuesday"]'></li>
+                    <li>Pick-up time: (10) <input type="text" class="input-blank w-32 interactive-input" data-ex="4" data-ans='["4:00", "4pm", "four oclock", "four o\u0027clock", "4:00pm", "4 pm", "4:00 pm", "16:00"]'></li>
+                </ul>
+            </div>
+            
+            <div class="flex items-center gap-4 mt-6">
+                <button onclick="checkExercise(4)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
+                <span id="score-4" class="font-bold text-lg hidden"></span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const REQUIRED_SCORE = 0.8; // 80% to pass
+
+        // --- Audio Pronunciation Logic ---
+        function speakWord(word) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Stop any current audio
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9; // Slightly slower for clear pronunciation
+                window.speechSynthesis.speak(utterance);
+                // Quick visual feedback that audio was requested
+                showToast(`Pronouncing: ${word}`, "success");
+            } else {
+                showToast("Audio pronunciation is not supported in your browser.", "error");
+            }
+        }
+
+        // --- Click & Match Logic for Exercise 1 & 3 ---
+        let selectedWordBtn = null;
+
+        function selectWord(btn) {
+            if (btn.classList.contains('used')) return;
+            
+            // Deselect all
+            document.querySelectorAll('.word-choice').forEach(b => b.classList.remove('selected'));
+            
+            if (selectedWordBtn === btn) {
+                selectedWordBtn = null; // Toggle off if clicked again
+                return;
+            }
+            
+            btn.classList.add('selected');
+            selectedWordBtn = btn;
+        }
+
+        function placeWord(slot) {
+            // If slot already has a word, return it to the bank first
+            if (slot.innerText.trim() !== '') {
+                const existingWord = slot.innerText.trim();
+                const bankBtn = Array.from(slot.closest('.exercise-section').querySelectorAll('.word-choice'))
+                                     .find(b => b.getAttribute('data-word') === existingWord);
+                if (bankBtn) bankBtn.classList.remove('used');
+                slot.innerText = '';
+            }
+
+            // If a word is currently selected, place it in the slot
+            if (selectedWordBtn) {
+                // Double check they aren't mixing words between exercises
+                if (selectedWordBtn.closest('.exercise-section') === slot.closest('.exercise-section')) {
+                    slot.innerText = selectedWordBtn.getAttribute('data-word');
+                    selectedWordBtn.classList.add('used');
+                    selectedWordBtn.classList.remove('selected');
+                    selectedWordBtn = null;
+                }
+            }
+        }
+
+        // --- Tab Navigation Logic ---
+        function openTab(tabIndex) {
+            // Hide all sections
+            document.querySelectorAll('.exercise-section').forEach(sec => sec.classList.add('section-hidden'));
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(`section-${tabIndex}`).classList.remove('section-hidden');
+            // Set active class to selected tab
+            document.getElementById(`tab-${tabIndex}`).classList.add('active');
+        }
+
+        // --- Interactive Word Bank (Cross-out effect) ---
+        document.addEventListener('input', (e) => {
+            if (e.target.classList.contains('interactive-input')) {
+                const sectionIndex = e.target.getAttribute('data-ex');
+                const wb = document.getElementById(`wb-${sectionIndex}`);
+                if (!wb) return;
+                
+                const inputs = document.querySelectorAll(`input[data-ex="${sectionIndex}"]`);
+                const typedWords = Array.from(inputs).map(inp => inp.value.trim().toLowerCase());
+                
+                const wordSpans = wb.querySelectorAll('span');
+                wordSpans.forEach(span => {
+                    const word = span.getAttribute('data-word').toLowerCase();
+                    if (typedWords.includes(word)) {
+                        span.classList.add('word-used');
+                    } else {
+                        span.classList.remove('word-used');
+                    }
+                });
+            }
+        });
+
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function unlockNext(currentIndex) {
+            const nextIndex = currentIndex + 1;
+            const nextTab = document.getElementById(`tab-${nextIndex}`);
+            
+            if (nextTab) {
+                // Unlock the tab visually
+                nextTab.disabled = false;
+                nextTab.classList.remove('locked');
+                // Remove the lock icon from the text
+                nextTab.innerText = nextTab.innerText.replace(' 🔒', '');
+                
+                // Switch to the next tab after a slight delay
+                setTimeout(() => {
+                    openTab(nextIndex);
+                    // Scroll to top of tabs
+                    document.querySelector('.flex.overflow-x-auto').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 1000);
+            } else {
+                // Course completed!
+                showToast("🎉 Congratulations! You have completed all exercises!", "success");
+            }
+        }
+
+        function validateBlanks(inputs) {
+            let allFilled = true;
+            inputs.forEach(input => {
+                const val = input.value !== undefined ? input.value : input.innerText;
+                if (val.trim() === "") {
+                    allFilled = false;
+                    if(input.classList.contains('match-slot')) {
+                        input.style.borderBottomColor = '#ef4444';
+                        input.style.backgroundColor = '#fef2f2';
+                        setTimeout(() => {
+                            input.style.borderBottomColor = '';
+                            input.style.backgroundColor = '';
+                        }, 1500);
+                    } else {
+                        input.classList.add('border-yellow-400');
+                        setTimeout(() => input.classList.remove('border-yellow-400'), 1500);
+                    }
+                }
+            });
+            return allFilled;
+        }
+
+        function processScore(sectionIndex, correctCount, totalCount) {
+            const scoreLabel = document.getElementById(`score-${sectionIndex}`);
+            const percentage = correctCount / totalCount;
+            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
+            
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (percentage >= REQUIRED_SCORE) {
+                scoreLabel.textContent = `✅ Passed! Score: ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
+                showToast("Great job! Moving to the next exercise.", "success");
+                
+                // Disable button
+                const btn = document.querySelector(`#section-${sectionIndex} button`);
+                btn.disabled = true;
+                btn.classList.add('opacity-50', 'cursor-not-allowed');
+                btn.textContent = "Passed";
+
+                unlockNext(sectionIndex);
+            } else {
+                scoreLabel.textContent = `❌ Failed. Score: ${scoreText} (Need 80%)`;
+                scoreLabel.classList.add('text-red-600');
+                showToast(`You scored ${Math.round(percentage * 100)}%. Please try again to reach 80%.`, "error");
+            }
+        }
+
+        // Custom checker for Exercise 2 (Radio Buttons)
+        function checkExercise2() {
+            const sectionIndex = 1;
+            const totalQuestions = 5;
+            let correctCount = 0;
+            let allAnswered = true;
+
+            const answers = {
+                'tf-1': 'true',
+                'tf-2': 'false',
+                'tf-3': 'false',
+                'tf-4': 'true',
+                'tf-5': 'true'
+            };
+
+            for (let i = 1; i <= totalQuestions; i++) {
+                const radios = document.getElementsByName(`tf-${i}`);
+                let answered = false;
+                let selectedValue = null;
+                
+                radios.forEach(radio => {
+                    if (radio.checked) {
+                        answered = true;
+                        selectedValue = radio.value;
+                    }
+                    radio.parentElement.classList.remove('text-green-600', 'text-red-600', 'font-bold');
+                });
+
+                if (!answered) {
+                    allAnswered = false;
+                    radios[0].closest('.flex.gap-3').classList.add('border-yellow-400', 'border-2');
+                    setTimeout(() => radios[0].closest('.flex.gap-3').classList.remove('border-yellow-400', 'border-2'), 1500);
+                } else {
+                    if (selectedValue === answers[`tf-${i}`]) {
+                        correctCount++;
+                        document.querySelector(`input[name="tf-${i}"]:checked`).parentElement.classList.add('text-green-600', 'font-bold');
+                    } else {
+                        document.querySelector(`input[name="tf-${i}"]:checked`).parentElement.classList.add('text-red-600', 'font-bold');
+                    }
+                }
+            }
+
+            if (!allAnswered) {
+                showToast("Please answer all questions before checking!", "warning");
+                return;
+            }
+
+            processScore(sectionIndex, correctCount, totalQuestions);
+        }
+
+        // Standard exercise checker (Ex 1, 3, 5)
+        function checkExercise(sectionIndex) {
+            const inputs = document.querySelectorAll(`[data-ex="${sectionIndex}"]`);
+            
+            // Check if all filled
+            if (!validateBlanks(inputs)) {
+                showToast("Please fill in all the blanks before checking!", "warning");
+                return;
+            }
+
+            let correctCount = 0;
+
+            // EX5 Question 9 exception handling (Monday and Tuesday order)
+            if (sectionIndex === 4) {
+                const q9a = inputs[8];
+                const q9b = inputs[9];
+                const valA = (q9a.value !== undefined ? q9a.value : q9a.innerText).trim().toLowerCase();
+                const valB = (q9b.value !== undefined ? q9b.value : q9b.innerText).trim().toLowerCase();
+                
+                let q9aCorrect = false;
+                let q9bCorrect = false;
+
+                if ((valA === 'monday' && valB === 'tuesday') || (valA === 'tuesday' && valB === 'monday')) {
+                    q9aCorrect = true;
+                    q9bCorrect = true;
+                }
+
+                if(q9aCorrect) {
+                    q9a.classList.add('correct'); q9a.classList.remove('incorrect');
+                } else {
+                    q9a.classList.add('incorrect'); q9a.classList.remove('correct');
+                }
+                
+                if(q9bCorrect) {
+                    q9b.classList.add('correct'); q9b.classList.remove('incorrect');
+                } else {
+                    q9b.classList.add('incorrect'); q9b.classList.remove('correct');
+                }
+                
+                // Now grade everything normally but override 8 and 9
+                let tempCount = 0;
+                inputs.forEach((input, idx) => {
+                    if(idx === 8 || idx === 9) {
+                        if(idx === 8 && q9aCorrect) tempCount++;
+                        if(idx === 9 && q9bCorrect) tempCount++;
+                        return;
+                    }
+                    const rawVal = input.value !== undefined ? input.value : input.innerText;
+                    const userVal = rawVal.trim().toLowerCase().replace(/\s+/g, ' ');
+                    const possibleAns = JSON.parse(input.getAttribute('data-ans'));
+                    
+                    if (possibleAns.includes(userVal)) {
+                        tempCount++;
+                        input.classList.add('correct');
+                        input.classList.remove('incorrect');
+                    } else {
+                        input.classList.add('incorrect');
+                        input.classList.remove('correct');
+                    }
+                });
+                correctCount = tempCount;
+            } else {
+                // Standard Grade
+                inputs.forEach(input => {
+                    const rawVal = input.value !== undefined ? input.value : input.innerText;
+                    const userVal = rawVal.trim().toLowerCase().replace(/\s+/g, ' '); // normalize spaces
+                    const possibleAns = JSON.parse(input.getAttribute('data-ans'));
+                    
+                    if (possibleAns.includes(userVal)) {
+                        correctCount++;
+                        input.classList.add('correct');
+                        input.classList.remove('incorrect');
+                    } else {
+                        input.classList.add('incorrect');
+                        input.classList.remove('correct');
+                    }
+                });
+            }
+
+            processScore(sectionIndex, correctCount, inputs.length);
+        }
+
+        // Custom checker for Exercise 4 (Unordered items)
+        function checkExercise4() {
+            const sectionIndex = 3;
+            const inputs = document.querySelectorAll('.ex4-input');
+            
+            if (!validateBlanks(inputs)) {
+                showToast("Please fill in all the blanks before checking!", "warning");
+                return;
+            }
+
+            const correctAnswers = [
+                'immediate family', 'extended family', 'family gatherings', 
+                'sibling rivalry', 'stable upbringing', 'active role', 
+                'family resemblance', 'physical resemblance', 
+                'striking resemblance', 'maternal instinct'
+            ];
+
+            let correctCount = 0;
+            let matchedIndices = new Set();
+
+            inputs.forEach(input => {
+                const val = input.value.trim().toLowerCase().replace(/\s+/g, ' ');
+                // Find matching answer that hasn't been used yet
+                const foundIndex = correctAnswers.findIndex((ans, idx) => ans === val && !matchedIndices.has(idx));
+
+                if (foundIndex !== -1) {
+                    correctCount++;
+                    matchedIndices.add(foundIndex);
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+
+            processScore(sectionIndex, correctCount, inputs.length);
+        }
+    </script>
+</body>
+</html>
