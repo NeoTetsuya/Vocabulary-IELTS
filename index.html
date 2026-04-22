@@ -4,24 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vocabulary for IELTS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass-blur: blur(16px);
+            
+            /* Module Accents */
+            /* Module 1: Blue/Cyan */
+            --m1-grad: linear-gradient(135deg, #3b82f6, #06b6d4);
+            /* Module 2: Purple/Pink */
+            --m2-grad: linear-gradient(135deg, #8b5cf6, #ec4899);
+            /* Module 3: Green/Emerald */
+            --m3-grad: linear-gradient(135deg, #10b981, #34d399);
+            /* Module 4: Orange/Yellow */
+            --m4-grad: linear-gradient(135deg, #f59e0b, #fbbf24);
+            /* Module 5: Indigo/Violet */
+            --m5-grad: linear-gradient(135deg, #6366f1, #a855f7);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-color: var(--bg-color);
+            color: var(--text-main);
             min-height: 100vh;
-            color: #333;
+            overflow-x: hidden;
+            position: relative;
         }
 
+        /* Animated Background Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            opacity: 0.4;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+        .orb-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #3b82f6; }
+        .orb-2 { bottom: -10%; right: -10%; width: 60vw; height: 60vw; background: #8b5cf6; animation-delay: -5s; }
+        .orb-3 { top: 40%; left: 40%; width: 40vw; height: 40vw; background: #ec4899; animation-delay: -10s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(10%, 10%) scale(1.1); }
+        }
+
+        /* Header & Navigation */
         header {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px 0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--card-border);
+            padding: 20px 0;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -32,383 +77,704 @@
             margin: 0 auto;
             padding: 0 20px;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 2em;
+            font-size: 1.5em;
             font-weight: 800;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            letter-spacing: 1px;
+            background: linear-gradient(to right, #fff, #a5b4fc);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
+        /* Hero Section */
         .hero {
-            max-width: 1200px;
-            margin: 60px auto;
+            max-width: 1000px;
+            margin: 80px auto 40px;
             padding: 0 20px;
             text-align: center;
-            color: white;
         }
 
         .hero h1 {
-            font-size: 3.5em;
+            font-size: 4em;
+            font-weight: 800;
+            line-height: 1.1;
             margin-bottom: 20px;
-            font-weight: 900;
+            background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero p {
-            font-size: 1.3em;
-            margin-bottom: 30px;
-            opacity: 0.95;
+            font-size: 1.2em;
+            color: var(--text-muted);
+            margin-bottom: 40px;
         }
 
+        /* Search Bar */
         .search-container {
             max-width: 600px;
             margin: 0 auto 80px;
-            padding: 0 20px;
+            position: relative;
         }
 
         #searchBox {
             width: 100%;
-            padding: 16px 24px;
+            padding: 20px 30px;
+            padding-left: 60px;
             font-size: 1.1em;
-            border: none;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
             border-radius: 50px;
-            background: white;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            backdrop-filter: var(--glass-blur);
             outline: none;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
         #searchBox:focus {
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            transform: scale(1.02);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4), 0 0 0 4px rgba(59, 130, 246, 0.2);
         }
 
-        .topics-section {
+        .search-icon {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        /* Content Modules */
+        .content-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px 80px;
+            padding: 0 20px 100px;
         }
 
-        .section-title {
-            text-align: center;
-            color: white;
-            font-size: 2.5em;
-            margin-bottom: 60px;
+        .module {
+            margin-bottom: 80px;
+            animation: fadeIn 0.8s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .module:nth-child(1) { animation-delay: 0.1s; }
+        .module:nth-child(2) { animation-delay: 0.2s; }
+        .module:nth-child(3) { animation-delay: 0.3s; }
+        .module:nth-child(4) { animation-delay: 0.4s; }
+        .module:nth-child(5) { animation-delay: 0.5s; }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .module-title {
+            font-size: 2em;
             font-weight: 800;
+        }
+
+        .module-line {
+            flex-grow: 1;
+            height: 2px;
+            background: linear-gradient(90deg, var(--card-border), transparent);
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
         }
 
-        .topic-card {
-            background: white;
-            border-radius: 16px;
+        /* Unit Cards */
+        .unit-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            border-left: 5px solid #667eea;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .topic-card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 25px 60px rgba(102, 126, 234, 0.3);
-            border-left-color: #764ba2;
+        .unit-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
         }
 
-        .icon {
-            font-size: 3em;
-            margin-bottom: 15px;
+        .mod-1 .unit-card::before { background: var(--m1-grad); }
+        .mod-2 .unit-card::before { background: var(--m2-grad); }
+        .mod-3 .unit-card::before { background: var(--m3-grad); }
+        .mod-4 .unit-card::before { background: var(--m4-grad); }
+        .mod-5 .unit-card::before { background: var(--m5-grad); }
+
+        .unit-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
         }
 
-        .topic-card h3 {
-            font-size: 1.4em;
-            color: #667eea;
-            margin-bottom: 12px;
-            transition: color 0.3s;
-        }
+        .unit-card:hover::before { opacity: 1; }
 
-        .topic-card:hover h3 {
-            color: #764ba2;
-        }
-
-        .topic-card p {
-            color: #666;
-            line-height: 1.6;
+        .unit-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.1);
             margin-bottom: 20px;
-            font-size: 0.95em;
+            width: fit-content;
+        }
+
+        .unit-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 20px;
+        }
+
+        .unit-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .unit-icon {
+            font-size: 2em;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
         }
 
         .learn-btn {
-            display: inline-block;
-            padding: 12px 28px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+            font-size: 0.9em;
+            color: var(--text-main);
             text-decoration: none;
-            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
             font-weight: 600;
-            transition: all 0.3s;
+            opacity: 0.7;
+            transition: opacity 0.3s;
         }
 
-        .learn-btn:hover {
-            transform: scale(1.08);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        .unit-card:hover .learn-btn {
+            opacity: 1;
         }
 
-        .topic-card.hidden {
+        /* Test Cards (Full Width) */
+        .test-card {
+            width: 100%;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .test-card h3 {
+            font-size: 1.8em;
+            font-weight: 800;
+            color: #fff;
+            position: relative;
+            z-index: 2;
+        }
+
+        .test-icon {
+            font-size: 2em;
+            position: relative;
+            z-index: 2;
+        }
+
+        .mod-1 .test-card { background: var(--m1-grad); }
+        .mod-2 .test-card { background: var(--m2-grad); }
+        .mod-3 .test-card { background: var(--m3-grad); }
+        .mod-4 .test-card { background: var(--m4-grad); }
+        .mod-5 .test-card { background: var(--m5-grad); }
+
+        .test-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.2);
+            z-index: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .test-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+        
+        .test-card:hover::after {
+            opacity: 0;
+        }
+
+        /* Empty State */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
             display: none;
         }
+        
+        .no-results h2 {
+            font-size: 2em;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
 
+        /* Footer */
         footer {
-            background: rgba(0, 0, 0, 0.3);
-            color: white;
+            border-top: 1px solid var(--card-border);
             text-align: center;
             padding: 40px 20px;
+            color: var(--text-muted);
+            background: rgba(0, 0, 0, 0.2);
         }
 
-        footer p {
-            margin: 10px 0;
-        }
-
+        /* Responsive */
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5em;
-            }
-
-            .hero p {
-                font-size: 1.1em;
-            }
-
-            .grid {
-                grid-template-columns: 1fr;
-            }
-
-            .logo {
-                font-size: 1.5em;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 2em;
-            }
-
-            .icon {
-                font-size: 2.5em;
-            }
+            .hero h1 { font-size: 2.8em; }
+            .module-title { font-size: 1.5em; }
+            .grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
+    <!-- Background Elements -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
     <header>
         <nav>
-            <div class="logo">📚 Vocabulary for IELTS</div>
+            <div class="logo">📚 IELTS Master</div>
         </nav>
     </header>
 
     <section class="hero">
         <h1>Master IELTS Vocabulary</h1>
-        <p>22 Comprehensive Topics to Ace Your IELTS Exam</p>
+        <p>A structured, modern approach to the 25 essential units and 5 milestone tests.</p>
     </section>
 
     <div class="search-container">
+        <span class="search-icon">🔍</span>
         <input 
             type="text" 
             id="searchBox" 
-            placeholder="🔍 Search topics..."
+            placeholder="Search units, topics, or tests..."
             onkeyup="filterTopics()"
         >
     </div>
 
-    <section class="topics-section">
-        <h2 class="section-title">Explore Topics</h2>
-        <div class="grid">
-            <div class="topic-card" data-topic="education">
-                <div class="icon">🎓</div>
-                <h3>Education & Learning</h3>
-                <p>Academic vocabulary, schools, universities, and learning environments</p>
-                <a href="topic-education.html" class="learn-btn">Learn More →</a>
+    <div class="content-container" id="contentContainer">
+        <!-- Module 1 -->
+        <div class="module mod-1">
+            <div class="module-header">
+                <h2 class="module-title">Block 01</h2>
+                <div class="module-line"></div>
             </div>
-
-            <div class="topic-card" data-topic="environment">
-                <div class="icon">🌍</div>
-                <h3>Environment & Nature</h3>
-                <p>Ecology, climate, animals, and natural resources vocabulary</p>
-                <a href="topic-environment.html" class="learn-btn">Learn More →</a>
+            <div class="grid">
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 1</span>
+                        <h3 class="unit-title">Growing up</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">🌱</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 2</span>
+                        <h3 class="unit-title">Mental and physical development</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">🧠</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 3</span>
+                        <h3 class="unit-title">Keeping fit</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">🏃</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 4</span>
+                        <h3 class="unit-title">Lifestyles</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">🛋️</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 5</span>
+                        <h3 class="unit-title">Student life</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">🎒</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
             </div>
-
-            <div class="topic-card" data-topic="technology">
-                <div class="icon">💻</div>
-                <h3>Technology & Innovation</h3>
-                <p>Modern tech, gadgets, AI, and digital terminology</p>
-                <a href="topic-technology.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="health">
-                <div class="icon">⚕️</div>
-                <h3>Health & Medical</h3>
-                <p>Healthcare, diseases, fitness, and wellness vocabulary</p>
-                <a href="topic-health.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="business">
-                <div class="icon">💼</div>
-                <h3>Business & Economics</h3>
-                <p>Corporate, finance, marketing, and entrepreneurship terms</p>
-                <a href="topic-business.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="travel">
-                <div class="icon">✈️</div>
-                <h3>Travel & Tourism</h3>
-                <p>Traveling, accommodation, culture, and exploration vocabulary</p>
-                <a href="topic-travel.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="culture">
-                <div class="icon">🎨</div>
-                <h3>Culture & Arts</h3>
-                <p>Music, literature, painting, and creative field terminology</p>
-                <a href="topic-culture.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="food">
-                <div class="icon">🍽️</div>
-                <h3>Food & Cuisine</h3>
-                <p>Culinary vocabulary, cooking, and dining terminology</p>
-                <a href="topic-food.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="sports">
-                <div class="icon">⚽</div>
-                <h3>Sports & Recreation</h3>
-                <p>Athletic, games, competitions, and physical activities</p>
-                <a href="topic-sports.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="relationships">
-                <div class="icon">👥</div>
-                <h3>Relationships & Society</h3>
-                <p>Social structures, family, friendships, and community terms</p>
-                <a href="topic-relationships.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="housing">
-                <div class="icon">🏠</div>
-                <h3>Housing & Architecture</h3>
-                <p>Home vocabulary, buildings, and real estate terminology</p>
-                <a href="topic-housing.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="work">
-                <div class="icon">💼</div>
-                <h3>Work & Employment</h3>
-                <p>Career, job roles, workplace communication, and professions</p>
-                <a href="topic-work.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="transportation">
-                <div class="icon">🚗</div>
-                <h3>Transportation & Vehicles</h3>
-                <p>Transport modes, vehicle types, and commuting vocabulary</p>
-                <a href="topic-transportation.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="crime">
-                <div class="icon">⚖️</div>
-                <h3>Crime & Law</h3>
-                <p>Legal terminology and justice system vocabulary</p>
-                <a href="topic-crime.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="politics">
-                <div class="icon">🏛️</div>
-                <h3>Politics & Government</h3>
-                <p>Political systems, governance, and civic terminology</p>
-                <a href="topic-politics.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="media">
-                <div class="icon">📰</div>
-                <h3>Media & Communications</h3>
-                <p>News, journalism, broadcasting, and social media terms</p>
-                <a href="topic-media.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="science">
-                <div class="icon">🔬</div>
-                <h3>Science & Research</h3>
-                <p>Scientific methods, discoveries, and research terminology</p>
-                <a href="topic-science.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="shopping">
-                <div class="icon">🛍️</div>
-                <h3>Shopping & Commerce</h3>
-                <p>Retail, e-commerce, and consumer vocabulary</p>
-                <a href="topic-shopping.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="entertainment">
-                <div class="icon">🎬</div>
-                <h3>Entertainment & Leisure</h3>
-                <p>Movies, gaming, hobbies, and entertainment industry terms</p>
-                <a href="topic-entertainment.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="animals">
-                <div class="icon">🦁</div>
-                <h3>Animals & Wildlife</h3>
-                <p>Animal behavior, conservation, and zoology vocabulary</p>
-                <a href="topic-animals.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="weather">
-                <div class="icon">⛅</div>
-                <h3>Weather & Climate</h3>
-                <p>Meteorological and atmospheric terminology</p>
-                <a href="topic-weather.html" class="learn-btn">Learn More →</a>
-            </div>
-
-            <div class="topic-card" data-topic="time">
-                <div class="icon">⏰</div>
-                <h3>Time & Measurement</h3>
-                <p>Temporal expressions and quantitative vocabulary</p>
-                <a href="topic-time.html" class="learn-btn">Learn More →</a>
+            <div class="test-card searchable">
+                <span class="test-icon">📝</span>
+                <h3>Test One</h3>
             </div>
         </div>
-    </section>
+
+        <!-- Module 2 -->
+        <div class="module mod-2">
+            <div class="module-header">
+                <h2 class="module-title">Block 02</h2>
+                <div class="module-line"></div>
+            </div>
+            <div class="grid">
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 6</span>
+                        <h3 class="unit-title">Effective communication</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">💬</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 7</span>
+                        <h3 class="unit-title">On the move</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">✈️</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 8</span>
+                        <h3 class="unit-title">Through the ages</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">⏳</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 9</span>
+                        <h3 class="unit-title">The natural world</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">🌲</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 10</span>
+                        <h3 class="unit-title">Reaching for the skies</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">🚀</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="test-card searchable">
+                <span class="test-icon">📝</span>
+                <h3>Test Two</h3>
+            </div>
+        </div>
+
+        <!-- Module 3 -->
+        <div class="module mod-3">
+            <div class="module-header">
+                <h2 class="module-title">Block 03</h2>
+                <div class="module-line"></div>
+            </div>
+            <div class="grid">
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 11</span>
+                        <h3 class="unit-title">Design and innovation</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">💡</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 12</span>
+                        <h3 class="unit-title">Information technology</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">💻</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 13</span>
+                        <h3 class="unit-title">The modern world</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">🏙️</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 14</span>
+                        <h3 class="unit-title">Urbanisation</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">🏗️</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 15</span>
+                        <h3 class="unit-title">The green revolution</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">♻️</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="test-card searchable">
+                <span class="test-icon">📝</span>
+                <h3>Test Three</h3>
+            </div>
+        </div>
+
+        <!-- Module 4 -->
+        <div class="module mod-4">
+            <div class="module-header">
+                <h2 class="module-title">Block 04</h2>
+                <div class="module-line"></div>
+            </div>
+            <div class="grid">
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 16</span>
+                        <h3 class="unit-title">The energy crisis</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">⚡</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 17</span>
+                        <h3 class="unit-title">Talking business</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">💼</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 18</span>
+                        <h3 class="unit-title">The law</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">⚖️</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 19</span>
+                        <h3 class="unit-title">The media</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">📰</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 20</span>
+                        <h3 class="unit-title">The arts</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">🎨</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="test-card searchable">
+                <span class="test-icon">📝</span>
+                <h3>Test Four</h3>
+            </div>
+        </div>
+
+        <!-- Module 5 -->
+        <div class="module mod-5">
+            <div class="module-header">
+                <h2 class="module-title">Block 05</h2>
+                <div class="module-line"></div>
+            </div>
+            <div class="grid">
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 21</span>
+                        <h3 class="unit-title">Language building 1</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">🗣️</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 22</span>
+                        <h3 class="unit-title">Language building 2</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">🗣️</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 23</span>
+                        <h3 class="unit-title">Academic Writing Task 1</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">📊</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 24</span>
+                        <h3 class="unit-title">Academic Writing Task 2</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">✍️</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+                <div class="unit-card searchable">
+                    <div>
+                        <span class="unit-badge">Unit 25</span>
+                        <h3 class="unit-title">General Training Writing Tasks 1 and 2</h3>
+                    </div>
+                    <div class="unit-footer">
+                        <span class="unit-icon">✉️</span>
+                        <a href="javascript:void(0)" class="learn-btn">Explore →</a>
+                    </div>
+                </div>
+            </div>
+            <div class="test-card searchable">
+                <span class="test-icon">📝</span>
+                <h3>Test Five</h3>
+            </div>
+        </div>
+
+        <div id="noResults" class="no-results">
+            <h2>No matching units found</h2>
+            <p>Try adjusting your search terms</p>
+        </div>
+    </div>
 
     <footer>
-        <p><strong>Vocabulary for IELTS</strong></p>
-        <p>Your comprehensive guide to mastering IELTS vocabulary</p>
-        <p style="margin-top: 30px; opacity: 0.8;">&copy; 2026 Vocabulary for IELTS. Created by NeoTetsuya</p>
+        <p><strong>IELTS Master Vocabulary</strong></p>
+        <p style="margin-top: 10px; font-size: 0.9em;">&copy; 2026. Designed for success.</p>
     </footer>
 
     <script>
         function filterTopics() {
-            const searchInput = document.getElementById('searchBox').value.toLowerCase();
-            const cards = document.querySelectorAll('.topic-card');
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const modules = document.querySelectorAll('.module');
+            let totalVisibleCards = 0;
 
-            cards.forEach(card => {
-                const title = card.querySelector('h3').textContent.toLowerCase();
-                const description = card.querySelector('p').textContent.toLowerCase();
-                const topic = card.getAttribute('data-topic').toLowerCase();
+            modules.forEach(module => {
+                let moduleHasVisibleCards = false;
+                const items = module.querySelectorAll('.searchable');
 
-                if (title.includes(searchInput) || description.includes(searchInput) || topic.includes(searchInput)) {
-                    card.classList.remove('hidden');
+                items.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        // Restore display based on if it's a test card or unit card
+                        if (item.classList.contains('test-card')) {
+                            item.style.display = 'flex';
+                        } else {
+                            item.style.display = 'flex';
+                        }
+                        moduleHasVisibleCards = true;
+                        totalVisibleCards++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+
+                // Hide the whole module (including its title) if no matches inside it
+                if (moduleHasVisibleCards) {
+                    module.style.display = 'block';
                 } else {
-                    card.classList.add('hidden');
+                    module.style.display = 'none';
                 }
             });
+
+            // Show or hide the "No Results" message
+            const noResultsState = document.getElementById('noResults');
+            if (totalVisibleCards === 0) {
+                noResultsState.style.display = 'block';
+            } else {
+                noResultsState.style.display = 'none';
+            }
         }
     </script>
 </body>
