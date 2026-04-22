@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test One (Units 1-5)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .input-blank {
+            border: none;
+            border-bottom: 2px solid #9ca3af;
+            background: transparent;
+            outline: none;
+            text-align: center;
+            padding: 0.25rem;
+            transition: border-color 0.2s, background-color 0.2s;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .input-blank:focus { border-bottom-color: #3b82f6; }
+        select.input-blank {
+            text-align: left;
+            cursor: pointer;
+            padding-right: 1.5rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.25rem center;
+            background-size: 1em;
+        }
+        .correct { border-bottom-color: #22c55e !important; color: #166534; background-color: #f0fdf4; }
+        .incorrect { border-bottom-color: #ef4444 !important; color: #991b1b; background-color: #fef2f2; }
+        
+        /* Tab & Interactivity Styles */
+        .tab-btn { transition: all 0.2s ease-in-out; }
+        .tab-btn.active { border-bottom-width: 4px; border-color: #3b82f6; color: #1e3a8a; font-weight: 700; background-color: #eff6ff; }
+        .section-hidden { display: none; }
+
+        .toast {
+            position: fixed; top: 20px; right: 20px;
+            padding: 15px 25px; border-radius: 8px;
+            color: white; font-weight: bold;
+            opacity: 0; transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000; pointer-events: none;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.error { background-color: #ef4444; }
+        .toast.success { background-color: #22c55e; }
+        .toast.warning { background-color: #f59e0b; }
+    </style>
+</head>
+<body class="text-gray-800 antialiased pb-20">
+
+    <div id="toast" class="toast shadow-lg">Message</div>
+
+    <div class="max-w-5xl mx-auto mt-8 px-4">
+        
+        <!-- Header / Intro -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-8 border-l-4 border-indigo-600">
+            <h1 class="text-3xl font-bold mb-2 text-indigo-900">Test One (Units 1-5)</h1>
+            <h2 class="text-xl font-semibold text-gray-700">Vocabulary & Language Practice</h2>
+            <p class="mt-4 text-gray-600">Complete the 30 multiple-choice questions below. The test is divided into three sections.</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <div class="flex overflow-x-auto bg-white rounded-t-xl shadow-sm border-b-2 border-gray-200 mb-6 custom-scrollbar">
+            <button onclick="openTab(0)" id="tab-0" class="tab-btn active flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">Questions 1-10</button>
+            <button onclick="openTab(1)" id="tab-1" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">Questions 11-20</button>
+            <button onclick="openTab(2)" id="tab-2" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">Questions 21-30</button>
+        </div>
+
+        <!-- Section 0: Questions 1-10 -->
+        <div id="section-0" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Questions 1-10</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
+            </div>
+            
+            <p class="mb-6 text-gray-700 font-medium bg-gray-50 p-4 rounded border">Choose the correct letter A, B, C or D.</p>
+            
+            <ol class="list-decimal list-inside space-y-6 mb-8 text-gray-800 text-lg">
+                <li>My company has
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="1" data-ans='["adopted"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="adapted">A. adapted</option>
+                        <option value="adopted">B. adopted</option>
+                        <option value="addressed">C. addressed</option>
+                        <option value="admitted">D. admitted</option>
+                    </select>
+                    a new approach to staff meetings. We now have them standing up!
+                </li>
+                <li>You can tell a lot by the way members of a family
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="1" data-ans='["interact"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="identify">A. identify</option>
+                        <option value="interact">B. interact</option>
+                        <option value="relative">C. relative</option>
+                        <option value="understand">D. understand</option>
+                    </select>
+                    with each other.
+                </li>
+                <li>We were unable to reach an agreement because of the
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="1" data-ans='["conflict"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="contact">A. contact</option>
+                        <option value="concern">B. concern</option>
+                        <option value="connection">C. connection</option>
+                        <option value="conflict">D. conflict</option>
+                    </select>
+                    between the two groups.
+                </li>
+                <li>If we don't
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="1" data-ans='["nurture"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="nurture">A. nurture</option>
+                        <option value="nature">B. nature</option>
+                        <option value="provide">C. provide</option>
+                        <option value="prevent">D. prevent</option>
+                    </select>
+                    the artistic skills of young children they are far less creative as adults.
+                </li>
+                <li>There is a very clear relationship
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="1" data-ans='["between"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="about">A. about</option>
+                        <option value="between">B. between</option>
+                        <option value="for">C. for</option>
+                        <option value="in">D. in</option>
+                    </select>
+                    education and academic success.
+                </li>
+                <li>I have a very close relationship
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="1" data-ans='["with"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="to">A. to</option>
+                        <option value="with">B. with</option>
+                        <option value="of">C. of</option>
+                        <option value="for">D. for</option>
+                    </select>
+                    my mother.
+                </li>
+                <li>The
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="1" data-ans='["ability"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="ability">A. ability</option>
+                        <option value="knowledge">B. knowledge</option>
+                        <option value="skill">C. skill</option>
+                        <option value="talent">D. talent</option>
+                    </select>
+                    to make quick decisions is vital in an emergency.
+                </li>
+                <li>In my country people use their hands and
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="1" data-ans='["gesture"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="show">A. show</option>
+                        <option value="tell">B. tell</option>
+                        <option value="gesture">C. gesture</option>
+                        <option value="imitate">D. imitate</option>
+                    </select>
+                    a lot when they talk.
+                </li>
+                <li>I have very fond
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="1" data-ans='["memories"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="memorise">A. memorise</option>
+                        <option value="minds">B. minds</option>
+                        <option value="souvenirs">C. souvenirs</option>
+                        <option value="memories">D. memories</option>
+                    </select>
+                    of my time in Spain.
+                </li>
+                <li>Children need to learn to accept the consequences
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="1" data-ans='["of"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="of">A. of</option>
+                        <option value="or">B. or</option>
+                        <option value="in">C. in</option>
+                        <option value="by">D. by</option>
+                    </select>
+                    their actions.
+                </li>
+            </ol>
+            
+            <div class="flex items-center gap-4 mt-6">
+                <button id="btn-1" onclick="checkExercise('1', 0)" class="check-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (1-10)</button>
+                <span id="score-1" class="font-bold text-lg hidden"></span>
+            </div>
+        </div>
+
+        <!-- Section 1: Questions 11-20 -->
+        <div id="section-1" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Questions 11-20</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
+            </div>
+            
+            <p class="mb-6 text-gray-700 font-medium bg-gray-50 p-4 rounded border">Choose the correct letter A, B, C or D.</p>
+            
+            <ol class="list-decimal list-inside space-y-6 mb-8 text-gray-800 text-lg" start="11">
+                <li>My older brother is very
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="2" data-ans='["immature"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="mature">A. mature</option>
+                        <option value="maturity">B. maturity</option>
+                        <option value="immature">C. immature</option>
+                        <option value="immaturity">D. immaturity</option>
+                    </select>
+                    for his age. He still needs my parents to help him with everything.
+                </li>
+                <li>Everyone should travel; it really
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="2" data-ans='["broadens"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="broadens">A. broadens</option>
+                        <option value="develops">B. develops</option>
+                        <option value="opens">C. opens</option>
+                        <option value="widens">D. widens</option>
+                    </select>
+                    the mind.
+                </li>
+                <li>I can't eat peanuts because I'm
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="2" data-ans='["allergic"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="allergy">A. allergy</option>
+                        <option value="allergic">B. allergic</option>
+                        <option value="appetite">C. appetite</option>
+                        <option value="infection">D. infection</option>
+                    </select>
+                    to them.
+                </li>
+                <li>Some forms of this disease are
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="2" data-ans='["chronic"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="chronic">A. chronic</option>
+                        <option value="acute">B. acute</option>
+                        <option value="moderate">C. moderate</option>
+                        <option value="obese">D. obese</option>
+                    </select>
+                    and can last for five years or more.
+                </li>
+                <li>Unfortunately, scientists have been unable to find a
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="2" data-ans='["cure"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="prevention">A. prevention</option>
+                        <option value="disorder">B. disorder</option>
+                        <option value="therapy">C. therapy</option>
+                        <option value="cure">D. cure</option>
+                    </select>
+                    for this complaint.
+                </li>
+                <li>The man was put into an isolation ward because the disease was highly
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="2" data-ans='["infectious"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="infected">A. infected</option>
+                        <option value="infectious">B. infectious</option>
+                        <option value="harmful">C. harmful</option>
+                        <option value="harmed">D. harmed</option>
+                    </select>
+                    .
+                </li>
+                <li>After several hours the doctor was finally able to give us his
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="2" data-ans='["diagnosis"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="diagnosis">A. diagnosis</option>
+                        <option value="disease">B. disease</option>
+                        <option value="symptoms">C. symptoms</option>
+                        <option value="signs">D. signs</option>
+                    </select>
+                    . John had broken his ankle.
+                </li>
+                <li>Eating fatty foods can damage your
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="2" data-ans='["health"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="healthy">A. healthy</option>
+                        <option value="health">B. health</option>
+                        <option value="harmful">C. harmful</option>
+                        <option value="unhealthy">D. unhealthy</option>
+                    </select>
+                    .
+                </li>
+                <li>You can't always play it safe. Sometimes you need to
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="2" data-ans='["take"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="have">A. have</option>
+                        <option value="make">B. make</option>
+                        <option value="put">C. put</option>
+                        <option value="take">D. take</option>
+                    </select>
+                    a risk.
+                </li>
+                <li>It's important to set yourself clear
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="2" data-ans='["goals"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="ambitions">A. ambitions</option>
+                        <option value="goals">B. goals</option>
+                        <option value="decisions">C. decisions</option>
+                        <option value="opportunities">D. opportunities</option>
+                    </select>
+                    so you know what you are aiming for.
+                </li>
+            </ol>
+            
+            <div class="flex items-center gap-4 mt-6">
+                <button id="btn-2" onclick="checkExercise('2', 1)" class="check-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (11-20)</button>
+                <span id="score-2" class="font-bold text-lg hidden"></span>
+            </div>
+        </div>
+
+        <!-- Section 2: Questions 21-30 -->
+        <div id="section-2" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold text-gray-800">Questions 21-30</h3>
+                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
+            </div>
+            
+            <p class="mb-6 text-gray-700 font-medium bg-gray-50 p-4 rounded border">Choose the correct letter A, B, C or D.</p>
+            
+            <ol class="list-decimal list-inside space-y-6 mb-8 text-gray-800 text-lg" start="21">
+                <li>She is very
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="3" data-ans='["materialistic"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="realistic">A. realistic</option>
+                        <option value="optimistic">B. optimistic</option>
+                        <option value="materialistic">C. materialistic</option>
+                        <option value="pessimistic">D. pessimistic</option>
+                    </select>
+                    . All she cares about is clothes and expensive cars.
+                </li>
+                <li>I like making things with my own hands. It gives me a lot of
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="3" data-ans='["satisfaction"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="satisfaction">A. satisfaction</option>
+                        <option value="exhaustion">B. exhaustion</option>
+                        <option value="fulfilment">C. fulfilment</option>
+                        <option value="creation">D. creation</option>
+                    </select>
+                    .
+                </li>
+                <li>I always try to keep a positive
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="3" data-ans='["outlook"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="overview">A. overview</option>
+                        <option value="overlook">B. overlook</option>
+                        <option value="outlook">C. outlook</option>
+                        <option value="insight">D. insight</option>
+                    </select>
+                    on life.
+                </li>
+                <li>The cost of
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="3" data-ans='["living"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="life">A. life</option>
+                        <option value="live">B. live</option>
+                        <option value="lives">C. lives</option>
+                        <option value="living">D. living</option>
+                    </select>
+                    has risen dramatically in the last few years.
+                </li>
+                <li>The researchers
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="3" data-ans='["conducted"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="confirmed">A. confirmed</option>
+                        <option value="conducted">B. conducted</option>
+                        <option value="considered">C. considered</option>
+                        <option value="concerned">D. concerned</option>
+                    </select>
+                    many experiments to find the most effective materials.
+                </li>
+                <li>Children who do not learn to read before they finish
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="3" data-ans='["primary"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="primary">A. primary</option>
+                        <option value="first">B. first</option>
+                        <option value="nursery">C. nursery</option>
+                        <option value="kindergarten">D. kindergarten</option>
+                    </select>
+                    school struggle throughout the rest of their education.
+                </li>
+                <li>My tutor has some very interesting
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="3" data-ans='["theories"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="topics">A. topics</option>
+                        <option value="thesis">B. thesis</option>
+                        <option value="themes">C. themes</option>
+                        <option value="theories">D. theories</option>
+                    </select>
+                    on how students learn.
+                </li>
+                <li>We had to cancel the project due to lack of
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="3" data-ans='["funding"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="findings">A. findings</option>
+                        <option value="funding">B. funding</option>
+                        <option value="limits">C. limits</option>
+                        <option value="controversy">D. controversy</option>
+                    </select>
+                    .
+                </li>
+                <li>We had to cover the rest of the
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="3" data-ans='["syllabus"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="contents">A. contents</option>
+                        <option value="current">B. current</option>
+                        <option value="syllable">C. syllable</option>
+                        <option value="syllabus">D. syllabus</option>
+                    </select>
+                    ourselves while our teacher was ill.
+                </li>
+                <li>I can already speak three languages, but I'd really like to
+                    <select class="input-blank font-bold text-indigo-700 w-40" data-ex="3" data-ans='["learn"]'>
+                        <option value="" disabled selected>Choose...</option>
+                        <option value="know">A. know</option>
+                        <option value="study">B. study</option>
+                        <option value="learn">C. learn</option>
+                        <option value="teach">D. teach</option>
+                    </select>
+                    to speak Chinese.
+                </li>
+            </ol>
+            
+            <div class="flex items-center gap-4 mt-6">
+                <button id="btn-3" onclick="checkExercise('3', 2)" class="check-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (21-30)</button>
+                <span id="score-3" class="font-bold text-lg hidden"></span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const REQUIRED_SCORE = 0.8; // 80% to pass
+
+        // --- Tab Navigation Logic ---
+        function openTab(tabIndex) {
+            // Hide all sections
+            document.querySelectorAll('.exercise-section').forEach(sec => sec.classList.add('section-hidden'));
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(`section-${tabIndex}`).classList.remove('section-hidden');
+            // Set active class to selected tab
+            document.getElementById(`tab-${tabIndex}`).classList.add('active');
+        }
+
+        // --- Core UI logic ---
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function unlockNext(currentIndex) {
+            const nextIndex = currentIndex + 1;
+            const nextTab = document.getElementById(`tab-${nextIndex}`);
+            
+            if (nextTab) {
+                // Switch to the next tab after a slight delay
+                setTimeout(() => {
+                    openTab(nextIndex);
+                    // Scroll to top of tabs
+                    document.querySelector('.flex.overflow-x-auto').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 1000);
+            } else {
+                // Course completed!
+                showToast("🎉 Congratulations! You have completed the entire test!", "success");
+            }
+        }
+
+        function validateBlanks(inputs) {
+            let allFilled = true;
+            inputs.forEach(input => {
+                const val = input.value !== undefined ? input.value : input.innerText;
+                if (val.trim() === "") {
+                    allFilled = false;
+                    input.style.borderBottomColor = '#f59e0b';
+                    input.style.backgroundColor = '#fef3c7';
+                    setTimeout(() => {
+                        input.style.borderBottomColor = '';
+                        input.style.backgroundColor = '';
+                    }, 1500);
+                }
+            });
+            return allFilled;
+        }
+
+        function processScore(exerciseId, correctCount, totalCount, sectionIndex) {
+            const scoreLabel = document.getElementById(`score-${exerciseId}`);
+            const percentage = correctCount / totalCount;
+            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
+            
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (percentage >= REQUIRED_SCORE) {
+                scoreLabel.textContent = `✅ Passed! Score: ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
+                
+                // Disable button
+                const btn = document.getElementById(`btn-${exerciseId}`);
+                if (btn) {
+                    btn.disabled = true;
+                    btn.classList.add('opacity-50', 'cursor-not-allowed');
+                    btn.textContent = "Passed";
+                }
+
+                // Check if all exercises in this section are passed to unlock the next tab
+                if (sectionIndex !== undefined && sectionIndex !== null) {
+                    const section = document.getElementById(`section-${sectionIndex}`);
+                    if (section) {
+                        const allButtons = Array.from(section.querySelectorAll('.check-btn'));
+                        const allPassed = allButtons.every(b => b.disabled);
+                        if (allPassed) {
+                            showToast("Section Complete! Moving to the next section.", "success");
+                            unlockNext(sectionIndex);
+                        } else {
+                            showToast("Great job! Complete the other exercises in this section.", "success");
+                        }
+                    }
+                }
+            } else {
+                scoreLabel.textContent = `❌ Failed. Score: ${scoreText} (Need 80%)`;
+                scoreLabel.classList.add('text-red-600');
+                showToast(`You scored ${Math.round(percentage * 100)}%. Please try again.`, "error");
+            }
+        }
+
+        // Standard exercise checker (Handles text inputs and selects)
+        function checkExercise(exerciseId, sectionIndex) {
+            const inputs = document.querySelectorAll(`[data-ex="${exerciseId}"]`);
+            
+            // Check if all filled
+            if (!validateBlanks(inputs)) {
+                showToast("Please answer all questions before checking!", "warning");
+                return;
+            }
+
+            let correctCount = 0;
+
+            inputs.forEach(input => {
+                const rawVal = input.value !== undefined ? input.value : input.innerText;
+                const userVal = rawVal.trim().toLowerCase().replace(/\s+/g, ' '); // normalize spaces
+                const possibleAns = JSON.parse(input.getAttribute('data-ans'));
+                
+                if (possibleAns.includes(userVal)) {
+                    correctCount++;
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+
+            processScore(exerciseId, correctCount, inputs.length, sectionIndex);
+        }
+    </script>
+</body>
+</html>
