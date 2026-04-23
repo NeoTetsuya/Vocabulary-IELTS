@@ -3,40 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Keeping Fit - Self Study</title>
+    <title>Unit 3: Keeping Fit - Textbook</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://w.soundcloud.com/player/api.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        body { 
+            font-family: 'Lora', serif; 
+            background-color: #d1d5db;
+            background-image: radial-gradient(#9ca3af 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .ui-font { font-family: 'Inter', sans-serif; }
+
+        /* Book & Paper Styles */
+        .book-wrapper {
+            background-color: #fdfcf8;
+            box-shadow: 
+                0 20px 40px -10px rgba(0,0,0,0.3), 
+                0 0 0 1px rgba(0,0,0,0.05),
+                inset 0 0 60px rgba(139, 115, 85, 0.05);
+            border-radius: 4px 8px 8px 4px;
+        }
+
+        .spine-shadow {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 80px;
+            transform: translateX(-50%);
+            background: linear-gradient(
+                to right,
+                transparent 0%,
+                rgba(0,0,0,0.02) 40%,
+                rgba(0,0,0,0.12) 50%,
+                rgba(0,0,0,0.02) 60%,
+                transparent 100%
+            );
+            pointer-events: none;
+            z-index: 10;
+            border-left: 1px solid rgba(255,255,255,0.4);
+            border-right: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* Sticky Nav for Desktop */
+        .sticky-nav-container {
+            position: sticky;
+            top: 50vh;
+            transform: translateY(-50%);
+            height: max-content;
+            z-index: 50;
+        }
+
+        /* Inputs */
         .input-blank {
+            font-family: 'Inter', sans-serif;
             border: none;
-            border-bottom: 2px solid #9ca3af;
-            background: transparent;
+            border-bottom: 2px dashed #94a3b8;
+            background: rgba(255,255,255,0.5);
             outline: none;
             text-align: center;
-            padding: 0.25rem;
-            transition: border-color 0.2s;
+            padding: 0.1rem 0.25rem;
+            margin: 0 0.25rem;
+            transition: all 0.2s;
             font-weight: 600;
-            color: #1f2937;
+            color: #1e293b;
+            border-radius: 2px 2px 0 0;
         }
-        .input-blank:focus { border-bottom-color: #3b82f6; }
-        .correct { border-bottom-color: #22c55e !important; color: #166534; background-color: #f0fdf4; }
-        .incorrect { border-bottom-color: #ef4444 !important; color: #991b1b; background-color: #fef2f2; }
-        
-        /* Tab Styles */
-        .tab-btn { transition: all 0.2s ease-in-out; }
-        .tab-btn.active { border-bottom-width: 4px; border-color: #3b82f6; color: #1e3a8a; font-weight: 700; background-color: #eff6ff; }
-        .section-hidden { display: none; }
-        .word-used { text-decoration: line-through; opacity: 0.4; transition: all 0.2s; }
-        
-        /* Click & Match Styles */
-        .word-choice { transition: all 0.2s; cursor: pointer; padding: 0.25rem 0.75rem; border-radius: 0.375rem; border: 2px solid transparent; font-weight: 600; background-color: transparent; }
-        .word-choice:hover:not(.used) { background-color: #dbeafe; border-color: #93c5fd; }
-        .word-choice.selected { background-color: #bfdbfe; border-color: #3b82f6; transform: scale(1.05); }
-        .word-choice.used { opacity: 0.4; text-decoration: line-through; pointer-events: none; }
-        .match-slot { display: inline-block; min-width: 8rem; height: 1.75rem; border-bottom: 2px solid #9ca3af; text-align: center; cursor: pointer; padding: 0 0.5rem; font-weight: 600; color: #1e40af; vertical-align: bottom; transition: all 0.2s; line-height: 1.75rem; }
-        .match-slot:hover { border-bottom-color: #3b82f6; background-color: #f3f4f6; border-radius: 0.25rem 0.25rem 0 0; }
-        .match-slot:empty::after { content: '...'; color: #cbd5e1; font-weight: normal; }
+        .input-blank:focus { 
+            border-bottom: 2px solid #10b981; 
+            background: #ecfdf5;
+        }
+        select.input-blank {
+            text-align: left;
+            cursor: pointer;
+            padding-right: 1.2rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.1rem center;
+            background-size: 0.8em;
+        }
+
+        .correct { 
+            border-bottom: 2px solid #16a34a !important; 
+            color: #166534; 
+            background-color: #dcfce7; 
+        }
+        .incorrect { 
+            border-bottom: 2px solid #dc2626 !important; 
+            color: #991b1b; 
+            background-color: #fee2e2; 
+        }
+
+        /* Callouts / Notes */
+        .textbook-note {
+            background-color: #f8fafc;
+            border-left: 4px solid #94a3b8;
+            position: relative;
+        }
+        .textbook-note::before {
+            content: "✍🏼 Note";
+            position: absolute;
+            top: -12px;
+            left: 8px;
+            background: #fdfcf8;
+            padding: 0 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            font-family: 'Inter', sans-serif;
+            color: #475569;
+        }
+
+        /* Custom Vocab Table */
+        .vocab-table { width: 100%; text-align: left; border-collapse: collapse; }
+        .vocab-table th { 
+            border-bottom: 2px solid #475569; 
+            padding: 10px 8px; 
+            font-family: 'Inter', sans-serif; 
+            text-transform: uppercase; 
+            font-size: 11px; 
+            font-weight: 700;
+            letter-spacing: 0.05em; 
+            color: #334155; 
+        }
+        .vocab-table td { 
+            border-bottom: 1px dashed #cbd5e1; 
+            padding: 12px 8px; 
+            font-size: 14px;
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb { background-color: #94a3b8; }
+
+        /* Buttons & Toasts */
+        .check-btn { transition: transform 0.1s, box-shadow 0.1s; }
+        .check-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            backdrop-filter: blur(4px);
+            transition: all 0.2s;
+        }
+        .nav-btn:hover:not(:disabled) { background: #fff; transform: scale(1.05); }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
 
         .toast {
             position: fixed; top: 20px; right: 20px;
@@ -45,518 +163,844 @@
             opacity: 0; transform: translateY(-20px);
             transition: opacity 0.3s, transform 0.3s;
             z-index: 1000; pointer-events: none;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
         }
         .toast.show { opacity: 1; transform: translateY(0); }
         .toast.error { background-color: #ef4444; }
         .toast.success { background-color: #22c55e; }
         .toast.warning { background-color: #f59e0b; }
-        
-        .custom-scrollbar::-webkit-scrollbar { height: 6px; width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
     </style>
 </head>
-<body class="text-gray-800 antialiased pb-20">
+<body class="text-slate-800 antialiased min-h-screen flex flex-col pt-4 lg:pt-10 pb-24 lg:pb-10">
 
-    <div id="toast" class="toast shadow-lg">Message</div>
+    <div id="toast" class="toast">Message</div>
 
-    <div class="max-w-7xl mx-auto mt-8 px-4">
+    <!-- Main Desk Area -->
+    <div class="w-full max-w-[1600px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
         
-        <!-- Header -->
-        <div class="bg-white rounded-xl shadow-md p-6 mb-8 border-l-4 border-green-500">
-            <h1 class="text-3xl font-bold text-green-900">Keeping Fit</h1>
-            <p class="text-gray-600 mt-2">Explore vocabulary, listening, and reading exercises focused on diet, health, and stress management.</p>
-        </div>
-
-        <!-- Tab Navigation -->
-        <div class="flex overflow-x-auto bg-white rounded-t-xl shadow-sm border-b-2 border-gray-200 mb-6 custom-scrollbar">
-            <button onclick="openTab(0)" id="tab-0" class="tab-btn active flex-none py-3 px-6 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">1. Diet (Gap Fill)</button>
-            <button onclick="openTab(1)" id="tab-1" class="tab-btn flex-none py-3 px-6 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">2. Diet (Vocab)</button>
-            <button onclick="openTab(2)" id="tab-2" class="tab-btn flex-none py-3 px-6 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">3. Listening (Health)</button>
-            <button onclick="openTab(3)" id="tab-3" class="tab-btn flex-none py-3 px-6 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">4. Listening (Vocab)</button>
-            <button onclick="openTab(4)" id="tab-4" class="tab-btn flex-none py-3 px-6 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">5. Word Building</button>
-            <button onclick="openTab(5)" id="tab-5" class="tab-btn flex-none py-3 px-6 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">6. Sentences & Essay</button>
-            <button onclick="openTab(6)" id="tab-6" class="tab-btn flex-none py-3 px-6 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">7. Test Practice</button>
-        </div>
-
-        <!-- Exercise 1: Diet Gap Fill -->
-        <div id="section-0" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Diet - Gap Fill</h3>
-                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
-            </div>
-            <p class="mb-4 text-gray-600">Complete the gaps in the text below using words from the box. <br><strong class="text-blue-600 text-sm">Click a word in the blue box to select it, then click a blank line to place it.</strong></p>
-            
-            <div class="bg-blue-50 text-blue-800 p-4 rounded-lg mb-6 flex flex-wrap gap-3 font-mono text-sm justify-center select-none" id="wb-0">
-                <button class="word-choice" onclick="selectWord(this)" data-word="factors">factors</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="ingredients">ingredients</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="maintain">maintain</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="nutrients">nutrients</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="overeating">overeating</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="overweight">overweight</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="servings">servings</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="variety">variety</button>
-            </div>
-
-            <h4 class="font-bold text-lg mb-3">How to improve your diet</h4>
-            <div class="space-y-4 mb-6 leading-loose select-none text-gray-700">
-                <p>Make sure that you eat a (1) <span class="match-slot" onclick="placeWord(this)" data-ans='["variety"]'></span> of foods. It is important to eat from all five food groups.</p>
-                <p>Eat plenty of fruit and vegetables. These contain vital (2) <span class="match-slot" onclick="placeWord(this)" data-ans='["nutrients"]'></span> and leading dietitians recommend eating at least two (3) <span class="match-slot" onclick="placeWord(this)" data-ans='["servings"]'></span> of fruit and three of vegetables every day.</p>
-                <p>Try to (4) <span class="match-slot" onclick="placeWord(this)" data-ans='["maintain"]'></span> a healthy weight. Being too thin can cause as many health problems as being (5) <span class="match-slot" onclick="placeWord(this)" data-ans='["overweight"]'></span>. Remember, the correct weight for you depends on many different (6) <span class="match-slot" onclick="placeWord(this)" data-ans='["factors"]'></span> including your age, height and sex.</p>
-                <p>Eat moderate portions and don't be tempted to order a larger size when eating out. Skipping meals can lead to (7) <span class="match-slot" onclick="placeWord(this)" data-ans='["overeating"]'></span> as you will be much hungrier later, so be sure to eat regularly if you want to curb your appetite.</p>
-                <p>You don't need to eliminate all of your favourite foods but do check the (8) <span class="match-slot" onclick="placeWord(this)" data-ans='["ingredients"]'></span> on food labels and make sure that you reduce your intake of foods that are high in fats, sugar and salt.</p>
-                <p>If you have a food allergy, make sure you avoid any of the ingredients that can trigger an attack.</p>
-            </div>
-            
-            <div class="flex items-center gap-4">
-                <button onclick="checkGeneric(0)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
-                <span id="score-0" class="font-bold text-lg hidden"></span>
+        <!-- Sticky Left Arrow (Desktop Only) -->
+        <div class="hidden lg:block w-10 shrink-0 mr-2 xl:mr-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="prev-btn" onclick="goPrev()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Previous Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
             </div>
         </div>
 
-        <!-- Exercise 2: Diet Vocab -->
-        <div id="section-1" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Diet - Vocabulary Match</h3>
-                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
-            </div>
-            <p class="mb-6 text-gray-600">Match these meanings with words from the advice text in Exercise 1.</p>
+        <!-- The Book -->
+        <div class="book-wrapper flex-1 w-full max-w-7xl flex flex-col lg:flex-row relative min-h-[85vh]">
             
-            <ol class="list-decimal list-inside space-y-4 mb-6 text-gray-700 font-medium">
-                <li>very important <span class="ml-2">→</span> <input type="text" class="input-blank w-32 interactive-input" data-ans='["vital"]'></li>
-                <li>food scientists <span class="ml-2">→</span> <input type="text" class="input-blank w-32 interactive-input" data-ans='["dietitians", "dietician", "dieticians"]'></li>
-                <li>neither small nor large <span class="ml-2">→</span> <input type="text" class="input-blank w-32 interactive-input" data-ans='["moderate"]'></li>
-                <li>servings <span class="ml-2">→</span> <input type="text" class="input-blank w-32 interactive-input" data-ans='["portions", "portion"]'></li>
-                <li>missing out on <span class="ml-2">→</span> <input type="text" class="input-blank w-32 interactive-input" data-ans='["skipping"]'></li>
-                <li>limit <span class="ml-2">→</span> <input type="text" class="input-blank w-32 interactive-input" data-ans='["curb"]'></li>
-                <li>desire to eat <span class="ml-2">→</span> <input type="text" class="input-blank w-32 interactive-input" data-ans='["appetite"]'></li>
-                <li>totally remove <span class="ml-2">→</span> <input type="text" class="input-blank w-32 interactive-input" data-ans='["eliminate"]'></li>
-                <li>a condition that causes illness if you eat certain foods <span class="ml-2">→</span> <input type="text" class="input-blank w-32 interactive-input" data-ans='["allergy"]'></li>
-                <li>activate <span class="ml-2">→</span> <input type="text" class="input-blank w-32 interactive-input" data-ans='["trigger"]'></li>
-            </ol>
-            
-            <div class="flex items-center gap-4">
-                <button onclick="checkGeneric(1)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
-                <span id="score-1" class="font-bold text-lg hidden"></span>
-            </div>
-        </div>
+            <!-- Spine Decoration (Desktop Only) -->
+            <div class="spine-shadow hidden lg:block"></div>
 
-        <!-- Exercise 3: Listening Health -->
-        <div id="section-2" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Listening - Health & Exercise</h3>
-                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
-            </div>
-            
-            <p class="mb-4 text-gray-600">You will hear part of a health talk. Listen and complete the summary below. Write <strong>NO MORE THAN TWO WORDS</strong>.</p>
-            
-            <!-- Custom Audio Player 1 -->
-            <div class="custom-audio-player bg-white border-2 border-blue-100 rounded-xl px-6 py-4 mb-6 shadow-sm" data-track-url="https://api.soundcloud.com/tracks/1583784911">
-                <div class="flex flex-col sm:flex-row items-center gap-4">
-                    <div class="text-sm text-blue-600 font-bold whitespace-nowrap shrink-0">Health Talk 🎧</div>
-                    <div class="w-full flex items-center bg-gray-50 border border-gray-200 rounded-full px-4 py-2 shadow-inner">
-                        <button class="audio-play-btn w-9 h-9 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 shrink-0">
-                            <svg class="play-icon h-5 w-5 ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
-                            <svg class="pause-icon h-5 w-5 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
-                        </button>
-                        <div class="flex-1 mx-4 flex items-center space-x-3">
-                            <span class="audio-current-time text-xs font-mono text-gray-500 w-10 text-right">00:00</span>
-                            <div class="relative w-full h-2 bg-gray-300 rounded-full cursor-pointer flex-1 flex items-center group">
-                                 <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
-                                 <div class="audio-progress-bar absolute h-full bg-blue-500 rounded-full pointer-events-none group-hover:bg-blue-600 transition-colors" style="width: 0%;"></div>
-                            </div>
-                            <span class="audio-total-time text-xs font-mono text-gray-500 w-10">00:00</span>
-                        </div>
-                    </div>
-                </div>
-                <iframe class="sc-widget" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784911&auto_play=false&enable_api=1" style="position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none;" frameborder="0" allow="autoplay"></iframe>
-            </div>
-
-            <div class="p-6 bg-gray-50 rounded-lg border border-gray-200 text-gray-700 leading-loose">
-                The heart is a (1) <input type="text" class="input-blank w-32 interactive-input" data-ans='["muscle"]'>. A diet high in (2) <input type="text" class="input-blank w-32 interactive-input" data-ans='["fat"]'> can slow down the (3) <input type="text" class="input-blank w-40 interactive-input" data-ans='["blood flow"]'> and lead to heart problems. A heart attack is caused when an artery that (4) <input type="text" class="input-blank w-40 interactive-input" data-ans='["carries blood"]'> to the heart becomes (5) <input type="text" class="input-blank w-32 interactive-input" data-ans='["blocked"]'>. Patients must be given (6) <input type="text" class="input-blank w-32 interactive-input" data-ans='["treatment"]'> immediately. A stroke is caused when there is a blockage in an artery that leads to the (7) <input type="text" class="input-blank w-32 interactive-input" data-ans='["brain"]'>. A stroke can have a major effect on your body and as yet there is no (8) <input type="text" class="input-blank w-32 interactive-input" data-ans='["cure"]'>. A healthy diet will keep your arteries (9) <input type="text" class="input-blank w-32 interactive-input" data-ans='["clear"]'> and lower (10) <input type="text" class="input-blank w-32 interactive-input" data-ans='["risk", "the risk"]'> of a stroke or heart attack.
-            </div>
-            
-            <div class="flex items-center gap-4 mt-6">
-                <button onclick="checkGeneric(2)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
-                <span id="score-2" class="font-bold text-lg hidden"></span>
-            </div>
-        </div>
-
-        <!-- Exercise 4: Listening Vocab -->
-        <div id="section-3" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Listening - Vocabulary Match</h3>
-                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
-            </div>
-            <p class="mb-4 text-gray-600">Find words that mean the same as the following in the listening track.</p>
-            
-            <!-- Custom Audio Player 2 -->
-            <div class="custom-audio-player bg-white border-2 border-blue-100 rounded-xl px-6 py-4 mb-6 shadow-sm" data-track-url="https://api.soundcloud.com/tracks/1583784903">
-                <div class="flex flex-col sm:flex-row items-center gap-4">
-                    <div class="text-sm text-blue-600 font-bold whitespace-nowrap shrink-0">Vocabulary Track 🎧</div>
-                    <div class="w-full flex items-center bg-gray-50 border border-gray-200 rounded-full px-4 py-2 shadow-inner">
-                        <button class="audio-play-btn w-9 h-9 flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 shrink-0">
-                            <svg class="play-icon h-5 w-5 ml-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
-                            <svg class="pause-icon h-5 w-5 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
-                        </button>
-                        <div class="flex-1 mx-4 flex items-center space-x-3">
-                            <span class="audio-current-time text-xs font-mono text-gray-500 w-10 text-right">00:00</span>
-                            <div class="relative w-full h-2 bg-gray-300 rounded-full cursor-pointer flex-1 flex items-center group">
-                                 <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
-                                 <div class="audio-progress-bar absolute h-full bg-blue-500 rounded-full pointer-events-none group-hover:bg-blue-600 transition-colors" style="width: 0%;"></div>
-                            </div>
-                            <span class="audio-total-time text-xs font-mono text-gray-500 w-10">00:00</span>
-                        </div>
-                    </div>
-                </div>
-                <iframe class="sc-widget" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784903&auto_play=false&enable_api=1" style="position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none;" frameborder="0" allow="autoplay"></iframe>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 mb-6 text-gray-700">
-                <div>A. in a fixed pattern <br>→ <input type="text" class="input-blank w-full mt-1 interactive-input" data-ans='["regular"]'></div>
-                <div>B. quickly <br>→ <input type="text" class="input-blank w-full mt-1 interactive-input" data-ans='["briskly"]'></div>
-                <div>C. little by little <br>→ <input type="text" class="input-blank w-full mt-1 interactive-input" data-ans='["gradually"]'></div>
-                <div>D. a strong suggestion <br>→ <input type="text" class="input-blank w-full mt-1 interactive-input" data-ans='["recommendation"]'></div>
-                <div>E. speed <br>→ <input type="text" class="input-blank w-full mt-1 interactive-input" data-ans='["pace"]'></div>
-                <div>F. doing something to excess <br>→ <input type="text" class="input-blank w-full mt-1 interactive-input" data-ans='["overdoing"]'></div>
-                <div>G. get better <br>→ <input type="text" class="input-blank w-full mt-1 interactive-input" data-ans='["recover"]'></div>
-                <div>H. every second one <br>→ <input type="text" class="input-blank w-full mt-1 interactive-input" data-ans='["alternate"]'></div>
-            </div>
-            
-            <div class="flex items-center gap-4 mt-6">
-                <button onclick="checkGeneric(3)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
-                <span id="score-3" class="font-bold text-lg hidden"></span>
-            </div>
-        </div>
-
-        <!-- Exercise 5: Word Building -->
-        <div id="section-4" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Word Building</h3>
-                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
-            </div>
-            <p class="mb-4 text-gray-600">Complete the table below. Write the opposites where indicated (opp.).</p>
-            
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse bg-white text-gray-700 mb-6 border border-gray-200 shadow-sm rounded-lg overflow-hidden">
-                    <thead class="bg-blue-50 text-blue-900">
-                        <tr>
-                            <th class="p-3 border-b border-gray-200 w-1/3">Noun</th>
-                            <th class="p-3 border-b border-gray-200 w-1/3 border-l">Verb</th>
-                            <th class="p-3 border-b border-gray-200 w-1/3 border-l">Adjective</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td class="p-3 border-b border-gray-200">allergy</td>
-                            <td class="p-3 border-b border-gray-200 border-l bg-gray-50 text-gray-400 italic text-sm">No verb form</td>
-                            <td class="p-3 border-b border-gray-200 border-l"><input type="text" class="input-blank w-full interactive-input" data-ans='["allergic"]'></td>
-                        </tr>
-                        <tr>
-                            <td class="p-3 border-b border-gray-200">benefit</td>
-                            <td class="p-3 border-b border-gray-200 border-l"><input type="text" class="input-blank w-full interactive-input" data-ans='["benefit"]'></td>
-                            <td class="p-3 border-b border-gray-200 border-l"><input type="text" class="input-blank w-full interactive-input" data-ans='["beneficial"]'></td>
-                        </tr>
-                        <tr>
-                            <td class="p-3 border-b border-gray-200">harm</td>
-                            <td class="p-3 border-b border-gray-200 border-l"><input type="text" class="input-blank w-full interactive-input" data-ans='["harm"]'></td>
-                            <td class="p-3 border-b border-gray-200 border-l">
-                                <input type="text" class="input-blank w-full mb-1 interactive-input" data-ans='["harmful"]'><br>
-                                <span class="text-sm font-semibold">opp. = </span><input type="text" class="input-blank w-24 interactive-input" data-ans='["harmless"]'>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="p-3 border-b border-gray-200">health</td>
-                            <td class="p-3 border-b border-gray-200 border-l bg-gray-50 text-gray-400 italic text-sm">No verb form</td>
-                            <td class="p-3 border-b border-gray-200 border-l">
-                                <input type="text" class="input-blank w-full mb-1 interactive-input" data-ans='["healthy"]'><br>
-                                <span class="text-sm font-semibold">opp. = </span><input type="text" class="input-blank w-24 interactive-input" data-ans='["unhealthy"]'>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="p-3 border-b border-gray-200">infection</td>
-                            <td class="p-3 border-b border-gray-200 border-l">
-                                <input type="text" class="input-blank w-full mb-1 interactive-input" data-ans='["infect"]'><br>
-                                <span class="text-sm font-semibold">opp. = </span><input type="text" class="input-blank w-24 interactive-input" data-ans='["disinfect"]'>
-                            </td>
-                            <td class="p-3 border-b border-gray-200 border-l"><input type="text" class="input-blank w-full interactive-input" data-ans='["infectious"]'></td>
-                        </tr>
-                        <tr>
-                            <td class="p-3 border-b border-gray-200">nutrition</td>
-                            <td class="p-3 border-b border-gray-200 border-l"><input type="text" class="input-blank w-full interactive-input" data-ans='["nourish"]'></td>
-                            <td class="p-3 border-b border-gray-200 border-l"><input type="text" class="input-blank w-full interactive-input" data-ans='["nutritious"]'></td>
-                        </tr>
-                        <tr>
-                            <td class="p-3 border-b border-gray-200"><input type="text" class="input-blank w-full interactive-input" data-ans='["obesity"]'></td>
-                            <td class="p-3 border-b border-gray-200 border-l bg-gray-50 text-gray-400 italic text-sm">No verb form</td>
-                            <td class="p-3 border-b border-gray-200 border-l">obese</td>
-                        </tr>
-                        <tr>
-                            <td class="p-3 border-b border-gray-200"><input type="text" class="input-blank w-full interactive-input" data-ans='["prevention"]'></td>
-                            <td class="p-3 border-b border-gray-200 border-l">prevent</td>
-                            <td class="p-3 border-b border-gray-200 border-l"><input type="text" class="input-blank w-full interactive-input" data-ans='["preventable"]'></td>
-                        </tr>
-                        <tr>
-                            <td class="p-3 border-b border-gray-200"><input type="text" class="input-blank w-full interactive-input" data-ans='["recommendation"]'></td>
-                            <td class="p-3 border-b border-gray-200 border-l"><input type="text" class="input-blank w-full interactive-input" data-ans='["recommend"]'></td>
-                            <td class="p-3 border-b border-gray-200 border-l">recommended</td>
-                        </tr>
-                        <tr>
-                            <td class="p-3 border-b border-gray-200">variety</td>
-                            <td class="p-3 border-b border-gray-200 border-l"><input type="text" class="input-blank w-full interactive-input" data-ans='["vary"]'></td>
-                            <td class="p-3 border-b border-gray-200 border-l"><input type="text" class="input-blank w-full interactive-input" data-ans='["various", "varied"]'></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="flex items-center gap-4 mt-2">
-                <button onclick="checkGeneric(4)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
-                <span id="score-4" class="font-bold text-lg hidden"></span>
-            </div>
-        </div>
-
-        <!-- Exercise 6: Sentences & Essay -->
-        <div id="section-5" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Sentences & Essay</h3>
-                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
-            </div>
-            
-            <h4 class="font-bold text-lg mb-3 mt-4">Part A: Sentence Completion</h4>
-            <p class="mb-4 text-gray-600">Complete the sentences with words from the box below.</p>
-            <div class="bg-gray-100 p-4 rounded-lg mb-6 font-mono text-sm flex flex-wrap gap-x-4 gap-y-2 justify-center text-gray-700 shadow-inner">
-                <span>bath</span> <span>bathe</span> <span>birth</span> <span>breath</span> <span>breathe</span> <span>death</span> <span>growth</span> <span>health</span> <span>mouth (v)</span> <span>mouth (n)</span> <span>teeth</span> <span>teethe</span> <span>writhe</span>
-            </div>
-            
-            <ol class="list-decimal list-inside space-y-4 mb-10 text-gray-700 leading-loose">
-                <li>I took a deep <input type="text" class="input-blank w-32 interactive-input" data-ans='["breath"]'> before diving into the water.</li>
-                <li>The baby is crying because he's <input type="text" class="input-blank w-32 interactive-input" data-ans='["teething"]'>. He got two new <input type="text" class="input-blank w-32 interactive-input" data-ans='["teeth"]'> only yesterday.</li>
-                <li>Old people should take care of their <input type="text" class="input-blank w-32 interactive-input" data-ans='["health"]'>.</li>
-                <li>He's been so happy since the <input type="text" class="input-blank w-32 interactive-input" data-ans='["birth"]'> of his son.</li>
-                <li>The pain was so bad she was <input type="text" class="input-blank w-32 interactive-input" data-ans='["writhing"]'> in agony.</li>
-                <li>He can't <input type="text" class="input-blank w-32 interactive-input" data-ans='["breathe"]'>. You need to get him to hospital.</li>
-            </ol>
-
-            <h4 class="font-bold text-lg mb-3 border-t pt-6">Part B: Improve the Essay</h4>
-            <p class="mb-4 text-gray-600">Improve this essay by replacing the words in <i>italics</i> with ONE OR TWO words from this unit.</p>
-            
-            <div class="bg-yellow-50 border border-yellow-200 p-5 rounded-lg text-gray-800 leading-loose">
-                <p class="mb-4"><i>"In the future we won't have to worry about what we eat. We'll just take a tablet to give us all that our body needs and cooking will become a thing of the past."</i></p>
+            <!-- Page Container (Flexible Height) -->
+            <div id="pages-container" class="w-full flex relative">
                 
-                <p>In our modern world we often look for quick solutions to our problems. We expect to be able to achieve a great deal with little effort. But I don't believe we can apply this notion to our diet and still remain healthy. Preparing a healthy meal can take a lot of time. First you need to have fresh ingredients. Pre-packaged foods can contain a lot of unhealthy additives and so they are not as <i>good for your body</i> <input type="text" class="input-blank w-32 interactive-input" data-ans='["nutritious"]'> as fresh food. You also need to make sure to include <i>a lot of different foods</i> <input type="text" class="input-blank w-32 interactive-input" data-ans='["variety of", "variety", "a variety of"]'> to make sure that you receive all of the vitamins and minerals that are <i>very, very important</i> <input type="text" class="input-blank w-32 interactive-input" data-ans='["vital", "essential"]'> to a healthy diet.</p>
-                <p>It is not surprising then that some people want to find a simple solution to this in the form of a pill. Fast foods are very high in fat, sugar and salt and so we should eat them in small amounts. For some people, however, these foods have become their staple diet and as a result they are <i>fat</i> <input type="text" class="input-blank w-32 interactive-input" data-ans='["overweight", "obese"]'>. If we want to <i>stop</i> <input type="text" class="input-blank w-32 interactive-input" data-ans='["prevent"]'> this from becoming an even bigger problem in the future then we need to address this situation now. While vitamin tablets may be of some benefit, they are unlikely to be effective in the fight against <i>people getting too fat</i> <input type="text" class="input-blank w-32 interactive-input" data-ans='["obesity"]'>.</p>
-                <p>Health authorities need to increase public awareness of these issues, but we also need to be realistic. Fast food is popular not only because it is convenient but also because it is tasty. Perhaps we should <i>strongly advise</i> <input type="text" class="input-blank w-32 interactive-input" data-ans='["recommend"]'> that people who eat fast food every day should at least <i>swap</i> <input type="text" class="input-blank w-32 interactive-input" data-ans='["alternate"]'> fast food with fresh food on every second day. Finally, we eat for pleasure as well as nutrition and for this reason I believe that pills will never replace well-cooked food.</p>
-            </div>
-            
-            <div class="flex items-center gap-4 mt-6">
-                <button onclick="checkGeneric(5)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
-                <span id="score-5" class="font-bold text-lg hidden"></span>
-            </div>
-        </div>
-
-        <!-- Exercise 7: Reading Test Practice -->
-        <div id="section-6" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Academic Reading - Test Practice</h3>
-                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
-            </div>
-            
-            <div class="flex flex-col lg:flex-row gap-6">
-                <!-- Left Side: Reading Content -->
-                <div class="lg:w-1/2 flex flex-col">
-                    <div class="bg-white border-2 border-gray-200 rounded-lg p-5 text-gray-800 shadow-inner">
-                        <h4 class="text-2xl font-bold mb-4">The causes, diagnosis and prevention of stress</h4>
+                <!-- ==================== PAGE 0: Title & Intro ==================== -->
+                <div id="page-0" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow flex flex-col justify-center items-center text-center">
+                        <div class="w-24 h-24 bg-emerald-50 rounded-full flex items-center justify-center mb-8 shadow-inner border border-emerald-100">
+                            <svg class="w-12 h-12 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                        </div>
+                        <h4 class="text-sm uppercase tracking-widest text-emerald-600 font-bold ui-font mb-2">Unit 3</h4>
+                        <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-slate-800 leading-tight">Keeping Fit</h1>
+                        <h2 class="text-2xl italic text-slate-600 mb-8 border-b pb-8 border-slate-200">Diet, Health & Stress</h2>
                         
-                        <p class="mb-4">In prehistoric times, the physical changes in response to stress were an essential adaptation for meeting natural threats. Even in the modern world, the stress response can be an asset for raising levels of performance during critical events such as sports activities, important meetings, or in situations of actual danger or crisis. If stress becomes persistent and low-level, however, all parts of the body's stress apparatus (the brain, heart, lungs, vessels and muscles) become chronically over- or under-activated. This may produce physical or psychological damage over time. Acute stress can also be harmful in certain situations.</p>
-                        
-                        <h5 class="text-lg font-bold mb-2">Psychological effects of stress</h5>
-                        <p class="mb-4">Studies suggest that the inability to deal with stress is associated with the onset of depression or anxiety. In one study, two-thirds of subjects who experienced a stressful situation had nearly six times the risk of developing depression within that month. Some evidence suggests that repeated release of stress hormones disrupts normal levels of serotonin, the nerve chemical that is critical for feelings of well-being. Certainly, on a more obvious level, stress diminishes the quality of life by reducing feelings of pleasure and accomplishment, and relationships are often threatened.</p>
-                        <p class="mb-4">Nevertheless, some stress may be beneficial. For example, although some research has suggested that stress may be a risk factor for suicide (a 2003 study found a higher risk for suicide in women reporting both low and very high stress), those with moderate stress levels had the lowest risk.</p>
-                        
-                        <h5 class="text-lg font-bold mb-2">Heart disease</h5>
-                        <p class="mb-4">The effects of mental stress on heart disease are controversial. Stress can certainly influence the activity of the heart when it activates the sympathetic nervous system (the automatic part of the nervous system that affects many organs, including the heart). Such actions and others could theoretically negatively affect the heart in several different ways.</p>
-                        <p class="mb-4">Nevertheless, evidence is still needed to confirm any clear-cut relationship between stress and heart disease. For example, a 2002 study in Scotland found no greater risk for actual heart disease or heart events even in men who reported higher mental stress. In fact, higher stress was associated with fewer heart events, although men with high stress levels did tend to complain of chest pain and to go to hospital for it more often than those with lower stress levels.</p>
-                        <p class="mb-4">Evidence has linked stress to heart disease in men, particularly in work situations where they lack control. The association between stress and heart problems in women is weaker and there is some evidence that the ways women cope with stress may be more heart-protective. In one study, for example, men were more apt than women to use alcohol or eat less healthily in response to stress than women, which might account for their higher heart risks from stress. Different stress factors may affect genders differently. In one study, work stress was associated with a higher risk for heart disease in men, but marital stress — not work stress — was associated with more severe heart disease in women with existing heart problems.</p>
-                        
-                        <h5 class="text-lg font-bold mb-2">Eating problems</h5>
-                        <p class="mb-4">Stress can have varying effects on eating problems and weight. Often stress is related to weight gain and obesity. Many people develop cravings for salt, fat and sugar to counteract tension and, thus, gain weight. Weight gain can occur even with a healthy diet in some people exposed to stress. In a 2000 study, lean women who gained weight in response to stress tended to be less able to adapt to and manage stressful conditions. The release of cortisol, a major stress hormone, appears to promote abdominal fat and may be the primary connection between stress and weight gain in such people.</p>
-                        <p class="mb-4">In contrast, some people suffer a loss of appetite and consequently lose weight. In rare cases, stress may trigger hyperactivity of the thyroid gland, stimulating appetite but causing the body to burn up calories at a faster than normal rate. Chronically elevated levels of stress chemicals have been observed in patients with anorexia and bulimia. Some studies, however, have not found any strong link between stress and eating disorders.</p>
-                        
-                        <h5 class="text-lg font-bold mb-2">Pain</h5>
-                        <p class="mb-4">Chronic pain caused by arthritis and other conditions may be intensified by stress. However, according to a study on patients with rheumatoid arthritis, stress management techniques do not appear to have much effect on arthritic pain. Some studies have clearly linked job dissatisfaction and depression to back pain, although it is still unclear if stress is a direct cause.</p>
-                        <p class="mb-4">Tension-type headaches are frequently associated with stress and stressful events. Some research suggests that headache sufferers may actually have some biological predisposition for translating stress into muscle contractions.</p>
-                        
-                        <h5 class="text-lg font-bold mb-2">Sleep disturbances</h5>
-                        <p class="mb-4">The tensions of unresolved stress frequently cause insomnia, generally keeping the stressed person awake or causing awakening in the middle of the night or early morning. In fact, evidence suggests that stress hormones can increase during sleep in anticipation of a specific waking time. However, there is some hope for sufferers in this area as relaxation therapy has been found to reduce stress levels and consequently improve the quality of sleep.</p>
+                        <p class="text-lg text-slate-600 leading-relaxed max-w-md mx-auto">
+                            Welcome to Unit 3. Explore vocabulary, listening, and reading exercises focused on diet, health, and stress management on the following pages.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">i</span>
                     </div>
                 </div>
 
-                <!-- Right Side: Questions -->
-                <div class="lg:w-1/2 flex flex-col bg-gray-50/50 rounded-lg border border-gray-100 py-4">
-                    <div class="flex-1 px-4">
-                        <!-- Questions 1-4 -->
-                        <div class="mb-8">
-                            <h4 class="font-bold text-lg mb-2">Questions 1—4</h4>
-                            <p class="text-sm text-gray-600 mb-4 bg-gray-100 p-3 rounded">Do the following statements agree with the information given in the passage?<br>
-                            <strong>True</strong> if the statement agrees with the information<br>
-                            <strong>False</strong> if the statement contradicts the information<br>
-                            <strong>Not Given</strong> if there is no information on this</p>
+                <!-- ==================== PAGE 1: Diet - Gap Fill ==================== -->
+                <div id="page-1" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">1. Diet (Gap Fill)</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">1.1</span> Complete the gaps in the text below using words from the box.</p>
+                        
+                        <div class="bg-white border border-slate-200 p-4 rounded mb-6 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[12px] justify-center font-bold text-slate-600 shadow-inner">
+                            <span>factors</span> <span>ingredients</span> <span>maintain</span> <span>nutrients</span>
+                            <span>overeating</span> <span>overweight</span> <span>servings</span> <span>variety</span>
+                        </div>
+
+                        <h4 class="font-bold text-lg mb-3 text-slate-800">How to improve your diet</h4>
+                        <div class="space-y-4 text-slate-800 leading-loose text-[14px]">
+                            <p>Make sure that you eat a (1) <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["variety"]'> of foods. It is important to eat from all five food groups.</p>
+                            <p>Eat plenty of fruit and vegetables. These contain vital (2) <input type="text" class="input-blank w-28" data-ex="1.1" data-ans='["nutrients"]'> and leading dietitians recommend eating at least two (3) <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["servings"]'> of fruit and three of vegetables every day.</p>
+                            <p>Try to (4) <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["maintain"]'> a healthy weight. Being too thin can cause as many health problems as being (5) <input type="text" class="input-blank w-28" data-ex="1.1" data-ans='["overweight"]'>. Remember, the correct weight for you depends on many different (6) <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["factors"]'> including your age, height and sex.</p>
+                            <p>Eat moderate portions and don't be tempted to order a larger size when eating out. Skipping meals can lead to (7) <input type="text" class="input-blank w-28" data-ex="1.1" data-ans='["overeating"]'> as you will be much hungrier later, so be sure to eat regularly if you want to curb your appetite.</p>
+                            <p>You don't need to eliminate all of your favourite foods but do check the (8) <input type="text" class="input-blank w-28" data-ex="1.1" data-ans='["ingredients"]'> on food labels and make sure that you reduce your intake of foods that are high in fats, sugar and salt.</p>
+                            <p>If you have a food allergy, make sure you avoid any of the ingredients that can trigger an attack.</p>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-1.1" onclick="checkExercise('1.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.1</button>
+                            <span id="score-1.1" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">1</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 2: Diet - Vocabulary ==================== -->
+                <div id="page-2" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">2. Diet (Vocabulary)</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-6 leading-relaxed text-sm"><span class="font-bold">1.2</span> Match these meanings with words from the advice text on the previous page.</p>
+
+                        <ol class="list-decimal list-outside ml-4 space-y-5 text-slate-800 text-[14px] leading-loose">
+                            <li>very important <span class="mx-2 text-slate-400">→</span> <input type="text" class="input-blank w-32" data-ex="1.2" data-ans='["vital"]'></li>
+                            <li>food scientists <span class="mx-2 text-slate-400">→</span> <input type="text" class="input-blank w-36" data-ex="1.2" data-ans='["dietitians", "dietician", "dieticians"]'></li>
+                            <li>neither small nor large <span class="mx-2 text-slate-400">→</span> <input type="text" class="input-blank w-32" data-ex="1.2" data-ans='["moderate"]'></li>
+                            <li>servings <span class="mx-2 text-slate-400">→</span> <input type="text" class="input-blank w-32" data-ex="1.2" data-ans='["portions", "portion"]'></li>
+                            <li>missing out on <span class="mx-2 text-slate-400">→</span> <input type="text" class="input-blank w-32" data-ex="1.2" data-ans='["skipping"]'></li>
+                            <li>limit <span class="mx-2 text-slate-400">→</span> <input type="text" class="input-blank w-32" data-ex="1.2" data-ans='["curb"]'></li>
+                            <li>desire to eat <span class="mx-2 text-slate-400">→</span> <input type="text" class="input-blank w-32" data-ex="1.2" data-ans='["appetite"]'></li>
+                            <li>totally remove <span class="mx-2 text-slate-400">→</span> <input type="text" class="input-blank w-32" data-ex="1.2" data-ans='["eliminate"]'></li>
+                            <li>condition causing illness from certain foods <span class="mx-2 text-slate-400">→</span> <input type="text" class="input-blank w-32" data-ex="1.2" data-ans='["allergy"]'></li>
+                            <li>activate <span class="mx-2 text-slate-400">→</span> <input type="text" class="input-blank w-32" data-ex="1.2" data-ans='["trigger"]'></li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-1.2" onclick="checkExercise('1.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.2</button>
+                            <span id="score-1.2" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">2</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 3: Listening - Health ==================== -->
+                <div id="page-3" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">3. Listening (Health)</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <!-- Custom Audio Player -->
+                        <div class="custom-audio-player bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mb-6 shadow-inner ui-font flex flex-col sm:flex-row items-center gap-4" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784911&auto_play=false&enable_api=1">
+                            <div class="text-xs font-bold text-emerald-600 uppercase tracking-widest shrink-0">Track 3a</div>
+                            <div class="w-full flex items-center gap-3">
+                                <button class="audio-play-btn w-8 h-8 flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-full transition-colors shrink-0 focus:outline-none">
+                                    <svg class="play-icon h-4 w-4 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                    <svg class="pause-icon h-4 w-4 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                </button>
+                                <span class="audio-current-time text-xs font-mono text-slate-500 w-9 text-right">00:00</span>
+                                <div class="relative w-full h-1.5 bg-slate-300 rounded-full cursor-pointer flex-1 group">
+                                     <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                     <div class="audio-progress-bar absolute h-full bg-emerald-500 rounded-full group-hover:bg-emerald-600 transition-colors" style="width: 0%;"></div>
+                                </div>
+                                <span class="audio-total-time text-xs font-mono text-slate-500 w-9">00:00</span>
+                            </div>
+                            <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.1</span> You will hear part of a health talk. Listen and complete the summary below. Write <strong>NO MORE THAN TWO WORDS</strong>.</p>
+                        
+                        <div class="p-6 bg-white border border-slate-200 shadow-sm rounded text-slate-800 leading-loose text-[14px]">
+                            The heart is a (1) <input type="text" class="input-blank w-28 text-sm" data-ex="2.1" data-ans='["muscle"]'>. A diet high in (2) <input type="text" class="input-blank w-24 text-sm" data-ex="2.1" data-ans='["fat"]'> can slow down the (3) <input type="text" class="input-blank w-32 text-sm" data-ex="2.1" data-ans='["blood flow"]'> and lead to heart problems. A heart attack is caused when an artery that (4) <input type="text" class="input-blank w-36 text-sm" data-ex="2.1" data-ans='["carries blood"]'> to the heart becomes (5) <input type="text" class="input-blank w-28 text-sm" data-ex="2.1" data-ans='["blocked"]'>. Patients must be given (6) <input type="text" class="input-blank w-28 text-sm" data-ex="2.1" data-ans='["treatment"]'> immediately. A stroke is caused when there is a blockage in an artery that leads to the (7) <input type="text" class="input-blank w-24 text-sm" data-ex="2.1" data-ans='["brain"]'>. A stroke can have a major effect on your body and as yet there is no (8) <input type="text" class="input-blank w-24 text-sm" data-ex="2.1" data-ans='["cure"]'>. A healthy diet will keep your arteries (9) <input type="text" class="input-blank w-24 text-sm" data-ex="2.1" data-ans='["clear"]'> and lower (10) <input type="text" class="input-blank w-32 text-sm" data-ex="2.1" data-ans='["risk", "the risk"]'> of a stroke or heart attack.
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-2.1" onclick="checkExercise('2.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.1</button>
+                            <span id="score-2.1" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">3</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 4: Listening - Vocabulary ==================== -->
+                <div id="page-4" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">4. Listening (Vocab)</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.2</span> Find words that mean the same as the following in the listening track.</p>
+
+                        <!-- Custom Audio Player -->
+                        <div class="custom-audio-player bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mb-6 shadow-inner ui-font flex flex-col sm:flex-row items-center gap-4" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784903&auto_play=false&enable_api=1">
+                            <div class="text-xs font-bold text-emerald-600 uppercase tracking-widest shrink-0">Track 3b</div>
+                            <div class="w-full flex items-center gap-3">
+                                <button class="audio-play-btn w-8 h-8 flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-full transition-colors shrink-0 focus:outline-none">
+                                    <svg class="play-icon h-4 w-4 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                    <svg class="pause-icon h-4 w-4 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                </button>
+                                <span class="audio-current-time text-xs font-mono text-slate-500 w-9 text-right">00:00</span>
+                                <div class="relative w-full h-1.5 bg-slate-300 rounded-full cursor-pointer flex-1 group">
+                                     <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                     <div class="audio-progress-bar absolute h-full bg-emerald-500 rounded-full group-hover:bg-emerald-600 transition-colors" style="width: 0%;"></div>
+                                </div>
+                                <span class="audio-total-time text-xs font-mono text-slate-500 w-9">00:00</span>
+                            </div>
+                            <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6 text-slate-800 text-[14px]">
+                            <div>A. in a fixed pattern <br>→ <input type="text" class="input-blank w-full mt-1" data-ex="2.2" data-ans='["regular"]'></div>
+                            <div>B. quickly <br>→ <input type="text" class="input-blank w-full mt-1" data-ex="2.2" data-ans='["briskly"]'></div>
+                            <div>C. little by little <br>→ <input type="text" class="input-blank w-full mt-1" data-ex="2.2" data-ans='["gradually"]'></div>
+                            <div>D. a strong suggestion <br>→ <input type="text" class="input-blank w-full mt-1" data-ex="2.2" data-ans='["recommendation"]'></div>
+                            <div>E. speed <br>→ <input type="text" class="input-blank w-full mt-1" data-ex="2.2" data-ans='["pace"]'></div>
+                            <div>F. doing something to excess <br>→ <input type="text" class="input-blank w-full mt-1" data-ex="2.2" data-ans='["overdoing"]'></div>
+                            <div>G. get better <br>→ <input type="text" class="input-blank w-full mt-1" data-ex="2.2" data-ans='["recover"]'></div>
+                            <div>H. every second one <br>→ <input type="text" class="input-blank w-full mt-1" data-ex="2.2" data-ans='["alternate"]'></div>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-2.2" onclick="checkExercise('2.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.2</button>
+                            <span id="score-2.2" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">4</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 5: Word Building ==================== -->
+                <div id="page-5" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">5. Word Building</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">3.1</span> Complete the table below. Write the opposites where indicated (opp.).</p>
+
+                        <div class="bg-white border border-slate-200 shadow-sm rounded overflow-hidden">
+                            <table class="vocab-table">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="w-1/3">Noun</th>
+                                        <th class="w-1/3 border-l border-slate-200">Verb</th>
+                                        <th class="w-1/3 border-l border-slate-200">Adjective</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>allergy</td>
+                                        <td class="border-l border-slate-200 bg-slate-50 text-slate-400 italic text-[11px]">No verb form</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["allergic"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>benefit</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["benefit"]'></td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["beneficial"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>harm</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["harm"]'></td>
+                                        <td class="border-l border-slate-200">
+                                            <input type="text" class="input-blank w-full text-[13px] mb-1" data-ex="3.1" data-ans='["harmful"]'><br>
+                                            <span class="text-[10px] font-semibold text-slate-400 uppercase">opp. =</span> <input type="text" class="input-blank w-16 text-[13px]" data-ex="3.1" data-ans='["harmless"]'>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>health</td>
+                                        <td class="border-l border-slate-200 bg-slate-50 text-slate-400 italic text-[11px]">No verb form</td>
+                                        <td class="border-l border-slate-200">
+                                            <input type="text" class="input-blank w-full text-[13px] mb-1" data-ex="3.1" data-ans='["healthy"]'><br>
+                                            <span class="text-[10px] font-semibold text-slate-400 uppercase">opp. =</span> <input type="text" class="input-blank w-16 text-[13px]" data-ex="3.1" data-ans='["unhealthy"]'>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>infection</td>
+                                        <td class="border-l border-slate-200">
+                                            <input type="text" class="input-blank w-full text-[13px] mb-1" data-ex="3.1" data-ans='["infect"]'><br>
+                                            <span class="text-[10px] font-semibold text-slate-400 uppercase">opp. =</span> <input type="text" class="input-blank w-16 text-[13px]" data-ex="3.1" data-ans='["disinfect"]'>
+                                        </td>
+                                        <td class="border-l border-slate-200 align-top pt-3"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["infectious"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>nutrition</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["nourish"]'></td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["nutritious"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["obesity"]'></td>
+                                        <td class="border-l border-slate-200 bg-slate-50 text-slate-400 italic text-[11px]">No verb form</td>
+                                        <td class="border-l border-slate-200">obese</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["prevention"]'></td>
+                                        <td class="border-l border-slate-200">prevent</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["preventable"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["recommendation"]'></td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["recommend"]'></td>
+                                        <td class="border-l border-slate-200">recommended</td>
+                                    </tr>
+                                    <tr>
+                                        <td>variety</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["vary"]'></td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["various", "varied"]'></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-3.1" onclick="checkExercise('3.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 3.1</button>
+                            <span id="score-3.1" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">5</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 6: Sentences & Essay ==================== -->
+                <div id="page-6" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">6. Sentences & Essay</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <h4 class="font-bold text-[15px] mb-3 text-slate-800">Part A: Sentence Completion</h4>
+                        <p class="mb-4 text-slate-700 text-[13px]">Complete the sentences with words from the box below.</p>
+                        
+                        <div class="bg-white border border-slate-200 p-3 rounded mb-4 flex flex-wrap gap-x-3 gap-y-1.5 font-mono text-[11px] justify-center font-bold text-slate-600 shadow-inner">
+                            <span>bath</span> <span>bathe</span> <span>birth</span> <span>breath</span> <span>breathe</span> <span>death</span> <span>growth</span> <span>health</span> <span>mouth (v)</span> <span>mouth (n)</span> <span>teeth</span> <span>teethe</span> <span>writhe</span>
+                        </div>
+                        
+                        <ol class="list-decimal list-outside ml-4 space-y-3 mb-8 text-slate-800 text-[13px] leading-loose">
+                            <li>I took a deep <input type="text" class="input-blank w-24 text-[12px]" data-ex="4.1" data-ans='["breath"]'> before diving into the water.</li>
+                            <li>The baby is crying because he's <input type="text" class="input-blank w-24 text-[12px]" data-ex="4.1" data-ans='["teething"]'>. He got two new <input type="text" class="input-blank w-24 text-[12px]" data-ex="4.1" data-ans='["teeth"]'> only yesterday.</li>
+                            <li>Old people should take care of their <input type="text" class="input-blank w-24 text-[12px]" data-ex="4.1" data-ans='["health"]'>.</li>
+                            <li>He's been so happy since the <input type="text" class="input-blank w-24 text-[12px]" data-ex="4.1" data-ans='["birth"]'> of his son.</li>
+                            <li>The pain was so bad she was <input type="text" class="input-blank w-24 text-[12px]" data-ex="4.1" data-ans='["writhing"]'> in agony.</li>
+                            <li>He can't <input type="text" class="input-blank w-24 text-[12px]" data-ex="4.1" data-ans='["breathe"]'>. You need to get him to hospital.</li>
+                        </ol>
+
+                        <h4 class="font-bold text-[15px] mb-3 border-t border-slate-200 pt-6 text-slate-800">Part B: Improve the Essay</h4>
+                        <p class="mb-4 text-slate-700 text-[13px] italic">Improve this essay by replacing the words in italics with ONE OR TWO words from this unit.</p>
+                        
+                        <div class="bg-emerald-50/50 border border-emerald-100 p-5 rounded text-slate-800 text-[13px] leading-loose shadow-inner">
+                            <p class="mb-4 text-slate-500 font-serif italic text-center">"In the future we won't have to worry about what we eat. We'll just take a tablet to give us all that our body needs and cooking will become a thing of the past."</p>
                             
-                            <ol class="list-decimal list-inside space-y-4 text-gray-800">
-                                <li class="flex flex-col sm:flex-row sm:items-center gap-4">
-                                    <div class="flex-1">Stress was originally an important way of keeping humans safe.</div>
-                                    <div class="flex gap-4 bg-white px-3 py-2 rounded-lg border transition shadow-sm">
-                                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="q1" value="True" data-is-correct="true" class="w-4 h-4 text-blue-600"> True</label>
-                                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="q1" value="False" class="w-4 h-4 text-blue-600"> False</label>
-                                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="q1" value="Not Given" class="w-4 h-4 text-blue-600"> NG</label>
+                            <p class="mb-3">In our modern world we often look for quick solutions to our problems... Preparing a healthy meal can take a lot of time. First you need to have fresh ingredients. Pre-packaged foods can contain a lot of unhealthy additives and so they are not as <i>good for your body</i> <input type="text" class="input-blank w-28 text-[12px]" data-ex="4.1" data-ans='["nutritious"]'> as fresh food. You also need to make sure to include <i>a lot of different foods</i> <input type="text" class="input-blank w-36 text-[12px]" data-ex="4.1" data-ans='["variety of", "variety", "a variety of"]'> to make sure that you receive all of the vitamins and minerals that are <i>very, very important</i> <input type="text" class="input-blank w-28 text-[12px]" data-ex="4.1" data-ans='["vital", "essential"]'> to a healthy diet.</p>
+                            <p class="mb-3">It is not surprising then that some people want to find a simple solution... Fast foods are very high in fat, sugar and salt... For some people, however, these foods have become their staple diet and as a result they are <i>fat</i> <input type="text" class="input-blank w-28 text-[12px]" data-ex="4.1" data-ans='["overweight", "obese"]'>. If we want to <i>stop</i> <input type="text" class="input-blank w-24 text-[12px]" data-ex="4.1" data-ans='["prevent"]'> this from becoming an even bigger problem... While vitamin tablets may be of some benefit, they are unlikely to be effective in the fight against <i>people getting too fat</i> <input type="text" class="input-blank w-28 text-[12px]" data-ex="4.1" data-ans='["obesity"]'>.</p>
+                            <p>Health authorities need to increase public awareness... Perhaps we should <i>strongly advise</i> <input type="text" class="input-blank w-28 text-[12px]" data-ex="4.1" data-ans='["recommend"]'> that people who eat fast food every day should at least <i>swap</i> <input type="text" class="input-blank w-28 text-[12px]" data-ex="4.1" data-ans='["alternate"]'> fast food with fresh food on every second day.</p>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-4.1" onclick="checkExercise('4.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 6</button>
+                            <span id="score-4.1" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">6</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 7: Reading Test Practice ==================== -->
+                <div id="page-7" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-4 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">7. Test Practice: Reading</h3>
+                        </div>
+
+                        <!-- 2-column layout -->
+                        <div class="bg-slate-50 border border-slate-200 rounded p-4 text-slate-800 text-[10.5px] leading-relaxed shadow-sm columns-2 gap-4">
+                            <h4 class="font-bold text-sm mb-3 text-center font-serif col-span-2" style="column-span: all;">The causes, diagnosis and prevention of stress</h4>
+                            
+                            <p class="mb-2">In prehistoric times, the physical changes in response to stress were an essential adaptation for meeting natural threats. Even in the modern world, the stress response can be an asset for raising levels of performance during critical events such as sports activities, important meetings, or in situations of actual danger or crisis. If stress becomes persistent and low-level, however, all parts of the body's stress apparatus (the brain, heart, lungs, vessels and muscles) become chronically over- or under-activated. This may produce physical or psychological damage over time. Acute stress can also be harmful in certain situations.</p>
+                            
+                            <h5 class="font-bold mb-1 text-[11px] text-emerald-800">Psychological effects of stress</h5>
+                            <p class="mb-2">Studies suggest that the inability to deal with stress is associated with the onset of depression or anxiety. In one study, two-thirds of subjects who experienced a stressful situation had nearly six times the risk of developing depression within that month. Some evidence suggests that repeated release of stress hormones disrupts normal levels of serotonin, the nerve chemical that is critical for feelings of well-being. Certainly, on a more obvious level, stress diminishes the quality of life by reducing feelings of pleasure and accomplishment, and relationships are often threatened.</p>
+                            <p class="mb-2">Nevertheless, some stress may be beneficial. For example, although some research has suggested that stress may be a risk factor for suicide (a 2003 study found a higher risk for suicide in women reporting both low and very high stress), those with moderate stress levels had the lowest risk.</p>
+                            
+                            <h5 class="font-bold mb-1 text-[11px] text-emerald-800">Heart disease</h5>
+                            <p class="mb-2">The effects of mental stress on heart disease are controversial. Stress can certainly influence the activity of the heart when it activates the sympathetic nervous system (the automatic part of the nervous system that affects many organs, including the heart). Such actions and others could theoretically negatively affect the heart in several different ways.</p>
+                            <p class="mb-2">Nevertheless, evidence is still needed to confirm any clear-cut relationship between stress and heart disease. For example, a 2002 study in Scotland found no greater risk for actual heart disease or heart events even in men who reported higher mental stress. In fact, higher stress was associated with fewer heart events, although men with high stress levels did tend to complain of chest pain and to go to hospital for it more often than those with lower stress levels.</p>
+                            <p class="mb-2">Evidence has linked stress to heart disease in men, particularly in work situations where they lack control. The association between stress and heart problems in women is weaker and there is some evidence that the ways women cope with stress may be more heart-protective. In one study, for example, men were more apt than women to use alcohol or eat less healthily in response to stress than women, which might account for their higher heart risks from stress. Different stress factors may affect genders differently. In one study, work stress was associated with a higher risk for heart disease in men, but marital stress — not work stress — was associated with more severe heart disease in women with existing heart problems.</p>
+                            
+                            <h5 class="font-bold mb-1 text-[11px] text-emerald-800">Eating problems</h5>
+                            <p class="mb-2">Stress can have varying effects on eating problems and weight. Often stress is related to weight gain and obesity. Many people develop cravings for salt, fat and sugar to counteract tension and, thus, gain weight. Weight gain can occur even with a healthy diet in some people exposed to stress. In a 2000 study, lean women who gained weight in response to stress tended to be less able to adapt to and manage stressful conditions. The release of cortisol, a major stress hormone, appears to promote abdominal fat and may be the primary connection between stress and weight gain in such people.</p>
+                            <p class="mb-2">In contrast, some people suffer a loss of appetite and consequently lose weight. In rare cases, stress may trigger hyperactivity of the thyroid gland, stimulating appetite but causing the body to burn up calories at a faster than normal rate. Chronically elevated levels of stress chemicals have been observed in patients with anorexia and bulimia. Some studies, however, have not found any strong link between stress and eating disorders.</p>
+                            
+                            <h5 class="font-bold mb-1 text-[11px] text-emerald-800">Pain</h5>
+                            <p class="mb-2">Chronic pain caused by arthritis and other conditions may be intensified by stress. However, according to a study on patients with rheumatoid arthritis, stress management techniques do not appear to have much effect on arthritic pain. Some studies have clearly linked job dissatisfaction and depression to back pain, although it is still unclear if stress is a direct cause.</p>
+                            <p class="mb-2">Tension-type headaches are frequently associated with stress and stressful events. Some research suggests that headache sufferers may actually have some biological predisposition for translating stress into muscle contractions.</p>
+                            
+                            <h5 class="font-bold mb-1 text-[11px] text-emerald-800">Sleep disturbances</h5>
+                            <p>The tensions of unresolved stress frequently cause insomnia, generally keeping the stressed person awake or causing awakening in the middle of the night or early morning. In fact, evidence suggests that stress hormones can increase during sleep in anticipation of a specific waking time. However, there is some hope for sufferers in this area as relaxation therapy has been found to reduce stress levels and consequently improve the quality of sleep.</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">7</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 8: Test Practice Questions (1-6) ==================== -->
+                <div id="page-8" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow flex flex-col justify-between">
+                        
+                        <!-- Questions 1-4 -->
+                        <div class="mb-4">
+                            <div class="flex justify-between items-end mb-2 border-b-2 border-slate-800 pb-1">
+                                <h3 class="text-lg font-bold text-slate-900">Questions 1-4</h3>
+                                <span class="ui-font text-[10px] font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                            </div>
+
+                            <p class="mb-2 text-slate-800 text-[11px] italic">Do the following statements agree with the information given? Select <strong>True</strong>, <strong>False</strong>, or <strong>NG (Not Given)</strong>.</p>
+                            
+                            <ol class="list-decimal list-outside ml-4 space-y-3 text-slate-800 text-[12px] leading-snug">
+                                <li>Stress was originally an important way of keeping humans safe.
+                                    <div class="ml-1 mt-1 flex gap-3 ui-font text-[11px]">
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q1" value="true" class="mr-1.5 accent-emerald-600">True</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q1" value="false" class="mr-1.5 accent-emerald-600">False</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q1" value="ng" class="mr-1.5 accent-emerald-600">NG</label>
                                     </div>
+                                    <input type="hidden" id="ans_q1" data-ans='["true"]'>
                                 </li>
-                                <li class="flex flex-col sm:flex-row sm:items-center gap-4">
-                                    <div class="flex-1">If stress continues for a long time, all of the body's organs are affected.</div>
-                                    <div class="flex gap-4 bg-white px-3 py-2 rounded-lg border transition shadow-sm">
-                                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="q2" value="True" data-is-correct="true" class="w-4 h-4 text-blue-600"> True</label>
-                                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="q2" value="False" class="w-4 h-4 text-blue-600"> False</label>
-                                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="q2" value="Not Given" class="w-4 h-4 text-blue-600"> NG</label>
+                                <li>If stress continues for a long time, all of the body's organs are affected.
+                                    <div class="ml-1 mt-1 flex gap-3 ui-font text-[11px]">
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q2" value="true" class="mr-1.5 accent-emerald-600">True</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q2" value="false" class="mr-1.5 accent-emerald-600">False</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q2" value="ng" class="mr-1.5 accent-emerald-600">NG</label>
                                     </div>
+                                    <input type="hidden" id="ans_q2" data-ans='["true"]'>
                                 </li>
-                                <li class="flex flex-col sm:flex-row sm:items-center gap-4">
-                                    <div class="flex-1">The study into the psychological effects of stress involved people with a history of depression.</div>
-                                    <div class="flex gap-4 bg-white px-3 py-2 rounded-lg border transition shadow-sm">
-                                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="q3" value="True" class="w-4 h-4 text-blue-600"> True</label>
-                                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="q3" value="False" class="w-4 h-4 text-blue-600"> False</label>
-                                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="q3" value="Not Given" data-is-correct="true" class="w-4 h-4 text-blue-600"> NG</label>
+                                <li>The study into the psychological effects of stress involved people with a history of depression.
+                                    <div class="ml-1 mt-1 flex gap-3 ui-font text-[11px]">
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q3" value="true" class="mr-1.5 accent-emerald-600">True</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q3" value="false" class="mr-1.5 accent-emerald-600">False</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q3" value="ng" class="mr-1.5 accent-emerald-600">NG</label>
                                     </div>
+                                    <input type="hidden" id="ans_q3" data-ans='["ng"]'>
                                 </li>
-                                <li class="flex flex-col sm:flex-row sm:items-center gap-4">
-                                    <div class="flex-1">Increased stress causes the body to produce more serotonin.</div>
-                                    <div class="flex gap-4 bg-white px-3 py-2 rounded-lg border transition shadow-sm">
-                                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="q4" value="True" class="w-4 h-4 text-blue-600"> True</label>
-                                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="q4" value="False" data-is-correct="true" class="w-4 h-4 text-blue-600"> False</label>
-                                        <label class="cursor-pointer flex items-center gap-1 hover:text-blue-600"><input type="radio" name="q4" value="Not Given" class="w-4 h-4 text-blue-600"> NG</label>
+                                <li>Increased stress causes the body to produce more serotonin.
+                                    <div class="ml-1 mt-1 flex gap-3 ui-font text-[11px]">
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q4" value="true" class="mr-1.5 accent-emerald-600">True</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q4" value="false" class="mr-1.5 accent-emerald-600">False</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q4" value="ng" class="mr-1.5 accent-emerald-600">NG</label>
                                     </div>
+                                    <input type="hidden" id="ans_q4" data-ans='["false"]'>
                                 </li>
                             </ol>
                         </div>
 
                         <!-- Questions 5-6 -->
-                        <div class="mb-8">
-                            <h4 class="font-bold text-lg mb-2">Questions 5—6</h4>
-                            <p class="text-sm text-gray-600 mb-4">Choose the correct answer A, B, C or D.</p>
-                            <div class="space-y-6 text-gray-800">
-                                <div>
-                                    <p class="font-medium mb-2">5. The 2003 study into the link between stress and suicide found that</p>
-                                    <div class="flex flex-col gap-2 pl-4">
-                                        <label class="cursor-pointer flex items-center gap-2 p-2 hover:bg-white rounded border border-transparent hover:border-gray-200 transition"><input type="radio" name="q5" value="A" class="w-4 h-4"> A. fewer women suffer from stress than men.</label>
-                                        <label class="cursor-pointer flex items-center gap-2 p-2 hover:bg-white rounded border border-transparent hover:border-gray-200 transition"><input type="radio" name="q5" value="B" data-is-correct="true" class="w-4 h-4"> B. stress reduces the risk of suicide in some women.</label>
-                                        <label class="cursor-pointer flex items-center gap-2 p-2 hover:bg-white rounded border border-transparent hover:border-gray-200 transition"><input type="radio" name="q5" value="C" class="w-4 h-4"> C. a larger number of men commit suicide than women.</label>
-                                        <label class="cursor-pointer flex items-center gap-2 p-2 hover:bg-white rounded border border-transparent hover:border-gray-200 transition"><input type="radio" name="q5" value="D" class="w-4 h-4"> D. women with low stress levels are less likely to commit suicide.</label>
+                        <div>
+                            <div class="flex justify-between items-end mb-2 border-b-2 border-slate-800 pb-1 mt-6">
+                                <h3 class="text-lg font-bold text-slate-900">Questions 5-6</h3>
+                            </div>
+
+                            <p class="mb-2 text-slate-800 text-[11px] italic">Choose the correct answer <strong>A, B, C or D</strong>.</p>
+
+                            <ol class="list-decimal list-outside ml-4 space-y-4 text-slate-800 text-[12px] leading-snug" start="5">
+                                <li>The 2003 study into the link between stress and suicide found that
+                                    <div class="ml-1 mt-1 grid grid-cols-1 gap-y-1 ui-font text-[11px]">
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q5" value="a" class="mr-1.5 mt-0.5 accent-emerald-600"><span>A. fewer women suffer from stress than men.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q5" value="b" class="mr-1.5 mt-0.5 accent-emerald-600"><span>B. stress reduces the risk of suicide in some women.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q5" value="c" class="mr-1.5 mt-0.5 accent-emerald-600"><span>C. a larger number of men commit suicide than women.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q5" value="d" class="mr-1.5 mt-0.5 accent-emerald-600"><span>D. women with low stress levels are less likely to commit suicide.</span></label>
                                     </div>
-                                </div>
-                                <div>
-                                    <p class="font-medium mb-2">6. In 2002, a Scottish study showed that</p>
-                                    <div class="flex flex-col gap-2 pl-4">
-                                        <label class="cursor-pointer flex items-center gap-2 p-2 hover:bg-white rounded border border-transparent hover:border-gray-200 transition"><input type="radio" name="q6" value="A" class="w-4 h-4"> A. there is a strong link between stress and heart problems.</label>
-                                        <label class="cursor-pointer flex items-center gap-2 p-2 hover:bg-white rounded border border-transparent hover:border-gray-200 transition"><input type="radio" name="q6" value="B" data-is-correct="true" class="w-4 h-4"> B. there is a link between high stress levels and hospital visits.</label>
-                                        <label class="cursor-pointer flex items-center gap-2 p-2 hover:bg-white rounded border border-transparent hover:border-gray-200 transition"><input type="radio" name="q6" value="C" class="w-4 h-4"> C. a reduction in stress would reduce the risk of heart attacks.</label>
-                                        <label class="cursor-pointer flex items-center gap-2 p-2 hover:bg-white rounded border border-transparent hover:border-gray-200 transition"><input type="radio" name="q6" value="D" class="w-4 h-4"> D. men with high levels of stress felt no physical symptoms.</label>
+                                    <input type="hidden" id="ans_q5" data-ans='["b"]'>
+                                </li>
+                                <li>In 2002, a Scottish study showed that
+                                    <div class="ml-1 mt-1 grid grid-cols-1 gap-y-1 ui-font text-[11px]">
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q6" value="a" class="mr-1.5 mt-0.5 accent-emerald-600"><span>A. there is a strong link between stress and heart problems.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q6" value="b" class="mr-1.5 mt-0.5 accent-emerald-600"><span>B. there is a link between high stress levels and hospital visits.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q6" value="c" class="mr-1.5 mt-0.5 accent-emerald-600"><span>C. a reduction in stress would reduce the risk of heart attacks.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q6" value="d" class="mr-1.5 mt-0.5 accent-emerald-600"><span>D. men with high levels of stress felt no physical symptoms.</span></label>
                                     </div>
-                                </div>
+                                    <input type="hidden" id="ans_q6" data-ans='["b"]'>
+                                </li>
+                            </ol>
+                            
+                            <div class="flex items-center gap-3 mt-5">
+                                <button id="btn-7.1" onclick="checkRadios('7.1', 1, 6)" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check Qs 1-6</button>
+                                <span id="score-7.1" class="ui-font text-[11px] font-bold hidden"></span>
                             </div>
                         </div>
 
+                    </div>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">8</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 9: Test Practice Questions (7-13) ==================== -->
+                <div id="page-9" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow flex flex-col justify-between">
+                        
                         <!-- Questions 7-9 -->
-                        <div class="mb-8">
-                            <h4 class="font-bold text-lg mb-2">Questions 7—9</h4>
-                            <p class="text-sm text-gray-600 mb-4 bg-gray-100 p-3 rounded">Classify the following characteristics as being associated with:<br>
-                            <strong>A</strong> only men &nbsp;&nbsp; <strong>B</strong> only women &nbsp;&nbsp; <strong>C</strong> both men and women</p>
-                            <ol class="list-decimal list-inside space-y-4 text-gray-800" start="7">
-                                <li class="flex flex-col sm:flex-row sm:items-center gap-4">
-                                    <div class="flex-1">There may be a variety of causes of stress.</div>
-                                    <div class="flex gap-4 bg-white px-3 py-2 rounded-lg border transition shadow-sm">
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q7" value="A" class="w-4 h-4"> A</label>
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q7" value="B" class="w-4 h-4"> B</label>
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q7" value="C" data-is-correct="true" class="w-4 h-4"> C</label>
+                        <div class="mb-4">
+                            <div class="flex justify-between items-end mb-2 border-b-2 border-slate-800 pb-1">
+                                <h3 class="text-lg font-bold text-slate-900">Questions 7-9</h3>
+                                <span class="ui-font text-[10px] font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                            </div>
+
+                            <p class="mb-2 text-slate-800 text-[11px] italic">Classify the following characteristics as being associated with:<br><strong>A</strong> only men &nbsp;&nbsp; <strong>B</strong> only women &nbsp;&nbsp; <strong>C</strong> both men and women</p>
+                            
+                            <ol class="list-decimal list-outside ml-4 space-y-2.5 text-slate-800 text-[12px] leading-snug" start="7">
+                                <li>There may be a variety of causes of stress.
+                                    <div class="ml-1 mt-1 flex gap-3 ui-font text-[11px]">
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q7" value="a" class="mr-1.5 accent-emerald-600">A</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q7" value="b" class="mr-1.5 accent-emerald-600">B</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q7" value="c" class="mr-1.5 accent-emerald-600">C</label>
                                     </div>
+                                    <input type="hidden" id="ans_q7" data-ans='["c"]'>
                                 </li>
-                                <li class="flex flex-col sm:flex-row sm:items-center gap-4">
-                                    <div class="flex-1">Their way of dealing with stress can protect the heart.</div>
-                                    <div class="flex gap-4 bg-white px-3 py-2 rounded-lg border transition shadow-sm">
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q8" value="A" class="w-4 h-4"> A</label>
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q8" value="B" data-is-correct="true" class="w-4 h-4"> B</label>
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q8" value="C" class="w-4 h-4"> C</label>
+                                <li>Their way of dealing with stress can protect the heart.
+                                    <div class="ml-1 mt-1 flex gap-3 ui-font text-[11px]">
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q8" value="a" class="mr-1.5 accent-emerald-600">A</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q8" value="b" class="mr-1.5 accent-emerald-600">B</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q8" value="c" class="mr-1.5 accent-emerald-600">C</label>
                                     </div>
+                                    <input type="hidden" id="ans_q8" data-ans='["b"]'>
                                 </li>
-                                <li class="flex flex-col sm:flex-row sm:items-center gap-4">
-                                    <div class="flex-1">Increased heart disease is linked to stress at home.</div>
-                                    <div class="flex gap-4 bg-white px-3 py-2 rounded-lg border transition shadow-sm">
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q9" value="A" class="w-4 h-4"> A</label>
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q9" value="B" data-is-correct="true" class="w-4 h-4"> B</label>
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q9" value="C" class="w-4 h-4"> C</label>
+                                <li>Increased heart disease is linked to stress at home.
+                                    <div class="ml-1 mt-1 flex gap-3 ui-font text-[11px]">
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q9" value="a" class="mr-1.5 accent-emerald-600">A</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q9" value="b" class="mr-1.5 accent-emerald-600">B</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q9" value="c" class="mr-1.5 accent-emerald-600">C</label>
                                     </div>
+                                    <input type="hidden" id="ans_q9" data-ans='["b"]'>
                                 </li>
                             </ol>
                         </div>
 
                         <!-- Questions 10-13 -->
-                        <div class="mb-4">
-                            <h4 class="font-bold text-lg mb-2">Questions 10—13</h4>
-                            <p class="text-sm text-gray-600 mb-4 bg-gray-100 p-3 rounded">Classify the following characteristics as being associated with:<br>
-                            <strong>A</strong> pain &nbsp;&nbsp; <strong>B</strong> weight &nbsp;&nbsp; <strong>C</strong> sleep</p>
-                            <ol class="list-decimal list-inside space-y-4 text-gray-800" start="10">
-                                <li class="flex flex-col sm:flex-row sm:items-center gap-4">
-                                    <div class="flex-1">The problem is reduced if stress is lowered.</div>
-                                    <div class="flex gap-4 bg-white px-3 py-2 rounded-lg border transition shadow-sm">
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q10" value="A" class="w-4 h-4"> A</label>
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q10" value="B" class="w-4 h-4"> B</label>
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q10" value="C" data-is-correct="true" class="w-4 h-4"> C</label>
+                        <div>
+                            <div class="flex justify-between items-end mb-2 border-b-2 border-slate-800 pb-1 mt-6">
+                                <h3 class="text-lg font-bold text-slate-900">Questions 10-13</h3>
+                            </div>
+
+                            <p class="mb-2 text-slate-800 text-[11px] italic">Classify the following characteristics as being associated with:<br><strong>A</strong> pain &nbsp;&nbsp; <strong>B</strong> weight &nbsp;&nbsp; <strong>C</strong> sleep</p>
+
+                            <ol class="list-decimal list-outside ml-4 space-y-2.5 text-slate-800 text-[12px] leading-snug" start="10">
+                                <li>The problem is reduced if stress is lowered.
+                                    <div class="ml-1 mt-1 flex gap-3 ui-font text-[11px]">
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q10" value="a" class="mr-1.5 accent-emerald-600">A</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q10" value="b" class="mr-1.5 accent-emerald-600">B</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q10" value="c" class="mr-1.5 accent-emerald-600">C</label>
                                     </div>
+                                    <input type="hidden" id="ans_q10" data-ans='["c"]'>
                                 </li>
-                                <li class="flex flex-col sm:flex-row sm:items-center gap-4">
-                                    <div class="flex-1">An increase in the severity of this problem may be related to work.</div>
-                                    <div class="flex gap-4 bg-white px-3 py-2 rounded-lg border transition shadow-sm">
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q11" value="A" data-is-correct="true" class="w-4 h-4"> A</label>
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q11" value="B" class="w-4 h-4"> B</label>
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q11" value="C" class="w-4 h-4"> C</label>
+                                <li>An increase in the severity of this problem may be related to work.
+                                    <div class="ml-1 mt-1 flex gap-3 ui-font text-[11px]">
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q11" value="a" class="mr-1.5 accent-emerald-600">A</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q11" value="b" class="mr-1.5 accent-emerald-600">B</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q11" value="c" class="mr-1.5 accent-emerald-600">C</label>
                                     </div>
+                                    <input type="hidden" id="ans_q11" data-ans='["a"]'>
                                 </li>
-                                <li class="flex flex-col sm:flex-row sm:items-center gap-4">
-                                    <div class="flex-1">Stress may cause levels to increase or decrease.</div>
-                                    <div class="flex gap-4 bg-white px-3 py-2 rounded-lg border transition shadow-sm">
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q12" value="A" class="w-4 h-4"> A</label>
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q12" value="B" data-is-correct="true" class="w-4 h-4"> B</label>
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q12" value="C" class="w-4 h-4"> C</label>
+                                <li>Stress may cause levels to increase or decrease.
+                                    <div class="ml-1 mt-1 flex gap-3 ui-font text-[11px]">
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q12" value="a" class="mr-1.5 accent-emerald-600">A</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q12" value="b" class="mr-1.5 accent-emerald-600">B</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q12" value="c" class="mr-1.5 accent-emerald-600">C</label>
                                     </div>
+                                    <input type="hidden" id="ans_q12" data-ans='["b"]'>
                                 </li>
-                                <li class="flex flex-col sm:flex-row sm:items-center gap-4">
-                                    <div class="flex-1">This problem may be the result of the body's natural reaction to stress.</div>
-                                    <div class="flex gap-4 bg-white px-3 py-2 rounded-lg border transition shadow-sm">
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q13" value="A" data-is-correct="true" class="w-4 h-4"> A</label>
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q13" value="B" class="w-4 h-4"> B</label>
-                                        <label class="cursor-pointer flex items-center gap-1"><input type="radio" name="q13" value="C" class="w-4 h-4"> C</label>
+                                <li>This problem may be the result of the body's natural reaction to stress.
+                                    <div class="ml-1 mt-1 flex gap-3 ui-font text-[11px]">
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q13" value="a" class="mr-1.5 accent-emerald-600">A</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q13" value="b" class="mr-1.5 accent-emerald-600">B</label>
+                                        <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q13" value="c" class="mr-1.5 accent-emerald-600">C</label>
                                     </div>
+                                    <input type="hidden" id="ans_q13" data-ans='["a"]'>
                                 </li>
                             </ol>
+                            
+                            <div class="flex items-center gap-3 mt-5">
+                                <button id="btn-7.2" onclick="checkRadios('7.2', 7, 13)" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check Qs 7-13</button>
+                                <span id="score-7.2" class="ui-font text-[11px] font-bold hidden"></span>
+                            </div>
                         </div>
+
                     </div>
-                    
-                    <div class="flex items-center gap-4 border-t border-gray-200 pt-4 mt-2 px-4">
-                        <button onclick="checkGeneric(6)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
-                        <span id="score-6" class="font-bold text-lg hidden"></span>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">9</span>
                     </div>
                 </div>
+
+            </div>
+        </div>
+
+        <!-- Sticky Right Arrow (Desktop Only) -->
+        <div class="hidden lg:block w-10 shrink-0 ml-2 xl:ml-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="next-btn" onclick="goNext()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Next Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
             </div>
         </div>
 
     </div>
 
-    <script>
-        const REQUIRED_SCORE = 0.8; // 80% to pass
+    <!-- Mobile Fixed Bottom Navigation -->
+    <div class="lg:hidden fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-slate-200 p-3 flex justify-between z-50 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.1)]">
+        <button id="prev-btn-mobile" onclick="goPrev()" class="ui-font font-bold px-5 py-2 rounded-lg text-slate-700 bg-slate-100 active:bg-slate-200 transition-colors flex items-center gap-2">
+            &larr; Prev
+        </button>
+        <button id="next-btn-mobile" onclick="goNext()" class="ui-font font-bold px-5 py-2 rounded-lg text-white bg-emerald-600 active:bg-emerald-700 transition-colors flex items-center gap-2 shadow-sm">
+            Next &rarr;
+        </button>
+    </div>
 
-        // --- Custom Audio Players Initialization via SoundCloud API ---
-        function initAudioPlayers() {
-            document.querySelectorAll('.custom-audio-player').forEach(playerEl => {
-                const iframeElement = playerEl.querySelector('.sc-widget');
-                if (!iframeElement) return;
+    <script>
+        const REQUIRED_SCORE = 0.8;
+        const totalPages = 10; // 0 to 9
+        let currentSpread = 0; // For desktop (0 = pages 0,1; 1 = pages 2,3; etc.)
+        let currentMobilePage = 0;
+
+        function updatePagination() {
+            const isDesktop = window.innerWidth >= 1024;
+            const pages = document.querySelectorAll('.page-content');
+            
+            // Hide all pages
+            pages.forEach(p => p.classList.add('hidden'));
+
+            if (isDesktop) {
+                let leftIdx = currentSpread * 2;
+                let rightIdx = leftIdx + 1;
+                
+                const leftPage = document.getElementById(`page-${leftIdx}`);
+                const rightPage = document.getElementById(`page-${rightIdx}`);
+                
+                if(leftPage) leftPage.classList.remove('hidden');
+                if(rightPage) rightPage.classList.remove('hidden');
+
+                // Update Nav Buttons
+                document.getElementById('prev-btn').disabled = currentSpread === 0;
+                document.getElementById('next-btn').disabled = currentSpread >= Math.ceil(totalPages/2) - 1;
+                
+            } else {
+                const activePage = document.getElementById(`page-${currentMobilePage}`);
+                if(activePage) activePage.classList.remove('hidden');
+
+                // Update Mobile Nav
+                const prevMob = document.getElementById('prev-btn-mobile');
+                const nextMob = document.getElementById('next-btn-mobile');
+                if(prevMob) prevMob.style.visibility = currentMobilePage === 0 ? 'hidden' : 'visible';
+                if(nextMob) nextMob.style.visibility = currentMobilePage === totalPages - 1 ? 'hidden' : 'visible';
+            }
+        }
+
+        function goNext() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread < Math.ceil(totalPages/2) - 1) currentSpread++;
+            } else {
+                if (currentMobilePage < totalPages - 1) currentMobilePage++;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goPrev() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread > 0) currentSpread--;
+            } else {
+                if (currentMobilePage > 0) currentMobilePage--;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('resize', () => {
+            const isDesktop = window.innerWidth >= 1024;
+            if(isDesktop) {
+                currentSpread = Math.floor(currentMobilePage / 2);
+            } else {
+                currentMobilePage = currentSpread * 2;
+            }
+            updatePagination();
+        });
+
+        // --- Core UI & Grading Logic ---
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function validateBlanks(inputs) {
+            let allFilled = true;
+            inputs.forEach(input => {
+                if (input.classList.contains('font-normal')) return; // skip subjective notes
+                const val = input.value !== undefined ? input.value : input.innerText;
+                if (val.trim() === "") {
+                    allFilled = false;
+                    input.style.borderBottomColor = '#f59e0b';
+                    input.style.backgroundColor = '#fef3c7';
+                    setTimeout(() => {
+                        input.style.borderBottomColor = '';
+                        input.style.backgroundColor = '';
+                    }, 1500);
+                }
+            });
+            return allFilled;
+        }
+
+        // Setup Radio Buttons Sync to Hidden Inputs
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const name = e.target.name;
+                const hiddenInput = document.getElementById(`ans_${name}`);
+                if (hiddenInput) {
+                    hiddenInput.value = e.target.value;
+                }
+            });
+        });
+
+        // Grading multiple choice (radio buttons) with Start/End bounds
+        function checkRadios(exerciseId, startQ, endQ) {
+            let correctCount = 0;
+            let allAnswered = true;
+            const totalQs = endQ - startQ + 1;
+
+            for (let i = startQ; i <= endQ; i++) {
+                const hiddenInput = document.getElementById(`ans_q${i}`);
+                if (!hiddenInput || !hiddenInput.value) {
+                    allAnswered = false;
+                    const radio = document.querySelector(`input[name="q${i}"]`);
+                    if(radio) {
+                        const container = radio.closest('ol > li > div');
+                        if (container) {
+                            container.style.borderLeft = "4px solid #f59e0b";
+                            container.style.paddingLeft = "8px";
+                            setTimeout(() => {
+                                container.style.borderLeft = "";
+                                container.style.paddingLeft = "";
+                            }, 1500);
+                        }
+                    }
+                }
+            }
+
+            if (!allAnswered) {
+                showToast("Please answer all questions before checking!", "warning");
+                return;
+            }
+
+            for (let i = startQ; i <= endQ; i++) {
+                const hiddenInput = document.getElementById(`ans_q${i}`);
+                const userVal = hiddenInput.value.toLowerCase();
+                const possibleAns = JSON.parse(hiddenInput.getAttribute('data-ans')).map(a => a.toLowerCase());
+                
+                const checkedRadio = document.querySelector(`input[name="q${i}"]:checked`);
+                const label = checkedRadio.closest('label');
+                
+                // Clear previous highlights
+                document.querySelectorAll(`input[name="q${i}"]`).forEach(r => {
+                    r.closest('label').classList.remove('text-green-700', 'font-bold', 'text-red-700', 'bg-green-100', 'bg-red-100');
+                });
+
+                if (possibleAns.includes(userVal)) {
+                    correctCount++;
+                    label.classList.add('text-green-700', 'font-bold', 'bg-green-100');
+                } else {
+                    label.classList.add('text-red-700', 'font-bold', 'bg-red-100');
+                }
+            }
+
+            const scoreLabel = document.getElementById(`score-${exerciseId}`);
+            const percentage = correctCount / totalQs;
+            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalQs})`;
+            
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (percentage >= REQUIRED_SCORE) {
+                scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
+                const btn = document.getElementById(`btn-${exerciseId}`);
+                if (btn) { btn.disabled = true; btn.textContent = "Passed"; }
+                showToast("Good job!", "success");
+            } else {
+                scoreLabel.textContent = `❌ Failed. ${scoreText}`;
+                scoreLabel.classList.add('text-red-600');
+                showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
+            }
+        }
+
+        // Standard exercise checking (inputs, select boxes)
+        function checkExercise(exerciseId) {
+            const inputs = document.querySelectorAll(`[data-ex="${exerciseId}"]`);
+            if (!validateBlanks(inputs)) {
+                showToast("Please answer all required blanks before checking!", "warning");
+                return;
+            }
+
+            let correctCount = 0;
+            inputs.forEach(input => {
+                if(input.classList.contains('font-normal')) return;
+
+                const rawVal = input.value !== undefined ? input.value : input.innerText;
+                const userVal = rawVal.trim().toLowerCase().replace(/\s+/g, ' ');
+                const possibleAns = JSON.parse(input.getAttribute('data-ans'));
+                
+                if (possibleAns.includes(userVal)) {
+                    correctCount++;
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+
+            const scoreLabel = document.getElementById(`score-${exerciseId}`);
+            const totalCount = Array.from(inputs).filter(i => !i.classList.contains('font-normal')).length;
+            const percentage = correctCount / totalCount;
+            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
+            
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (percentage >= REQUIRED_SCORE) {
+                scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
+                
+                const btn = document.getElementById(`btn-${exerciseId}`);
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = "Passed";
+                }
+                showToast("Good job!", "success");
+            } else {
+                scoreLabel.textContent = `❌ Failed. ${scoreText}`;
+                scoreLabel.classList.add('text-red-600');
+                showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
+            }
+        }
+
+        // --- Audio Player Initialization via SoundCloud Widget API ---
+        function initAudioPlayer() {
+            const players = document.querySelectorAll('.custom-audio-player');
+            
+            players.forEach((playerEl) => {
+                const scUrl = playerEl.getAttribute('data-sc-url');
+                const iframeElement = playerEl.querySelector('.sc-widget-iframe');
+                
+                if (!iframeElement || !scUrl) return;
+                
+                iframeElement.src = scUrl;
                 
                 const widget = SC.Widget(iframeElement);
                 const playBtn = playerEl.querySelector('.audio-play-btn');
@@ -567,7 +1011,6 @@
                 const currentTimeEl = playerEl.querySelector('.audio-current-time');
                 const totalTimeEl = playerEl.querySelector('.audio-total-time');
 
-                let isPlaying = false;
                 let durationSec = 0;
 
                 const formatTime = (timeInSeconds) => {
@@ -581,250 +1024,62 @@
                     widget.getDuration((durationMs) => {
                         if (durationMs) {
                             durationSec = durationMs / 1000;
-                            totalTimeEl.textContent = formatTime(durationSec);
-                            progressBar.max = durationSec;
+                            if (totalTimeEl) totalTimeEl.textContent = formatTime(durationSec);
+                            if (progressBar) progressBar.max = durationSec;
                         }
                     });
                 };
 
-                widget.bind(SC.Widget.Events.READY, () => {
-                    updateDuration();
-                });
+                widget.bind(SC.Widget.Events.READY, () => { updateDuration(); });
 
                 widget.bind(SC.Widget.Events.PLAY_PROGRESS, (info) => {
                     if (!durationSec) updateDuration(); 
                     const currentPositionSec = info.currentPosition / 1000;
-                    currentTimeEl.textContent = formatTime(currentPositionSec);
-                    progressBar.value = currentPositionSec;
-                    if (durationSec > 0) {
+                    if (currentTimeEl) currentTimeEl.textContent = formatTime(currentPositionSec);
+                    if (progressBar) progressBar.value = currentPositionSec;
+                    if (durationSec > 0 && progressFill) {
                         const percent = (currentPositionSec / durationSec) * 100;
                         progressFill.style.width = `${percent}%`;
                     }
                 });
 
                 widget.bind(SC.Widget.Events.PLAY, () => {
-                    isPlaying = true;
-                    playIcon.classList.add('hidden');
-                    pauseIcon.classList.remove('hidden');
+                    if(playIcon) playIcon.classList.add('hidden');
+                    if(pauseIcon) pauseIcon.classList.remove('hidden');
                     updateDuration();
                 });
 
                 widget.bind(SC.Widget.Events.PAUSE, () => {
-                    isPlaying = false;
-                    pauseIcon.classList.add('hidden');
-                    playIcon.classList.remove('hidden');
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(playIcon) playIcon.classList.remove('hidden');
                 });
 
                 widget.bind(SC.Widget.Events.FINISH, () => {
-                    isPlaying = false;
-                    playIcon.classList.remove('hidden');
-                    pauseIcon.classList.add('hidden');
-                    progressFill.style.width = '0%';
-                    progressBar.value = 0;
+                    if(playIcon) playIcon.classList.remove('hidden');
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(progressFill) progressFill.style.width = '0%';
+                    if(progressBar) progressBar.value = 0;
                     widget.seekTo(0);
                 });
 
-                playBtn.addEventListener('click', () => {
-                    widget.toggle();
-                });
+                if (playBtn) {
+                    playBtn.addEventListener('click', () => { widget.toggle(); });
+                }
 
-                progressBar.addEventListener('input', () => {
-                    widget.seekTo(progressBar.value * 1000);
-                });
+                if (progressBar) {
+                    progressBar.addEventListener('input', () => {
+                        widget.seekTo(progressBar.value * 1000);
+                    });
+                }
             });
         }
-        
-        document.addEventListener('DOMContentLoaded', initAudioPlayers);
 
-        // --- Click & Match Logic ---
-        let selectedWordBtn = null;
-
-        function selectWord(btn) {
-            if (btn.classList.contains('used')) return;
-            document.querySelectorAll('.word-choice').forEach(b => b.classList.remove('selected'));
-            if (selectedWordBtn === btn) {
-                selectedWordBtn = null;
-                return;
-            }
-            btn.classList.add('selected');
-            selectedWordBtn = btn;
-        }
-
-        function placeWord(slot) {
-            if (slot.innerText.trim() !== '') {
-                const existingWord = slot.innerText.trim();
-                const bankBtn = Array.from(slot.closest('.exercise-section').querySelectorAll('.word-choice'))
-                                     .find(b => b.getAttribute('data-word') === existingWord);
-                if (bankBtn) bankBtn.classList.remove('used');
-                slot.innerText = '';
-            }
-            if (selectedWordBtn) {
-                if (selectedWordBtn.closest('.exercise-section') === slot.closest('.exercise-section')) {
-                    slot.innerText = selectedWordBtn.getAttribute('data-word');
-                    selectedWordBtn.classList.add('used');
-                    selectedWordBtn.classList.remove('selected');
-                    selectedWordBtn = null;
-                }
-            }
-        }
-
-        // --- Tab Navigation ---
-        function openTab(tabIndex) {
-            document.querySelectorAll('.exercise-section').forEach(sec => sec.classList.add('section-hidden'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(`section-${tabIndex}`).classList.remove('section-hidden');
-            document.getElementById(`tab-${tabIndex}`).classList.add('active');
-        }
-
-        // --- Interactive Word Bank Crossing ---
-        document.addEventListener('input', (e) => {
-            if (e.target.classList.contains('interactive-input')) {
-                const section = e.target.closest('.exercise-section');
-                const wb = section.querySelector('[id^="wb-"]');
-                if (!wb) return;
-                
-                const inputs = section.querySelectorAll('.interactive-input');
-                const typedWords = Array.from(inputs).map(inp => inp.value.trim().toLowerCase());
-                
-                const wordSpans = wb.querySelectorAll('span, button');
-                wordSpans.forEach(span => {
-                    const word = (span.getAttribute('data-word') || span.innerText).toLowerCase();
-                    if (typedWords.includes(word)) {
-                        span.classList.add('word-used');
-                    } else {
-                        span.classList.remove('word-used');
-                    }
-                });
-            }
+        // Initialize on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePagination();
+            initAudioPlayer();
         });
 
-        function showToast(message, type) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = `toast ${type} show`;
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        function unlockNext(currentIndex) {
-            const nextIndex = currentIndex + 1;
-            const nextTab = document.getElementById(`tab-${nextIndex}`);
-            if (nextTab) {
-                setTimeout(() => {
-                    openTab(nextIndex);
-                    document.querySelector('.flex.overflow-x-auto').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 1000);
-            } else {
-                showToast("🎉 Congratulations! You have completed all exercises in this unit!", "success");
-            }
-        }
-
-        function processScore(sectionIndex, correctCount, totalCount) {
-            const scoreLabel = document.getElementById(`score-${sectionIndex}`);
-            const percentage = correctCount / totalCount;
-            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
-            
-            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
-            
-            if (percentage >= REQUIRED_SCORE) {
-                scoreLabel.textContent = `✅ Passed! Score: ${scoreText}`;
-                scoreLabel.classList.add('text-green-600');
-                showToast("Great job! Moving to the next section.", "success");
-                
-                const btn = document.querySelector(`#section-${sectionIndex} button`);
-                btn.disabled = true;
-                btn.classList.add('opacity-50', 'cursor-not-allowed');
-                btn.textContent = "Passed";
-
-                unlockNext(sectionIndex);
-            } else {
-                scoreLabel.textContent = `❌ Failed. Score: ${scoreText} (Need 80%)`;
-                scoreLabel.classList.add('text-red-600');
-                showToast(`You scored ${Math.round(percentage * 100)}%. Please review your answers.`, "error");
-            }
-        }
-
-        // --- Generic Exercise Checker (Handles Text Inputs, Slots, and Radio Buttons) ---
-        function checkGeneric(sectionIndex) {
-            const section = document.getElementById(`section-${sectionIndex}`);
-            const textInputs = section.querySelectorAll('.interactive-input, .match-slot');
-            
-            // Gather all unique radio group names in this section
-            const radioInputs = section.querySelectorAll('input[type="radio"]');
-            const radioGroups = new Set();
-            radioInputs.forEach(r => radioGroups.add(r.name));
-
-            let allFilled = true;
-            let correctCount = 0;
-            let totalQuestions = textInputs.length + radioGroups.size;
-
-            // 1. Validate Text & Slot Inputs
-            textInputs.forEach(input => {
-                const rawVal = input.value !== undefined ? input.value : input.innerText;
-                const userVal = rawVal.trim().toLowerCase().replace(/\s+/g, ' '); // Normalize spaces
-                
-                if (userVal === "" || userVal === "...") {
-                    allFilled = false;
-                    if(input.classList.contains('match-slot')) {
-                        input.style.borderBottomColor = '#ef4444';
-                        input.style.backgroundColor = '#fef2f2';
-                        setTimeout(() => { input.style.borderBottomColor = ''; input.style.backgroundColor = ''; }, 1500);
-                    } else {
-                        input.classList.add('border-yellow-400', 'border-b-2');
-                        setTimeout(() => input.classList.remove('border-yellow-400', 'border-b-2'), 1500);
-                    }
-                } else {
-                    const possibleAns = JSON.parse(input.getAttribute('data-ans') || '[]');
-                    if (possibleAns.includes(userVal)) {
-                        correctCount++;
-                        input.classList.add('correct');
-                        input.classList.remove('incorrect');
-                    } else {
-                        input.classList.add('incorrect');
-                        input.classList.remove('correct');
-                    }
-                }
-            });
-
-            // 2. Validate Radio Groups
-            radioGroups.forEach(name => {
-                const radios = section.querySelectorAll(`input[name="${name}"]`);
-                let answered = false;
-                let isCorrect = false;
-
-                radios.forEach(r => {
-                    r.parentElement.classList.remove('text-green-600', 'text-red-600', 'font-bold');
-                    if (r.checked) {
-                        answered = true;
-                        if (r.getAttribute('data-is-correct') === 'true') {
-                            isCorrect = true;
-                        }
-                    }
-                });
-
-                if (!answered) {
-                    allFilled = false;
-                    radios[0].closest('.flex.gap-4').classList.add('border-yellow-400', 'border-2');
-                    setTimeout(() => radios[0].closest('.flex.gap-4').classList.remove('border-yellow-400', 'border-2'), 1500);
-                } else {
-                    const selected = section.querySelector(`input[name="${name}"]:checked`);
-                    if (isCorrect) {
-                        correctCount++;
-                        selected.parentElement.classList.add('text-green-600', 'font-bold');
-                    } else {
-                        selected.parentElement.classList.add('text-red-600', 'font-bold');
-                    }
-                }
-            });
-
-            if (!allFilled) {
-                showToast("Please fill in all blanks and select all options before checking!", "warning");
-                return;
-            }
-
-            processScore(sectionIndex, correctCount, totalQuestions);
-        }
     </script>
 </body>
 </html>
