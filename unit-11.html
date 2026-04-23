@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 11: Design and innovation - Textbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Lora', serif; 
+            background-color: #d1d5db;
+            background-image: radial-gradient(#9ca3af 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .ui-font { font-family: 'Inter', sans-serif; }
+
+        /* Book & Paper Styles */
+        .book-wrapper {
+            background-color: #fdfcf8;
+            box-shadow: 
+                0 20px 40px -10px rgba(0,0,0,0.3), 
+                0 0 0 1px rgba(0,0,0,0.05),
+                inset 0 0 60px rgba(139, 115, 85, 0.05);
+            border-radius: 4px 8px 8px 4px;
+        }
+
+        .spine-shadow {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 80px;
+            transform: translateX(-50%);
+            background: linear-gradient(
+                to right,
+                transparent 0%,
+                rgba(0,0,0,0.02) 40%,
+                rgba(0,0,0,0.12) 50%,
+                rgba(0,0,0,0.02) 60%,
+                transparent 100%
+            );
+            pointer-events: none;
+            z-index: 10;
+            border-left: 1px solid rgba(255,255,255,0.4);
+            border-right: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* Sticky Nav for Desktop */
+        .sticky-nav-container {
+            position: sticky;
+            top: 50vh;
+            transform: translateY(-50%);
+            height: max-content;
+            z-index: 50;
+        }
+
+        /* Inputs */
+        .input-blank {
+            font-family: 'Inter', sans-serif;
+            border: none;
+            border-bottom: 2px dashed #94a3b8;
+            background: rgba(255,255,255,0.5);
+            outline: none;
+            text-align: center;
+            padding: 0.1rem 0.25rem;
+            margin: 0 0.25rem;
+            transition: all 0.2s;
+            font-weight: 600;
+            color: #1e293b;
+            border-radius: 2px 2px 0 0;
+        }
+        .input-blank:focus { 
+            border-bottom: 2px solid #0369a1; 
+            background: #f0f9ff;
+        }
+        select.input-blank {
+            text-align: left;
+            cursor: pointer;
+            padding-right: 1.2rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.1rem center;
+            background-size: 0.8em;
+        }
+
+        .correct { 
+            border-bottom: 2px solid #16a34a !important; 
+            color: #166534; 
+            background-color: #dcfce7; 
+        }
+        .incorrect { 
+            border-bottom: 2px solid #dc2626 !important; 
+            color: #991b1b; 
+            background-color: #fee2e2; 
+        }
+
+        /* Callouts / Notes */
+        .textbook-note {
+            background-color: #f8fafc;
+            border-left: 4px solid #94a3b8;
+            position: relative;
+        }
+        .textbook-note::before {
+            content: "✍🏼 Note";
+            position: absolute;
+            top: -12px;
+            left: 8px;
+            background: #fdfcf8;
+            padding: 0 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            font-family: 'Inter', sans-serif;
+            color: #475569;
+        }
+
+        /* Custom Vocab Table */
+        .vocab-table { width: 100%; text-align: left; border-collapse: collapse; }
+        .vocab-table th { 
+            border-bottom: 2px solid #475569; 
+            padding: 8px; 
+            font-family: 'Inter', sans-serif; 
+            text-transform: uppercase; 
+            font-size: 11px; 
+            font-weight: 700;
+            letter-spacing: 0.05em; 
+            color: #334155; 
+        }
+        .vocab-table td { 
+            border-bottom: 1px dashed #cbd5e1; 
+            padding: 8px; 
+            font-size: 13px;
+        }
+
+        /* Buttons & Toasts */
+        .check-btn { transition: transform 0.1s, box-shadow 0.1s; }
+        .check-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            backdrop-filter: blur(4px);
+            transition: all 0.2s;
+        }
+        .nav-btn:hover:not(:disabled) { background: #fff; transform: scale(1.05); }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+
+        .toast {
+            position: fixed; top: 20px; right: 20px;
+            padding: 15px 25px; border-radius: 8px;
+            color: white; font-weight: bold;
+            opacity: 0; transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000; pointer-events: none;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.error { background-color: #ef4444; }
+        .toast.success { background-color: #22c55e; }
+        .toast.warning { background-color: #f59e0b; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col pt-4 lg:pt-10 pb-24 lg:pb-10">
+
+    <div id="toast" class="toast">Message</div>
+
+    <!-- Main Desk Area -->
+    <div class="w-full max-w-[1600px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
+        
+        <!-- Sticky Left Arrow -->
+        <div class="hidden lg:block w-10 shrink-0 mr-2 xl:mr-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="prev-btn" onclick="goPrev()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Previous Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- The Book -->
+        <div class="book-wrapper flex-1 w-full max-w-7xl flex flex-col lg:flex-row relative min-h-[85vh]">
+            <div class="spine-shadow hidden lg:block"></div>
+
+            <div id="pages-container" class="w-full flex relative">
+                
+                <!-- ==================== PAGE 0: Title & Intro ==================== -->
+                <div id="page-0" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow flex flex-col justify-center items-center text-center">
+                        <div class="w-32 h-32 bg-slate-100 rounded-full flex items-center justify-center mb-8 shadow-inner border border-slate-200 overflow-hidden relative">
+                            <!-- Building/Architecture Icon -->
+                            <svg class="w-16 h-16 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                        </div>
+                        <h4 class="text-sm uppercase tracking-widest text-slate-500 font-bold ui-font mb-2">Unit 11</h4>
+                        <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-slate-800 leading-tight">Design and innovation</h1>
+                        <h2 class="text-2xl italic text-slate-600 mb-8 border-b pb-8 border-slate-200">Building, engineering</h2>
+                        
+                        <p class="text-[15px] text-slate-600 leading-relaxed max-w-md mx-auto">
+                            Welcome to Unit 11. Work through the exercises to improve your vocabulary, listening, and reading skills regarding architecture, design, and engineering innovations.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">i</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 1: Building Basics ==================== -->
+                <div id="page-1" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">1. Building</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <div class="mb-6">
+                            <p class="mb-2 leading-relaxed text-sm"><span class="font-bold">1.1</span> Which adjectives best describe your home? <span class="italic text-slate-500">(Discussion)</span></p>
+                            <div class="bg-slate-50 border border-slate-200 rounded p-4 text-sm font-medium ui-font text-slate-700 flex flex-col gap-2 shadow-inner">
+                                <div><span class="font-bold text-slate-900">A</span> old / traditional / modern</div>
+                                <div><span class="font-bold text-slate-900">B</span> concrete / brick / steel / timber</div>
+                                <div><span class="font-bold text-slate-900">C</span> single-storey / two-storey / multi-storey / high rise</div>
+                            </div>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">1.2</span> Complete the sentences using the words in brackets in the <strong>correct order</strong>.</p>
+                        
+                        <ol class="list-decimal list-outside ml-4 space-y-4 text-slate-800 text-[14px] leading-loose">
+                            <li>It's a <input type="text" class="input-blank w-36" data-ex="1.2" data-ans='["traditional brick"]'> house. <span class="text-xs text-slate-500 italic">(brick, traditional)</span></li>
+                            <li>I live in a <input type="text" class="input-blank w-36" data-ex="1.2" data-ans='["lovely high-rise", "lovely high rise"]'> apartment. <span class="text-xs text-slate-500 italic">(high-rise, lovely)</span></li>
+                            <li>I'd rather live in a <input type="text" class="input-blank w-36" data-ex="1.2" data-ans='["small country"]'> cottage. <span class="text-xs text-slate-500 italic">(small, country)</span></li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-4 mb-6">
+                            <button id="btn-1.2" onclick="checkExercise('1.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.2</button>
+                            <span id="score-1.2" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+
+                        <div class="mb-6 pt-4 border-t border-slate-200">
+                            <p class="mb-3 leading-relaxed text-sm"><span class="font-bold">1.3</span> Now make a similar sentence about your own home.</p>
+                            <div class="flex flex-wrap items-center gap-2 text-[14px]">
+                                <span>I live in a</span>
+                                <input type="text" class="input-blank w-48 font-normal" placeholder="your home description...">
+                                <span>, but I'd rather live in a</span>
+                                <input type="text" class="input-blank w-48 font-normal" placeholder="dream home description...">
+                            </div>
+                        </div>
+
+                        <!-- Vocabulary note Callout -->
+                        <div class="textbook-note p-4 mt-6 text-sm text-slate-700 leading-relaxed shadow-sm rounded-r ui-font bg-blue-50 border-l-blue-500">
+                            <p class="font-bold mb-1 text-slate-800">Vocabulary note</p>
+                            <p class="text-xs">If we use more than one adjective they are normally in the following order: <strong>opinion, size, age, shape, colour, origin, material, type</strong>: <br><span class="italic text-slate-600">An ugly, old, brown, plastic shopping bag.</span><br> However, more than four adjectives together can sound awkward. NOT <span class="italic line-through decoration-red-400">An ugly, big, old, rectangular, brown, Italian, plastic bag.</span></p>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">1</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 2: Listening 11a ==================== -->
+                <div id="page-2" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">2. Listening</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <!-- Audio Player -->
+                        <div class="custom-audio-player bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mb-6 shadow-inner ui-font flex flex-col sm:flex-row items-center gap-4" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784691&auto_play=false&enable_api=1">
+                            <div class="text-xs font-bold text-slate-500 uppercase tracking-widest shrink-0">Track 11a</div>
+                            <div class="w-full flex items-center gap-3">
+                                <button class="audio-play-btn w-8 h-8 flex items-center justify-center bg-slate-700 hover:bg-slate-800 text-white rounded-full transition-colors shrink-0 focus:outline-none">
+                                    <svg class="play-icon h-4 w-4 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                    <svg class="pause-icon h-4 w-4 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                </button>
+                                <span class="audio-current-time text-xs font-mono text-slate-500 w-9 text-right">00:00</span>
+                                <div class="relative w-full h-1.5 bg-slate-300 rounded-full cursor-pointer flex-1 group">
+                                     <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                     <div class="audio-progress-bar absolute h-full bg-slate-600 rounded-full group-hover:bg-slate-800 transition-colors" style="width: 0%;"></div>
+                                </div>
+                                <span class="audio-total-time text-xs font-mono text-slate-500 w-9">00:00</span>
+                            </div>
+                            <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.1</span> Listen to three people describing their homes and complete the table below.</p>
+                        
+                        <div class="bg-white border border-slate-200 shadow-sm rounded overflow-hidden mb-6">
+                            <table class="vocab-table">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="w-8 text-center"></th>
+                                        <th>Type of building</th>
+                                        <th>Material(s) used</th>
+                                        <th>Favourite feature</th>
+                                        <th>Adjectives used to describe it</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="font-bold text-center bg-slate-50 text-slate-700">A</td>
+                                        <td><input type="text" class="input-blank w-full !px-1" data-ex="2.1" data-ans='["single-storey", "single storey", "a single-storey", "single-storey cottage"]'></td>
+                                        <td><input type="text" class="input-blank w-full !px-1" data-ex="2.1" data-ans='["timber and stone", "stone and timber"]'></td>
+                                        <td><input type="text" class="input-blank w-full !px-1" data-ex="2.1" data-ans='["ceilings", "ceiling"]'></td>
+                                        <td><input type="text" class="input-blank w-full !px-1" data-ex="2.1" data-ans='["traditional, ornate, cosy", "traditional, ornate, cozy", "traditional ornate cosy"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold text-center bg-slate-50 text-slate-700">B</td>
+                                        <td><input type="text" class="input-blank w-full !px-1" data-ex="2.1" data-ans='["high-rise", "high rise", "high-rise flat", "a high-rise flat"]'></td>
+                                        <td><input type="text" class="input-blank w-full !px-1" data-ex="2.1" data-ans='["glass, concrete and steel", "glass concrete and steel", "glass concrete steel"]'></td>
+                                        <td><input type="text" class="input-blank w-full !px-1" data-ex="2.1" data-ans='["balcony"]'></td>
+                                        <td><input type="text" class="input-blank w-full !px-1" data-ex="2.1" data-ans='["ultra-modern, state-of-the-art, functional, cramped", "ultra-modern, state-of-the art, functional, cramped", "ultra modern state of the art functional cramped"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold text-center bg-slate-50 text-slate-700">C</td>
+                                        <td><input type="text" class="input-blank w-full !px-1" data-ex="2.1" data-ans='["two-storey", "two storey", "a two-storey house", "two-storey house"]'></td>
+                                        <td><input type="text" class="input-blank w-full !px-1" data-ex="2.1" data-ans='["brick", "bricks"]'></td>
+                                        <td><input type="text" class="input-blank w-full !px-1" data-ex="2.1" data-ans='["staircase", "stairs"]'></td>
+                                        <td><input type="text" class="input-blank w-full !px-1" data-ex="2.1" data-ans='["conventional, typical, spacious, light, airy", "conventional typical spacious light airy"]'></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p class="text-[10px] text-slate-400 p-2 text-center border-t border-slate-100 bg-slate-50/50">Note: Separate adjectives with commas as needed.</p>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-4">
+                            <button id="btn-2.1" onclick="checkExercise('2.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.1</button>
+                            <span id="score-2.1" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">2</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 3: Listening Cont. ==================== -->
+                <div id="page-3" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.2</span> Listen again and answer the questions. Include the words from the recording that give you your answers.</p>
+                        
+                        <div class="space-y-6 text-slate-800 text-[14px]">
+                            <!-- Speaker A -->
+                            <div class="bg-slate-50 border border-slate-200 rounded p-4 shadow-sm">
+                                <h4 class="font-bold text-slate-700 border-b border-slate-200 pb-2 mb-3">Speaker A</h4>
+                                <ol class="list-decimal list-inside space-y-3">
+                                    <li>Where did the stone come from? <br><input type="text" class="input-blank w-48 mt-1" data-ex="2.2" data-ans='["the local quarry", "local quarry", "from the local quarry"]'></li>
+                                    <li>What makes the ceilings ornate? <br><input type="text" class="input-blank w-64 mt-1" data-ex="2.2" data-ans='["they are decorated with pretty details", "decorated with pretty details", "pretty details"]'></li>
+                                    <li>Is the house large or small? <br><input type="text" class="input-blank w-48 mt-1" data-ex="2.2" data-ans='["small", "cosy", "small (cosy)", "small and cosy"]'></li>
+                                </ol>
+                            </div>
+
+                            <!-- Speaker B -->
+                            <div class="bg-slate-50 border border-slate-200 rounded p-4 shadow-sm">
+                                <h4 class="font-bold text-slate-700 border-b border-slate-200 pb-2 mb-3">Speaker B</h4>
+                                <ol class="list-decimal list-inside space-y-3">
+                                    <li>Is the computer system new or old? <br><input type="text" class="input-blank w-48 mt-1" data-ex="2.2" data-ans='["new", "state-of-the-art", "new (state-of-the-art)", "state of the art"]'></li>
+                                    <li>What makes the apartment functional? <br><input type="text" class="input-blank w-64 mt-1" data-ex="2.2" data-ans='["it has a space to suit every purpose", "space to suit every purpose", "a space to suit every purpose"]'></li>
+                                    <li>Are the bedrooms large or small? <br><input type="text" class="input-blank w-48 mt-1" data-ex="2.2" data-ans='["small", "cramped", "small (cramped)", "small and cramped"]'></li>
+                                    <li>Are the buildings around it tall? <br><input type="text" class="input-blank w-64 mt-1" data-ex="2.2" data-ans='["no", "no (his building towers over everything else)", "his building towers over everything else", "towers over everything else"]'></li>
+                                </ol>
+                            </div>
+
+                            <!-- Speaker C -->
+                            <div class="bg-slate-50 border border-slate-200 rounded p-4 shadow-sm">
+                                <h4 class="font-bold text-slate-700 border-b border-slate-200 pb-2 mb-3">Speaker C</h4>
+                                <ol class="list-decimal list-inside space-y-3">
+                                    <li>Is this house different from those around it? <br><input type="text" class="input-blank w-64 mt-1" data-ex="2.2" data-ans='["no, it is conventional, typical", "no, it is conventional", "no, typical", "conventional", "typical", "no"]'></li>
+                                    <li>Which room does the speaker say is bright? <br><input type="text" class="input-blank w-64 mt-1" data-ex="2.2" data-ans='["the living room", "the living room (it is light and airy)", "living room"]'></li>
+                                    <li>What shape is the bottom of the staircase? <br><input type="text" class="input-blank w-48 mt-1" data-ex="2.2" data-ans='["curved"]'></li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6 mb-4">
+                            <button id="btn-2.2" onclick="checkExercise('2.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.2</button>
+                            <span id="score-2.2" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">3</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 4: Reading ==================== -->
+                <div id="page-4" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">3. Engineering</h3>
+                        </div>
+
+                        <!-- Error warning Callout -->
+                        <div class="textbook-note p-3 mt-2 mb-6 text-xs text-slate-700 leading-relaxed shadow-sm rounded-r ui-font bg-amber-50 border-l-amber-500">
+                            <p class="font-bold mb-1 text-slate-800">Error warning!</p>
+                            <p>We say that you <i>build a house / a hospital</i> etc, NOT <span class="line-through">build a building</span>. <strong>Build up</strong> is not used to talk about construction. It refers to increasing or developing something: <i>He went to the gym to build up his muscles. We are trying to build up a relationship with a company in Japan. I had to build up the confidence to apply for the manager's job.</i> NOT <span class="line-through">We need to build up a hospital.</span></p>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">3.1</span> Read the article below. (You may also scan and underline the words in the box if on paper).</p>
+                        
+                        <div class="bg-white border border-slate-200 p-3 rounded mb-4 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] justify-center text-slate-500 shadow-inner">
+                            <span>invented</span> <span>hoisted</span> <span>hauling</span> <span>platforms</span> <span>storage</span>
+                            <span>trigger</span> <span>device</span> <span>steel</span> <span>lift shaft</span> <span>tension</span>
+                            <span>internal</span> <span>frame</span> <span>construction</span> <span>skyscrapers</span> <span>landmarks</span>
+                        </div>
+
+                        <div class="bg-slate-100/50 border border-slate-200 rounded-md p-5 text-slate-800 text-[13px] leading-relaxed shadow-sm">
+                            <h4 class="font-bold text-lg mb-3 text-center font-serif">The elevator</h4>
+                            
+                            <p class="mb-3">Next time you are in a lift, look for the name of the people who made it. Chances are it will be the Otis Elevator Company. It was Elisha Otis who invented the gadget that made the modern passenger lift possible. The concept of elevation was already well established. Louis XV of France disliked stairs so much that he was regularly hoisted skywards in a 'flying chair' by several strong men hauling on ropes. In Otis's time, warehouses commonly used moving platforms to transport goods between floors. However, elevating anything further than one floor or weighing more than 70 kilograms would have been considered far too dangerous.</p>
+                            
+                            <p class="mb-3">Otis worked for a bed manufacturer who was keen to expand his business but needed to find a way to move his beds to an upper floor for storage. The inventive Otis soon had a solution to the safety problem: a tough steel spring system that meshed with ratchets on either side of the lift shaft so that if the rope gave way the sudden loss of tension would trigger the device, stopping the lift from falling.</p>
+                            
+                            <p>At the 1854 World Trade fair in New York, Otis unveiled his invention and orders began to pour in, including one from the United States Assay Office which at that time was constructing one of the first buildings with an internal steel frame to support the exterior walls. This was the same construction method that skyscrapers would use. If not for lifts, the towering landmarks which feature so prominently in today's architecture would have been impossible and the character of our cities would be entirely different.</p>
+                        </div>
+
+                    </div>
+                    <div class="mt-6 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">4</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 5: Comprehension ==================== -->
+                <div id="page-5" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-4 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-xl font-bold text-slate-900">Comprehension</h3>
+                            <span class="ui-font text-[10px] font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-3 leading-relaxed text-[13px]"><span class="font-bold">3.2</span> Decide if the following statements are <strong>True</strong> or <strong>False</strong>. Write the words from the article that helped you.</p>
+
+                        <div class="bg-white border border-slate-200 shadow-sm rounded overflow-hidden mb-6">
+                            <table class="vocab-table text-[11px]">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="w-[50%]">Statements</th>
+                                        <th class="w-[15%]">T / F</th>
+                                        <th class="w-[35%]">Reason (Underlined Word)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1. Elisha Otis came up with the idea that made elevators safe.</td>
+                                        <td>
+                                            <select class="input-blank font-bold text-slate-700 w-full !text-[11px]" data-ex="3.2" data-ans='["true"]'><option value="" disabled selected>-</option><option value="true">True</option><option value="false">False</option></select>
+                                        </td>
+                                        <td><input type="text" class="input-blank w-full !text-[11px]" data-ex="3.2" data-ans='["invented", "invented = came up with the idea"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2. Louis XV was lifted into the air by men pulling ropes.</td>
+                                        <td>
+                                            <select class="input-blank font-bold text-slate-700 w-full !text-[11px]" data-ex="3.2" data-ans='["true"]'><option value="" disabled selected>-</option><option value="true">True</option><option value="false">False</option></select>
+                                        </td>
+                                        <td><input type="text" class="input-blank w-full !text-[11px]" data-ex="3.2" data-ans='["hoisted", "hauling", "hoisted, hauling"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3. Warehouses in Otis's time used boxes to move goods.</td>
+                                        <td>
+                                            <select class="input-blank font-bold text-slate-700 w-full !text-[11px]" data-ex="3.2" data-ans='["false"]'><option value="" disabled selected>-</option><option value="true">True</option><option value="false">False</option></select>
+                                        </td>
+                                        <td><input type="text" class="input-blank w-full !text-[11px]" data-ex="3.2" data-ans='["platforms", "they used platforms"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>4. Otis's boss wanted to move beds to a higher level for delivery.</td>
+                                        <td>
+                                            <select class="input-blank font-bold text-slate-700 w-full !text-[11px]" data-ex="3.2" data-ans='["false"]'><option value="" disabled selected>-</option><option value="true">True</option><option value="false">False</option></select>
+                                        </td>
+                                        <td><input type="text" class="input-blank w-full !text-[11px]" data-ex="3.2" data-ans='["storage", "for storage"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>5. Otis made his springs out of plastic.</td>
+                                        <td>
+                                            <select class="input-blank font-bold text-slate-700 w-full !text-[11px]" data-ex="3.2" data-ans='["false"]'><option value="" disabled selected>-</option><option value="true">True</option><option value="false">False</option></select>
+                                        </td>
+                                        <td><input type="text" class="input-blank w-full !text-[11px]" data-ex="3.2" data-ans='["steel", "they were made of steel"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>6. The ratchets were located on the inside of the lift.</td>
+                                        <td>
+                                            <select class="input-blank font-bold text-slate-700 w-full !text-[11px]" data-ex="3.2" data-ans='["false"]'><option value="" disabled selected>-</option><option value="true">True</option><option value="false">False</option></select>
+                                        </td>
+                                        <td><input type="text" class="input-blank w-full !text-[11px]" data-ex="3.2" data-ans='["lift shaft", "they were in the lift shaft"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>7. If a rope became slack this activated the contraption.</td>
+                                        <td>
+                                            <select class="input-blank font-bold text-slate-700 w-full !text-[11px]" data-ex="3.2" data-ans='["true"]'><option value="" disabled selected>-</option><option value="true">True</option><option value="false">False</option></select>
+                                        </td>
+                                        <td><input type="text" class="input-blank w-full !text-[11px]" data-ex="3.2" data-ans='["tension, trigger, device", "tension", "trigger", "device", "loss of tension = slack"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>8. The US Assay Office had its support structure on the outside.</td>
+                                        <td>
+                                            <select class="input-blank font-bold text-slate-700 w-full !text-[11px]" data-ex="3.2" data-ans='["false"]'><option value="" disabled selected>-</option><option value="true">True</option><option value="false">False</option></select>
+                                        </td>
+                                        <td><input type="text" class="input-blank w-full !text-[11px]" data-ex="3.2" data-ans='["frame", "internal", "it was internal"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>9. US Assay Office used similar building technique to tall buildings.</td>
+                                        <td>
+                                            <select class="input-blank font-bold text-slate-700 w-full !text-[11px]" data-ex="3.2" data-ans='["true"]'><option value="" disabled selected>-</option><option value="true">True</option><option value="false">False</option></select>
+                                        </td>
+                                        <td><input type="text" class="input-blank w-full !text-[11px]" data-ex="3.2" data-ans='["construction method", "skyscrapers", "construction method, skyscrapers"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>10. Skyscrapers can help you find your way around a city.</td>
+                                        <td>
+                                            <select class="input-blank font-bold text-slate-700 w-full !text-[11px]" data-ex="3.2" data-ans='["true"]'><option value="" disabled selected>-</option><option value="true">True</option><option value="false">False</option></select>
+                                        </td>
+                                        <td><input type="text" class="input-blank w-full !text-[11px]" data-ex="3.2" data-ans='["landmarks"]'></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="p-2 border-t border-slate-200 flex justify-end bg-slate-50">
+                                <button id="btn-3.2" onclick="checkExercise('3.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check 3.2</button>
+                                <span id="score-3.2" class="ui-font text-[11px] font-bold hidden ml-3"></span>
+                            </div>
+                        </div>
+
+                        <!-- 3.3 Matching -->
+                        <div class="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4 text-[13px]">
+                            <div>
+                                <p class="mb-2 leading-relaxed"><span class="font-bold">3.3</span> Match the verbs.</p>
+                                <ol class="list-decimal list-inside space-y-2 font-medium ui-font">
+                                    <li>condemn <select class="input-blank font-bold text-slate-700 w-12 !text-[11px]" data-ex="3.3" data-ans='["f"]'><option value=""></option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option><option value="f">F</option><option value="g">G</option><option value="h">H</option></select></li>
+                                    <li>demolish <select class="input-blank font-bold text-slate-700 w-12 !text-[11px]" data-ex="3.3" data-ans='["d"]'><option value=""></option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option><option value="f">F</option><option value="g">G</option><option value="h">H</option></select></li>
+                                    <li>develop <select class="input-blank font-bold text-slate-700 w-12 !text-[11px]" data-ex="3.3" data-ans='["a"]'><option value=""></option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option><option value="f">F</option><option value="g">G</option><option value="h">H</option></select></li>
+                                    <li>devise <select class="input-blank font-bold text-slate-700 w-12 !text-[11px]" data-ex="3.3" data-ans='["h"]'><option value=""></option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option><option value="f">F</option><option value="g">G</option><option value="h">H</option></select></li>
+                                    <li>maintain <select class="input-blank font-bold text-slate-700 w-12 !text-[11px]" data-ex="3.3" data-ans='["g"]'><option value=""></option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option><option value="f">F</option><option value="g">G</option><option value="h">H</option></select></li>
+                                    <li>occupy <select class="input-blank font-bold text-slate-700 w-12 !text-[11px]" data-ex="3.3" data-ans='["e"]'><option value=""></option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option><option value="f">F</option><option value="g">G</option><option value="h">H</option></select></li>
+                                    <li>reconstruct <select class="input-blank font-bold text-slate-700 w-12 !text-[11px]" data-ex="3.3" data-ans='["c"]'><option value=""></option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option><option value="f">F</option><option value="g">G</option><option value="h">H</option></select></li>
+                                    <li>renovate <select class="input-blank font-bold text-slate-700 w-12 !text-[11px]" data-ex="3.3" data-ans='["b"]'><option value=""></option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option><option value="f">F</option><option value="g">G</option><option value="h">H</option></select></li>
+                                </ol>
+                                <div class="mt-3"><button id="btn-3.3" onclick="checkExercise('3.3')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check 3.3</button> <span id="score-3.3" class="ui-font text-[11px] font-bold hidden"></span></div>
+                            </div>
+                            <div class="bg-slate-100 p-3 rounded text-[11px] flex flex-col justify-center">
+                                <ul class="space-y-1">
+                                    <li><strong>A</strong> build something on a piece of land</li>
+                                    <li><strong>B</strong> build again</li>
+                                    <li><strong>C</strong> repair and make new again</li>
+                                    <li><strong>D</strong> knock down</li>
+                                    <li><strong>E</strong> live in or use a space</li>
+                                    <li><strong>F</strong> judge a building not to be safe</li>
+                                    <li><strong>G</strong> keep in good condition</li>
+                                    <li><strong>H</strong> invent</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 3.4 Choose Words -->
+                        <div>
+                            <p class="mb-2 leading-relaxed text-[13px]"><span class="font-bold">3.4</span> Choose the correct words.</p>
+                            <ol class="list-decimal list-outside ml-4 space-y-3 text-slate-800 text-[13px] leading-snug">
+                                <li>We can't move into the house until they have 
+                                    <select class="input-blank font-bold text-slate-700 w-28 !text-[11px]" data-ex="3.4" data-ans='["renovated"]'><option value=""></option><option value="developed">developed</option><option value="renovated">renovated</option></select> it.
+                                </li>
+                                <li>No one has been allowed to occupy the building since it was 
+                                    <select class="input-blank font-bold text-slate-700 w-28 !text-[11px]" data-ex="3.4" data-ans='["condemned"]'><option value=""></option><option value="condemned">condemned</option><option value="reconstructed">reconstructed</option></select>.
+                                </li>
+                                <li>The architect 
+                                    <select class="input-blank font-bold text-slate-700 w-24 !text-[11px]" data-ex="3.4" data-ans='["devised"]'><option value=""></option><option value="devised">devised</option><option value="demolished">demolished</option></select> a clever way of keeping the house cool in summer.
+                                </li>
+                                <li>The tenants were offered a reduced rent if they agreed to 
+                                    <select class="input-blank font-bold text-slate-700 w-24 !text-[11px]" data-ex="3.4" data-ans='["maintain"]'><option value=""></option><option value="maintain">maintain</option><option value="occupy">occupy</option></select> the property.
+                                </li>
+                            </ol>
+                            <div class="mt-3"><button id="btn-3.4" onclick="checkExercise('3.4')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check 3.4</button> <span id="score-3.4" class="ui-font text-[11px] font-bold hidden"></span></div>
+                        </div>
+
+                    </div>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">5</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 6: Word Building ==================== -->
+                <div id="page-6" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Word Building</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">3.5</span> Complete the table.</p>
+
+                        <div class="bg-white border border-slate-200 shadow-sm rounded overflow-hidden mb-8">
+                            <table class="vocab-table">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="w-1/3">Noun / person</th>
+                                        <th class="w-1/3">Verb</th>
+                                        <th class="w-1/3">Adjective / past participle</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>building/builder</td>
+                                        <td>build</td>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.5" data-ans='["built"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.5" data-ans='["construction/construction worker", "construction worker", "construction"]'></td>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.5" data-ans='["construct"]'></td>
+                                        <td>constructed</td>
+                                    </tr>
+                                    <tr>
+                                        <td>design/<input type="text" class="input-blank w-16 !text-[13px]" data-ex="3.5" data-ans='["designer"]'></td>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.5" data-ans='["design"]'></td>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.5" data-ans='["designed"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>engineering/engineer</td>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.5" data-ans='["engineer"]'></td>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.5" data-ans='["engineered"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>innovation/<input type="text" class="input-blank w-16 !text-[13px]" data-ex="3.5" data-ans='["innovator"]'></td>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.5" data-ans='["innovate"]'></td>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.5" data-ans='["innovative"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>invention/inventor</td>
+                                        <td>invent</td>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.5" data-ans='["inventive"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.5" data-ans='["occupancy/occupant", "occupancy", "occupant"]'></td>
+                                        <td>occupy</td>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.5" data-ans='["occupied"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>structure</td>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.5" data-ans='["structure"]'></td>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.5" data-ans='["structured"]'></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4 mb-8">
+                            <button id="btn-3.5" onclick="checkExercise('3.5')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 3.5</button>
+                            <span id="score-3.5" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">3.6</span> Complete the text with words from 3.5.</p>
+                        <div class="space-y-4 text-slate-800 leading-loose text-[14px]">
+                            <p>A group of (1) i<input type="text" class="input-blank w-24" data-ex="3.6" data-ans='["inventive"]'> architecture students has won this year's Timber Bridge Competition. The students' (2) d<input type="text" class="input-blank w-20" data-ex="3.6" data-ans='["design"]'> beat 17 others. The team used an (3) i<input type="text" class="input-blank w-28" data-ex="3.6" data-ans='["innovative"]'> approach to their bridge which was (4) b<input type="text" class="input-blank w-20" data-ex="3.6" data-ans='["built"]'> entirely out of timber. They used traditional (5) c<input type="text" class="input-blank w-32" data-ex="3.6" data-ans='["construction"]'> methods to avoid using nails or screws. The students demonstrated a good knowledge of fundamental (6) e<input type="text" class="input-blank w-28" data-ex="3.6" data-ans='["engineering"]'> principles. They (7) c<input type="text" class="input-blank w-28" data-ex="3.6" data-ans='["constructed"]'> a working model of the bridge, which (8) o<input type="text" class="input-blank w-24" data-ex="3.6" data-ans='["occupied"]'> an entire car park. This allowed them to test the bridge and ensure that the (9) s<input type="text" class="input-blank w-24" data-ex="3.6" data-ans='["structure"]'> was sound.</p>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4">
+                            <button id="btn-3.6" onclick="checkExercise('3.6')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 3.6</button>
+                            <span id="score-3.6" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">6</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 7: Pronunciation ==================== -->
+                <div id="page-7" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">4. Pronunciation</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <div class="bg-indigo-50/50 border border-indigo-100 rounded-md p-5 text-slate-800">
+                            <p class="text-[13px] text-indigo-800 mb-4 leading-relaxed">
+                                <span class="font-bold">4.</span> Tick the correct sound for each of the letters underlined. Listen and check your answers, then practise saying the words correctly.
+                            </p>
+                            
+                            <div class="custom-audio-player bg-white border border-indigo-200 rounded px-3 py-2 mb-5 shadow-sm ui-font flex items-center gap-3" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784667&auto_play=false&enable_api=1">
+                                <div class="text-[10px] font-bold text-indigo-500 uppercase tracking-widest shrink-0">Track 11b</div>
+                                <button class="audio-play-btn w-6 h-6 flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-full transition-colors shrink-0 focus:outline-none">
+                                    <svg class="play-icon h-3 w-3 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                    <svg class="pause-icon h-3 w-3 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                </button>
+                                <div class="relative w-full h-1 bg-indigo-200 rounded-full cursor-pointer flex-1 group">
+                                    <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                    <div class="audio-progress-bar absolute h-full bg-indigo-500 rounded-full group-hover:bg-indigo-700 transition-colors" style="width: 0%;"></div>
+                                </div>
+                                <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-x-6 gap-y-3 text-indigo-900 text-[13px] ui-font">
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>1 de<span class="underline decoration-2 font-bold">s</span>ign</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[11px]" data-ex="4" data-ans='["z"]'><option value=""></option><option value="s">S</option><option value="z">Z</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>6 hou<span class="underline decoration-2 font-bold">s</span>ing</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[11px]" data-ex="4" data-ans='["z"]'><option value=""></option><option value="s">S</option><option value="z">Z</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>2 plea<span class="underline decoration-2 font-bold">s</span>e</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[11px]" data-ex="4" data-ans='["z"]'><option value=""></option><option value="s">S</option><option value="z">Z</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>7 fa<span class="underline decoration-2 font-bold">s</span>ten</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[11px]" data-ex="4" data-ans='["s"]'><option value=""></option><option value="s">S</option><option value="z">Z</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>3 devi<span class="underline decoration-2 font-bold">c</span>e</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[11px]" data-ex="4" data-ans='["s"]'><option value=""></option><option value="s">S</option><option value="z">Z</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>8 de<span class="underline decoration-2 font-bold">s</span>truction</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[11px]" data-ex="4" data-ans='["s"]'><option value=""></option><option value="s">S</option><option value="z">Z</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>4 devi<span class="underline decoration-2 font-bold">s</span>e</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[11px]" data-ex="4" data-ans='["z"]'><option value=""></option><option value="s">S</option><option value="z">Z</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>9 u<span class="underline decoration-2 font-bold">s</span>e (n)</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[11px]" data-ex="4" data-ans='["s"]'><option value=""></option><option value="s">S</option><option value="z">Z</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>5 re<span class="underline decoration-2 font-bold">s</span>idence</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[11px]" data-ex="4" data-ans='["z"]'><option value=""></option><option value="s">S</option><option value="z">Z</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>10 u<span class="underline decoration-2 font-bold">s</span>e (v)</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[11px]" data-ex="4" data-ans='["z"]'><option value=""></option><option value="s">S</option><option value="z">Z</option></select>
+                                </div>
+                            </div>
+                            <div class="mt-4"><button id="btn-4" onclick="checkExercise('4')" class="check-btn ui-font bg-white border border-indigo-200 shadow-sm text-indigo-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-indigo-50">Check Pronunciation</button> <span id="score-4" class="ui-font text-[11px] font-bold hidden"></span></div>
+                        </div>
+
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">7</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 8: Test Practice Reading ==================== -->
+                <div id="page-8" class="page-content w-full lg:w-1/2 p-4 sm:p-8 lg:p-10 lg:pr-14 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-4 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Test Practice: Academic Reading</h3>
+                        </div>
+
+                        <!-- 2-column layout to fit the large text elegantly -->
+                        <div class="bg-amber-50/60 border border-amber-100 rounded-md p-4 text-slate-800 text-[11px] leading-relaxed shadow-sm columns-1 sm:columns-2 gap-6 mt-2 overflow-y-auto custom-scrollbar h-[65vh]">
+                            <h4 class="font-bold text-sm mb-3 text-center font-serif col-span-1 sm:col-span-2" style="column-span: all;">The house of the future, then and now.</h4>
+                            
+                            <p class="mb-3 font-bold">A</p>
+                            <p class="mb-3">The term 'home of tomorrow' first came into usage in the 1920s to describe the 'ideal house for future living' (Corn and Horrigan, 1984, p. 62). It quickly emerged as a cultural symbol for the American obsession with the single-family dwelling. In the 1930s and 1940s, advertisers and promoters picked up the concept, and a number of full-scale homes of tomorrow traveled through fairs and department stores. It was in this same era that American consumer culture was consolidated. In the 1920s, there were three competing conceptions of the home of the future. The first, indebted to modernist architecture, depicted the home of tomorrow as a futuristic architectural structure. The second conception was that of the mass-produced, prefabricated house, a dwelling potentially available to every North American. These first two failed to capture the imagination and the dollars of industrialists or of the public, but the third image of the home of the future did. From World War II until the present, the evolving story of the home of the future is a story of 'the house as a wonderland of gadgets' (Horrigan, 1986, p.154).</p>
+                            
+                            <p class="mb-3 font-bold">B</p>
+                            <p class="mb-3">In the 1950s, the home of the future was represented in and by one room: the kitchen. Appliance manufacturers, advertisers and women's magazines teamed up to surround women with images of the technology of tomorrow that would 'automate' their lives, and automation became a synonym for reduced domestic labor. In 1958, one author predicted 'Combustion freezers and electric ovens may someday reduce the job of preparing meals to a push-button operation' (Ross, 1958, pp.197-8). 'Before long there will also be self-propelled carpet and floor sweepers, automatic ironers that can fold and stack clothing, laundro-matic units that will wash and dry clothes even as these hang in the closet, dishwashers capable of washing and drying dinnerware and storing it in the cupboard, and many additional push-button marvels.' (Ross, 1958, p. 200)</p>
+                            <p class="mb-3">The postwar faith in and fascination with science is very apparent in future predictions made in the 1950s. The magazine Popular Mechanics did a special feature in February 1950 entitled, 'Miracles You'll See in the Next Fifty Years'. 'Housewives in 50 years may wash dirty dishes - right down the drain! Cheap plastic would melt in hot water.' They also predicted that the housewife of the future would clean her house by simply turning the hose on everything. Furnishings, rugs, draperies and unscratchable floors would all be made of synthetic fabric or waterproof plastic. After the water had run down a drain in the middle of the floor (later concealed by a rug of synthetic fibre) you would turn on a blast of hot air and dry everything.</p>
+                            <p class="mb-3">The overriding message of the 1950s vision of the house of the future is that one can access the wonders of the future through the purchase of domestic technology today. In an October 1957 issue of Life magazine, the built-in appliances from Westinghouse reflect the 'shape of tomorrow'. 'Put them in your home - suddenly you're living in the future.' As Corn and Horrigan (1984) noted, 'by focusing on improving technology ... the future becomes strictly a matter of things, their invention, improvement, and acquisition' (p. 11).</p>
+                            
+                            <p class="mb-3 font-bold">C</p>
+                            <p class="mb-3">What is most striking in the 1960s home of the future is the recognition and incorporation of social and political turmoil into the representation of domestic technology. Technology moves out of the kitchen and spreads to the living room, bedroom and bathroom. While the home of the future was still a wonderland of gadgets, who was using the gadgets, why, and to what effect, was finally being opened up to possible alternatives. Whirlpool dishwashers ran an advertisement in November 1968 in Ladies' Home Journal explaining, 'How Whirlpool made my husband a man again'. Readers learned of the crisis of masculinity that can take place if a man helps with the housework. We learn that Barry is a great son, father and husband. He believed that the scrubbing of pots and pans was man's work and so he helped out at home. However, at work the men that work for him used to laugh behind his back because his hands were rough and red. The Whirlpool two-speed dishwasher stopped all that. Thus, a household appliance can preserve a man's masculinity by ensuring that he does not have to do 'women's work' in the home.</p>
+                            
+                            <p class="mb-3 font-bold">D</p>
+                            <p class="mb-3">The broader social context continued to be reflected in the 1970s home of the future, but now the trend was to look backwards for the future, back to a proud pioneer heritage. In stark contrast to the 1950s, 'old-fashioned' is no longer used in a pejorative way; it is seen as a cherished value. Over the 1970s, North America experienced a certain erosion of trust in science and technology and there was less utopian speculation about the technologically produced future. The previous unproblematic link between technology, the future and progress was being questioned (Corn, 1986).</p>
+                            <p class="mb-3">From the space-age metals of the 1960s where every object had an electrical cord, we find a return to the traditional. Ideal homes featured wood, inside and out, and an increased emphasis on windows. Domestic technologies were not featured as prominently, and the modernist or ultra-modernist designs of a few years earlier were all but gone. The use of wood, combined with the use of windows, worked to blur the line between outside and inside, bringing the outside into inner or domestic space.</p>
+                            <p class="mb-3">We also see the influence of the Green movement, such as in the deployment of technology for solar-heated homes. The energy crisis was making itself felt, reflecting fears about a future not quite as rosy as that predicted by Popular Mechanics in 1950. Whereas in the 1960s the General Electric Company was exhorting consumers to 'Live Electrically', in the 1970s, the Edison Electric Company found it necessary to address the energy crisis directly in their advertisements.</p>
+
+                            <p class="mb-3 font-bold">E</p>
+                            <p class="mb-3">In 1978, House Beautiful magazine, predicting what the homes of the 1980s would be like, suggested that self-indulgence was the wave of the future. 'Our senses are awakened, and a new technology is waiting to aid us in giving them a free rein. Bathroom spas and gyms, computerized kitchens, wide screen entertainment, even home discotheques are all on the way.' By the 1980s, the environmental and social movements of the 1970s were starting to ebb, significantly more women were working outside of the home, and computer technology was becoming more of a reality in the household. All these trends opened the door for a renewed love of technology.</p>
+                            <p>The line between work and leisure became blurred in the 1980s. Forget about not being able to fit exercise into a hectic workday, in 1982, you can work and work out simultaneously. The Walking Desk, a computer workstation for the office at home, has a treadmill, stationary bike and stair climber installed underneath. On her most productive day, a worker should be able to walk four to five miles and burn as many as fifteen hundred calories while maintaining a normal workload. The desk will also come with a compact-disc player and color monitor for viewing nature scenes on a computer break. Thus, in addition to turning exercise into work, we see that nature is being brought into the home for breaks. One never has to leave the home, but the imperative is still clearly to be productive.</p>
+                        </div>
+                    </div>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">8</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 9: Test Practice Questions ==================== -->
+                <div id="page-9" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow flex flex-col justify-between">
+                        
+                        <div class="textbook-note p-3 mb-4 text-[11px] text-slate-700 leading-relaxed shadow-sm rounded-r ui-font">
+                            <p class="font-bold mb-1 text-slate-800">Test Tip</p>
+                            <p>The headings in this type of question must represent the ideas expressed throughout each section, not just in one sentence.</p>
+                        </div>
+
+                        <!-- Questions 1-5 -->
+                        <div class="mb-6">
+                            <div class="flex justify-between items-end mb-2 border-b-2 border-slate-800 pb-1">
+                                <h3 class="text-lg font-bold text-slate-900">Questions 1-5</h3>
+                                <span class="ui-font text-[10px] font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                            </div>
+
+                            <p class="mb-2 text-slate-800 text-[12px] italic">Choose the correct heading for each section from the list of headings below. Write the correct number, <strong>i-viii</strong>.</p>
+                            
+                            <div class="bg-white border border-slate-200 rounded p-3 mb-4 text-slate-700 shadow-inner grid grid-cols-2 gap-x-4">
+                                <ul class="space-y-1 text-[11px] font-bold ui-font">
+                                    <li>i. Outdoor spaces in the house of tomorrow</li>
+                                    <li>ii. The house of the future helps with the battle of the sexes</li>
+                                    <li>iii. The compact home of tomorrow</li>
+                                    <li>iv. The multipurpose home of tomorrow</li>
+                                </ul>
+                                <ul class="space-y-1 text-[11px] font-bold ui-font">
+                                    <li>v. Housework declines in the house of the future</li>
+                                    <li>vi. Mixed success for visions of the future</li>
+                                    <li>vii. The future lies in the past</li>
+                                    <li>viii. A change of structure in the home of tomorrow</li>
+                                </ul>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3 text-slate-800 text-[13px] leading-snug">
+                                <div>1. Section A <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.1" data-ans='["vi"]'><option value=""></option><option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option><option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option><option value="vii">vii</option><option value="viii">viii</option></select></div>
+                                <div>4. Section D <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.1" data-ans='["vii"]'><option value=""></option><option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option><option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option><option value="vii">vii</option><option value="viii">viii</option></select></div>
+                                <div>2. Section B <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.1" data-ans='["v"]'><option value=""></option><option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option><option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option><option value="vii">vii</option><option value="viii">viii</option></select></div>
+                                <div>5. Section E <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.1" data-ans='["iv"]'><option value=""></option><option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option><option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option><option value="vii">vii</option><option value="viii">viii</option></select></div>
+                                <div>3. Section C <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.1" data-ans='["ii"]'><option value=""></option><option value="i">i</option><option value="ii">ii</option><option value="iii">iii</option><option value="iv">iv</option><option value="v">v</option><option value="vi">vi</option><option value="vii">vii</option><option value="viii">viii</option></select></div>
+                            </div>
+                            <div class="flex items-center gap-3 mt-4">
+                                <button id="btn-test.1" onclick="checkExercise('test.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check Qs 1-5</button>
+                                <span id="score-test.1" class="ui-font text-[11px] font-bold hidden"></span>
+                            </div>
+                        </div>
+
+                        <!-- Questions 6-13 -->
+                        <div>
+                            <div class="flex justify-between items-end mb-2 border-b-2 border-slate-800 pb-1">
+                                <h3 class="text-lg font-bold text-slate-900">Questions 6-13</h3>
+                            </div>
+
+                            <p class="mb-3 text-slate-800 text-[12px] italic">Match each statement or prediction with the correct time period, <strong>A-E</strong>.</p>
+                            
+                            <div class="flex flex-wrap gap-3 mb-4 text-[11px] font-bold text-slate-700 bg-slate-50 p-2 rounded">
+                                <span><strong>A</strong> 1920s</span> <span><strong>B</strong> 1930s/40s</span> <span><strong>C</strong> 1950s</span> <span><strong>D</strong> 1970s</span> <span><strong>E</strong> 1980s</span>
+                            </div>
+
+                            <ol class="list-decimal list-outside ml-4 space-y-2 text-slate-800 text-[11px] leading-snug ui-font" start="6">
+                                <li>There was a loss of faith in automation. <select class="input-blank font-bold text-slate-700 w-12 !text-[11px]" data-ex="test.2" data-ans='["d"]'><option value=""></option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select></li>
+                                <li>Advertisers believed that houses would be made in a factory. <select class="input-blank font-bold text-slate-700 w-12 !text-[11px]" data-ex="test.2" data-ans='["a"]'><option value=""></option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select></li>
+                                <li>There were fewer housewives. <select class="input-blank font-bold text-slate-700 w-12 !text-[11px]" data-ex="test.2" data-ans='["e"]'><option value=""></option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select></li>
+                                <li>One writer envisaged furniture being made from fully washable materials. <select class="input-blank font-bold text-slate-700 w-12 !text-[11px]" data-ex="test.2" data-ans='["c"]'><option value=""></option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select></li>
+                                <li>There was an increased awareness of the environment. <select class="input-blank font-bold text-slate-700 w-12 !text-[11px]" data-ex="test.2" data-ans='["d"]'><option value=""></option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select></li>
+                                <li>There was a link between our interest in the future and increased consumerism. <select class="input-blank font-bold text-slate-700 w-12 !text-[11px]" data-ex="test.2" data-ans='["c"]'><option value=""></option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select></li>
+                                <li>One magazine predicted that disposable plates would be used. <select class="input-blank font-bold text-slate-700 w-12 !text-[11px]" data-ex="test.2" data-ans='["c"]'><option value=""></option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select></li>
+                                <li>A new expression for 'the perfect home' was introduced. <select class="input-blank font-bold text-slate-700 w-12 !text-[11px]" data-ex="test.2" data-ans='["a"]'><option value=""></option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select></li>
+                            </ol>
+                            
+                            <div class="flex items-center gap-3 mt-4">
+                                <button id="btn-test.2" onclick="checkExercise('test.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check Qs 6-13</button>
+                                <span id="score-test.2" class="ui-font text-[11px] font-bold hidden"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">9</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Sticky Right Arrow -->
+        <div class="hidden lg:block w-10 shrink-0 ml-2 xl:ml-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="next-btn" onclick="goNext()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Next Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Mobile Fixed Bottom Navigation -->
+    <div class="lg:hidden fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-slate-200 p-3 flex justify-between z-50 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.1)]">
+        <button id="prev-btn-mobile" onclick="goPrev()" class="ui-font font-bold px-5 py-2 rounded-lg text-slate-700 bg-slate-100 active:bg-slate-200 transition-colors flex items-center gap-2">
+            &larr; Prev
+        </button>
+        <button id="next-btn-mobile" onclick="goNext()" class="ui-font font-bold px-5 py-2 rounded-lg text-white bg-slate-800 active:bg-slate-700 transition-colors flex items-center gap-2 shadow-sm">
+            Next &rarr;
+        </button>
+    </div>
+
+    <script>
+        const REQUIRED_SCORE = 0.8;
+        const totalPages = 10; // Pages 0 to 9
+        let currentSpread = 0; // For desktop (0 = pages 0,1; 1 = pages 2,3; etc.)
+        let currentMobilePage = 0;
+
+        function updatePagination() {
+            const isDesktop = window.innerWidth >= 1024;
+            const pages = document.querySelectorAll('.page-content');
+            
+            // Hide all pages
+            pages.forEach(p => p.classList.add('hidden'));
+
+            if (isDesktop) {
+                let leftIdx = currentSpread * 2;
+                let rightIdx = leftIdx + 1;
+                
+                const leftPage = document.getElementById(`page-${leftIdx}`);
+                const rightPage = document.getElementById(`page-${rightIdx}`);
+                
+                if(leftPage) leftPage.classList.remove('hidden');
+                if(rightPage) rightPage.classList.remove('hidden');
+
+                // Update Nav Buttons
+                document.getElementById('prev-btn').disabled = currentSpread === 0;
+                document.getElementById('next-btn').disabled = currentSpread >= Math.ceil(totalPages/2) - 1;
+                
+            } else {
+                const activePage = document.getElementById(`page-${currentMobilePage}`);
+                if(activePage) activePage.classList.remove('hidden');
+
+                // Update Mobile Nav
+                const prevMob = document.getElementById('prev-btn-mobile');
+                const nextMob = document.getElementById('next-btn-mobile');
+                if(prevMob) prevMob.style.visibility = currentMobilePage === 0 ? 'hidden' : 'visible';
+                if(nextMob) nextMob.style.visibility = currentMobilePage === totalPages - 1 ? 'hidden' : 'visible';
+            }
+        }
+
+        function goNext() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread < Math.ceil(totalPages/2) - 1) currentSpread++;
+            } else {
+                if (currentMobilePage < totalPages - 1) currentMobilePage++;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goPrev() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread > 0) currentSpread--;
+            } else {
+                if (currentMobilePage > 0) currentMobilePage--;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('resize', () => {
+            const isDesktop = window.innerWidth >= 1024;
+            if(isDesktop) {
+                currentSpread = Math.floor(currentMobilePage / 2);
+            } else {
+                currentMobilePage = currentSpread * 2;
+            }
+            updatePagination();
+        });
+
+        // --- Core UI & Grading Logic ---
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function validateBlanks(inputs) {
+            let allFilled = true;
+            inputs.forEach(input => {
+                if (input.classList.contains('font-normal')) return; // skip subjective notes
+                const val = input.value !== undefined ? input.value : input.innerText;
+                if (val.trim() === "") {
+                    allFilled = false;
+                    input.style.borderBottomColor = '#f59e0b';
+                    input.style.backgroundColor = '#fef3c7';
+                    setTimeout(() => {
+                        input.style.borderBottomColor = '';
+                        input.style.backgroundColor = '';
+                    }, 1500);
+                }
+            });
+            return allFilled;
+        }
+
+        function checkExercise(exerciseId) {
+            const inputs = document.querySelectorAll(`[data-ex="${exerciseId}"]`);
+            if (!validateBlanks(inputs)) {
+                showToast("Please answer all required blanks before checking!", "warning");
+                return;
+            }
+
+            let correctCount = 0;
+            inputs.forEach(input => {
+                if(input.classList.contains('font-normal')) return;
+
+                const rawVal = input.value !== undefined ? input.value : input.innerText;
+                const userVal = rawVal.trim().toLowerCase().replace(/\s+/g, ' ');
+                const possibleAns = JSON.parse(input.getAttribute('data-ans'));
+                
+                if (possibleAns.includes(userVal)) {
+                    correctCount++;
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+
+            const scoreLabel = document.getElementById(`score-${exerciseId}`);
+            const totalCount = Array.from(inputs).filter(i => !i.classList.contains('font-normal')).length;
+            const percentage = correctCount / totalCount;
+            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
+            
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (percentage >= REQUIRED_SCORE) {
+                scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
+                
+                const btn = document.getElementById(`btn-${exerciseId}`);
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = "Passed";
+                }
+                showToast("Good job!", "success");
+            } else {
+                scoreLabel.textContent = `❌ Failed. ${scoreText}`;
+                scoreLabel.classList.add('text-red-600');
+                showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
+            }
+        }
+
+        // --- Audio Player Initialization via SoundCloud Widget API ---
+        function initAudioPlayer() {
+            const players = document.querySelectorAll('.custom-audio-player');
+            
+            players.forEach((playerEl) => {
+                const scUrl = playerEl.getAttribute('data-sc-url');
+                const iframeElement = playerEl.querySelector('.sc-widget-iframe');
+                
+                if (!iframeElement || !scUrl) return;
+                
+                iframeElement.src = scUrl;
+                
+                const widget = SC.Widget(iframeElement);
+                const playBtn = playerEl.querySelector('.audio-play-btn');
+                const playIcon = playerEl.querySelector('.play-icon');
+                const pauseIcon = playerEl.querySelector('.pause-icon');
+                const progressBar = playerEl.querySelector('.audio-progress');
+                const progressFill = playerEl.querySelector('.audio-progress-bar');
+                const currentTimeEl = playerEl.querySelector('.audio-current-time');
+                const totalTimeEl = playerEl.querySelector('.audio-total-time');
+
+                let durationSec = 0;
+
+                const formatTime = (timeInSeconds) => {
+                    if (isNaN(timeInSeconds) || timeInSeconds === Infinity) return "00:00";
+                    const min = Math.floor(timeInSeconds / 60);
+                    const sec = Math.floor(timeInSeconds % 60);
+                    return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+                };
+
+                const updateDuration = () => {
+                    widget.getDuration((durationMs) => {
+                        if (durationMs) {
+                            durationSec = durationMs / 1000;
+                            if (totalTimeEl) totalTimeEl.textContent = formatTime(durationSec);
+                            if (progressBar) progressBar.max = durationSec;
+                        }
+                    });
+                };
+
+                widget.bind(SC.Widget.Events.READY, () => { updateDuration(); });
+
+                widget.bind(SC.Widget.Events.PLAY_PROGRESS, (info) => {
+                    if (!durationSec) updateDuration(); 
+                    const currentPositionSec = info.currentPosition / 1000;
+                    if (currentTimeEl) currentTimeEl.textContent = formatTime(currentPositionSec);
+                    if (progressBar) progressBar.value = currentPositionSec;
+                    if (durationSec > 0 && progressFill) {
+                        const percent = (currentPositionSec / durationSec) * 100;
+                        progressFill.style.width = `${percent}%`;
+                    }
+                });
+
+                widget.bind(SC.Widget.Events.PLAY, () => {
+                    if(playIcon) playIcon.classList.add('hidden');
+                    if(pauseIcon) pauseIcon.classList.remove('hidden');
+                    updateDuration();
+                });
+
+                widget.bind(SC.Widget.Events.PAUSE, () => {
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(playIcon) playIcon.classList.remove('hidden');
+                });
+
+                widget.bind(SC.Widget.Events.FINISH, () => {
+                    if(playIcon) playIcon.classList.remove('hidden');
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(progressFill) progressFill.style.width = '0%';
+                    if(progressBar) progressBar.value = 0;
+                    widget.seekTo(0);
+                });
+
+                if (playBtn) {
+                    playBtn.addEventListener('click', () => { widget.toggle(); });
+                }
+
+                if (progressBar) {
+                    progressBar.addEventListener('input', () => {
+                        widget.seekTo(progressBar.value * 1000);
+                    });
+                }
+            });
+        }
+
+        // Initialize on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePagination();
+            initAudioPlayer();
+        });
+
+    </script>
+</body>
+</html>
