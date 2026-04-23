@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 10: Reaching for the skies - Textbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Lora', serif; 
+            background-color: #d1d5db;
+            background-image: radial-gradient(#9ca3af 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .ui-font { font-family: 'Inter', sans-serif; }
+
+        /* Book & Paper Styles */
+        .book-wrapper {
+            background-color: #fdfcf8;
+            box-shadow: 
+                0 20px 40px -10px rgba(0,0,0,0.3), 
+                0 0 0 1px rgba(0,0,0,0.05),
+                inset 0 0 60px rgba(139, 115, 85, 0.05);
+            border-radius: 4px 8px 8px 4px;
+        }
+
+        .spine-shadow {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 80px;
+            transform: translateX(-50%);
+            background: linear-gradient(
+                to right,
+                transparent 0%,
+                rgba(0,0,0,0.02) 40%,
+                rgba(0,0,0,0.12) 50%,
+                rgba(0,0,0,0.02) 60%,
+                transparent 100%
+            );
+            pointer-events: none;
+            z-index: 10;
+            border-left: 1px solid rgba(255,255,255,0.4);
+            border-right: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* Sticky Nav for Desktop */
+        .sticky-nav-container {
+            position: sticky;
+            top: 50vh;
+            transform: translateY(-50%);
+            height: max-content;
+            z-index: 50;
+        }
+
+        /* Inputs */
+        .input-blank {
+            font-family: 'Inter', sans-serif;
+            border: none;
+            border-bottom: 2px dashed #94a3b8;
+            background: rgba(255,255,255,0.5);
+            outline: none;
+            text-align: center;
+            padding: 0.1rem 0.25rem;
+            margin: 0 0.25rem;
+            transition: all 0.2s;
+            font-weight: 600;
+            color: #1e293b;
+            border-radius: 2px 2px 0 0;
+        }
+        .input-blank:focus { 
+            border-bottom: 2px solid #0369a1; 
+            background: #f0f9ff;
+        }
+        select.input-blank {
+            text-align: left;
+            cursor: pointer;
+            padding-right: 1.2rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.1rem center;
+            background-size: 0.8em;
+        }
+
+        .correct { 
+            border-bottom: 2px solid #16a34a !important; 
+            color: #166534; 
+            background-color: #dcfce7; 
+        }
+        .incorrect { 
+            border-bottom: 2px solid #dc2626 !important; 
+            color: #991b1b; 
+            background-color: #fee2e2; 
+        }
+
+        /* Callouts / Notes */
+        .textbook-note {
+            background-color: #f8fafc;
+            border-left: 4px solid #94a3b8;
+            position: relative;
+        }
+        .textbook-note::before {
+            content: "✍🏼 Note";
+            position: absolute;
+            top: -12px;
+            left: 8px;
+            background: #fdfcf8;
+            padding: 0 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            font-family: 'Inter', sans-serif;
+            color: #475569;
+        }
+
+        /* Custom Vocab Table */
+        .vocab-table { width: 100%; text-align: left; border-collapse: collapse; }
+        .vocab-table th { 
+            border-bottom: 2px solid #475569; 
+            padding: 10px 8px; 
+            font-family: 'Inter', sans-serif; 
+            text-transform: uppercase; 
+            font-size: 11px; 
+            font-weight: 700;
+            letter-spacing: 0.05em; 
+            color: #334155; 
+        }
+        .vocab-table td { 
+            border-bottom: 1px dashed #cbd5e1; 
+            padding: 12px 8px; 
+            font-size: 14px;
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb { background-color: #94a3b8; }
+
+        /* Buttons & Toasts */
+        .check-btn { transition: transform 0.1s, box-shadow 0.1s; }
+        .check-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            backdrop-filter: blur(4px);
+            transition: all 0.2s;
+        }
+        .nav-btn:hover:not(:disabled) { background: #fff; transform: scale(1.05); }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+
+        .toast {
+            position: fixed; top: 20px; right: 20px;
+            padding: 15px 25px; border-radius: 8px;
+            color: white; font-weight: bold;
+            opacity: 0; transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000; pointer-events: none;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.error { background-color: #ef4444; }
+        .toast.success { background-color: #22c55e; }
+        .toast.warning { background-color: #f59e0b; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col pt-4 lg:pt-10 pb-24 lg:pb-10">
+
+    <div id="toast" class="toast">Message</div>
+
+    <!-- Main Desk Area -->
+    <div class="w-full max-w-[1600px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
+        
+        <!-- Sticky Left Arrow (Desktop Only) -->
+        <div class="hidden lg:block w-10 shrink-0 mr-2 xl:mr-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="prev-btn" onclick="goPrev()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Previous Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- The Book -->
+        <div class="book-wrapper flex-1 w-full max-w-7xl flex flex-col lg:flex-row relative min-h-[85vh]">
+            
+            <!-- Spine Decoration (Desktop Only) -->
+            <div class="spine-shadow hidden lg:block"></div>
+
+            <!-- Page Container (Flexible Height) -->
+            <div id="pages-container" class="w-full flex relative">
+                
+                <!-- ==================== PAGE 0: Title & Intro ==================== -->
+                <div id="page-0" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow flex flex-col justify-center items-center text-center">
+                        <div class="w-32 h-32 bg-slate-100 rounded-full flex items-center justify-center mb-8 shadow-inner border border-slate-200 overflow-hidden relative">
+                            <!-- Earth Icon Placeholder -->
+                            <svg class="w-20 h-20 text-slate-400 absolute" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h4 class="text-sm uppercase tracking-widest text-slate-500 font-bold ui-font mb-2">Unit 10</h4>
+                        <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-slate-800 leading-tight">Reaching for the skies</h1>
+                        <h2 class="text-2xl italic text-slate-600 mb-8 border-b pb-8 border-slate-200">Space, the planets</h2>
+                        
+                        <p class="text-lg text-slate-600 leading-relaxed max-w-md mx-auto">
+                            Welcome to Unit 10. In this unit, you will practice vocabulary and reading skills related to space exploration, the planets, and our universe.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">i</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 1: Space Basics ==================== -->
+                <div id="page-1" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">1. Space</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <div class="mb-6">
+                            <h4 class="font-bold text-sm text-slate-800 mb-2">1.1 Answer these questions (Discussion)</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-[14px] text-slate-700 italic">
+                                <li>Would you like to travel into space? (Why? / Why not?)</li>
+                                <li>What do you imagine it would be like?</li>
+                                <li>What problems do you think you would experience in space?</li>
+                            </ul>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">1.2</span> Complete the text below with suitable words from the box.</p>
+                        
+                        <div class="bg-white border border-slate-200 p-4 rounded mb-6 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[13px] justify-center font-bold text-slate-600 shadow-inner">
+                            <span>astronauts</span> <span>atmosphere</span> <span>commercial</span> <span>explorers</span>
+                            <span>launch</span> <span>outer</span> <span>simulator</span> <span>weightlessness</span>
+                        </div>
+
+                        <div class="space-y-4 text-slate-800 leading-loose text-[14px]">
+                            <p>If you have ever dreamed of travelling in space then our (1) <input type="text" class="input-blank w-28" data-ex="1.2" data-ans='["commercial"]'> space travel programme will make that dream a reality. Of course, passengers will need to prepare for this experience. However, unlike the months of training that (2) <input type="text" class="input-blank w-28" data-ex="1.2" data-ans='["astronauts"]'> undergo, our passengers will be ready for (3) <input type="text" class="input-blank w-24" data-ex="1.2" data-ans='["launch"]'> within two days. To prepare for a truly out-of-this-world experience, passengers will spend two days in our special training facility. There the passengers will be able to experience zero gravity in a special (4) <input type="text" class="input-blank w-28" data-ex="1.2" data-ans='["simulator"]'>; this will allow the passengers to acclimatise. During the flight itself a rocket will propel the spacecraft into suborbital space in excess of 100,000 m above the Earth's (5) <input type="text" class="input-blank w-28" data-ex="1.2" data-ans='["atmosphere"]'>. This will allow the passengers to experience (6) <input type="text" class="input-blank w-36" data-ex="1.2" data-ans='["weightlessness"]'>.</p>
+                            <p>Our space (7) <input type="text" class="input-blank w-24" data-ex="1.2" data-ans='["explorers"]'> will be able to float around the cabin and view the Earth and (8) <input type="text" class="input-blank w-24" data-ex="1.2" data-ans='["outer"]'> space for approximately ten minutes prior to re-entry and landing.</p>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-1.2" onclick="checkExercise('1.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.2</button>
+                            <span id="score-1.2" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">1</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 2: Definitions & Word Forms ==================== -->
+                <div id="page-2" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Space Vocabulary</h3>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">1.3</span> Read the text on the previous page again and find words that match these definitions.</p>
+
+                        <ol class="list-decimal list-outside ml-4 space-y-4 text-slate-800 text-[14px] leading-loose">
+                            <li>an actual event: <input type="text" class="input-blank w-32" data-ex="1.3" data-ans='["a reality", "reality"]'></li>
+                            <li>go through an experience: <input type="text" class="input-blank w-28" data-ex="1.3" data-ans='["undergo"]'></li>
+                            <li>the force or pull from the Earth: <input type="text" class="input-blank w-28" data-ex="1.3" data-ans='["gravity"]'></li>
+                            <li>get used to a change in conditions: <input type="text" class="input-blank w-32" data-ex="1.3" data-ans='["acclimatise"]'></li>
+                            <li>drive something forwards: <input type="text" class="input-blank w-28" data-ex="1.3" data-ans='["propel"]'></li>
+                            <li>more than: <input type="text" class="input-blank w-32" data-ex="1.3" data-ans='["in excess of", "excess of"]'></li>
+                            <li>stay up in the air or in water: <input type="text" class="input-blank w-28" data-ex="1.3" data-ans='["float"]'></li>
+                            <li>entering the Earth's atmosphere again: <input type="text" class="input-blank w-32" data-ex="1.3" data-ans='["re-entry"]'></li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-4 mb-8">
+                            <button id="btn-1.3" onclick="checkExercise('1.3')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.3</button>
+                            <span id="score-1.3" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm pt-4 border-t border-slate-200"><span class="font-bold">1.4</span> Complete the sentences with words from the text. You will need to <strong>change the form</strong> of the words.</p>
+                        
+                        <ol class="list-decimal list-outside ml-4 space-y-4 text-slate-800 text-[14px] leading-loose">
+                            <li>Some people believe that space e<input type="text" class="input-blank w-32" data-ex="1.4" data-ans='["exploration"]'> is a waste of money.</li>
+                            <li>Climbing extremely high mountains is made all the more difficult because of the drop in a<input type="text" class="input-blank w-32" data-ex="1.4" data-ans='["atmospheric"]'> pressure.</li>
+                            <li>Spacecrafts need to reach extremely high speeds in order to escape the g<input type="text" class="input-blank w-32" data-ex="1.4" data-ans='["gravitational"]'> pull of the Earth.</li>
+                            <li>Last year the astronauts u<input type="text" class="input-blank w-32" data-ex="1.4" data-ans='["underwent"]'> a series of mental and physical tests in order to qualify for the mission.</li>
+                            <li>This computer program s<input type="text" class="input-blank w-32" data-ex="1.4" data-ans='["simulates"]'> extremes of weather so that pilots can experience difficult flying conditions.</li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-1.4" onclick="checkExercise('1.4')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.4</button>
+                            <span id="score-1.4" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">2</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 3: The Planets Listening ==================== -->
+                <div id="page-3" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">2. The Planets</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <!-- Error warning Callout -->
+                        <div class="textbook-note p-4 mt-2 mb-6 text-sm text-slate-700 leading-relaxed shadow-sm rounded-r ui-font bg-amber-50 border-l-amber-500">
+                            <p class="font-bold mb-1 text-slate-800">Error warning!</p>
+                            <p class="text-xs">Earth is the name of our planet and has a capital letter, but the sun does not. We say the Earth but not our earth: <i>The Earth moves around the sun. We must take care of our planet.</i> NOT <i>We must take care of our earth.</i></p>
+                        </div>
+
+                        <!-- Audio Player -->
+                        <div class="custom-audio-player bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mb-6 shadow-inner ui-font flex flex-col sm:flex-row items-center gap-4" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784859&auto_play=false&enable_api=1">
+                            <div class="text-xs font-bold text-slate-500 uppercase tracking-widest shrink-0">Track 10a</div>
+                            <div class="w-full flex items-center gap-3">
+                                <button class="audio-play-btn w-8 h-8 flex items-center justify-center bg-slate-700 hover:bg-slate-800 text-white rounded-full transition-colors shrink-0 focus:outline-none">
+                                    <svg class="play-icon h-4 w-4 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                    <svg class="pause-icon h-4 w-4 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                </button>
+                                <span class="audio-current-time text-xs font-mono text-slate-500 w-9 text-right">00:00</span>
+                                <div class="relative w-full h-1.5 bg-slate-300 rounded-full cursor-pointer flex-1 group">
+                                     <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                     <div class="audio-progress-bar absolute h-full bg-slate-600 rounded-full group-hover:bg-slate-800 transition-colors" style="width: 0%;"></div>
+                                </div>
+                                <span class="audio-total-time text-xs font-mono text-slate-500 w-9">00:00</span>
+                            </div>
+                            <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.1</span> Listen to someone talking about the problems of forming colonies on other planets. Complete the table with <strong>NO MORE THAN TWO WORDS</strong> from the talk.</p>
+                        
+                        <div class="bg-white border border-slate-200 shadow-sm rounded overflow-hidden mb-6">
+                            <table class="vocab-table">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="w-1/3">Planet</th>
+                                        <th>Physical features / Disadvantages</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="font-bold text-slate-700">Venus</td>
+                                        <td class="text-[13px] leading-loose">
+                                            • same size as 1. <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["earth"]'><br>
+                                            • has no 2. <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["oceans"]'><br>
+                                            • covered in 3. <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["cloud", "clouds"]'><br>
+                                            • constant 4. <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["thunderstorms"]'>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold text-slate-700">Mercury</td>
+                                        <td class="text-[13px] leading-loose">
+                                            • smaller than all other planets except 5. <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["pluto"]'><br>
+                                            • has greatest range of temperatures of any planet in the 6. <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["solar system"]'><br>
+                                            • much too hot
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold text-slate-700">Saturn</td>
+                                        <td class="text-[13px] leading-loose">
+                                            • has many 7. <input type="text" class="input-blank w-28" data-ex="2.1" data-ans='["rings", "moons", "rings/moons"]'> and 8. <input type="text" class="input-blank w-28" data-ex="2.1" data-ans='["moons", "rings", "moons/rings"]'>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-4">
+                            <button id="btn-2.1" onclick="checkExercise('2.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.1</button>
+                            <span id="score-2.1" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">3</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 4: Planets Cont. & Word Building ==================== -->
+                <div id="page-4" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.2</span> Listen again and complete the sentences below.</p>
+                        
+                        <ol class="list-decimal list-outside ml-4 space-y-4 text-slate-800 text-[14px] leading-loose mb-8">
+                            <li>Venus is unusual because it <input type="text" class="input-blank w-28" data-ex="2.2" data-ans='["rotates"]'> in the opposite direction to other planets.</li>
+                            <li>The <input type="text" class="input-blank w-28" data-ex="2.2" data-ans='["surface"]'> of Venus has many craters caused by asteroids.</li>
+                            <li>Mercury has no substantial <input type="text" class="input-blank w-32" data-ex="2.2" data-ans='["atmosphere"]'>.</li>
+                            <li>Mercury does not have any water so cannot <input type="text" class="input-blank w-28" data-ex="2.2" data-ans='["sustain"]'> life.</li>
+                            <li>The Voyager space <input type="text" class="input-blank w-28" data-ex="2.2" data-ans='["shuttle"]'> has provided us with pictures of Saturn's moons.</li>
+                            <li>The <input type="text" class="input-blank w-32" data-ex="2.2" data-ans='["composition"]'> of Saturn is mainly gas.</li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-4 mb-8">
+                            <button id="btn-2.2" onclick="checkExercise('2.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.2</button>
+                            <span id="score-2.2" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+
+                        <div class="flex justify-between items-end mb-4 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-xl font-bold text-slate-900">Word Building</h3>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.3</span> Complete the table.</p>
+
+                        <div class="bg-white border border-slate-200 shadow-sm rounded overflow-hidden">
+                            <table class="vocab-table">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="w-1/2">Noun</th>
+                                        <th class="w-1/2">Adjective</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>atmosphere</td>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="2.3" data-ans='["atmospheric"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="2.3" data-ans='["cosmos"]'></td>
+                                        <td>cosmic</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="2.3" data-ans='["galaxy"]'></td>
+                                        <td>galactic</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="2.3" data-ans='["gravity"]'></td>
+                                        <td>gravitational</td>
+                                    </tr>
+                                    <tr>
+                                        <td>horizon</td>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="2.3" data-ans='["horizontal"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="2.3" data-ans='["moon"]'></td>
+                                        <td>lunar</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="2.3" data-ans='["meteor"]'></td>
+                                        <td>meteoric</td>
+                                    </tr>
+                                    <tr>
+                                        <td>sun</td>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="2.3" data-ans='["solar"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="2.3" data-ans='["star"]'></td>
+                                        <td>stellar</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="2.3" data-ans='["earth"]'></td>
+                                        <td>terrestrial</td>
+                                    </tr>
+                                    <tr>
+                                        <td>universe</td>
+                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="2.3" data-ans='["universal"]'></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-4">
+                            <button id="btn-2.3" onclick="checkExercise('2.3')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.3</button>
+                            <span id="score-2.3" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">4</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 5: Vocab Practice ==================== -->
+                <div id="page-5" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Vocabulary Practice</h3>
+                        </div>
+
+                        <!-- Vocabulary note Callout -->
+                        <div class="textbook-note p-4 mt-2 mb-6 text-sm text-slate-700 leading-relaxed shadow-sm rounded-r ui-font bg-blue-50 border-l-blue-500">
+                            <p class="font-bold mb-1 text-slate-800">Vocabulary note</p>
+                            <p class="text-xs">The suffix <strong>-ic</strong> tells us that a word is an adjective. How many adjectives in 2.3 end in -ic? Other common examples are: <i>economic, scenic, tragic</i>.</p>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.4</span> Complete the sentences with suitable words from the table in 2.3.</p>
+                        
+                        <ol class="list-decimal list-outside ml-4 space-y-5 text-slate-800 text-[14px] leading-loose">
+                            <li>The moon appears much bigger when it is close to the <input type="text" class="input-blank w-32" data-ex="2.4" data-ans='["horizon"]'>.</li>
+                            <li>The North Star is the brightest star in our <input type="text" class="input-blank w-32" data-ex="2.4" data-ans='["galaxy"]'>.</li>
+                            <li>Many scientists believe that dinosaurs became extinct when a <input type="text" class="input-blank w-32" data-ex="2.4" data-ans='["meteor"]'> hit the Earth.</li>
+                            <li>A <input type="text" class="input-blank w-28" data-ex="2.4" data-ans='["lunar"]'> eclipse occurs when the moon is hidden by the sun.</li>
+                            <li>Many people wonder if there is intelligent life elsewhere in the <input type="text" class="input-blank w-32" data-ex="2.4" data-ans='["universe"]'>.</li>
+                            <li>The teacher told us to draw a <input type="text" class="input-blank w-32" data-ex="2.4" data-ans='["horizontal"]'> line across the page.</li>
+                            <li>The most successful products in the world are those that have a <input type="text" class="input-blank w-32" data-ex="2.4" data-ans='["universal"]'> appeal.</li>
+                            <li><input type="text" class="input-blank w-28" data-ex="2.4" data-ans='["solar"]'> energy is becoming more common nowadays.</li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-2.4" onclick="checkExercise('2.4')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.4</button>
+                            <span id="score-2.4" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">5</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 6: Reading (Skylab) ==================== -->
+                <div id="page-6" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">3. Reading</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">3.</span> Read this news report and decide whether the following statements are true or false. Give a reason for each answer using one of the underlined words in the text.</p>
+
+                        <div class="bg-amber-50/60 border border-amber-100 rounded-md p-4 text-slate-800 text-[13px] leading-relaxed shadow-sm mb-6">
+                            <p>In May 1973, the USA launched its first <span class="underline decoration-2 decoration-amber-500 font-semibold">manned</span> space station. The station, called Skylab, managed to carry three different crews of astronauts over a nine-month period, in spite of the fact that it lost a meteor shield on launch. In February 1974, the final crew returned to Earth and, for the next five and a half years, the Skylab continued to orbit the Earth, <span class="underline decoration-2 decoration-amber-500 font-semibold">unmanned</span> and unused. Its low orbit gradually pulled the 77-tonne Skylab down towards the Earth making a crash landing <span class="underline decoration-2 decoration-amber-500 font-semibold">inevitable</span> and causing a great deal of concern around the world. On 11 July 1979 the Skylab eventually crashed into the southern ocean off Esperance, Australia. Fortunately the debris fell in mostly <span class="underline decoration-2 decoration-amber-500 font-semibold">uninhabited</span> areas and locals scrambled to collect a souvenir. A 17 year-old from Esperance flew to America to claim a $10,000 reward for being the first to deliver a piece of the station to a newspaper. The local council of Esperance issued the USA with a $400 fine for littering. It has never been paid. There are currently approximately 8,000 pieces of space junk floating above our heads thanks to the satellites, space shuttles and space stations out there. One example is a screwdriver lost during a space shuttle mission in 1985 which has never been recovered.</p>
+                        </div>
+                        
+                        <div class="bg-white border border-slate-200 shadow-sm rounded overflow-hidden">
+                            <table class="vocab-table">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="w-[50%]">Statements</th>
+                                        <th class="w-[20%]">True/False</th>
+                                        <th class="w-[30%]">Reason (Underlined Word)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="text-[13px]">1. In late 1974 there were people on board the space station.</td>
+                                        <td>
+                                            <select class="input-blank font-bold text-slate-700 w-full text-xs" data-ex="3" data-ans='["false"]'>
+                                                <option value="" disabled selected>-</option>
+                                                <option value="true">True</option>
+                                                <option value="false">False</option>
+                                            </select>
+                                        </td>
+                                        <td class="text-[13px]">It was <input type="text" class="input-blank w-20 text-xs" data-ex="3" data-ans='["unmanned"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-[13px]">2. The Skylab may have floated in space for ever.</td>
+                                        <td>
+                                            <select class="input-blank font-bold text-slate-700 w-full text-xs" data-ex="3" data-ans='["false"]'>
+                                                <option value="" disabled selected>-</option>
+                                                <option value="true">True</option>
+                                                <option value="false">False</option>
+                                            </select>
+                                        </td>
+                                        <td class="text-[13px]">A crash was <input type="text" class="input-blank w-20 text-xs" data-ex="3" data-ans='["inevitable"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-[13px]">3. Very few people lived in the area where it landed.</td>
+                                        <td>
+                                            <select class="input-blank font-bold text-slate-700 w-full text-xs" data-ex="3" data-ans='["true"]'>
+                                                <option value="" disabled selected>-</option>
+                                                <option value="true">True</option>
+                                                <option value="false">False</option>
+                                            </select>
+                                        </td>
+                                        <td class="text-[13px]">The area was <input type="text" class="input-blank w-20 text-xs" data-ex="3" data-ans='["uninhabited"]'></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-3" onclick="checkExercise('3')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 3</button>
+                            <span id="score-3" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">6</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 7: Text Gap Fill ==================== -->
+                <div id="page-7" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">4. Space Ownership</h3>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">4.</span> Complete the text using suitable words from this unit. <span class="italic text-slate-500">(First letters are given)</span></p>
+
+                        <div class="bg-white border border-slate-200 p-5 rounded text-slate-800 leading-loose text-[14px] shadow-sm">
+                            <p class="italic mb-4 font-semibold text-center border-b border-slate-200 pb-2">'Space belongs to whoever gets there first.' Do you agree with this statement?</p>
+                            
+                            <p>Earth has already been mapped and explored, so it is not surprising that explorers should turn their attention to other parts of the (2) u<input type="text" class="input-blank w-28" data-ex="4" data-ans='["universe"]'>. The planets in our (3) s<input type="text" class="input-blank w-32" data-ex="4" data-ans='["solar system"]'> have become the next frontier to be conquered.</p>
+                            
+                            <p class="mt-2">We all remember the so-called (4) s<input type="text" class="input-blank w-24" data-ex="4" data-ans='["space"]'> race of the 1960s when the US and USSR were each determined to be the first to (5) l<input type="text" class="input-blank w-20" data-ex="4" data-ans='["land"]'> on the moon. However, I do not believe that planting a flag on the moon gives anyone the right to claim it as theirs.</p>
+                            
+                            <p class="mt-2">With the increasing use of (6) s<input type="text" class="input-blank w-32" data-ex="4" data-ans='["satellites"]'> to monitor activities here on Earth, as well as the very real prospect of space tourism, now is a good time to ask who owns or, more importantly, who governs the vast area of space above us? In the relatively short time that man has been travelling in space we have already left sufficient (7) d<input type="text" class="input-blank w-24" data-ex="4" data-ans='["debris"]'> behind to show that we are as careless in our space travels as on Earth. The broken shuttle parts have simply been left to (8) f<input type="text" class="input-blank w-20" data-ex="4" data-ans='["float"]'> in the atmosphere and cause a very real threat to everyone here on Earth.</p>
+                            
+                            <p class="mt-2">Clearly space belongs to all of us. Although there is an international (9) s<input type="text" class="input-blank w-32" data-ex="4" data-ans='["space station"]'>, this is currently only involved in research. I think we need to act quickly to establish a set of international laws that govern (10) o<input type="text" class="input-blank w-20" data-ex="4" data-ans='["outer"]'> space.</p>
+                            <p class="mt-2 text-xs text-slate-400 italic text-right">*Note: (1) p[lanet] was done as an example in original text, excluded here to fit numbering.</p>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-4" onclick="checkExercise('4')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 4</button>
+                            <span id="score-4" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">7</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 8: Pronunciation ==================== -->
+                <div id="page-8" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">5. Pronunciation</h3>
+                        </div>
+
+                        <div class="bg-indigo-50/50 border border-indigo-100 rounded-md p-5 text-slate-800">
+                            <h4 class="font-bold text-indigo-900 mb-2 text-sm">Schwa Sounds</h4>
+                            <p class="text-[13px] text-indigo-800 mb-4 leading-relaxed">
+                                <span class="font-bold">5.</span> Each of the following words has a weak sound (ə) or schwa, e.g. <span class="italic underline">a</span>bout. Listen and check, paying attention to the schwa sounds (in bold/underlined below). Practise saying the words.
+                            </p>
+                            
+                            <div class="custom-audio-player bg-white border border-indigo-200 rounded px-3 py-2 mb-5 shadow-sm ui-font flex items-center gap-3" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784839&auto_play=false&enable_api=1">
+                                <div class="text-[10px] font-bold text-indigo-500 uppercase tracking-widest shrink-0">Track 10b</div>
+                                <button class="audio-play-btn w-6 h-6 flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-full transition-colors shrink-0 focus:outline-none">
+                                    <svg class="play-icon h-3 w-3 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                    <svg class="pause-icon h-3 w-3 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                </button>
+                                <div class="relative w-full h-1 bg-indigo-200 rounded-full cursor-pointer flex-1 group">
+                                    <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                    <div class="audio-progress-bar absolute h-full bg-indigo-500 rounded-full group-hover:bg-indigo-700 transition-colors" style="width: 0%;"></div>
+                                </div>
+                                <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+                            </div>
+
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-indigo-900 font-medium text-[13px] ui-font">
+                                <div class="bg-white px-3 py-2 rounded text-center shadow-sm border border-indigo-50"><strong>a</strong>s·tro·n<span class="underline text-indigo-600">au</span>t</div>
+                                <div class="bg-white px-3 py-2 rounded text-center shadow-sm border border-indigo-50">at·m<span class="underline text-indigo-600">o</span>s·phere</div>
+                                <div class="bg-white px-3 py-2 rounded text-center shadow-sm border border-indigo-50">c<span class="underline text-indigo-600">o</span>m·mer·ci<span class="underline text-indigo-600">a</span>l</div>
+                                <div class="bg-white px-3 py-2 rounded text-center shadow-sm border border-indigo-50">ex·plor·<span class="underline text-indigo-600">e</span>r</div>
+                                <div class="bg-white px-3 py-2 rounded text-center shadow-sm border border-indigo-50">ex·pl<span class="underline text-indigo-600">o</span>·ra·ti<span class="underline text-indigo-600">o</span>n</div>
+                                <div class="bg-white px-3 py-2 rounded text-center shadow-sm border border-indigo-50">ga·l<span class="underline text-indigo-600">a</span>x·y</div>
+                                <div class="bg-white px-3 py-2 rounded text-center shadow-sm border border-indigo-50">ho·ri·z<span class="underline text-indigo-600">o</span>n</div>
+                                <div class="bg-white px-3 py-2 rounded text-center shadow-sm border border-indigo-50">ho·ri·zon·t<span class="underline text-indigo-600">a</span>l</div>
+                                <div class="bg-white px-3 py-2 rounded text-center shadow-sm border border-indigo-50">ou·t<span class="underline text-indigo-600">e</span>r</div>
+                                <div class="bg-white px-3 py-2 rounded text-center shadow-sm border border-indigo-50">sa·t<span class="underline text-indigo-600">e</span>l·lite</div>
+                                <div class="bg-white px-3 py-2 rounded text-center shadow-sm border border-indigo-50">so·l<span class="underline text-indigo-600">a</span>r sys·t<span class="underline text-indigo-600">e</span>m</div>
+                                <div class="bg-white px-3 py-2 rounded text-center shadow-sm border border-indigo-50">s<span class="underline text-indigo-600">u</span>s·tain</div>
+                                <div class="bg-white px-3 py-2 rounded text-center shadow-sm border border-indigo-50 col-span-2 sm:col-span-3">u·ni·ver·s<span class="underline text-indigo-600">a</span>l</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mt-6 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">8</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 9: Test Practice ==================== -->
+                <div id="page-9" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow flex flex-col justify-between">
+                        <div class="flex justify-between items-end mb-4 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Test Practice</h3>
+                            <span class="ui-font text-[10px] font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <div class="textbook-note p-3 mb-4 text-xs text-slate-700 leading-relaxed shadow-sm rounded-r ui-font">
+                            <p class="font-bold mb-1 text-slate-800">Test Tip</p>
+                            <p>Read through all of the information on the question paper before you start to listen. Circle or underline the most important words. Use the questions to help you follow the conversation.</p>
+                        </div>
+
+                        <!-- Questions 1-4 -->
+                        <div class="mb-6">
+                            <h4 class="text-sm font-bold text-slate-800 mb-2">Listening Section 3 | Questions 1-4</h4>
+                            <p class="mb-3 text-slate-800 text-[12px] italic">Choose the correct answer <strong>A, B or C</strong>.</p>
+                            
+                            <ol class="list-decimal list-outside ml-4 space-y-3 text-slate-800 text-[13px] leading-snug font-medium ui-font">
+                                <li>According to John, what is the main advantage of space exploration?
+                                    <select class="input-blank font-bold text-slate-700 w-16 text-xs mt-1 block" data-ex="test.1" data-ans='["b"]'>
+                                        <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option>
+                                    </select>
+                                    <span class="block text-xs font-normal text-slate-600 mt-1">A. To supply resources for use on Earth. <br>B. To find out more about the origins of our planet. <br>C. To establish a colony for humans if Earth becomes uninhabitable.</span>
+                                </li>
+                                <li>According to the speakers, why can't robots be sent into space instead of humans?
+                                    <select class="input-blank font-bold text-slate-700 w-16 text-xs mt-1 block" data-ex="test.1" data-ans='["c"]'>
+                                        <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option>
+                                    </select>
+                                    <span class="block text-xs font-normal text-slate-600 mt-1">A. They cannot operate for long enough. <br>B. They are too expensive to build. <br>C. They are too reliant on humans.</span>
+                                </li>
+                                <li>What are we told about the space technology currently used?
+                                    <select class="input-blank font-bold text-slate-700 w-16 text-xs mt-1 block" data-ex="test.1" data-ans='["b"]'>
+                                        <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option>
+                                    </select>
+                                    <span class="block text-xs font-normal text-slate-600 mt-1">A. It can be unreliable. <br>B. It is based on old technology. <br>C. It is becoming cheaper to produce.</span>
+                                </li>
+                                <li>What is the biggest problem in sending robots to Mars?
+                                    <select class="input-blank font-bold text-slate-700 w-16 text-xs mt-1 block" data-ex="test.1" data-ans='["a"]'>
+                                        <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option>
+                                    </select>
+                                    <span class="block text-xs font-normal text-slate-600 mt-1">A. the distance <br>B. the atmosphere <br>C. the extreme temperatures</span>
+                                </li>
+                            </ol>
+                            <div class="flex items-center gap-3 mt-4">
+                                <button id="btn-test.1" onclick="checkExercise('test.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check Qs 1-4</button>
+                                <span id="score-test.1" class="ui-font text-[11px] font-bold hidden"></span>
+                            </div>
+                        </div>
+
+                        <!-- Questions 5-10 -->
+                        <div>
+                            <h4 class="text-sm font-bold text-slate-800 mb-2">Questions 5-10</h4>
+                            <p class="mb-3 text-slate-800 text-[12px] italic">Who expresses the following opinions? <strong>A</strong> (John), <strong>B</strong> (Susan), <strong>C</strong> (Both John and Susan)</p>
+                            
+                            <ol class="list-decimal list-outside ml-4 space-y-2 text-slate-800 text-[12px] leading-snug font-medium ui-font" start="5">
+                                <li>We should plan a trip to Mars even though it may not happen soon. 
+                                    <select class="input-blank font-bold text-slate-700 w-16 text-[11px]" data-ex="test.2" data-ans='["a"]'><option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option></select>
+                                </li>
+                                <li>We may eventually colonise Mars. 
+                                    <select class="input-blank font-bold text-slate-700 w-16 text-[11px]" data-ex="test.2" data-ans='["a"]'><option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option></select>
+                                </li>
+                                <li>The soil on Mars is highly toxic. 
+                                    <select class="input-blank font-bold text-slate-700 w-16 text-[11px]" data-ex="test.2" data-ans='["c"]'><option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option></select>
+                                </li>
+                                <li>The soil on Mars contains materials we could use. 
+                                    <select class="input-blank font-bold text-slate-700 w-16 text-[11px]" data-ex="test.2" data-ans='["c"]'><option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option></select>
+                                </li>
+                                <li>Spaceships cannot be totally protected from radiation. 
+                                    <select class="input-blank font-bold text-slate-700 w-16 text-[11px]" data-ex="test.2" data-ans='["b"]'><option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option></select>
+                                </li>
+                                <li>It is possible that humans could form a base on Mars. 
+                                    <select class="input-blank font-bold text-slate-700 w-16 text-[11px]" data-ex="test.2" data-ans='["c"]'><option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option></select>
+                                </li>
+                            </ol>
+                            
+                            <div class="flex items-center gap-3 mt-4">
+                                <button id="btn-test.2" onclick="checkExercise('test.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check Qs 5-10</button>
+                                <span id="score-test.2" class="ui-font text-[11px] font-bold hidden"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">9</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Sticky Right Arrow (Desktop Only) -->
+        <div class="hidden lg:block w-10 shrink-0 ml-2 xl:ml-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="next-btn" onclick="goNext()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Next Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Mobile Fixed Bottom Navigation -->
+    <div class="lg:hidden fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-slate-200 p-3 flex justify-between z-50 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.1)]">
+        <button id="prev-btn-mobile" onclick="goPrev()" class="ui-font font-bold px-5 py-2 rounded-lg text-slate-700 bg-slate-100 active:bg-slate-200 transition-colors flex items-center gap-2">
+            &larr; Prev
+        </button>
+        <button id="next-btn-mobile" onclick="goNext()" class="ui-font font-bold px-5 py-2 rounded-lg text-white bg-slate-800 active:bg-slate-700 transition-colors flex items-center gap-2 shadow-sm">
+            Next &rarr;
+        </button>
+    </div>
+
+    <script>
+        const REQUIRED_SCORE = 0.8;
+        const totalPages = 10; // Pages 0 to 9
+        let currentSpread = 0; // For desktop (0 = pages 0,1; 1 = pages 2,3; etc.)
+        let currentMobilePage = 0;
+
+        function updatePagination() {
+            const isDesktop = window.innerWidth >= 1024;
+            const pages = document.querySelectorAll('.page-content');
+            
+            // Hide all pages
+            pages.forEach(p => p.classList.add('hidden'));
+
+            if (isDesktop) {
+                let leftIdx = currentSpread * 2;
+                let rightIdx = leftIdx + 1;
+                
+                const leftPage = document.getElementById(`page-${leftIdx}`);
+                const rightPage = document.getElementById(`page-${rightIdx}`);
+                
+                if(leftPage) leftPage.classList.remove('hidden');
+                if(rightPage) rightPage.classList.remove('hidden');
+
+                // Update Nav Buttons
+                document.getElementById('prev-btn').disabled = currentSpread === 0;
+                document.getElementById('next-btn').disabled = currentSpread >= Math.ceil(totalPages/2) - 1;
+                
+            } else {
+                const activePage = document.getElementById(`page-${currentMobilePage}`);
+                if(activePage) activePage.classList.remove('hidden');
+
+                // Update Mobile Nav
+                const prevMob = document.getElementById('prev-btn-mobile');
+                const nextMob = document.getElementById('next-btn-mobile');
+                if(prevMob) prevMob.style.visibility = currentMobilePage === 0 ? 'hidden' : 'visible';
+                if(nextMob) nextMob.style.visibility = currentMobilePage === totalPages - 1 ? 'hidden' : 'visible';
+            }
+        }
+
+        function goNext() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread < Math.ceil(totalPages/2) - 1) currentSpread++;
+            } else {
+                if (currentMobilePage < totalPages - 1) currentMobilePage++;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goPrev() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread > 0) currentSpread--;
+            } else {
+                if (currentMobilePage > 0) currentMobilePage--;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('resize', () => {
+            const isDesktop = window.innerWidth >= 1024;
+            if(isDesktop) {
+                currentSpread = Math.floor(currentMobilePage / 2);
+            } else {
+                currentMobilePage = currentSpread * 2;
+            }
+            updatePagination();
+        });
+
+        // --- Core UI & Grading Logic ---
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function validateBlanks(inputs) {
+            let allFilled = true;
+            inputs.forEach(input => {
+                if (input.classList.contains('font-normal')) return; // skip subjective notes
+                const val = input.value !== undefined ? input.value : input.innerText;
+                if (val.trim() === "") {
+                    allFilled = false;
+                    input.style.borderBottomColor = '#f59e0b';
+                    input.style.backgroundColor = '#fef3c7';
+                    setTimeout(() => {
+                        input.style.borderBottomColor = '';
+                        input.style.backgroundColor = '';
+                    }, 1500);
+                }
+            });
+            return allFilled;
+        }
+
+        function checkExercise(exerciseId) {
+            const inputs = document.querySelectorAll(`[data-ex="${exerciseId}"]`);
+            if (!validateBlanks(inputs)) {
+                showToast("Please answer all required blanks before checking!", "warning");
+                return;
+            }
+
+            let correctCount = 0;
+            inputs.forEach(input => {
+                if(input.classList.contains('font-normal')) return;
+
+                const rawVal = input.value !== undefined ? input.value : input.innerText;
+                const userVal = rawVal.trim().toLowerCase().replace(/\s+/g, ' ');
+                const possibleAns = JSON.parse(input.getAttribute('data-ans'));
+                
+                if (possibleAns.includes(userVal)) {
+                    correctCount++;
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+
+            const scoreLabel = document.getElementById(`score-${exerciseId}`);
+            const totalCount = Array.from(inputs).filter(i => !i.classList.contains('font-normal')).length;
+            const percentage = correctCount / totalCount;
+            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
+            
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (percentage >= REQUIRED_SCORE) {
+                scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
+                
+                const btn = document.getElementById(`btn-${exerciseId}`);
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = "Passed";
+                }
+                showToast("Good job!", "success");
+            } else {
+                scoreLabel.textContent = `❌ Failed. ${scoreText}`;
+                scoreLabel.classList.add('text-red-600');
+                showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
+            }
+        }
+
+        // --- Audio Player Initialization via SoundCloud Widget API ---
+        function initAudioPlayer() {
+            const players = document.querySelectorAll('.custom-audio-player');
+            
+            players.forEach((playerEl) => {
+                const scUrl = playerEl.getAttribute('data-sc-url');
+                const iframeElement = playerEl.querySelector('.sc-widget-iframe');
+                
+                if (!iframeElement || !scUrl) return;
+                
+                iframeElement.src = scUrl;
+                
+                const widget = SC.Widget(iframeElement);
+                const playBtn = playerEl.querySelector('.audio-play-btn');
+                const playIcon = playerEl.querySelector('.play-icon');
+                const pauseIcon = playerEl.querySelector('.pause-icon');
+                const progressBar = playerEl.querySelector('.audio-progress');
+                const progressFill = playerEl.querySelector('.audio-progress-bar');
+                const currentTimeEl = playerEl.querySelector('.audio-current-time');
+                const totalTimeEl = playerEl.querySelector('.audio-total-time');
+
+                let durationSec = 0;
+
+                const formatTime = (timeInSeconds) => {
+                    if (isNaN(timeInSeconds) || timeInSeconds === Infinity) return "00:00";
+                    const min = Math.floor(timeInSeconds / 60);
+                    const sec = Math.floor(timeInSeconds % 60);
+                    return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+                };
+
+                const updateDuration = () => {
+                    widget.getDuration((durationMs) => {
+                        if (durationMs) {
+                            durationSec = durationMs / 1000;
+                            if (totalTimeEl) totalTimeEl.textContent = formatTime(durationSec);
+                            if (progressBar) progressBar.max = durationSec;
+                        }
+                    });
+                };
+
+                widget.bind(SC.Widget.Events.READY, () => { updateDuration(); });
+
+                widget.bind(SC.Widget.Events.PLAY_PROGRESS, (info) => {
+                    if (!durationSec) updateDuration(); 
+                    const currentPositionSec = info.currentPosition / 1000;
+                    if (currentTimeEl) currentTimeEl.textContent = formatTime(currentPositionSec);
+                    if (progressBar) progressBar.value = currentPositionSec;
+                    if (durationSec > 0 && progressFill) {
+                        const percent = (currentPositionSec / durationSec) * 100;
+                        progressFill.style.width = `${percent}%`;
+                    }
+                });
+
+                widget.bind(SC.Widget.Events.PLAY, () => {
+                    if(playIcon) playIcon.classList.add('hidden');
+                    if(pauseIcon) pauseIcon.classList.remove('hidden');
+                    updateDuration();
+                });
+
+                widget.bind(SC.Widget.Events.PAUSE, () => {
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(playIcon) playIcon.classList.remove('hidden');
+                });
+
+                widget.bind(SC.Widget.Events.FINISH, () => {
+                    if(playIcon) playIcon.classList.remove('hidden');
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(progressFill) progressFill.style.width = '0%';
+                    if(progressBar) progressBar.value = 0;
+                    widget.seekTo(0);
+                });
+
+                if (playBtn) {
+                    playBtn.addEventListener('click', () => { widget.toggle(); });
+                }
+
+                if (progressBar) {
+                    progressBar.addEventListener('input', () => {
+                        widget.seekTo(progressBar.value * 1000);
+                    });
+                }
+            });
+        }
+
+        // Initialize on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePagination();
+            initAudioPlayer();
+        });
+
+    </script>
+</body>
+</html>
