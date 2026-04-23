@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 15: The green revolution - Textbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Lora', serif; 
+            background-color: #d1d5db;
+            background-image: radial-gradient(#9ca3af 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .ui-font { font-family: 'Inter', sans-serif; }
+
+        /* Book & Paper Styles */
+        .book-wrapper {
+            background-color: #fdfcf8;
+            box-shadow: 
+                0 20px 40px -10px rgba(0,0,0,0.3), 
+                0 0 0 1px rgba(0,0,0,0.05),
+                inset 0 0 60px rgba(139, 115, 85, 0.05);
+            border-radius: 4px 8px 8px 4px;
+        }
+
+        .spine-shadow {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 80px;
+            transform: translateX(-50%);
+            background: linear-gradient(
+                to right,
+                transparent 0%,
+                rgba(0,0,0,0.02) 40%,
+                rgba(0,0,0,0.12) 50%,
+                rgba(0,0,0,0.02) 60%,
+                transparent 100%
+            );
+            pointer-events: none;
+            z-index: 10;
+            border-left: 1px solid rgba(255,255,255,0.4);
+            border-right: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* Sticky Nav for Desktop */
+        .sticky-nav-container {
+            position: sticky;
+            top: 50vh;
+            transform: translateY(-50%);
+            height: max-content;
+            z-index: 50;
+        }
+
+        /* Inputs */
+        .input-blank {
+            font-family: 'Inter', sans-serif;
+            border: none;
+            border-bottom: 2px dashed #94a3b8;
+            background: rgba(255,255,255,0.5);
+            outline: none;
+            text-align: center;
+            padding: 0.1rem 0.25rem;
+            margin: 0 0.25rem;
+            transition: all 0.2s;
+            font-weight: 600;
+            color: #1e293b;
+            border-radius: 2px 2px 0 0;
+        }
+        .input-blank:focus { 
+            border-bottom: 2px solid #0369a1; 
+            background: #f0f9ff;
+        }
+        select.input-blank {
+            text-align: left;
+            cursor: pointer;
+            padding-right: 1.2rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.1rem center;
+            background-size: 0.8em;
+        }
+
+        .correct { 
+            border-bottom: 2px solid #16a34a !important; 
+            color: #166534; 
+            background-color: #dcfce7; 
+        }
+        .incorrect { 
+            border-bottom: 2px solid #dc2626 !important; 
+            color: #991b1b; 
+            background-color: #fee2e2; 
+        }
+
+        /* Callouts / Notes */
+        .textbook-note {
+            background-color: #f8fafc;
+            border-left: 4px solid #94a3b8;
+            position: relative;
+        }
+        .textbook-note::before {
+            content: "✍🏼 Note";
+            position: absolute;
+            top: -12px;
+            left: 8px;
+            background: #fdfcf8;
+            padding: 0 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            font-family: 'Inter', sans-serif;
+            color: #475569;
+        }
+
+        /* Custom Vocab Table */
+        .vocab-table { width: 100%; text-align: left; border-collapse: collapse; }
+        .vocab-table th { 
+            border-bottom: 2px solid #475569; 
+            padding: 8px; 
+            font-family: 'Inter', sans-serif; 
+            text-transform: uppercase; 
+            font-size: 11px; 
+            font-weight: 700;
+            letter-spacing: 0.05em; 
+            color: #334155; 
+        }
+        .vocab-table td { 
+            border-bottom: 1px dashed #cbd5e1; 
+            padding: 8px; 
+            font-size: 13px;
+        }
+
+        /* Buttons & Toasts */
+        .check-btn { transition: transform 0.1s, box-shadow 0.1s; }
+        .check-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            backdrop-filter: blur(4px);
+            transition: all 0.2s;
+        }
+        .nav-btn:hover:not(:disabled) { background: #fff; transform: scale(1.05); }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+
+        .toast {
+            position: fixed; top: 20px; right: 20px;
+            padding: 15px 25px; border-radius: 8px;
+            color: white; font-weight: bold;
+            opacity: 0; transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000; pointer-events: none;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.error { background-color: #ef4444; }
+        .toast.success { background-color: #22c55e; }
+        .toast.warning { background-color: #f59e0b; }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb { background-color: #94a3b8; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col pt-4 lg:pt-10 pb-24 lg:pb-10">
+
+    <div id="toast" class="toast">Message</div>
+
+    <!-- Main Desk Area -->
+    <div class="w-full max-w-[1600px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
+        
+        <!-- Sticky Left Arrow -->
+        <div class="hidden lg:block w-10 shrink-0 mr-2 xl:mr-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="prev-btn" onclick="goPrev()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Previous Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- The Book -->
+        <div class="book-wrapper flex-1 w-full max-w-7xl flex flex-col lg:flex-row relative min-h-[85vh]">
+            <div class="spine-shadow hidden lg:block"></div>
+
+            <div id="pages-container" class="w-full flex relative">
+                
+                <!-- ==================== PAGE 0: Title & Intro ==================== -->
+                <div id="page-0" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow flex flex-col justify-center items-center text-center">
+                        <div class="w-32 h-32 bg-slate-100 rounded-full flex items-center justify-center mb-8 shadow-inner border border-slate-200 overflow-hidden relative">
+                            <!-- Leaf/Environment Icon -->
+                            <svg class="w-16 h-16 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                        </div>
+                        <h4 class="text-sm uppercase tracking-widest text-green-600 font-bold ui-font mb-2">Unit 15</h4>
+                        <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-slate-800 leading-tight">The green revolution</h1>
+                        <h2 class="text-2xl italic text-slate-600 mb-8 border-b pb-8 border-slate-200">The environment, climate change and pollution</h2>
+                        
+                        <p class="text-[15px] text-slate-600 leading-relaxed max-w-md mx-auto">
+                            Welcome to Unit 15. Work through the exercises to improve your vocabulary, listening, and reading skills regarding environmental issues, conservation, and climate change.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">i</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 1: The Environment ==================== -->
+                <div id="page-1" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">1. The environment</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <div class="mb-6">
+                            <p class="mb-2 leading-relaxed text-[13px]"><span class="font-bold">1.1</span> Choose words that reflect your opinion of these three statements. <span class="italic text-slate-500">(Discussion)</span></p>
+                            <ol class="list-decimal list-outside ml-4 space-y-2 text-[13px] text-slate-700">
+                                <li>We should educate the public about our environment by handing out leaflets. (useful/useless?)</li>
+                                <li>Within a few years we will have solved all of our pollution problems. (possible/impossible?)</li>
+                                <li>Within the next ten years the only chemicals we use will be environmentally friendly ones. (likely/unlikely?)</li>
+                            </ol>
+                        </div>
+
+                        <!-- Audio Player -->
+                        <div class="custom-audio-player bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mb-6 shadow-inner ui-font flex flex-col sm:flex-row items-center gap-4" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784539&auto_play=false&enable_api=1">
+                            <div class="text-xs font-bold text-slate-500 uppercase tracking-widest shrink-0">Track 15a</div>
+                            <div class="w-full flex items-center gap-3">
+                                <button class="audio-play-btn w-8 h-8 flex items-center justify-center bg-slate-700 hover:bg-slate-800 text-white rounded-full transition-colors shrink-0 focus:outline-none">
+                                    <svg class="play-icon h-4 w-4 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                    <svg class="pause-icon h-4 w-4 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                </button>
+                                <span class="audio-current-time text-xs font-mono text-slate-500 w-9 text-right">00:00</span>
+                                <div class="relative w-full h-1.5 bg-slate-300 rounded-full cursor-pointer flex-1 group">
+                                     <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                     <div class="audio-progress-bar absolute h-full bg-slate-600 rounded-full group-hover:bg-slate-800 transition-colors" style="width: 0%;"></div>
+                                </div>
+                                <span class="audio-total-time text-xs font-mono text-slate-500 w-9">00:00</span>
+                            </div>
+                            <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+                        </div>
+
+                        <div class="bg-white border border-slate-200 shadow-sm rounded overflow-hidden mb-6">
+                            <div class="p-3 bg-slate-50 border-b border-slate-200">
+                                <p class="text-[13px] text-slate-700 leading-relaxed"><span class="font-bold">1.2</span> Listen to two people (speakers A and B) giving their opinions about the same ideas and choose the words that reflect their opinions.</p>
+                            </div>
+                            <table class="vocab-table text-[12px]">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="w-1/2">Statements</th>
+                                        <th class="w-1/4 text-center">Speaker A</th>
+                                        <th class="w-1/4 text-center">Speaker B</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1. Educating the public by handing out leaflets.</td>
+                                        <td><select class="input-blank font-bold text-slate-700 w-full !text-[11px]" data-ex="1.2" data-ans='["useful"]'><option value=""></option><option value="useful">useful</option><option value="useless">useless</option></select></td>
+                                        <td><select class="input-blank font-bold text-slate-700 w-full !text-[11px]" data-ex="1.2" data-ans='["useless"]'><option value=""></option><option value="useful">useful</option><option value="useless">useless</option></select></td>
+                                    </tr>
+                                    <tr>
+                                        <td>2. Solving all pollution problems within a few years.</td>
+                                        <td><select class="input-blank font-bold text-slate-700 w-full !text-[11px]" data-ex="1.2" data-ans='["impossible"]'><option value=""></option><option value="possible">possible</option><option value="impossible">impossible</option></select></td>
+                                        <td><select class="input-blank font-bold text-slate-700 w-full !text-[11px]" data-ex="1.2" data-ans='["possible"]'><option value=""></option><option value="possible">possible</option><option value="impossible">impossible</option></select></td>
+                                    </tr>
+                                    <tr>
+                                        <td>3. Using only environmentally friendly chemicals in 10 years.</td>
+                                        <td><select class="input-blank font-bold text-slate-700 w-full !text-[11px]" data-ex="1.2" data-ans='["unlikely"]'><option value=""></option><option value="likely">likely</option><option value="unlikely">unlikely</option></select></td>
+                                        <td><select class="input-blank font-bold text-slate-700 w-full !text-[11px]" data-ex="1.2" data-ans='["likely"]'><option value=""></option><option value="likely">likely</option><option value="unlikely">unlikely</option></select></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="p-2 border-t border-slate-200 flex justify-end bg-slate-50">
+                                <button id="btn-1.2" onclick="checkExercise('1.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check 1.2</button>
+                                <span id="score-1.2" class="ui-font text-[11px] font-bold hidden ml-3"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start lg:justify-end border-t border-slate-200">
+                        <span class="text-xs font-bold ui-font text-slate-400">1</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 2: Adjectives ==================== -->
+                <div id="page-2" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Vocabulary Adjectives</h3>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-[13px]"><span class="font-bold">1.3</span> Listen to track 15a again and write the adjectives the speakers used to express their opinions. Put the adjectives into the correct column according to their meaning.</p>
+
+                        <div class="bg-white border border-slate-200 shadow-sm rounded overflow-hidden mb-6">
+                            <table class="vocab-table text-[12px]">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="w-1/2 text-center border-r border-slate-200">useful</th>
+                                        <th class="w-1/2 text-center">useless</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border-r border-slate-200 text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3a" data-ans='["beneficial", "worthwhile", "advantageous"]'></td>
+                                        <td class="text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3a" data-ans='["pointless", "futile", "fruitless"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border-r border-slate-200 text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3a" data-ans='["beneficial", "worthwhile", "advantageous"]'></td>
+                                        <td class="text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3a" data-ans='["pointless", "futile", "fruitless"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border-r border-slate-200 text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3a" data-ans='["beneficial", "worthwhile", "advantageous"]'></td>
+                                        <td class="text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3a" data-ans='["pointless", "futile", "fruitless"]'></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="vocab-table text-[12px] border-t border-slate-400">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="w-1/2 text-center border-r border-slate-200">possible</th>
+                                        <th class="w-1/2 text-center">impossible</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border-r border-slate-200 text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3b" data-ans='["conceivable", "feasible", "viable", "achievable"]'></td>
+                                        <td class="text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3b" data-ans='["unattainable", "impracticable", "unfeasible"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border-r border-slate-200 text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3b" data-ans='["conceivable", "feasible", "viable", "achievable"]'></td>
+                                        <td class="text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3b" data-ans='["unattainable", "impracticable", "unfeasible"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border-r border-slate-200 text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3b" data-ans='["conceivable", "feasible", "viable", "achievable"]'></td>
+                                        <td class="text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3b" data-ans='["unattainable", "impracticable", "unfeasible"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border-r border-slate-200 text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3b" data-ans='["conceivable", "feasible", "viable", "achievable"]'></td>
+                                        <td class="text-center bg-slate-50 border-t border-slate-100"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="vocab-table text-[12px] border-t border-slate-400">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="w-1/2 text-center border-r border-slate-200">likely</th>
+                                        <th class="w-1/2 text-center">unlikely</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="border-r border-slate-200 text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3c" data-ans='["liable", "probable"]'></td>
+                                        <td class="text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3c" data-ans='["improbable", "questionable", "doubtful"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border-r border-slate-200 text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3c" data-ans='["liable", "probable"]'></td>
+                                        <td class="text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3c" data-ans='["improbable", "questionable", "doubtful"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="border-r border-slate-200 text-center bg-slate-50 border-t border-slate-100"></td>
+                                        <td class="text-center"><input type="text" class="input-blank w-36 !text-[11px]" data-ex="1.3c" data-ans='["improbable", "questionable", "doubtful"]'></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="p-2 border-t border-slate-200 flex justify-end bg-slate-50">
+                                <button id="btn-1.3a" onclick="checkExercise('1.3a'); checkExercise('1.3b'); checkExercise('1.3c')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check Tables</button>
+                                <span id="score-1.3a" class="ui-font text-[11px] font-bold hidden ml-3"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">2</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 3: Climate change ==================== -->
+                <div id="page-3" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">2. Climate change & pollution</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <!-- Vocabulary note Callout -->
+                        <div class="textbook-note p-3 mb-6 text-[12px] text-slate-700 leading-relaxed shadow-sm rounded-r ui-font bg-blue-50 border-l-blue-500">
+                            <p class="font-bold mb-1 text-slate-800">Vocabulary note</p>
+                            <p>The prefix <strong>re-</strong> often tells us that something is being done again: <i>reuse, revegetate</i>.</p>
+                            <p>The prefix <strong>de-</strong> often tells us that something is being removed: <i>decaffeinated, deforestation</i>.</p>
+                        </div>
+
+                        <p class="mb-3 leading-relaxed text-[13px]"><span class="font-bold">2.1</span> Complete the text with words from the box.</p>
+                        
+                        <div class="bg-white border border-slate-200 p-3 rounded mb-4 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] justify-center text-slate-500 shadow-inner">
+                            <span>acid</span> <span>biodiversity</span> <span>contaminated</span> <span>deforestation</span>
+                            <span>ecosystems</span> <span>emissions</span> <span>environmental</span> <span>erosion</span>
+                            <span>exhaust</span> <span>drought</span> <span>fertilisers</span> <span>greenhouse</span> <span>waste</span>
+                        </div>
+
+                        <div class="space-y-3 text-slate-800 leading-loose text-[12px]">
+                            <p>The advances made by humans have made us the dominant species on our planet. However, several eminent scientists are concerned that we have become too successful, that our way of life is putting an unprecedented strain on the Earth's (1) <input type="text" class="input-blank w-24 !text-[11px]" data-ex="2.1" data-ans='["ecosystems"]'> and threatening our future as a species. We are confronting (2) <input type="text" class="input-blank w-28 !text-[11px]" data-ex="2.1" data-ans='["environmental"]'> problems that are more taxing than ever before, some of them seemingly insoluble. Many of the Earth's crises are chronic and inexorably linked. Pollution is an obvious example of this affecting our air, water and soil.</p>
+                            <p>The air is polluted by (3) <input type="text" class="input-blank w-20 !text-[11px]" data-ex="2.1" data-ans='["emissions"]'> produced by cars and industry. Through (4) <input type="text" class="input-blank w-16 !text-[11px]" data-ex="2.1" data-ans='["acid"]'> rain and (5) <input type="text" class="input-blank w-24 !text-[11px]" data-ex="2.1" data-ans='["greenhouse"]'> gases these same (6) <input type="text" class="input-blank w-20 !text-[11px]" data-ex="2.1" data-ans='["exhaust"]'> fumes can have a devastating impact on our climate. Climate change is arguably the greatest environmental challenge facing our planet with increased storms, floods, (7) <input type="text" class="input-blank w-20 !text-[11px]" data-ex="2.1" data-ans='["drought"]'> and species losses predicted. This will inevitably have a negative impact on (8) <input type="text" class="input-blank w-28 !text-[11px]" data-ex="2.1" data-ans='["biodiversity"]'> and thus our ecosystem.</p>
+                            <p>The soil is (9) <input type="text" class="input-blank w-28 !text-[11px]" data-ex="2.1" data-ans='["contaminated"]'> by factories and power stations which can leave heavy metals in the soil. Other human activities such as the overdevelopment of land and the clearing of trees also take their toll on the quality of our soil; (10) <input type="text" class="input-blank w-28 !text-[11px]" data-ex="2.1" data-ans='["deforestation"]'> has been shown to cause soil (11) <input type="text" class="input-blank w-20 !text-[11px]" data-ex="2.1" data-ans='["erosion"]'>. Certain farming practices can also pollute the land though the use of chemical pesticides and (12) <input type="text" class="input-blank w-24 !text-[11px]" data-ex="2.1" data-ans='["fertilisers", "fertilizers"]'>. This contamination in turn affects our rivers and waterways and damages life there. The chemicals enter our food chain, moving from fish to mammals to us. Our crops are also grown on land that is far from pristine. Affected species include the polar bear, so not even the Arctic is immune.</p>
+                            <p>Reducing (13) <input type="text" class="input-blank w-20 !text-[11px]" data-ex="2.1" data-ans='["waste"]'> and clearing up pollution costs money. Yet it is our quest for wealth that generates so much of the refuse. There is an urgent need to find a way of life that is less damaging to the Earth. This is not easy, but it is vital, because pollution is pervasive and often life-threatening.</p>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4">
+                            <button id="btn-2.1" onclick="checkExercise('2.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check 2.1</button>
+                            <span id="score-2.1" class="ui-font text-[11px] font-bold hidden"></span>
+                        </div>
+
+                    </div>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">3</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 4: Synonyms ==================== -->
+                <div id="page-4" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        
+                        <p class="mb-4 leading-relaxed text-[13px]"><span class="font-bold">2.2</span> Match the words in bold from the text in 2.1 with these synonyms.</p>
+
+                        <div class="bg-white border border-slate-200 p-5 rounded shadow-sm mb-8 text-[13px]">
+                            <ol class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 text-slate-800">
+                                <li class="flex justify-between items-center border-b border-slate-100 pb-2">
+                                    <span>1 unspoiled</span> <input type="text" class="input-blank w-32 !text-[12px]" data-ex="2.2" data-ans='["pristine"]'>
+                                </li>
+                                <li class="flex justify-between items-center border-b border-slate-100 pb-2">
+                                    <span>6 unaffected</span> <input type="text" class="input-blank w-32 !text-[12px]" data-ex="2.2" data-ans='["immune"]'>
+                                </li>
+                                <li class="flex justify-between items-center border-b border-slate-100 pb-2">
+                                    <span>2 crucial</span> <input type="text" class="input-blank w-32 !text-[12px]" data-ex="2.2" data-ans='["vital"]'>
+                                </li>
+                                <li class="flex justify-between items-center border-b border-slate-100 pb-2">
+                                    <span>7 omnipresent</span> <input type="text" class="input-blank w-32 !text-[12px]" data-ex="2.2" data-ans='["pervasive"]'>
+                                </li>
+                                <li class="flex justify-between items-center border-b border-slate-100 pb-2">
+                                    <span>3 unparalleled</span> <input type="text" class="input-blank w-32 !text-[12px]" data-ex="2.2" data-ans='["unprecedented"]'>
+                                </li>
+                                <li class="flex justify-between items-center border-b border-slate-100 pb-2">
+                                    <span>8 unavoidably (x2)</span> <div class="flex flex-col gap-1 w-32"><input type="text" class="input-blank w-full !text-[12px]" data-ex="2.2" data-ans='["inexorably", "inevitably"]'><input type="text" class="input-blank w-full !text-[12px]" data-ex="2.2" data-ans='["inevitably", "inexorably"]'></div>
+                                </li>
+                                <li class="flex justify-between items-center border-b border-slate-100 pb-2">
+                                    <span>4 extremely harmful</span> <input type="text" class="input-blank w-32 !text-[12px]" data-ex="2.2" data-ans='["devastating"]'>
+                                </li>
+                                <li class="flex justify-between items-center border-b border-slate-100 pb-2">
+                                    <span>9 persistent</span> <input type="text" class="input-blank w-32 !text-[12px]" data-ex="2.2" data-ans='["chronic"]'>
+                                </li>
+                                <li class="flex justify-between items-center border-b border-slate-100 pb-2 sm:border-0 sm:pb-0">
+                                    <span>5 insurmountable</span> <input type="text" class="input-blank w-32 !text-[12px]" data-ex="2.2" data-ans='["insoluble"]'>
+                                </li>
+                                <li class="flex justify-between items-center">
+                                    <span>10 challenging</span> <input type="text" class="input-blank w-32 !text-[12px]" data-ex="2.2" data-ans='["taxing"]'>
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4 mb-8">
+                            <button id="btn-2.2" onclick="checkExercise('2.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check 2.2</button>
+                            <span id="score-2.2" class="ui-font text-[11px] font-bold hidden"></span>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-6">
+                            <p class="mb-3 leading-relaxed text-[13px]"><span class="font-bold">3</span> Consider how you would answer these questions. <span class="italic text-slate-500">(Discussion)</span></p>
+                            <ol class="list-decimal list-outside ml-4 space-y-2 text-[13px] text-slate-700">
+                                <li>What do you think is the greatest environmental threat we face today?</li>
+                                <li>What can the government do to help protect the environment?</li>
+                                <li>What can we as individuals do?</li>
+                            </ol>
+                        </div>
+
+                    </div>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">4</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 5: Word building ==================== -->
+                <div id="page-5" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Word forms & prepositions</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-[13px]"><span class="font-bold">4.1</span> Use the different forms of the words in the box as well as the prepositions used with them. Then complete the answers to the questions in Exercise 3 using the correct form of the word in brackets. You will need to add prepositions to the words that are underlined.</p>
+
+                        <div class="bg-white border border-slate-200 p-3 rounded mb-4 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] justify-center text-slate-500 shadow-inner">
+                            <span>contaminate</span> <span>danger</span> <span>dispose</span> <span>erode</span> <span>pollute</span>
+                            <span>recycle</span> <span>risk</span> <span>sustain</span> <span>threat</span>
+                        </div>
+
+                        <div class="bg-slate-50 border border-slate-200 rounded p-5 text-slate-800 leading-loose text-[13px] shadow-sm mb-6">
+                            <p class="mb-3">1 I think our environment is 1 <u class="font-semibold text-slate-900">under threat from</u> <span class="text-[11px] text-slate-400 italic">(threat)</span> many different things. We have allowed too much 2 <input type="text" class="input-blank w-24 !text-[12px]" data-ex="4.1" data-ans='["pollution"]'> <span class="text-[11px] text-slate-400 italic">(pollute)</span> to enter our ecosystem and we are 3 <u class="font-semibold text-slate-900"><input type="text" class="input-blank w-32 !text-[12px] !border-b-slate-800" data-ex="4.1" data-ans='["in danger of"]'></u> <span class="text-[11px] text-slate-400 italic">(danger)</span> poisoning ourselves as a result. I think soil 4 <input type="text" class="input-blank w-20 !text-[12px]" data-ex="4.1" data-ans='["erosion"]'> <span class="text-[11px] text-slate-400 italic">(erode)</span> and water 5 <input type="text" class="input-blank w-28 !text-[12px]" data-ex="4.1" data-ans='["contamination"]'> <span class="text-[11px] text-slate-400 italic">(contaminate)</span> are two of the most urgent problems that we need to deal with.</p>
+                            
+                            <p class="mb-3">2 Clearly our current lifestyle is not 6 <input type="text" class="input-blank w-24 !text-[12px]" data-ex="4.1" data-ans='["sustainable"]'> <span class="text-[11px] text-slate-400 italic">(sustain)</span>. The government should educate people about these problems and encourage us to change our habits. They need to show everyone that we are putting the very future of our planet 7 <u class="font-semibold text-slate-900"><input type="text" class="input-blank w-20 !text-[12px] !border-b-slate-800" data-ex="4.1" data-ans='["at risk"]'></u> <span class="text-[11px] text-slate-400 italic">(risk)</span>.</p>
+                            
+                            <p>3 We can make sure we don't throw 8 <input type="text" class="input-blank w-24 !text-[12px]" data-ex="4.1" data-ans='["recyclable"]'> <span class="text-[11px] text-slate-400 italic">(recycle)</span> items into our normal waste 9 <input type="text" class="input-blank w-20 !text-[12px]" data-ex="4.1" data-ans='["disposal"]'> <span class="text-[11px] text-slate-400 italic">(dispose)</span> bins. We can also help protect our planet by not using phosphate-based detergents; this will help to keep 10 <input type="text" class="input-blank w-24 !text-[12px]" data-ex="4.1" data-ans='["pollutants"]'> <span class="text-[11px] text-slate-400 italic">(pollute)</span> out of our food chain.</p>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4">
+                            <button id="btn-4.1" onclick="checkExercise('4.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check 4.1</button>
+                            <span id="score-4.1" class="ui-font text-[11px] font-bold hidden"></span>
+                        </div>
+
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">5</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 6: Negative forms ==================== -->
+                <div id="page-6" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        
+                        <div class="mb-6">
+                            <p class="mb-4 leading-relaxed text-[13px]"><span class="font-bold">4.2</span> Complete the sentences using the <strong>negative form</strong> of the words in brackets.</p>
+
+                            <!-- Vocabulary note Callout -->
+                            <div class="textbook-note p-3 mb-6 text-[12px] text-slate-700 leading-relaxed shadow-sm rounded-r ui-font bg-blue-50 border-l-blue-500">
+                                <p class="font-bold mb-1 text-slate-800">Vocabulary note</p>
+                                <p>The prefix <strong>ir-</strong> is often used with adjectives beginning with <strong>r</strong> to form the opposite or to mean lacking something: <i>reversible, irreversible, regular, irregular</i>. Some words beginning with <strong>r</strong> form their opposite with <strong>un-</strong>: <i>realistic, unrealistic</i>.</p>
+                            </div>
+                            
+                            <ol class="list-decimal list-outside ml-4 space-y-4 text-slate-800 text-[13px] leading-snug">
+                                <li>It is <input type="text" class="input-blank w-28 !text-[12px]" data-ex="4.2" data-ans='["unrealistic"]'> <span class="text-xs text-slate-400 italic">(realistic)</span> to expect everyone to change their buying habits overnight.</li>
+                                <li>When it comes to protecting the environment, cost should be <input type="text" class="input-blank w-28 !text-[12px]" data-ex="4.2" data-ans='["irrelevant"]'> <span class="text-xs text-slate-400 italic">(relevant)</span>.</li>
+                                <li>It is <input type="text" class="input-blank w-28 !text-[12px]" data-ex="4.2" data-ans='["unreasonable"]'> <span class="text-xs text-slate-400 italic">(reasonable)</span> for rich countries to expect developing countries to reduce carbon emissions immediately.</li>
+                                <li>People who dump chemical waste into our waterways are very <input type="text" class="input-blank w-32 !text-[12px]" data-ex="4.2" data-ans='["irresponsible"]'> <span class="text-xs text-slate-400 italic">(responsible)</span>.</li>
+                                <li>The oil spill has caused <input type="text" class="input-blank w-28 !text-[12px]" data-ex="4.2" data-ans='["irreparable"]'> <span class="text-xs text-slate-400 italic">(repairable)</span> damage to several marine species.</li>
+                                <li>Scientists believe that the damage to this area is <input type="text" class="input-blank w-28 !text-[12px]" data-ex="4.2" data-ans='["irreversible"]'> <span class="text-xs text-slate-400 italic">(reversible)</span>.</li>
+                                <li>These species are <input type="text" class="input-blank w-28 !text-[12px]" data-ex="4.2" data-ans='["irreplaceable"]'> <span class="text-xs text-slate-400 italic">(replaceable)</span>. Once they are lost our ecosystem will be changed.</li>
+                                <li>It is a mistake to think that increased consumerism and environmental damage are <input type="text" class="input-blank w-28 !text-[12px]" data-ex="4.2" data-ans='["unrelated"]'> <span class="text-xs text-slate-400 italic">(related)</span>.</li>
+                            </ol>
+                            <div class="flex items-center gap-3 mt-6">
+                                <button id="btn-4.2" onclick="checkExercise('4.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check 4.2</button>
+                                <span id="score-4.2" class="ui-font text-[11px] font-bold hidden"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">6</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 7: Pronunciation ==================== -->
+                <div id="page-7" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">5. Pronunciation</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <div class="bg-indigo-50/50 border border-indigo-100 rounded-md p-5 text-slate-800">
+                            <p class="text-[13px] text-indigo-800 mb-4 leading-relaxed">
+                                <span class="font-bold">5.</span> Some words have a different stress pattern and therefore a different pronunciation, depending on their meaning or part of speech. Select the correct stress pattern for the words in <i>italics</i>. Listen to the recording to check your answers and then practise saying the sentences.
+                            </p>
+
+                            <!-- Audio Player -->
+                            <div class="custom-audio-player bg-white border border-indigo-200 rounded px-3 py-2 mb-5 shadow-sm ui-font flex items-center gap-3" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784527&auto_play=false&enable_api=1">
+                                <div class="text-[10px] font-bold text-indigo-500 uppercase tracking-widest shrink-0">Track 15b</div>
+                                <button class="audio-play-btn w-6 h-6 flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-full transition-colors shrink-0 focus:outline-none">
+                                    <svg class="play-icon h-3 w-3 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                    <svg class="pause-icon h-3 w-3 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                </button>
+                                <div class="relative w-full h-1 bg-indigo-200 rounded-full cursor-pointer flex-1 group">
+                                    <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                    <div class="audio-progress-bar absolute h-full bg-indigo-500 rounded-full group-hover:bg-indigo-700 transition-colors" style="width: 0%;"></div>
+                                </div>
+                                <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+                            </div>
+
+                            <ol class="space-y-4 text-[13px] text-indigo-900 ui-font">
+                                <li class="flex flex-col border-b border-indigo-100 pb-2">
+                                    <span>1. I <i>refuse</i> to go.</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-32 !text-[12px] mt-1 self-start" data-ex="5" data-ans='["refuse2"]'>
+                                        <option value="" disabled selected>Choose...</option><option value="refuse1">RE-fuse</option><option value="refuse2">re-FUSE</option>
+                                    </select>
+                                </li>
+                                <li class="flex flex-col border-b border-indigo-100 pb-2">
+                                    <span>2. Disposing of <i>refuse</i> is a growing problem.</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-32 !text-[12px] mt-1 self-start" data-ex="5" data-ans='["refuse1"]'>
+                                        <option value="" disabled selected>Choose...</option><option value="refuse1">RE-fuse</option><option value="refuse2">re-FUSE</option>
+                                    </select>
+                                </li>
+                                <li class="flex flex-col border-b border-indigo-100 pb-2">
+                                    <span>3. There is a <i>conflict</i> here.</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-32 !text-[12px] mt-1 self-start" data-ex="5" data-ans='["conflict1"]'>
+                                        <option value="" disabled selected>Choose...</option><option value="conflict1">CON-flict</option><option value="conflict2">con-FLICT</option>
+                                    </select>
+                                </li>
+                                <li class="flex flex-col border-b border-indigo-100 pb-2">
+                                    <span>4. The two reports <i>conflict</i> each other.</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-32 !text-[12px] mt-1 self-start" data-ex="5" data-ans='["conflict2"]'>
+                                        <option value="" disabled selected>Choose...</option><option value="conflict1">CON-flict</option><option value="conflict2">con-FLICT</option>
+                                    </select>
+                                </li>
+                                <li class="flex flex-col border-b border-indigo-100 pb-2">
+                                    <span>5. We all need to be <i>present</i> at the meeting.</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-32 !text-[12px] mt-1 self-start" data-ex="5" data-ans='["present1"]'>
+                                        <option value="" disabled selected>Choose...</option><option value="present1">PRE-sent</option><option value="present2">pre-SENT</option>
+                                    </select>
+                                </li>
+                                <li class="flex flex-col border-b border-indigo-100 pb-2">
+                                    <span>6. This issue <i>presents</i> an enormous problem.</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-32 !text-[12px] mt-1 self-start" data-ex="5" data-ans='["presents2"]'>
+                                        <option value="" disabled selected>Choose...</option><option value="presents1">PRE-sents</option><option value="presents2">pre-SENTS</option>
+                                    </select>
+                                </li>
+                                <li class="flex flex-col border-b border-indigo-100 pb-2">
+                                    <span>7. We are making a lot of <i>progress</i>.</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-32 !text-[12px] mt-1 self-start" data-ex="5" data-ans='["progress1"]'>
+                                        <option value="" disabled selected>Choose...</option><option value="progress1">PRO-gress</option><option value="progress2">pro-GRESS</option>
+                                    </select>
+                                </li>
+                                <li class="flex flex-col border-b border-indigo-100 pb-2">
+                                    <span>8. We need to <i>progress</i> at a faster rate.</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-32 !text-[12px] mt-1 self-start" data-ex="5" data-ans='["progress2"]'>
+                                        <option value="" disabled selected>Choose...</option><option value="progress1">PRO-gress</option><option value="progress2">pro-GRESS</option>
+                                    </select>
+                                </li>
+                                <li class="flex flex-col border-b border-indigo-100 pb-2">
+                                    <span>9. There has been an <i>increase</i> in carbon emissions.</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-32 !text-[12px] mt-1 self-start" data-ex="5" data-ans='["increase1"]'>
+                                        <option value="" disabled selected>Choose...</option><option value="increase1">IN-crease</option><option value="increase2">in-CREASE</option>
+                                    </select>
+                                </li>
+                                <li class="flex flex-col border-b border-indigo-100 pb-2 border-0 sm:pb-0">
+                                    <span>10. Temperatures are expected to <i>increase</i>.</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-32 !text-[12px] mt-1 self-start" data-ex="5" data-ans='["increase2"]'>
+                                        <option value="" disabled selected>Choose...</option><option value="increase1">IN-crease</option><option value="increase2">in-CREASE</option>
+                                    </select>
+                                </li>
+                            </ol>
+                            
+                            <div class="mt-4"><button id="btn-5" onclick="checkExercise('5')" class="check-btn ui-font bg-white border border-indigo-200 shadow-sm text-indigo-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-indigo-50">Check Pronunciation</button> <span id="score-5" class="ui-font text-[11px] font-bold hidden"></span></div>
+                        </div>
+
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">7</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Sticky Right Arrow -->
+        <div class="hidden lg:block w-10 shrink-0 ml-2 xl:ml-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="next-btn" onclick="goNext()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Next Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Mobile Fixed Bottom Navigation -->
+    <div class="lg:hidden fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-slate-200 p-3 flex justify-between z-50 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.1)]">
+        <button id="prev-btn-mobile" onclick="goPrev()" class="ui-font font-bold px-5 py-2 rounded-lg text-slate-700 bg-slate-100 active:bg-slate-200 transition-colors flex items-center gap-2">
+            &larr; Prev
+        </button>
+        <button id="next-btn-mobile" onclick="goNext()" class="ui-font font-bold px-5 py-2 rounded-lg text-white bg-slate-800 active:bg-slate-700 transition-colors flex items-center gap-2 shadow-sm">
+            Next &rarr;
+        </button>
+    </div>
+
+    <script>
+        const REQUIRED_SCORE = 0.8;
+        const totalPages = 8; // Pages 0 to 7
+        let currentSpread = 0; // For desktop (0 = pages 0,1; 1 = pages 2,3; etc.)
+        let currentMobilePage = 0;
+
+        function updatePagination() {
+            const isDesktop = window.innerWidth >= 1024;
+            const pages = document.querySelectorAll('.page-content');
+            
+            // Hide all pages
+            pages.forEach(p => p.classList.add('hidden'));
+
+            if (isDesktop) {
+                let leftIdx = currentSpread * 2;
+                let rightIdx = leftIdx + 1;
+                
+                const leftPage = document.getElementById(`page-${leftIdx}`);
+                const rightPage = document.getElementById(`page-${rightIdx}`);
+                
+                if(leftPage) leftPage.classList.remove('hidden');
+                if(rightPage) rightPage.classList.remove('hidden');
+
+                // Update Nav Buttons
+                document.getElementById('prev-btn').disabled = currentSpread === 0;
+                document.getElementById('next-btn').disabled = currentSpread >= Math.ceil(totalPages/2) - 1;
+                
+            } else {
+                const activePage = document.getElementById(`page-${currentMobilePage}`);
+                if(activePage) activePage.classList.remove('hidden');
+
+                // Update Mobile Nav
+                const prevMob = document.getElementById('prev-btn-mobile');
+                const nextMob = document.getElementById('next-btn-mobile');
+                if(prevMob) prevMob.style.visibility = currentMobilePage === 0 ? 'hidden' : 'visible';
+                if(nextMob) nextMob.style.visibility = currentMobilePage === totalPages - 1 ? 'hidden' : 'visible';
+            }
+        }
+
+        function goNext() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread < Math.ceil(totalPages/2) - 1) currentSpread++;
+            } else {
+                if (currentMobilePage < totalPages - 1) currentMobilePage++;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goPrev() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread > 0) currentSpread--;
+            } else {
+                if (currentMobilePage > 0) currentMobilePage--;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('resize', () => {
+            const isDesktop = window.innerWidth >= 1024;
+            if(isDesktop) {
+                currentSpread = Math.floor(currentMobilePage / 2);
+            } else {
+                currentMobilePage = currentSpread * 2;
+            }
+            updatePagination();
+        });
+
+        // --- Core UI & Grading Logic ---
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function validateBlanks(inputs) {
+            let allFilled = true;
+            inputs.forEach(input => {
+                if (input.classList.contains('font-normal')) return; // skip subjective notes
+                const val = input.value !== undefined ? input.value : input.innerText;
+                if (val.trim() === "") {
+                    allFilled = false;
+                    input.style.borderBottomColor = '#f59e0b';
+                    input.style.backgroundColor = '#fef3c7';
+                    setTimeout(() => {
+                        input.style.borderBottomColor = '';
+                        input.style.backgroundColor = '';
+                    }, 1500);
+                }
+            });
+            return allFilled;
+        }
+
+        function checkExercise(exerciseId) {
+            const inputs = document.querySelectorAll(`[data-ex="${exerciseId}"]`);
+            if (!validateBlanks(inputs)) {
+                showToast("Please answer all required blanks before checking!", "warning");
+                return;
+            }
+
+            let correctCount = 0;
+            inputs.forEach(input => {
+                if(input.classList.contains('font-normal')) return;
+
+                const rawVal = input.value !== undefined ? input.value : input.innerText;
+                const userVal = rawVal.trim().toLowerCase().replace(/\s+/g, ' ');
+                const possibleAns = JSON.parse(input.getAttribute('data-ans'));
+                
+                if (possibleAns.includes(userVal)) {
+                    correctCount++;
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+
+            const scoreLabel = document.getElementById(`score-${exerciseId}`);
+            if(!scoreLabel) return;
+            
+            const totalCount = Array.from(inputs).filter(i => !i.classList.contains('font-normal')).length;
+            const percentage = correctCount / totalCount;
+            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
+            
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (percentage >= REQUIRED_SCORE) {
+                scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
+                
+                const btn = document.getElementById(`btn-${exerciseId}`);
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = "Passed";
+                }
+                showToast("Good job!", "success");
+            } else {
+                scoreLabel.textContent = `❌ Failed. ${scoreText}`;
+                scoreLabel.classList.add('text-red-600');
+                showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
+            }
+        }
+
+        // --- Audio Player Initialization via SoundCloud Widget API ---
+        function initAudioPlayer() {
+            const players = document.querySelectorAll('.custom-audio-player');
+            
+            players.forEach((playerEl) => {
+                const scUrl = playerEl.getAttribute('data-sc-url');
+                const iframeElement = playerEl.querySelector('.sc-widget-iframe');
+                
+                if (!iframeElement || !scUrl) return;
+                
+                iframeElement.src = scUrl;
+                
+                const widget = SC.Widget(iframeElement);
+                const playBtn = playerEl.querySelector('.audio-play-btn');
+                const playIcon = playerEl.querySelector('.play-icon');
+                const pauseIcon = playerEl.querySelector('.pause-icon');
+                const progressBar = playerEl.querySelector('.audio-progress');
+                const progressFill = playerEl.querySelector('.audio-progress-bar');
+                const currentTimeEl = playerEl.querySelector('.audio-current-time');
+                const totalTimeEl = playerEl.querySelector('.audio-total-time');
+
+                let durationSec = 0;
+
+                const formatTime = (timeInSeconds) => {
+                    if (isNaN(timeInSeconds) || timeInSeconds === Infinity) return "00:00";
+                    const min = Math.floor(timeInSeconds / 60);
+                    const sec = Math.floor(timeInSeconds % 60);
+                    return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+                };
+
+                const updateDuration = () => {
+                    widget.getDuration((durationMs) => {
+                        if (durationMs) {
+                            durationSec = durationMs / 1000;
+                            if (totalTimeEl) totalTimeEl.textContent = formatTime(durationSec);
+                            if (progressBar) progressBar.max = durationSec;
+                        }
+                    });
+                };
+
+                widget.bind(SC.Widget.Events.READY, () => { updateDuration(); });
+
+                widget.bind(SC.Widget.Events.PLAY_PROGRESS, (info) => {
+                    if (!durationSec) updateDuration(); 
+                    const currentPositionSec = info.currentPosition / 1000;
+                    if (currentTimeEl) currentTimeEl.textContent = formatTime(currentPositionSec);
+                    if (progressBar) progressBar.value = currentPositionSec;
+                    if (durationSec > 0 && progressFill) {
+                        const percent = (currentPositionSec / durationSec) * 100;
+                        progressFill.style.width = `${percent}%`;
+                    }
+                });
+
+                widget.bind(SC.Widget.Events.PLAY, () => {
+                    if(playIcon) playIcon.classList.add('hidden');
+                    if(pauseIcon) pauseIcon.classList.remove('hidden');
+                    updateDuration();
+                });
+
+                widget.bind(SC.Widget.Events.PAUSE, () => {
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(playIcon) playIcon.classList.remove('hidden');
+                });
+
+                widget.bind(SC.Widget.Events.FINISH, () => {
+                    if(playIcon) playIcon.classList.remove('hidden');
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(progressFill) progressFill.style.width = '0%';
+                    if(progressBar) progressBar.value = 0;
+                    widget.seekTo(0);
+                });
+
+                if (playBtn) {
+                    playBtn.addEventListener('click', () => { widget.toggle(); });
+                }
+
+                if (progressBar) {
+                    progressBar.addEventListener('input', () => {
+                        widget.seekTo(progressBar.value * 1000);
+                    });
+                }
+            });
+        }
+
+        // Initialize on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePagination();
+            initAudioPlayer();
+        });
+
+    </script>
+</body>
+</html>
