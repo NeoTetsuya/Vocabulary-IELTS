@@ -89,6 +89,24 @@
             background-size: 0.8em;
         }
 
+        /* Crossword Inputs */
+        .crossword-input {
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: none;
+            outline: none;
+            background: transparent;
+            transition: all 0.2s;
+            caret-color: #0369a1;
+        }
+        .crossword-input:focus {
+            background-color: #e0f2fe;
+        }
+        
         .correct { 
             border-bottom: 2px solid #16a34a !important; 
             color: #166534; 
@@ -99,6 +117,17 @@
             color: #991b1b; 
             background-color: #fee2e2; 
         }
+        
+        .crossword-input.correct {
+            border-bottom: none !important;
+            color: #166534;
+            background-color: #dcfce7;
+        }
+        .crossword-input.incorrect {
+            border-bottom: none !important;
+            color: #991b1b;
+            background-color: #fee2e2;
+        }
 
         /* Callouts / Notes */
         .textbook-note {
@@ -107,7 +136,7 @@
             position: relative;
         }
         .textbook-note::before {
-            content: "✍🏼 Note";
+            content: "📝 Note";
             position: absolute;
             top: -12px;
             left: 8px;
@@ -309,76 +338,39 @@
                             <h3 class="text-2xl font-bold text-slate-900">Vocabulary Crossword</h3>
                         </div>
 
-                        <p class="mb-6 leading-relaxed text-sm"><span class="font-bold">1.4</span> Complete the definitions below using words from the previous recording.</p>
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">1.4</span> Complete the definitions below using words from the previous recording.</p>
 
-                        <div class="grid grid-cols-1 gap-6 text-[14px]">
-                            <!-- Across -->
-                            <div class="bg-white border border-slate-200 shadow-sm rounded p-4">
-                                <h4 class="font-bold text-slate-800 border-b border-slate-200 pb-2 mb-3 uppercase text-xs tracking-widest">Across</h4>
-                                <ol class="space-y-4 text-slate-700">
-                                    <li class="flex items-center gap-2">
-                                        <span class="font-bold w-6 text-slate-400">1</span> 
-                                        <span class="flex-1">easy to use</span>
-                                        <input type="text" class="input-blank w-36 uppercase text-xs" data-ex="1.4" data-ans='["user-friendly", "user friendly"]'>
-                                    </li>
-                                    <li class="flex items-center gap-2">
-                                        <span class="font-bold w-6 text-slate-400">3</span> 
-                                        <span class="flex-1">open a computer file</span>
-                                        <input type="text" class="input-blank w-36 uppercase text-xs" data-ex="1.4" data-ans='["access"]'>
-                                    </li>
-                                    <li class="flex items-center gap-2">
-                                        <span class="font-bold w-6 text-slate-400">6</span> 
-                                        <span class="flex-1">move up or down on a screen</span>
-                                        <input type="text" class="input-blank w-36 uppercase text-xs" data-ex="1.4" data-ans='["scroll"]'>
-                                    </li>
-                                    <li class="flex items-center gap-2">
-                                        <span class="font-bold w-6 text-slate-400">7</span> 
-                                        <span class="flex-1">work a machine</span>
-                                        <input type="text" class="input-blank w-36 uppercase text-xs" data-ex="1.4" data-ans='["operate"]'>
-                                    </li>
-                                    <li class="flex items-center gap-2">
-                                        <span class="font-bold w-6 text-slate-400">9</span> 
-                                        <span class="flex-1">the keys on a computer/typewriter</span>
-                                        <input type="text" class="input-blank w-36 uppercase text-xs" data-ex="1.4" data-ans='["keyboard"]'>
-                                    </li>
-                                    <li class="flex items-center gap-2">
-                                        <span class="font-bold w-6 text-slate-400">11</span> 
-                                        <span class="flex-1">an action or purpose it is designed for</span>
-                                        <input type="text" class="input-blank w-36 uppercase text-xs" data-ex="1.4" data-ans='["function"]'>
-                                    </li>
-                                </ol>
+                        <!-- Crossword Grid Area -->
+                        <div class="w-full overflow-x-auto bg-slate-100 border border-slate-200 rounded p-4 mb-6 shadow-inner">
+                            <div id="crossword-grid" class="grid gap-[1px] bg-slate-800 mx-auto" style="grid-template-columns: repeat(23, minmax(22px, 28px)); grid-template-rows: repeat(15, minmax(22px, 28px)); width: max-content;">
+                                <!-- Grid injected by JS -->
                             </div>
+                        </div>
 
+                        <!-- Clues Area -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 text-[13px] lg:text-[14px]">
+                            <!-- Across -->
+                            <div>
+                                <h4 class="font-bold text-slate-800 border-b border-slate-200 pb-2 mb-3 uppercase text-[11px] tracking-widest">Across</h4>
+                                <ul class="space-y-2 text-slate-700">
+                                    <li><span class="font-bold w-6 inline-block text-slate-400">1</span> easy to use</li>
+                                    <li><span class="font-bold w-6 inline-block text-slate-400">3</span> open a computer file</li>
+                                    <li><span class="font-bold w-6 inline-block text-slate-400">6</span> move up or down on a screen</li>
+                                    <li><span class="font-bold w-6 inline-block text-slate-400">7</span> work a machine</li>
+                                    <li><span class="font-bold w-6 inline-block text-slate-400">9</span> keys on a computer/typewriter</li>
+                                    <li><span class="font-bold w-6 inline-block text-slate-400">11</span> an action/purpose it is designed for</li>
+                                </ul>
+                            </div>
                             <!-- Down -->
-                            <div class="bg-white border border-slate-200 shadow-sm rounded p-4">
-                                <h4 class="font-bold text-slate-800 border-b border-slate-200 pb-2 mb-3 uppercase text-xs tracking-widest">Down</h4>
-                                <ol class="space-y-4 text-slate-700">
-                                    <li class="flex items-center gap-2">
-                                        <span class="font-bold w-6 text-slate-400">2</span> 
-                                        <span class="flex-1">show on a screen</span>
-                                        <input type="text" class="input-blank w-36 uppercase text-xs" data-ex="1.4" data-ans='["display"]'>
-                                    </li>
-                                    <li class="flex items-center gap-2">
-                                        <span class="font-bold w-6 text-slate-400">4</span> 
-                                        <span class="flex-1">have specific tools</span>
-                                        <input type="text" class="input-blank w-36 uppercase text-xs" data-ex="1.4" data-ans='["equipped"]'>
-                                    </li>
-                                    <li class="flex items-center gap-2">
-                                        <span class="font-bold w-6 text-slate-400">5</span> 
-                                        <span class="flex-1">save or keep safe</span>
-                                        <input type="text" class="input-blank w-36 uppercase text-xs" data-ex="1.4" data-ans='["store"]'>
-                                    </li>
-                                    <li class="flex items-center gap-2">
-                                        <span class="font-bold w-6 text-slate-400">8</span> 
-                                        <span class="flex-1">the part of a computer that stores info</span>
-                                        <input type="text" class="input-blank w-36 uppercase text-xs" data-ex="1.4" data-ans='["memory"]'>
-                                    </li>
-                                    <li class="flex items-center gap-2">
-                                        <span class="font-bold w-6 text-slate-400">10</span> 
-                                        <span class="flex-1">information</span>
-                                        <input type="text" class="input-blank w-36 uppercase text-xs" data-ex="1.4" data-ans='["data"]'>
-                                    </li>
-                                </ol>
+                            <div>
+                                <h4 class="font-bold text-slate-800 border-b border-slate-200 pb-2 mb-3 uppercase text-[11px] tracking-widest">Down</h4>
+                                <ul class="space-y-2 text-slate-700">
+                                    <li><span class="font-bold w-6 inline-block text-slate-400">2</span> show on a screen</li>
+                                    <li><span class="font-bold w-6 inline-block text-slate-400">4</span> have specific tools</li>
+                                    <li><span class="font-bold w-6 inline-block text-slate-400">5</span> save or keep safe</li>
+                                    <li><span class="font-bold w-6 inline-block text-slate-400">8</span> part of a computer that stores info</li>
+                                    <li><span class="font-bold w-6 inline-block text-slate-400">10</span> information</li>
+                                </ul>
                             </div>
                         </div>
 
@@ -780,12 +772,18 @@
                 const val = input.value !== undefined ? input.value : input.innerText;
                 if (val.trim() === "") {
                     allFilled = false;
-                    input.style.borderBottomColor = '#f59e0b';
-                    input.style.backgroundColor = '#fef3c7';
-                    setTimeout(() => {
-                        input.style.borderBottomColor = '';
-                        input.style.backgroundColor = '';
-                    }, 1500);
+                    // For crossword input vs normal inputs
+                    if (input.classList.contains('crossword-input')) {
+                        input.parentElement.style.backgroundColor = '#fef3c7';
+                        setTimeout(() => input.parentElement.style.backgroundColor = '', 1500);
+                    } else {
+                        input.style.borderBottomColor = '#f59e0b';
+                        input.style.backgroundColor = '#fef3c7';
+                        setTimeout(() => {
+                            input.style.borderBottomColor = '';
+                            input.style.backgroundColor = '';
+                        }, 1500);
+                    }
                 }
             });
             return allFilled;
@@ -824,7 +822,7 @@
             scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
             
             if (percentage >= REQUIRED_SCORE) {
-                scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+                scoreLabel.textContent = `✓ Passed! ${scoreText}`;
                 scoreLabel.classList.add('text-green-600');
                 
                 const btn = document.getElementById(`btn-${exerciseId}`);
@@ -834,9 +832,79 @@
                 }
                 showToast("Good job!", "success");
             } else {
-                scoreLabel.textContent = `❌ Failed. ${scoreText}`;
+                scoreLabel.textContent = `✗ Failed. ${scoreText}`;
                 scoreLabel.classList.add('text-red-600');
                 showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
+            }
+        }
+
+        // --- Crossword Generation Logic ---
+        const crosswordData = [
+            { id: "1A", word: "USERFRIENDLY", x: 5, y: 5, dir: "across", num: 1 },
+            { id: "2D", word: "DISPLAY", x: 6, y: 3, dir: "down", num: 2 },
+            { id: "3A", word: "ACCESS", x: 6, y: 8, dir: "across", num: 3 },
+            { id: "4D", word: "EQUIPPED", x: 16, y: 7, dir: "down", num: 4 },
+            { id: "5D", word: "STORE", x: 19, y: 11, dir: "down", num: 5 },
+            { id: "6A", word: "SCROLL", x: 1, y: 7, dir: "across", num: 6 },
+            { id: "7A", word: "OPERATE", x: 17, y: 15, dir: "across", num: 7 },
+            { id: "8D", word: "MEMORY", x: 10, y: 1, dir: "down", num: 8 },
+            { id: "9A", word: "KEYBOARD", x: 15, y: 13, dir: "across", num: 9 },
+            { id: "10D", word: "DATA", x: 14, y: 5, dir: "down", num: 10 },
+            { id: "11A", word: "FUNCTION", x: 11, y: 10, dir: "across", num: 11 }
+        ];
+
+        function renderCrossword() {
+            const grid = document.getElementById('crossword-grid');
+            if (!grid) return;
+            const cells = {};
+
+            // Calculate grid intersections and cell placements
+            crosswordData.forEach(word => {
+                let cx = word.x, cy = word.y;
+                for(let i = 0; i < word.word.length; i++) {
+                    let key = `${cx},${cy}`;
+                    if(!cells[key]) {
+                        cells[key] = { ans: word.word[i], num: null };
+                    }
+                    if(i === 0 && !cells[key].num) {
+                        cells[key].num = word.num;
+                    }
+                    
+                    if(word.dir === 'across') cx++;
+                    else cy++;
+                }
+            });
+
+            // Append input elements onto the CSS grid
+            for(let key in cells) {
+                let [x, y] = key.split(',');
+                let cell = cells[key];
+                
+                let div = document.createElement('div');
+                div.className = "relative bg-white flex items-center justify-center focus-within:ring-2 focus-within:ring-blue-500 focus-within:z-10 transition-colors duration-200";
+                div.style.gridColumn = x;
+                div.style.gridRow = y;
+
+                if(cell.num) {
+                    let span = document.createElement('span');
+                    span.className = "absolute top-[2px] left-[2px] text-[8px] leading-none font-bold text-slate-500 pointer-events-none select-none";
+                    span.textContent = cell.num;
+                    div.appendChild(span);
+                }
+
+                let input = document.createElement('input');
+                input.type = "text";
+                input.maxLength = 1;
+                input.className = "crossword-input";
+                input.dataset.ex = "1.4";
+                input.dataset.ans = JSON.stringify([cell.ans.toLowerCase()]);
+                
+                input.addEventListener('input', function(e) {
+                    this.value = this.value.replace(/[^A-Za-z]/g, '').toUpperCase();
+                });
+
+                div.appendChild(input);
+                grid.appendChild(div);
             }
         }
 
@@ -928,6 +996,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             updatePagination();
             initAudioPlayer();
+            renderCrossword();
         });
 
     </script>
