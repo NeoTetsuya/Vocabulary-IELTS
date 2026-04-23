@@ -234,18 +234,23 @@
                         <label class="flex justify-between">petal <select class="input-blank w-24 text-xs" data-ex="1.2" data-ans='["plant"]'><option value="">-</option><option value="animal">Animal</option><option value="plant">Plant</option><option value="both">Both</option></select></label>
                     </div>
 
-                    <p class="mt-6 mb-3 leading-relaxed text-sm"><span class="font-bold">1.3</span> Which five words from the list above are connected to an animal's skin or covering?</p>
-                    <div class="flex flex-wrap gap-3">
-                        <input type="text" class="input-blank w-24" data-ex="1.2" data-ans='["coat"]'>
-                        <input type="text" class="input-blank w-24" data-ex="1.2" data-ans='["fur"]'>
-                        <input type="text" class="input-blank w-24" data-ex="1.2" data-ans='["hide"]'>
-                        <input type="text" class="input-blank w-24" data-ex="1.2" data-ans='["scales"]'>
-                        <input type="text" class="input-blank w-24" data-ex="1.2" data-ans='["feathers"]'>
+                    <div class="flex items-center gap-3 mt-4 mb-8">
+                        <button id="btn-1.2" onclick="checkExercise('1.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.2</button>
+                        <span id="score-1.2" class="ui-font text-sm font-bold hidden"></span>
                     </div>
 
-                    <div class="flex items-center gap-3 mt-8">
-                        <button id="btn-1.2" onclick="checkExercise('1.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Exercises</button>
-                        <span id="score-1.2" class="ui-font text-sm font-bold hidden"></span>
+                    <p class="mt-6 mb-3 leading-relaxed text-sm"><span class="font-bold">1.3</span> Which five words from the list above are connected to an animal's skin or covering?</p>
+                    <div class="flex flex-wrap gap-3">
+                        <input type="text" class="input-blank w-24" data-ex="1.3" data-ans='["coat"]'>
+                        <input type="text" class="input-blank w-24" data-ex="1.3" data-ans='["fur"]'>
+                        <input type="text" class="input-blank w-24" data-ex="1.3" data-ans='["hide"]'>
+                        <input type="text" class="input-blank w-24" data-ex="1.3" data-ans='["scales"]'>
+                        <input type="text" class="input-blank w-24" data-ex="1.3" data-ans='["feathers"]'>
+                    </div>
+
+                    <div class="flex items-center gap-3 mt-4">
+                        <button id="btn-1.3" onclick="checkExercise('1.3')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.3</button>
+                        <span id="score-1.3" class="ui-font text-sm font-bold hidden"></span>
                     </div>
                 </div>
                 <div class="mt-8 pt-4 flex w-full justify-start lg:justify-end">
@@ -265,15 +270,20 @@
                     <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">COMPOUND NOUNS</span> Complete the sentences by adding one of these words: <strong>animal, human, nature, natural</strong>.</p>
                     
                     <ol class="list-decimal list-outside ml-4 space-y-4 text-slate-800 text-[14px] leading-loose">
-                        <li>It's human <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["nature"]'> to want to find a solution to our problems.</li>
-                        <li>Vegans do not use or eat any <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["animal"]'> products.</li>
-                        <li>I would rather be served by a <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["human"]'> being than by a computer.</li>
-                        <li>I am constantly amazed by how beautiful and how destructive mother <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["nature"]'> can be.</li>
-                        <li>Man is said to be the most dangerous creature of all the <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["animal"]'> kingdom.</li>
-                        <li>Animals are much happier living in their <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["natural"]'> habitat.</li>
-                        <li>Manmade disasters such as chemical spills can destroy the <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["natural"]'> balance.</li>
-                        <li>In some countries prisoners are denied basic <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["human"]'> rights.</li>
+                        <li>It's human <input type="text" class="input-blank w-24" data-ex="1.4a" data-ans='["nature"]'> to want to find a solution to our problems.</li>
+                        <li>Vegans do not use or eat any <input type="text" class="input-blank w-24" data-ex="1.4a" data-ans='["animal"]'> products.</li>
+                        <li>I would rather be served by a <input type="text" class="input-blank w-24" data-ex="1.4a" data-ans='["human"]'> being than by a computer.</li>
+                        <li>I am constantly amazed by how beautiful and how destructive mother <input type="text" class="input-blank w-24" data-ex="1.4a" data-ans='["nature"]'> can be.</li>
+                        <li>Man is said to be the most dangerous creature of all the <input type="text" class="input-blank w-24" data-ex="1.4a" data-ans='["animal"]'> kingdom.</li>
+                        <li>Animals are much happier living in their <input type="text" class="input-blank w-24" data-ex="1.4a" data-ans='["natural"]'> habitat.</li>
+                        <li>Manmade disasters such as chemical spills can destroy the <input type="text" class="input-blank w-24" data-ex="1.4a" data-ans='["natural"]'> balance.</li>
+                        <li>In some countries prisoners are denied basic <input type="text" class="input-blank w-24" data-ex="1.4a" data-ans='["human"]'> rights.</li>
                     </ol>
+
+                    <div class="flex items-center gap-3 mt-4 mb-8">
+                        <button id="btn-1.4a" onclick="checkExercise('1.4a')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Compound Nouns</button>
+                        <span id="score-1.4a" class="ui-font text-sm font-bold hidden"></span>
+                    </div>
 
                     <h3 class="text-xl font-bold text-slate-900 mt-8 mb-4 border-b-2 border-slate-800 pb-2">1.4 Listening: The Meerkat</h3>
                     <p class="mb-4 leading-relaxed text-sm text-slate-600 italic">Read the description of an animal called a meerkat and complete the table.</p>
@@ -282,24 +292,24 @@
                         <div class="border-r border-slate-200 pr-4">
                             <h4 class="font-bold border-b border-slate-200 pb-1 mb-2">Habitat</h4>
                             <ul class="list-disc list-inside space-y-2">
-                                <li>Found in South Africa in (1) <input type="text" class="input-blank w-20 text-xs" data-ex="1.4" data-ans='["semi-arid"]'> areas.</li>
-                                <li>Avoids woodland and thick (2) <input type="text" class="input-blank w-20 text-xs" data-ex="1.4" data-ans='["vegetation"]'>.</li>
-                                <li>It sleeps in (3) <input type="text" class="input-blank w-24 text-xs" data-ex="1.4" data-ans='["burrows", "dens", "burrow", "den"]'>.</li>
-                                <li>If necessary, the meerkat will make a (4) <input type="text" class="input-blank w-20 text-xs" data-ex="1.4" data-ans='["den", "burrow"]'> between rocks.</li>
+                                <li>Found in South Africa in (1) <input type="text" class="input-blank w-20 text-xs" data-ex="1.4b" data-ans='["semi-arid"]'> areas.</li>
+                                <li>Avoids woodland and thick (2) <input type="text" class="input-blank w-20 text-xs" data-ex="1.4b" data-ans='["vegetation"]'>.</li>
+                                <li>It sleeps in (3) <input type="text" class="input-blank w-24 text-xs" data-ex="1.4b" data-ans='["burrows", "dens", "burrow", "den"]'>.</li>
+                                <li>If necessary, the meerkat will make a (4) <input type="text" class="input-blank w-20 text-xs" data-ex="1.4b" data-ans='["den", "burrow"]'> between rocks.</li>
                             </ul>
                         </div>
                         <div>
                             <h4 class="font-bold border-b border-slate-200 pb-1 mb-2">Diet</h4>
                             <ul class="list-disc list-inside space-y-2">
-                                <li>Meerkats mostly eat (5) <input type="text" class="input-blank w-16 text-xs" data-ex="1.4" data-ans='["insects", "spiders", "snails"]'>, (6) <input type="text" class="input-blank w-16 text-xs" data-ex="1.4" data-ans='["insects", "spiders", "snails"]'> and (7) <input type="text" class="input-blank w-16 text-xs" data-ex="1.4" data-ans='["insects", "spiders", "snails"]'>.</li>
-                                <li>They occasionally eat small rodents and the (8) <input type="text" class="input-blank w-20 text-xs" data-ex="1.4" data-ans='["roots", "root"]'> of certain plants.</li>
+                                <li>Meerkats mostly eat (5) <input type="text" class="input-blank w-16 text-xs" data-ex="1.4b" data-ans='["insects", "spiders", "snails"]'>, (6) <input type="text" class="input-blank w-16 text-xs" data-ex="1.4b" data-ans='["insects", "spiders", "snails"]'> and (7) <input type="text" class="input-blank w-16 text-xs" data-ex="1.4b" data-ans='["insects", "spiders", "snails"]'>.</li>
+                                <li>They occasionally eat small rodents and the (8) <input type="text" class="input-blank w-20 text-xs" data-ex="1.4b" data-ans='["roots", "root"]'> of certain plants.</li>
                             </ul>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-3 mt-6">
-                        <button id="btn-1.4" onclick="checkExercise('1.4')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Page 2</button>
-                        <span id="score-1.4" class="ui-font text-sm font-bold hidden"></span>
+                    <div class="flex items-center gap-3 mt-4">
+                        <button id="btn-1.4b" onclick="checkExercise('1.4b')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.4</button>
+                        <span id="score-1.4b" class="ui-font text-sm font-bold hidden"></span>
                     </div>
                 </div>
                 <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
@@ -327,6 +337,11 @@
                         <li>endemic, native, introduced, local <span class="mx-2">&rarr;</span> <select class="input-blank w-28 text-xs font-bold text-slate-700" data-ex="2.1" data-ans='["introduced"]'><option value="">-</option><option value="endemic">endemic</option><option value="native">native</option><option value="introduced">introduced</option><option value="local">local</option></select></li>
                     </ol>
 
+                    <div class="flex items-center gap-3 mt-4 mb-8">
+                        <button id="btn-2.1" onclick="checkExercise('2.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.1</button>
+                        <span id="score-2.1" class="ui-font text-sm font-bold hidden"></span>
+                    </div>
+
                     <h4 class="font-bold mt-8 mb-2">Introduced species</h4>
                     <div class="bg-amber-50/50 p-4 border border-amber-100 rounded text-[12px] leading-relaxed mb-4 text-slate-700">
                         Since the birth of agriculture, farmers have tried to avoid using pesticides by employing various biological methods to control nature. The first method involved introducing a predator that would control pests by eating them. This was used successfully in 1925 to control the prickly pear population in Australia. The prickly pear had originally been used as a divider between paddocks. However, it eventually spread from a few farms to 4 million hectares of farming land, rendering them unusable. The Cactoblastis moth larvae was introduced to help control the situation and within ten years, the prickly pear was virtually eradicated. Further attempts at biological control weren't so successful. When farmers tried to eliminate the cane beetle by introducing the South American cane toad, the results were catastrophic. The cane toad did not eat the cane beetle and the toad population spread rapidly leading to the decline of native species of mammals and reptiles.
@@ -334,16 +349,16 @@
 
                     <p class="mb-3 leading-relaxed text-sm"><span class="font-bold">2.2</span> Decide if the statements are <strong>True</strong> or <strong>False</strong>.</p>
                     <ol class="list-decimal list-outside ml-4 space-y-2 text-slate-800 text-[13px]">
-                        <li>Farmers do not like using chemicals to kill pests. <select class="input-blank w-20 text-xs" data-ex="2.1" data-ans='["true"]'><option value="">-</option><option value="true">True</option><option value="false">False</option></select></li>
-                        <li>The prickly pear was planted as a type of barrier. <select class="input-blank w-20 text-xs" data-ex="2.1" data-ans='["true"]'><option value="">-</option><option value="true">True</option><option value="false">False</option></select></li>
-                        <li>The Cactoblastis moth killed off nearly all prickly pear plants. <select class="input-blank w-20 text-xs" data-ex="2.1" data-ans='["true"]'><option value="">-</option><option value="true">True</option><option value="false">False</option></select></li>
-                        <li>The cane toad was a native species to Australia. <select class="input-blank w-20 text-xs" data-ex="2.1" data-ans='["false"]'><option value="">-</option><option value="true">True</option><option value="false">False</option></select></li>
-                        <li>Using the cane toad was very successful. <select class="input-blank w-20 text-xs" data-ex="2.1" data-ans='["false"]'><option value="">-</option><option value="true">True</option><option value="false">False</option></select></li>
+                        <li>Farmers do not like using chemicals to kill pests. <select class="input-blank w-20 text-xs" data-ex="2.2" data-ans='["true"]'><option value="">-</option><option value="true">True</option><option value="false">False</option></select></li>
+                        <li>The prickly pear was planted as a type of barrier. <select class="input-blank w-20 text-xs" data-ex="2.2" data-ans='["true"]'><option value="">-</option><option value="true">True</option><option value="false">False</option></select></li>
+                        <li>The Cactoblastis moth killed off nearly all prickly pear plants. <select class="input-blank w-20 text-xs" data-ex="2.2" data-ans='["true"]'><option value="">-</option><option value="true">True</option><option value="false">False</option></select></li>
+                        <li>The cane toad was a native species to Australia. <select class="input-blank w-20 text-xs" data-ex="2.2" data-ans='["false"]'><option value="">-</option><option value="true">True</option><option value="false">False</option></select></li>
+                        <li>Using the cane toad was very successful. <select class="input-blank w-20 text-xs" data-ex="2.2" data-ans='["false"]'><option value="">-</option><option value="true">True</option><option value="false">False</option></select></li>
                     </ol>
 
-                    <div class="flex items-center gap-3 mt-6">
-                        <button id="btn-2.1" onclick="checkExercise('2.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Page 3</button>
-                        <span id="score-2.1" class="ui-font text-sm font-bold hidden"></span>
+                    <div class="flex items-center gap-3 mt-4">
+                        <button id="btn-2.2" onclick="checkExercise('2.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.2</button>
+                        <span id="score-2.2" class="ui-font text-sm font-bold hidden"></span>
                     </div>
                 </div>
                 <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
@@ -375,6 +390,11 @@
                         <li>relationship between plants, animals, land, air, and water: <input type="text" class="input-blank w-40" data-ex="2.3" data-ans='["ecological balance"]'></li>
                     </ol>
 
+                    <div class="flex items-center gap-3 mt-4 mb-8">
+                        <button id="btn-2.3" onclick="checkExercise('2.3')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.3</button>
+                        <span id="score-2.3" class="ui-font text-sm font-bold hidden"></span>
+                    </div>
+
                     <p class="mt-8 mb-4 leading-relaxed text-sm"><span class="font-bold">2.4</span> WORD BUILDING Complete the table.</p>
                     <div class="overflow-x-auto border border-slate-200 rounded">
                         <table class="w-full text-left text-[12px] text-slate-700 bg-white ui-font">
@@ -390,46 +410,46 @@
                                 <tr>
                                     <td class="px-3 py-2 border-r border-slate-200 font-bold">agriculture</td>
                                     <td class="px-3 py-2 border-r border-slate-200 font-bold">agricultural</td>
-                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["agriculturally"]'></td>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.4" data-ans='["agriculturally"]'></td>
                                     <td class="px-3 py-2 bg-slate-50 text-center text-slate-400">-</td>
                                 </tr>
                                 <tr>
                                     <td class="px-3 py-2 border-r border-slate-200 font-bold">ecology</td>
-                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["ecological"]'></td>
-                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["ecologically"]'></td>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.4" data-ans='["ecological"]'></td>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.4" data-ans='["ecologically"]'></td>
                                     <td class="px-3 py-2 bg-slate-50 text-center text-slate-400">-</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["evolution"]'></td>
-                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["evolutionary"]'></td>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.4" data-ans='["evolution"]'></td>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.4" data-ans='["evolutionary"]'></td>
                                     <td class="px-3 py-2 border-r border-slate-200 bg-slate-50 text-center text-slate-400">-</td>
                                     <td class="px-3 py-2 font-bold">evolve</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["extinction"]'></td>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.4" data-ans='["extinction"]'></td>
                                     <td class="px-3 py-2 border-r border-slate-200 font-bold">extinct</td>
                                     <td class="px-3 py-2 border-r border-slate-200 bg-slate-50 text-center text-slate-400">-</td>
-                                    <td class="px-3 py-2"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["become extinct"]'></td>
+                                    <td class="px-3 py-2"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.4" data-ans='["become extinct"]'></td>
                                 </tr>
                                 <tr>
                                     <td class="px-3 py-2 border-r border-slate-200 font-bold">nature</td>
-                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["natural"]'></td>
-                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["naturally"]'></td>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.4" data-ans='["natural"]'></td>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.4" data-ans='["naturally"]'></td>
                                     <td class="px-3 py-2 bg-slate-50 text-center text-slate-400">-</td>
                                 </tr>
                                 <tr>
-                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["genetics", "genes"]' placeholder="g..."></td>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.4" data-ans='["genetics", "genes"]' placeholder="g..."></td>
                                     <td class="px-3 py-2 border-r border-slate-200 font-bold">genetic</td>
-                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["genetically"]'></td>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.4" data-ans='["genetically"]'></td>
                                     <td class="px-3 py-2 bg-slate-50 text-center text-slate-400">-</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
-                    <div class="flex items-center gap-3 mt-8">
-                        <button id="btn-2.3" onclick="checkExercise('2.3')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Page 4</button>
-                        <span id="score-2.3" class="ui-font text-sm font-bold hidden"></span>
+                    <div class="flex items-center gap-3 mt-4">
+                        <button id="btn-2.4" onclick="checkExercise('2.4')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.4</button>
+                        <span id="score-2.4" class="ui-font text-sm font-bold hidden"></span>
                     </div>
                 </div>
                 <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
