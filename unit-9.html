@@ -1,586 +1,893 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Natural World - Self Study</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://w.soundcloud.com/player/api.js"></script>
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
-        .input-blank {
-            border: none;
-            border-bottom: 2px solid #9ca3af;
-            background: transparent;
-            outline: none;
-            text-align: center;
-            padding: 0.25rem;
-            transition: border-color 0.2s, background-color 0.2s;
-            font-weight: 600;
-            color: #1f2937;
-        }
-        .input-blank:focus { border-bottom-color: #0ea5e9; }
-        select.input-blank { text-align: left; appearance: none; padding-right: 1.5rem; }
-        
-        .correct { border-bottom-color: #22c55e !important; color: #166534; background-color: #f0fdf4; }
-        .incorrect { border-bottom-color: #ef4444 !important; color: #991b1b; background-color: #fef2f2; }
-        
-        .tab-btn { transition: all 0.2s ease-in-out; }
-        .tab-btn.active { border-bottom-width: 4px; border-color: #0ea5e9; color: #0369a1; font-weight: 700; background-color: #f0f9ff; }
-        .section-hidden { display: none; }
-        
-        /* Word Choice & Matching */
-        .word-choice { transition: all 0.2s; cursor: pointer; padding: 0.25rem 0.75rem; border-radius: 0.375rem; border: 2px solid transparent; font-weight: 600; background-color: transparent; }
-        .word-choice:hover:not(.used) { background-color: #e0f2fe; border-color: #7dd3fc; }
-        .word-choice.selected { background-color: #bae6fd; border-color: #0ea5e9; transform: scale(1.05); }
-        .word-choice.used { opacity: 0.4; text-decoration: line-through; pointer-events: none; }
-        
-        /* Odd One Out Selection */
-        .odd-word { cursor: pointer; padding: 4px 12px; border-radius: 6px; border: 1px solid #cbd5e1; transition: all 0.2s; font-weight: 500; }
-        .odd-word:hover:not(.correct-choice):not(.incorrect-choice) { background-color: #f1f5f9; border-color: #94a3b8; }
-        .odd-word.selected { background-color: #0ea5e9; color: white; border-color: #0284c7; }
-        .odd-word.correct-choice { background-color: #22c55e; color: white; border-color: #166534; pointer-events: none; }
-        .odd-word.incorrect-choice { background-color: #ef4444; color: white; border-color: #991b1b; pointer-events: none; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 9: The Natural World - Textbook</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    body { 
+        font-family: 'Lora', serif; 
+        background-color: #d1d5db;
+        background-image: radial-gradient(#9ca3af 1px, transparent 1px);
+        background-size: 20px 20px;
+    }
+    
+    .ui-font { font-family: 'Inter', sans-serif; }
 
-        .match-slot { display: inline-block; min-width: 8rem; height: 1.75rem; border-bottom: 2px solid #9ca3af; text-align: center; cursor: pointer; padding: 0 0.5rem; font-weight: 600; color: #0369a1; vertical-align: bottom; transition: all 0.2s; line-height: 1.75rem; }
-        .match-slot:hover { border-bottom-color: #0ea5e9; background-color: #f8fafc; border-radius: 0.25rem 0.25rem 0 0; }
-        .match-slot:empty::after { content: '...'; color: #cbd5e1; font-weight: normal; }
+    /* Book & Paper Styles */
+    .book-wrapper {
+        background-color: #fdfcf8;
+        box-shadow: 
+            0 20px 40px -10px rgba(0,0,0,0.3), 
+            0 0 0 1px rgba(0,0,0,0.05),
+            inset 0 0 60px rgba(139, 115, 85, 0.05);
+        border-radius: 4px 8px 8px 4px;
+    }
 
-        .vocab-word { position: relative; cursor: pointer; border-bottom: 2px dashed #0ea5e9; color: #0284c7; font-weight: 600; }
-        .vocab-word:hover { background-color: #f0f9ff; border-bottom-style: solid; }
-        .vocab-tooltip { visibility: hidden; background-color: #1f2937; color: #fff; text-align: center; border-radius: 6px; padding: 6px 12px; position: absolute; z-index: 50; bottom: 130%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.2s; font-size: 0.85rem; white-space: nowrap; font-weight: normal; }
-        .vocab-tooltip::after { content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: #1f2937 transparent transparent transparent; }
-        .vocab-word:hover .vocab-tooltip { visibility: visible; opacity: 1; }
+    .spine-shadow {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 80px;
+        transform: translateX(-50%);
+        background: linear-gradient(
+            to right,
+            transparent 0%,
+            rgba(0,0,0,0.02) 40%,
+            rgba(0,0,0,0.12) 50%,
+            rgba(0,0,0,0.02) 60%,
+            transparent 100%
+        );
+        pointer-events: none;
+        z-index: 10;
+        border-left: 1px solid rgba(255,255,255,0.4);
+        border-right: 1px solid rgba(255,255,255,0.4);
+    }
 
-        .toast { position: fixed; top: 20px; right: 20px; padding: 15px 25px; border-radius: 8px; color: white; font-weight: bold; opacity: 0; transform: translateY(-20px); transition: all 0.3s; z-index: 1000; }
-        .toast.show { opacity: 1; transform: translateY(0); }
-        .toast.error { background-color: #ef4444; }
-        .toast.success { background-color: #22c55e; }
-        
-        .word-building-table th { background-color: #f1f5f9; padding: 0.75rem; border: 1px solid #cbd5e1; text-align: left; font-size: 0.875rem; }
-        .word-building-table td { padding: 0.5rem; border: 1px solid #cbd5e1; }
+    /* Sticky Nav for Desktop */
+    .sticky-nav-container {
+        position: sticky;
+        top: 50vh;
+        transform: translateY(-50%);
+        height: max-content;
+        z-index: 50;
+    }
 
-        .explanation { display: none; font-size: 0.875rem; color: #0369a1; font-style: italic; margin-top: 8px; border-left: 2px solid #0ea5e9; padding-left: 8px; }
-        .explanation.show { display: block; }
-    </style>
+    /* Inputs */
+    .input-blank {
+        font-family: 'Inter', sans-serif;
+        border: none;
+        border-bottom: 2px dashed #94a3b8;
+        background: rgba(255,255,255,0.5);
+        outline: none;
+        text-align: center;
+        padding: 0.1rem 0.25rem;
+        margin: 0 0.25rem;
+        transition: all 0.2s;
+        font-weight: 600;
+        color: #1e293b;
+        border-radius: 2px 2px 0 0;
+    }
+    .input-blank:focus { 
+        border-bottom: 2px solid #0369a1; 
+        background: #f0f9ff;
+    }
+    select.input-blank {
+        text-align: left;
+        cursor: pointer;
+        padding-right: 1.2rem;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 0.1rem center;
+        background-size: 0.8em;
+    }
+
+    .correct { 
+        border-bottom: 2px solid #16a34a !important; 
+        color: #166534; 
+        background-color: #dcfce7; 
+    }
+    .incorrect { 
+        border-bottom: 2px solid #dc2626 !important; 
+        color: #991b1b; 
+        background-color: #fee2e2; 
+    }
+
+    /* Callouts / Notes */
+    .textbook-note {
+        background-color: #f8fafc;
+        border-left: 4px solid #94a3b8;
+        position: relative;
+    }
+    .textbook-note::before {
+        content: "✍🏼 Note";
+        position: absolute;
+        top: -12px;
+        left: 8px;
+        background: #fdfcf8;
+        padding: 0 6px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        font-family: 'Inter', sans-serif;
+        color: #475569;
+    }
+
+    .error-warning::before {
+        content: "⚠️ Error warning";
+        color: #dc2626;
+    }
+
+    /* Custom Scrollbar */
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+    .custom-scrollbar:hover::-webkit-scrollbar-thumb { background-color: #94a3b8; }
+
+    /* Buttons & Toasts */
+    .check-btn { transition: transform 0.1s, box-shadow 0.1s; }
+    .check-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+
+    .nav-btn {
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        backdrop-filter: blur(4px);
+        transition: all 0.2s;
+    }
+    .nav-btn:hover:not(:disabled) { background: #fff; transform: scale(1.05); }
+    .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+
+    .toast {
+        position: fixed; top: 20px; right: 20px;
+        padding: 15px 25px; border-radius: 8px;
+        color: white; font-weight: bold;
+        opacity: 0; transform: translateY(-20px);
+        transition: opacity 0.3s, transform 0.3s;
+        z-index: 1000; pointer-events: none;
+        font-family: 'Inter', sans-serif;
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.error { background-color: #ef4444; }
+    .toast.success { background-color: #22c55e; }
+    .toast.warning { background-color: #f59e0b; }
+</style>
 </head>
-<body class="text-gray-800 antialiased pb-20">
+<body class="text-slate-800 antialiased min-h-screen flex flex-col pt-4 lg:pt-10 pb-24 lg:pb-10">
 
-    <div id="toast" class="toast shadow-lg">Message</div>
+<div id="toast" class="toast">Message</div>
 
-    <div class="max-w-5xl mx-auto mt-8 px-4">
-        
-        <div class="bg-white rounded-xl shadow-md p-6 mb-8 border-l-4 border-sky-500 text-center md:text-left">
-            <h1 class="text-3xl font-bold mb-2 text-sky-900">Unit 9: The natural world</h1>
-            <h2 class="text-xl font-semibold text-gray-700">Flora and fauna, agriculture</h2>
-            <p class="mt-4 text-gray-600">Comprehensive study of the environment, introduced species, and scientific reading practice.</p>
+<!-- Main Desk Area -->
+<div class="w-full max-w-[1600px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
+    
+    <!-- Sticky Left Arrow -->
+    <div class="hidden lg:block w-10 shrink-0 mr-2 xl:mr-4 relative">
+        <div class="sticky-nav-container flex justify-center">
+            <button id="prev-btn" onclick="goPrev()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Previous Page">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
         </div>
-
-        <div class="flex overflow-x-auto bg-white rounded-t-xl shadow-sm border-b-2 border-gray-200 mb-6 custom-scrollbar">
-            <button onclick="openTab(0)" id="tab-0" class="tab-btn active flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 whitespace-nowrap">1. Flora & Fauna</button>
-            <button onclick="openTab(1)" id="tab-1" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 whitespace-nowrap">2. Meerkat (Listening)</button>
-            <button onclick="openTab(2)" id="tab-2" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 whitespace-nowrap">3. Agriculture & Review</button>
-            <button onclick="openTab(3)" id="tab-3" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 whitespace-nowrap">4. Pronunciation</button>
-            <button onclick="openTab(4)" id="tab-4" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 whitespace-nowrap">5. Academic Reading</button>
-        </div>
-
-        <!-- Tab 0: Flora & Fauna -->
-        <div id="section-0" class="bg-white rounded-b-xl p-6 mb-8 exercise-section">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-xl font-bold text-gray-800">1. Flora and Fauna</h3>
-                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full">Target: 80%</span>
-            </div>
-
-            <p class="mb-4 text-gray-700 font-medium italic">1.2 Categorize the words. Click a word to select, then click a slot.</p>
-            
-            <div class="bg-sky-50 text-sky-800 p-4 rounded-lg mb-6 flex flex-wrap gap-3 font-mono text-xs justify-center select-none" id="wb-0">
-                <button class="word-choice" onclick="selectWord(this)" data-word="flora">flora</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="fauna">fauna</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="vegetation">vegetation</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="branch">branch</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="twig">twig</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="root">root</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="coat">coat</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="predator">predator</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="trunk">trunk</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="fur">fur</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="hide">hide</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="scales">scales</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="feathers">feathers</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="paw">paw</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="claw">claw</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="beak">beak</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="thorn">thorn</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="petal">petal</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="horn">horn</button>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                <div class="border-2 border-dashed border-gray-300 p-4 rounded-lg min-h-[350px]">
-                    <h4 class="font-bold text-center text-sky-900 mb-4 bg-sky-50 py-1 rounded">Animals</h4>
-                    <div class="flex flex-col gap-2">
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>1.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-anim" data-ans='["fauna", "coat", "predator", "fur", "hide", "scales", "feathers", "paw", "claw", "beak", "horn", "trunk"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>2.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-anim" data-ans='["fauna", "coat", "predator", "fur", "hide", "scales", "feathers", "paw", "claw", "beak", "horn", "trunk"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>3.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-anim" data-ans='["fauna", "coat", "predator", "fur", "hide", "scales", "feathers", "paw", "claw", "beak", "horn", "trunk"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>4.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-anim" data-ans='["fauna", "coat", "predator", "fur", "hide", "scales", "feathers", "paw", "claw", "beak", "horn", "trunk"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>5.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-anim" data-ans='["fauna", "coat", "predator", "fur", "hide", "scales", "feathers", "paw", "claw", "beak", "horn", "trunk"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>6.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-anim" data-ans='["fauna", "coat", "predator", "fur", "hide", "scales", "feathers", "paw", "claw", "beak", "horn", "trunk"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>7.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-anim" data-ans='["fauna", "coat", "predator", "fur", "hide", "scales", "feathers", "paw", "claw", "beak", "horn", "trunk"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>8.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-anim" data-ans='["fauna", "coat", "predator", "fur", "hide", "scales", "feathers", "paw", "claw", "beak", "horn", "trunk"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>9.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-anim" data-ans='["fauna", "coat", "predator", "fur", "hide", "scales", "feathers", "paw", "claw", "beak", "horn", "trunk"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>10.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-anim" data-ans='["fauna", "coat", "predator", "fur", "hide", "scales", "feathers", "paw", "claw", "beak", "horn", "trunk"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>11.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-anim" data-ans='["fauna", "coat", "predator", "fur", "hide", "scales", "feathers", "paw", "claw", "beak", "horn", "trunk"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>12.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-anim" data-ans='["fauna", "coat", "predator", "fur", "hide", "scales", "feathers", "paw", "claw", "beak", "horn", "trunk"]'></span></div>
-                    </div>
-                </div>
-                <div class="border-2 border-dashed border-gray-300 p-4 rounded-lg min-h-[350px]">
-                    <h4 class="font-bold text-center text-sky-900 mb-4 bg-sky-50 py-1 rounded">Plants</h4>
-                    <div class="flex flex-col gap-2">
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>1.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-plan" data-ans='["flora", "vegetation", "branch", "twig", "root", "trunk", "thorn", "petal"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>2.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-plan" data-ans='["flora", "vegetation", "branch", "twig", "root", "trunk", "thorn", "petal"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>3.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-plan" data-ans='["flora", "vegetation", "branch", "twig", "root", "trunk", "thorn", "petal"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>4.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-plan" data-ans='["flora", "vegetation", "branch", "twig", "root", "trunk", "thorn", "petal"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>5.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-plan" data-ans='["flora", "vegetation", "branch", "twig", "root", "trunk", "thorn", "petal"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>6.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-plan" data-ans='["flora", "vegetation", "branch", "twig", "root", "trunk", "thorn", "petal"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>7.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-plan" data-ans='["flora", "vegetation", "branch", "twig", "root", "trunk", "thorn", "petal"]'></span></div>
-                        <div class="flex justify-between items-center text-sm border-b pb-1"><span>8.</span> <span class="match-slot" onclick="placeWord(this)" data-ex="0-plan" data-ans='["flora", "vegetation", "branch", "twig", "root", "trunk", "thorn", "petal"]'></span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-center mb-10">
-                <button onclick="checkExercise('0-anim', '0-plan')" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Classification</button>
-                <span id="score-0-anim" class="ml-4 font-bold hidden"></span>
-            </div>
-
-            <hr class="my-10 border-gray-200">
-
-            <div class="bg-sky-50 border-l-4 border-sky-400 p-6 rounded mb-6">
-                <h4 class="font-bold text-sky-900 mb-4 uppercase tracking-wider">1.3 Compound Nouns</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-10 gap-y-4 text-sm">
-                    <div>1. It's human <input type="text" class="input-blank w-24" data-ex="1.3" data-ans='["nature"]'> to want to find a solution.</div>
-                    <div>2. Vegans do not use or eat any <input type="text" class="input-blank w-24" data-ex="1.3" data-ans='["animal"]'> products.</div>
-                    <div>3. I would rather be served by a <input type="text" class="input-blank w-24" data-ex="1.3" data-ans='["human"]'> being than by a computer.</div>
-                    <div>4. Mother <input type="text" class="input-blank w-24" data-ex="1.3" data-ans='["nature"]'> can be beautiful.</div>
-                    <div>5. Creature of the <input type="text" class="input-blank w-24" data-ex="1.3" data-ans='["animal"]'> kingdom.</div>
-                    <div>6. Animals in their <input type="text" class="input-blank w-24" data-ex="1.3" data-ans='["natural"]'> habitat.</div>
-                    <div>7. Spills destroy the <input type="text" class="input-blank w-24" data-ex="1.3" data-ans='["natural"]'> balance.</div>
-                    <div>8. Prisoners denied basic <input type="text" class="input-blank w-24" data-ex="1.3" data-ans='["human"]'> rights.</div>
-                </div>
-            </div>
-            
-            <div class="text-center">
-                <button onclick="checkExercise('1.3')" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Compound Nouns</button>
-                <span id="score-1.3" class="ml-4 font-bold hidden"></span>
-            </div>
-        </div>
-
-        <!-- Tab 1: Meerkat Listening -->
-        <div id="section-1" class="bg-white rounded-b-xl p-6 mb-8 exercise-section section-hidden">
-            <h3 class="text-xl font-bold text-gray-800 mb-6">2. Listening: The Meerkat</h3>
-
-            <div class="custom-audio-player bg-white border-2 border-sky-100 rounded-xl px-6 py-4 mb-6 shadow-sm" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A1583784767&color=%2300aabb&auto_play=false&enable_api=1">
-                <div class="flex flex-col sm:flex-row items-center gap-4">
-                    <div class="text-sm text-sky-600 font-bold whitespace-nowrap shrink-0">Track 9a 🎧</div>
-                    <div class="w-full flex items-center bg-gray-50 border border-gray-200 rounded-full px-4 py-2 shadow-inner">
-                        <button class="audio-play-btn w-9 h-9 flex items-center justify-center bg-sky-600 hover:bg-sky-700 text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400 shrink-0">
-                            <svg class="play-icon h-5 w-5 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" /></svg>
-                            <svg class="pause-icon h-5 w-5 hidden" viewBox="0 0 20 20" fill="currentColor"><path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" /></svg>
-                        </button>
-                        <div class="flex-1 mx-4 flex items-center space-x-3">
-                            <span class="audio-current-time text-xs font-mono text-gray-500 w-10 text-right">00:00</span>
-                            <div class="relative w-full h-2 bg-gray-300 rounded-full cursor-pointer flex-1 flex items-center group">
-                                 <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
-                                 <div class="audio-progress-bar absolute h-full bg-sky-500 rounded-full pointer-events-none group-hover:bg-sky-600 transition-colors" style="width: 0%;"></div>
-                            </div>
-                            <span class="audio-total-time text-xs font-mono text-gray-500 w-10">00:00</span>
-                        </div>
-                    </div>
-                </div>
-                <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 border border-gray-200 p-6 rounded-lg bg-gray-50">
-                <div>
-                    <h4 class="font-bold text-sky-900 mb-3 border-b pb-1 uppercase tracking-wider text-xs">Habitat</h4>
-                    <ul class="space-y-4 text-sm">
-                        <li>Found in South Africa in (1) <input type="text" class="input-blank w-36" data-ex="1" data-ans='["semi-arid"]'> areas.</li>
-                        <li>Avoids woodland and thick (2) <input type="text" class="input-blank w-36" data-ex="1" data-ans='["vegetation"]'>.</li>
-                        <li>It sleeps in (3) <input type="text" class="input-blank w-36" data-ex="1" data-ans='["burrows", "dens", "burrows/dens"]'>.</li>
-                        <li>Makes a (4) <input type="text" class="input-blank w-36" data-ex="1" data-ans='["den"]'> between rocks.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold text-sky-900 mb-3 border-b pb-1 uppercase tracking-wider text-xs">Diet</h4>
-                    <ul class="space-y-4 text-sm">
-                        <li>Mostly eats (5) <input type="text" class="input-blank w-28" data-ex="1" data-ans='["insects", "spiders", "snails"]'>, (6) <input type="text" class="input-blank w-28" data-ex="1" data-ans='["insects", "spiders", "snails"]'> and (7) <input type="text" class="input-blank w-28" data-ex="1" data-ans='["insects", "spiders", "snails"]'>.</li>
-                        <li>Occasionally eats rodents and the (8) <input type="text" class="input-blank w-28" data-ex="1" data-ans='["roots"]'> of plants.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="text-center">
-                <button onclick="checkExercise('1')" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Meerkat Table</button>
-                <span id="score-1" class="ml-4 font-bold hidden"></span>
-            </div>
-        </div>
-
-        <!-- Tab 2: Agriculture & Reading -->
-        <div id="section-2" class="bg-white rounded-b-xl p-6 mb-8 exercise-section section-hidden">
-            <h3 class="text-xl font-bold text-gray-800 mb-6">3. Agriculture & Vocabulary Review</h3>
-
-            <div class="mb-10 p-6 bg-sky-50 rounded-lg border border-sky-200">
-                <h4 class="font-bold text-sky-900 mb-4">2.1 Odd One Out</h4>
-                <p class="text-sm text-gray-600 mb-6 italic">Select the word that does not belong in the group.</p>
-                <div class="space-y-8">
-                    <div class="odd-row" data-ans="weed" data-reason="The others are all types of flower we want to grow.">
-                        <div class="flex flex-wrap gap-4 mb-2">
-                            <span class="odd-word" onclick="selectOdd(this)">rose</span>
-                            <span class="odd-word" onclick="selectOdd(this)">tulip</span>
-                            <span class="odd-word" onclick="selectOdd(this)">daisy</span>
-                            <span class="odd-word" onclick="selectOdd(this)">weed</span>
-                        </div>
-                        <div class="explanation">Reason: The others are all types of flower we want to grow.</div>
-                    </div>
-                    <div class="odd-row" data-ans="soil" data-reason="Soil is a noun; the others are all verbs.">
-                        <div class="flex flex-wrap gap-4 mb-2">
-                            <span class="odd-word" onclick="selectOdd(this)">plant</span>
-                            <span class="odd-word" onclick="selectOdd(this)">grow</span>
-                            <span class="odd-word" onclick="selectOdd(this)">cultivate</span>
-                            <span class="odd-word" onclick="selectOdd(this)">soil</span>
-                        </div>
-                        <div class="explanation">Reason: Soil is a noun; the others are all verbs.</div>
-                    </div>
-                    <div class="odd-row" data-ans="crop" data-reason="Crop refers to a group or total harvest; the others are single types of plant.">
-                        <div class="flex flex-wrap gap-4 mb-2">
-                            <span class="odd-word" onclick="selectOdd(this)">crop</span>
-                            <span class="odd-word" onclick="selectOdd(this)">plant</span>
-                            <span class="odd-word" onclick="selectOdd(this)">shrub</span>
-                            <span class="odd-word" onclick="selectOdd(this)">bush</span>
-                        </div>
-                        <div class="explanation">Reason: Crop refers to a group or total harvest; others are single types.</div>
-                    </div>
-                    <div class="odd-row" data-ans="chemical" data-reason="Chemical is man-made; the others are all natural or biological.">
-                        <div class="flex flex-wrap gap-4 mb-2">
-                            <span class="odd-word" onclick="selectOdd(this)">organic</span>
-                            <span class="odd-word" onclick="selectOdd(this)">natural</span>
-                            <span class="odd-word" onclick="selectOdd(this)">chemical</span>
-                            <span class="odd-word" onclick="selectOdd(this)">biological</span>
-                        </div>
-                        <div class="explanation">Reason: Chemical is man-made; the others are natural.</div>
-                    </div>
-                    <div class="odd-row" data-ans="arid" data-reason="Arid refers to a dry climate; the others refer to wet or humid climates.">
-                        <div class="flex flex-wrap gap-4 mb-2">
-                            <span class="odd-word" onclick="selectOdd(this)">tropical</span>
-                            <span class="odd-word" onclick="selectOdd(this)">subtropical</span>
-                            <span class="odd-word" onclick="selectOdd(this)">humid</span>
-                            <span class="odd-word" onclick="selectOdd(this)">arid</span>
-                        </div>
-                        <div class="explanation">Reason: Arid means dry; others mean wet/humid.</div>
-                    </div>
-                    <div class="odd-row" data-ans="tropical" data-reason="Tropical refers to a wet climate; the others refer to dry places.">
-                        <div class="flex flex-wrap gap-4 mb-2">
-                            <span class="odd-word" onclick="selectOdd(this)">arid</span>
-                            <span class="odd-word" onclick="selectOdd(this)">desert</span>
-                            <span class="odd-word" onclick="selectOdd(this)">semi-arid</span>
-                            <span class="odd-word" onclick="selectOdd(this)">tropical</span>
-                        </div>
-                        <div class="explanation">Reason: Tropical is wet; others are dry.</div>
-                    </div>
-                    <div class="odd-row" data-ans="introduced" data-reason="Introduced means from elsewhere; others mean belonging naturally to the area.">
-                        <div class="flex flex-wrap gap-4 mb-2">
-                            <span class="odd-word" onclick="selectOdd(this)">endemic</span>
-                            <span class="odd-word" onclick="selectOdd(this)">native</span>
-                            <span class="odd-word" onclick="selectOdd(this)">introduced</span>
-                            <span class="odd-word" onclick="selectOdd(this)">local</span>
-                        </div>
-                        <div class="explanation">Reason: Introduced is from elsewhere; others are native.</div>
-                    </div>
-                </div>
-                <div class="mt-8 text-center">
-                    <button onclick="checkOddOneOut()" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Odd One Out</button>
-                    <span id="score-2-odd" class="ml-4 font-bold hidden"></span>
-                </div>
-            </div>
-
-            <div class="bg-white border-2 border-gray-100 p-6 rounded-xl mb-10 shadow-sm">
-                <h4 class="font-bold text-sky-900 mb-4 border-b pb-2 uppercase text-xs tracking-widest">2.2 Introduced Species Reading</h4>
-                <div class="prose prose-sky max-w-none mb-6 text-gray-700 text-sm leading-relaxed">
-                    <p>Farmers have tried to avoid using <strong>pesticides</strong> by employing <strong>biological</strong> methods. In 1925, Australia introduced a moth to control the prickly pear, which spread to 4 million hectares. It was virtually <strong>eradicated</strong>. However, the South American cane toad introduction was <strong>catastrophic</strong> as it led to the decline of <strong>native</strong> species.</p>
-                </div>
-                <h5 class="font-bold mb-4">True or False?</h5>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm mb-6">
-                    <div class="p-3 bg-gray-50 rounded">1. Farmers enjoy using chemicals. <input type="text" class="input-blank w-20" data-ex="2.2" data-ans='["false"]'></div>
-                    <div class="p-3 bg-gray-50 rounded">2. Prickly pear was a type of barrier. <input type="text" class="input-blank w-20" data-ex="2.2" data-ans='["true"]'></div>
-                    <div class="p-3 bg-gray-50 rounded">3. The moth killed nearly all pears. <input type="text" class="input-blank w-20" data-ex="2.2" data-ans='["true"]'></div>
-                    <div class="p-3 bg-gray-50 rounded">4. The cane toad was a native species. <input type="text" class="input-blank w-20" data-ex="2.2" data-ans='["false"]'></div>
-                    <div class="p-3 bg-gray-50 rounded">5. Using the toad was successful. <input type="text" class="input-blank w-20" data-ex="2.2" data-ans='["false"]'></div>
-                </div>
-                <div class="text-center">
-                    <button onclick="checkExercise('2.2')" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-6 rounded shadow transition">Check 2.2 T/F</button>
-                    <span id="score-2.2" class="ml-4 font-bold hidden"></span>
-                </div>
-            </div>
-
-            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 mb-10">
-                <h4 class="font-bold text-sky-900 mb-4 uppercase tracking-wider">2.4 Word Building</h4>
-                <div class="overflow-x-auto">
-                    <table class="w-full word-building-table bg-white text-sm">
-                        <thead>
-                            <tr><th>Noun</th><th>Adjective</th><th>Adverb</th><th>Verb</th></tr>
-                        </thead>
-                        <tbody>
-                            <tr><td>agriculture</td><td>agricultural</td><td><input type="text" class="input-blank w-32" data-ex="2.4" data-ans='["agriculturally"]'></td><td>-</td></tr>
-                            <tr><td>ecology</td><td>ecological</td><td><input type="text" class="input-blank w-32" data-ex="2.4" data-ans='["ecologically"]'></td><td>-</td></tr>
-                            <tr><td>evolution</td><td>evolutionary</td><td>-</td><td><input type="text" class="input-blank w-32" data-ex="2.4" data-ans='["evolve"]'></td></tr>
-                            <tr><td>extinction</td><td><input type="text" class="input-blank w-32" data-ex="2.4" data-ans='["extinct"]'></td><td>-</td><td>become extinct</td></tr>
-                            <tr><td>nature</td><td>natural</td><td><input type="text" class="input-blank w-32" data-ex="2.4" data-ans='["naturally"]'></td><td>-</td></tr>
-                            <tr><td>genetics/genes</td><td>genetic</td><td><input type="text" class="input-blank w-32" data-ex="2.4" data-ans='["genetically"]'></td><td>-</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="mt-6 text-center">
-                    <button onclick="checkExercise('2.4')" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Word Building</button>
-                    <span id="score-2.4" class="ml-4 font-bold hidden"></span>
-                </div>
-            </div>
-
-            <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                <h4 class="font-bold text-sky-900 mb-4 italic">3. Review Summary</h4>
-                <div class="space-y-4 text-sm leading-loose">
-                    Farmers believe (1) <input type="text" class="input-blank w-44" data-ex="3" data-ans='["crops"]'> that have been (2) <input type="text" class="input-blank w-44" data-ex="3" data-ans='["genetically modified"]'> help (3) <input type="text" class="input-blank w-32" data-ex="3" data-ans='["eradicate"]'> pests. 
-                    (4) <input type="text" class="input-blank w-32" data-ex="3" data-ans='["agriculture"]'> allows plants to kill (5) <input type="text" class="input-blank w-32" data-ex="3" data-ans='["insects"]'>. 
-                    This reduces (6) <input type="text" class="input-blank w-32" data-ex="3" data-ans='["pesticides"]'> in the (7) <input type="text" class="input-blank w-24" data-ex="3" data-ans='["soil"]'>. 
-                    However, pests can (10) <input type="text" class="input-blank w-48" data-ex="3" data-ans='["become resistant to"]'> toxins, upsetting the (11) <input type="text" class="input-blank w-44" data-ex="3" data-ans='["ecological balance"]'> and endangering animals.
-                </div>
-                <div class="mt-8 text-center">
-                    <button onclick="checkExercise('3')" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Summary</button>
-                    <span id="score-3" class="ml-4 font-bold hidden"></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab 3: Pronunciation -->
-        <div id="section-3" class="bg-white rounded-b-xl p-6 mb-8 exercise-section section-hidden">
-            <h3 class="text-xl font-bold text-gray-800 mb-6">4. Pronunciation: The Schwa (ə)</h3>
-            
-            <div class="custom-audio-player bg-white border-2 border-sky-100 rounded-xl px-6 py-4 mb-6 shadow-sm" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A1583784759&color=%2300aabb&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true">
-                <div class="flex items-center gap-4">
-                    <div class="text-sm text-sky-600 font-bold shrink-0">Track 9b 🎧</div>
-                    <button class="audio-play-btn w-9 h-9 flex items-center justify-center bg-sky-600 hover:bg-sky-700 text-white rounded-full">
-                        <svg class="play-icon h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" /></svg>
-                        <svg class="pause-icon h-5 w-5 hidden" viewBox="0 0 20 20" fill="currentColor"><path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" /></svg>
-                    </button>
-                    <div class="flex-1 flex items-center space-x-3">
-                        <span class="audio-current-time text-xs font-mono text-gray-500">00:00</span>
-                        <input type="range" class="audio-progress w-full h-1 bg-gray-200" min="0" max="100" value="0">
-                        <span class="audio-total-time text-xs font-mono text-gray-500">00:00</span>
-                    </div>
-                </div>
-                <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
-            </div>
-
-            <p class="mb-6 text-sm text-gray-600 italic">Count how many weak sounds (ə) are in each word.</p>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div class="p-4 bg-gray-50 rounded-lg flex justify-between items-center border"><span>adapt</span> <input type="text" class="input-blank w-12" data-ex="4" data-ans='["1"]'></div>
-                <div class="p-4 bg-gray-50 rounded-lg flex justify-between items-center border"><span>agriculture</span> <input type="text" class="input-blank w-12" data-ex="4" data-ans='["2"]'></div>
-                <div class="p-4 bg-gray-50 rounded-lg flex justify-between items-center border"><span>catastrophe</span> <input type="text" class="input-blank w-12" data-ex="4" data-ans='["2"]'></div>
-                <div class="p-4 bg-gray-50 rounded-lg flex justify-between items-center border"><span>chemical</span> <input type="text" class="input-blank w-12" data-ex="4" data-ans='["2"]'></div>
-                <div class="p-4 bg-gray-50 rounded-lg flex justify-between items-center border"><span>climate</span> <input type="text" class="input-blank w-12" data-ex="4" data-ans='["1"]'></div>
-                <div class="p-4 bg-gray-50 rounded-lg flex justify-between items-center border"><span>disastrous</span> <input type="text" class="input-blank w-12" data-ex="4" data-ans='["2"]'></div>
-                <div class="p-4 bg-gray-50 rounded-lg flex justify-between items-center border"><span>endangered</span> <input type="text" class="input-blank w-12" data-ex="4" data-ans='["2"]'></div>
-                <div class="p-4 bg-gray-50 rounded-lg flex justify-between items-center border"><span>genetically</span> <input type="text" class="input-blank w-12" data-ex="4" data-ans='["2"]'></div>
-                <div class="p-4 bg-gray-50 rounded-lg flex justify-between items-center border"><span>human</span> <input type="text" class="input-blank w-12" data-ex="4" data-ans='["1"]'></div>
-                <div class="p-4 bg-gray-50 rounded-lg flex justify-between items-center border"><span>natural</span> <input type="text" class="input-blank w-12" data-ex="4" data-ans='["1"]'></div>
-                <div class="p-4 bg-gray-50 rounded-lg flex justify-between items-center border"><span>vulnerable</span> <input type="text" class="input-blank w-12" data-ex="4" data-ans='["2"]'></div>
-            </div>
-
-            <div class="text-center">
-                <button onclick="checkExercise('4')" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Pronunciation</button>
-                <span id="score-4" class="ml-4 font-bold hidden"></span>
-            </div>
-        </div>
-
-        <!-- Tab 4: Reading -->
-        <div id="section-4" class="bg-white rounded-b-xl p-6 mb-8 exercise-section section-hidden">
-            <h3 class="text-xl font-bold text-gray-800 mb-6 uppercase text-center">Reading: Meet the Hedgehog</h3>
-
-            <div class="bg-sky-50 border border-sky-200 rounded-xl p-8 mb-10 shadow-inner text-gray-700 text-sm leading-relaxed max-h-[600px] overflow-y-auto">
-                <div class="space-y-6">
-                    <p><strong>A</strong> Norwich housing development designed for hedgehogs includes paths and holes. Brits love them (Beatrix Potter’s Mrs Tiggy-Winkle). They are good for gardens, eating pests.</p>
-                    <p><strong>B</strong> They’ve survived 30 million years. Primitive mammals help geneticists understand evolution and human genomes. Studying them helps understand heart defects.</p>
-                    <p><strong>C</strong> 14 species exist in Africa, Asia, Europe. Some hibernate, some handle desert heat. They adapt to urban and remote areas.</p>
-                    <p><strong>D</strong> Not strictly solitary; detect neighbors by scent. Scrap over food or aggressive rivalries. Adulthood meetings primarily for mating (hoglets).</p>
-                    <p><strong>E</strong> Eat anything: snakes, bird eggs, rodents. Hard insect bodies clean their teeth, preventing gum disease.</p>
-                    <p><strong>F</strong> Roll into quill balls. Young spring up to defend. Toxic saliva on quills (from venomous toads) makes quills more painful.</p>
-                    <p><strong>G</strong> Thousands die on roads annually. Road kill and intensive farming reduce populations. Clinics and McDonald’s packaging changes help protect them.</p>
-                    <p><strong>H</strong> Introduced to Hebrides off Scotland to fight slugs; reduced rare wading birds instead by eating eggs. Relocation preferred over culling.</p>
-                </div>
-            </div>
-
-            <div class="mb-10">
-                <h4 class="font-bold text-sky-900 mb-4 border-b pb-1">Questions 1-9: Matching</h4>
-                <div class="space-y-3 text-sm">
-                    <div class="flex justify-between items-center p-3 bg-gray-50 border rounded"><span>1. Significance of species relationships.</span> <input type="text" class="input-blank w-12 uppercase" data-ex="5.1" data-ans='["b"]'></div>
-                    <div class="flex justify-between items-center p-3 bg-gray-50 border rounded"><span>2. Different habitats found.</span> <input type="text" class="input-blank w-12 uppercase" data-ex="5.1" data-ans='["c"]'></div>
-                    <div class="flex justify-between items-center p-3 bg-gray-50 border rounded"><span>3. Why standard measurement can't be used.</span> <input type="text" class="input-blank w-12 uppercase" data-ex="5.1" data-ans='["f"]'></div>
-                    <div class="flex justify-between items-center p-3 bg-gray-50 border rounded"><span>4. Problems for pets (gum disease).</span> <input type="text" class="input-blank w-12 uppercase" data-ex="5.1" data-ans='["e"]'></div>
-                    <div class="flex justify-between items-center p-3 bg-gray-50 border rounded"><span>5. Two reasons for popularity.</span> <input type="text" class="input-blank w-12 uppercase" data-ex="5.1" data-ans='["a"]'></div>
-                    <div class="flex justify-between items-center p-3 bg-gray-50 border rounded"><span>6. Four research findings.</span> <input type="text" class="input-blank w-12 uppercase" data-ex="5.1" data-ans='["b"]'></div>
-                    <div class="flex justify-between items-center p-3 bg-gray-50 border rounded"><span>7. Social habits.</span> <input type="text" class="input-blank w-12 uppercase" data-ex="5.1" data-ans='["d"]'></div>
-                    <div class="flex justify-between items-center p-3 bg-gray-50 border rounded"><span>8. Number of species identified.</span> <input type="text" class="input-blank w-12 uppercase" data-ex="5.1" data-ans='["c"]'></div>
-                    <div class="flex justify-between items-center p-3 bg-gray-50 border rounded"><span>9. Name for babies.</span> <input type="text" class="input-blank w-12 uppercase" data-ex="5.1" data-ans='["d"]'></div>
-                </div>
-                <div class="mt-6 text-center">
-                    <button onclick="checkExercise('5.1')" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Q1-9 Matching</button>
-                    <span id="score-5.1" class="ml-4 font-bold hidden"></span>
-                </div>
-            </div>
-
-            <div class="mb-10">
-                <h4 class="font-bold text-sky-900 mb-4 border-b pb-1">Questions 10-13: Multiple Choice</h4>
-                <div class="space-y-6 text-sm">
-                    <div class="p-4 bg-white border border-gray-200 rounded-lg">
-                        <p class="font-bold mb-2">10. 1977 study reason why:</p>
-                        <select class="input-blank w-full" data-ex="5.2" data-ans='["b"]'><option value="">Select...</option><option value="a">A. clean quills</option><option value="b">B. chew toxic skins</option><option value="c">C. don't leap</option></select>
-                    </div>
-                    <div class="p-4 bg-white border border-gray-200 rounded-lg">
-                        <p class="font-bold mb-2">11. NOT done to protect them:</p>
-                        <select class="input-blank w-full" data-ex="5.2" data-ans='["b"]'><option value="">Select...</option><option value="a">A. Hospitals</option><option value="b">B. Fines for littering</option><option value="c">C. McDonald's change</option></select>
-                    </div>
-                    <div class="p-4 bg-white border border-gray-200 rounded-lg">
-                        <p class="font-bold mb-2">12. Hebrides conclusion:</p>
-                        <select class="input-blank w-full" data-ex="5.2" data-ans='["b"]'><option value="">Select...</option><option value="a">A. Declining</option><option value="b">B. Threat to wildlife</option><option value="c">C. Safely introduced</option></select>
-                    </div>
-                    <div class="p-4 bg-white border border-gray-200 rounded-lg">
-                        <p class="font-bold mb-2">13. Conservationists prefer to:</p>
-                        <select class="input-blank w-full" data-ex="5.2" data-ans='["d"]'><option value="">Select...</option><option value="a">A. Cull some</option><option value="b">B. Kill birds</option><option value="d">D. Relocate</option></select>
-                    </div>
-                </div>
-                <div class="mt-6 text-center">
-                    <button onclick="checkExercise('5.2')" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Q10-13 MCQs</button>
-                    <span id="score-5.2" class="ml-4 font-bold hidden"></span>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <script>
-        const REQUIRED_SCORE = 0.8;
+    <!-- The Book -->
+    <div class="book-wrapper flex-1 w-full max-w-7xl flex flex-col lg:flex-row relative min-h-[85vh]">
+        
+        <!-- Spine Decoration -->
+        <div class="spine-shadow hidden lg:block"></div>
 
-        function initAudioPlayer() {
-            document.querySelectorAll('.custom-audio-player').forEach(playerEl => {
-                const scUrl = playerEl.getAttribute('data-sc-url');
-                const iframe = playerEl.querySelector('.sc-widget-iframe');
-                if (!iframe || !scUrl) return;
-                iframe.src = scUrl;
-                const widget = SC.Widget(iframe);
-                const playBtn = playerEl.querySelector('.audio-play-btn');
-                const playIcon = playerEl.querySelector('.play-icon');
-                const pauseIcon = playerEl.querySelector('.pause-icon');
-                const progressBar = playerEl.querySelector('.audio-progress');
-                const currentEl = playerEl.querySelector('.audio-current-time');
-                const totalEl = playerEl.querySelector('.audio-total-time');
-                let dur = 0;
-                const fmt = (s) => isNaN(s) ? "00:00" : `${Math.floor(s/60).toString().padStart(2,'0')}:${Math.floor(s%60).toString().padStart(2,'0')}`;
-                widget.bind(SC.Widget.Events.READY, () => { widget.getDuration(ms => { dur = ms/1000; totalEl.textContent = fmt(dur); progressBar.max = dur; }); });
-                widget.bind(SC.Widget.Events.PLAY_PROGRESS, info => { const c = info.currentPosition/1000; currentEl.textContent = fmt(c); progressBar.value = c; });
-                widget.bind(SC.Widget.Events.PLAY, () => { playIcon.classList.add('hidden'); pauseIcon.classList.remove('hidden'); });
-                widget.bind(SC.Widget.Events.PAUSE, () => { pauseIcon.classList.add('hidden'); playIcon.classList.remove('hidden'); });
-                playBtn.addEventListener('click', () => widget.toggle());
-                progressBar.addEventListener('input', () => widget.seekTo(progressBar.value * 1000));
-            });
+        <!-- Pages Container -->
+        <div id="pages-container" class="w-full flex relative">
+            
+            <!-- ==================== PAGE 0: Title & Intro ==================== -->
+            <div id="page-0" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                <div class="flex-grow flex flex-col justify-center items-center text-center">
+                    <div class="w-24 h-24 bg-green-50 rounded-full flex items-center justify-center mb-8 shadow-inner border border-green-200">
+                        <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h4 class="text-sm uppercase tracking-widest text-slate-500 font-bold ui-font mb-2">Unit 9</h4>
+                    <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-slate-800 leading-tight">The Natural World</h1>
+                    <h2 class="text-2xl italic text-slate-600 mb-8 border-b pb-8 border-slate-200">Flora and fauna, agriculture</h2>
+                    
+                    <p class="text-lg text-slate-600 leading-relaxed max-w-md mx-auto">
+                        Welcome to Unit 9. Work through the exercises on the following pages to improve your vocabulary and reading skills regarding the natural world, plants, animals, and agricultural practices.
+                    </p>
+                </div>
+                <div class="mt-8 pt-4 flex w-full justify-start">
+                    <span class="text-xs font-bold ui-font text-slate-400">i</span>
+                </div>
+            </div>
+
+            <!-- ==================== PAGE 1: Flora and Fauna ==================== -->
+            <div id="page-1" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                <div class="flex-grow">
+                    <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                        <h3 class="text-2xl font-bold text-slate-900">1. Flora and fauna</h3>
+                        <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                    </div>
+
+                    <p class="mb-3 leading-relaxed text-sm"><span class="font-bold">1.1</span> How many plants and animals do you know? Jot down a few ideas:</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 text-sm text-slate-700">
+                        <div>A. Five animals found in Africa:<br><input type="text" class="input-blank font-normal w-full mt-1 text-xs text-left" placeholder="e.g. elephant, lion..."></div>
+                        <div>D. Five animals found in Australia:<br><input type="text" class="input-blank font-normal w-full mt-1 text-xs text-left" placeholder="e.g. kangaroo, koala..."></div>
+                        <div>B. Five different types of flower:<br><input type="text" class="input-blank font-normal w-full mt-1 text-xs text-left" placeholder="e.g. rose, tulip..."></div>
+                        <div>E. Five different types of tree:<br><input type="text" class="input-blank font-normal w-full mt-1 text-xs text-left" placeholder="e.g. oak, pine..."></div>
+                        <div>C. Five types of fruit:<br><input type="text" class="input-blank font-normal w-full mt-1 text-xs text-left" placeholder="e.g. apple, banana..."></div>
+                        <div>F. Five types of vegetable:<br><input type="text" class="input-blank font-normal w-full mt-1 text-xs text-left" placeholder="e.g. carrot, potato..."></div>
+                    </div>
+
+                    <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">1.2</span> Are these words associated with plants or animals? Which word can go in both columns?</p>
+                    <div class="bg-slate-50 p-4 rounded border border-slate-200 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                        <label class="flex justify-between">flora <select class="input-blank w-24 text-xs" data-ex="1.2" data-ans='["plant"]'><option value="">-</option><option value="animal">Animal</option><option value="plant">Plant</option><option value="both">Both</option></select></label>
+                        <label class="flex justify-between">fauna <select class="input-blank w-24 text-xs" data-ex="1.2" data-ans='["animal"]'><option value="">-</option><option value="animal">Animal</option><option value="plant">Plant</option><option value="both">Both</option></select></label>
+                        <label class="flex justify-between">vegetation <select class="input-blank w-24 text-xs" data-ex="1.2" data-ans='["plant"]'><option value="">-</option><option value="animal">Animal</option><option value="plant">Plant</option><option value="both">Both</option></select></label>
+                        <label class="flex justify-between">branch <select class="input-blank w-24 text-xs" data-ex="1.2" data-ans='["plant"]'><option value="">-</option><option value="animal">Animal</option><option value="plant">Plant</option><option value="both">Both</option></select></label>
+                        <label class="flex justify-between">coat <select class="input-blank w-24 text-xs" data-ex="1.2" data-ans='["animal"]'><option value="">-</option><option value="animal">Animal</option><option value="plant">Plant</option><option value="both">Both</option></select></label>
+                        <label class="flex justify-between">predator <select class="input-blank w-24 text-xs" data-ex="1.2" data-ans='["animal"]'><option value="">-</option><option value="animal">Animal</option><option value="plant">Plant</option><option value="both">Both</option></select></label>
+                        <label class="flex justify-between">trunk <select class="input-blank w-24 text-xs" data-ex="1.2" data-ans='["both"]'><option value="">-</option><option value="animal">Animal</option><option value="plant">Plant</option><option value="both">Both</option></select></label>
+                        <label class="flex justify-between">fur <select class="input-blank w-24 text-xs" data-ex="1.2" data-ans='["animal"]'><option value="">-</option><option value="animal">Animal</option><option value="plant">Plant</option><option value="both">Both</option></select></label>
+                        <label class="flex justify-between">scales <select class="input-blank w-24 text-xs" data-ex="1.2" data-ans='["animal"]'><option value="">-</option><option value="animal">Animal</option><option value="plant">Plant</option><option value="both">Both</option></select></label>
+                        <label class="flex justify-between">petal <select class="input-blank w-24 text-xs" data-ex="1.2" data-ans='["plant"]'><option value="">-</option><option value="animal">Animal</option><option value="plant">Plant</option><option value="both">Both</option></select></label>
+                    </div>
+
+                    <p class="mt-6 mb-3 leading-relaxed text-sm"><span class="font-bold">1.3</span> Which five words from the list above are connected to an animal's skin or covering?</p>
+                    <div class="flex flex-wrap gap-3">
+                        <input type="text" class="input-blank w-24" data-ex="1.2" data-ans='["coat"]'>
+                        <input type="text" class="input-blank w-24" data-ex="1.2" data-ans='["fur"]'>
+                        <input type="text" class="input-blank w-24" data-ex="1.2" data-ans='["hide"]'>
+                        <input type="text" class="input-blank w-24" data-ex="1.2" data-ans='["scales"]'>
+                        <input type="text" class="input-blank w-24" data-ex="1.2" data-ans='["feathers"]'>
+                    </div>
+
+                    <div class="flex items-center gap-3 mt-8">
+                        <button id="btn-1.2" onclick="checkExercise('1.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Exercises</button>
+                        <span id="score-1.2" class="ui-font text-sm font-bold hidden"></span>
+                    </div>
+                </div>
+                <div class="mt-8 pt-4 flex w-full justify-start lg:justify-end">
+                    <span class="text-xs font-bold ui-font text-slate-400">1</span>
+                </div>
+            </div>
+
+            <!-- ==================== PAGE 2: Compound Nouns & Listening ==================== -->
+            <div id="page-2" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                <div class="flex-grow">
+                    
+                    <div class="textbook-note error-warning p-4 mb-6 text-sm text-slate-700 leading-relaxed shadow-sm rounded-r ui-font bg-red-50 border-l-4 border-red-500">
+                        <p class="mb-1">We say we must take care of nature. <strong>NOT</strong> We must take care of <s>the nature</s>.</p>
+                        <p><strong>Natural</strong> is the adjective form: It is a <em>natural</em> process. <strong>NOT</strong> It is a <s>nature</s> process.</p>
+                    </div>
+
+                    <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">COMPOUND NOUNS</span> Complete the sentences by adding one of these words: <strong>animal, human, nature, natural</strong>.</p>
+                    
+                    <ol class="list-decimal list-outside ml-4 space-y-4 text-slate-800 text-[14px] leading-loose">
+                        <li>It's human <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["nature"]'> to want to find a solution to our problems.</li>
+                        <li>Vegans do not use or eat any <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["animal"]'> products.</li>
+                        <li>I would rather be served by a <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["human"]'> being than by a computer.</li>
+                        <li>I am constantly amazed by how beautiful and how destructive mother <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["nature"]'> can be.</li>
+                        <li>Man is said to be the most dangerous creature of all the <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["animal"]'> kingdom.</li>
+                        <li>Animals are much happier living in their <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["natural"]'> habitat.</li>
+                        <li>Manmade disasters such as chemical spills can destroy the <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["natural"]'> balance.</li>
+                        <li>In some countries prisoners are denied basic <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["human"]'> rights.</li>
+                    </ol>
+
+                    <h3 class="text-xl font-bold text-slate-900 mt-8 mb-4 border-b-2 border-slate-800 pb-2">1.4 Listening: The Meerkat</h3>
+                    <p class="mb-4 leading-relaxed text-sm text-slate-600 italic">Read the description of an animal called a meerkat and complete the table.</p>
+                    
+                    <div class="grid grid-cols-2 gap-4 bg-white border border-slate-300 p-4 rounded text-[13px] leading-relaxed shadow-sm">
+                        <div class="border-r border-slate-200 pr-4">
+                            <h4 class="font-bold border-b border-slate-200 pb-1 mb-2">Habitat</h4>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Found in South Africa in (1) <input type="text" class="input-blank w-20 text-xs" data-ex="1.4" data-ans='["semi-arid"]'> areas.</li>
+                                <li>Avoids woodland and thick (2) <input type="text" class="input-blank w-20 text-xs" data-ex="1.4" data-ans='["vegetation"]'>.</li>
+                                <li>It sleeps in (3) <input type="text" class="input-blank w-24 text-xs" data-ex="1.4" data-ans='["burrows", "dens", "burrow", "den"]'>.</li>
+                                <li>If necessary, the meerkat will make a (4) <input type="text" class="input-blank w-20 text-xs" data-ex="1.4" data-ans='["den", "burrow"]'> between rocks.</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="font-bold border-b border-slate-200 pb-1 mb-2">Diet</h4>
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>Meerkats mostly eat (5) <input type="text" class="input-blank w-16 text-xs" data-ex="1.4" data-ans='["insects", "spiders", "snails"]'>, (6) <input type="text" class="input-blank w-16 text-xs" data-ex="1.4" data-ans='["insects", "spiders", "snails"]'> and (7) <input type="text" class="input-blank w-16 text-xs" data-ex="1.4" data-ans='["insects", "spiders", "snails"]'>.</li>
+                                <li>They occasionally eat small rodents and the (8) <input type="text" class="input-blank w-20 text-xs" data-ex="1.4" data-ans='["roots", "root"]'> of certain plants.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-3 mt-6">
+                        <button id="btn-1.4" onclick="checkExercise('1.4')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Page 2</button>
+                        <span id="score-1.4" class="ui-font text-sm font-bold hidden"></span>
+                    </div>
+                </div>
+                <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                    <span class="text-xs font-bold ui-font text-slate-400">2</span>
+                </div>
+            </div>
+
+            <!-- ==================== PAGE 3: Agriculture ==================== -->
+            <div id="page-3" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                <div class="flex-grow">
+                    <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                        <h3 class="text-2xl font-bold text-slate-900">2. Agriculture</h3>
+                        <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                    </div>
+
+                    <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.1</span> Which is the odd one out? Select the word which is different.</p>
+                    
+                    <ol class="list-decimal list-outside ml-4 space-y-3 text-slate-800 text-[14px] leading-loose font-medium">
+                        <li>rose, tulip, daisy, weed <span class="mx-2">&rarr;</span> <select class="input-blank w-28 text-xs font-bold text-slate-700" data-ex="2.1" data-ans='["weed"]'><option value="">-</option><option value="rose">rose</option><option value="tulip">tulip</option><option value="daisy">daisy</option><option value="weed">weed</option></select></li>
+                        <li>plant, grow, cultivate, soil <span class="mx-2">&rarr;</span> <select class="input-blank w-28 text-xs font-bold text-slate-700" data-ex="2.1" data-ans='["soil"]'><option value="">-</option><option value="plant">plant</option><option value="grow">grow</option><option value="cultivate">cultivate</option><option value="soil">soil</option></select></li>
+                        <li>crop, plant, shrub, bush <span class="mx-2">&rarr;</span> <select class="input-blank w-28 text-xs font-bold text-slate-700" data-ex="2.1" data-ans='["crop"]'><option value="">-</option><option value="crop">crop</option><option value="plant">plant</option><option value="shrub">shrub</option><option value="bush">bush</option></select></li>
+                        <li>organic, natural, chemical, biological <span class="mx-2">&rarr;</span> <select class="input-blank w-28 text-xs font-bold text-slate-700" data-ex="2.1" data-ans='["chemical"]'><option value="">-</option><option value="organic">organic</option><option value="natural">natural</option><option value="chemical">chemical</option><option value="biological">biological</option></select></li>
+                        <li>tropical, subtropical, humid, arid <span class="mx-2">&rarr;</span> <select class="input-blank w-28 text-xs font-bold text-slate-700" data-ex="2.1" data-ans='["arid"]'><option value="">-</option><option value="tropical">tropical</option><option value="subtropical">subtropical</option><option value="humid">humid</option><option value="arid">arid</option></select></li>
+                        <li>arid, desert, semi-arid, tropical <span class="mx-2">&rarr;</span> <select class="input-blank w-28 text-xs font-bold text-slate-700" data-ex="2.1" data-ans='["tropical"]'><option value="">-</option><option value="arid">arid</option><option value="desert">desert</option><option value="semi-arid">semi-arid</option><option value="tropical">tropical</option></select></li>
+                        <li>endemic, native, introduced, local <span class="mx-2">&rarr;</span> <select class="input-blank w-28 text-xs font-bold text-slate-700" data-ex="2.1" data-ans='["introduced"]'><option value="">-</option><option value="endemic">endemic</option><option value="native">native</option><option value="introduced">introduced</option><option value="local">local</option></select></li>
+                    </ol>
+
+                    <h4 class="font-bold mt-8 mb-2">Introduced species</h4>
+                    <div class="bg-amber-50/50 p-4 border border-amber-100 rounded text-[12px] leading-relaxed mb-4 text-slate-700">
+                        Since the birth of agriculture, farmers have tried to avoid using pesticides by employing various biological methods to control nature. The first method involved introducing a predator that would control pests by eating them. This was used successfully in 1925 to control the prickly pear population in Australia. The prickly pear had originally been used as a divider between paddocks. However, it eventually spread from a few farms to 4 million hectares of farming land, rendering them unusable. The Cactoblastis moth larvae was introduced to help control the situation and within ten years, the prickly pear was virtually eradicated. Further attempts at biological control weren't so successful. When farmers tried to eliminate the cane beetle by introducing the South American cane toad, the results were catastrophic. The cane toad did not eat the cane beetle and the toad population spread rapidly leading to the decline of native species of mammals and reptiles.
+                    </div>
+
+                    <p class="mb-3 leading-relaxed text-sm"><span class="font-bold">2.2</span> Decide if the statements are <strong>True</strong> or <strong>False</strong>.</p>
+                    <ol class="list-decimal list-outside ml-4 space-y-2 text-slate-800 text-[13px]">
+                        <li>Farmers do not like using chemicals to kill pests. <select class="input-blank w-20 text-xs" data-ex="2.1" data-ans='["true"]'><option value="">-</option><option value="true">True</option><option value="false">False</option></select></li>
+                        <li>The prickly pear was planted as a type of barrier. <select class="input-blank w-20 text-xs" data-ex="2.1" data-ans='["true"]'><option value="">-</option><option value="true">True</option><option value="false">False</option></select></li>
+                        <li>The Cactoblastis moth killed off nearly all prickly pear plants. <select class="input-blank w-20 text-xs" data-ex="2.1" data-ans='["true"]'><option value="">-</option><option value="true">True</option><option value="false">False</option></select></li>
+                        <li>The cane toad was a native species to Australia. <select class="input-blank w-20 text-xs" data-ex="2.1" data-ans='["false"]'><option value="">-</option><option value="true">True</option><option value="false">False</option></select></li>
+                        <li>Using the cane toad was very successful. <select class="input-blank w-20 text-xs" data-ex="2.1" data-ans='["false"]'><option value="">-</option><option value="true">True</option><option value="false">False</option></select></li>
+                    </ol>
+
+                    <div class="flex items-center gap-3 mt-6">
+                        <button id="btn-2.1" onclick="checkExercise('2.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Page 3</button>
+                        <span id="score-2.1" class="ui-font text-sm font-bold hidden"></span>
+                    </div>
+                </div>
+                <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                    <span class="text-xs font-bold ui-font text-slate-400">3</span>
+                </div>
+            </div>
+
+            <!-- ==================== PAGE 4: Word Building ==================== -->
+            <div id="page-4" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                <div class="flex-grow">
+                    <div class="flex justify-between items-end mb-4 border-b-2 border-slate-800 pb-2">
+                        <h3 class="text-2xl font-bold text-slate-900">Vocabulary Practice</h3>
+                    </div>
+
+                    <div class="bg-amber-50/50 p-4 border border-amber-100 rounded text-[12px] leading-relaxed mb-4 text-slate-700">
+                        Other introduced species have proved similarly <em>disastrous</em> among native Australian animals. Since the introduction of the cat, the fox and the rabbit from Europe, 19 species of native animals have become <em>extinct</em> and a further 250 species are considered to be either <em>endangered</em> or <em>vulnerable</em>. The modern-day approach to the biological control of pests is through <em>genetically modified</em> crops. It remains to be seen whether this controversial method will have any long-term <em>repercussions</em>, particularly in regards to the <em>ecological balance</em> of the environment where they are grown. Some fear that insects may <em>become resistant</em> to these new crops and therefore become even more difficult to control.
+                    </div>
+                    
+                    <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.3</span> Match the words in italics to the definitions below.</p>
+                    
+                    <ol class="list-decimal list-outside ml-4 space-y-3 text-slate-800 text-[13px] leading-loose">
+                        <li>at risk: <input type="text" class="input-blank w-32" data-ex="2.3" data-ans='["vulnerable"]'></li>
+                        <li>negative effects: <input type="text" class="input-blank w-32" data-ex="2.3" data-ans='["repercussions"]'></li>
+                        <li>to stop being affected by something: <input type="text" class="input-blank w-40" data-ex="2.3" data-ans='["become resistant"]'></li>
+                        <li>at risk of dying out: <input type="text" class="input-blank w-32" data-ex="2.3" data-ans='["endangered"]'></li>
+                        <li>no longer existing: <input type="text" class="input-blank w-32" data-ex="2.3" data-ans='["extinct"]'></li>
+                        <li>crops whose genes have been scientifically changed: <input type="text" class="input-blank w-48" data-ex="2.3" data-ans='["genetically modified"]'></li>
+                        <li>extremely bad or unsuccessful: <input type="text" class="input-blank w-32" data-ex="2.3" data-ans='["disastrous"]'></li>
+                        <li>relationship between plants, animals, land, air, and water: <input type="text" class="input-blank w-40" data-ex="2.3" data-ans='["ecological balance"]'></li>
+                    </ol>
+
+                    <p class="mt-8 mb-4 leading-relaxed text-sm"><span class="font-bold">2.4</span> WORD BUILDING Complete the table.</p>
+                    <div class="overflow-x-auto border border-slate-200 rounded">
+                        <table class="w-full text-left text-[12px] text-slate-700 bg-white ui-font">
+                            <thead class="bg-slate-100 text-slate-800 font-bold uppercase text-[11px] border-b border-slate-200">
+                                <tr>
+                                    <th class="px-3 py-2 border-r border-slate-200">Noun</th>
+                                    <th class="px-3 py-2 border-r border-slate-200">Adjective</th>
+                                    <th class="px-3 py-2 border-r border-slate-200">Adverb</th>
+                                    <th class="px-3 py-2">Verb</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-200">
+                                <tr>
+                                    <td class="px-3 py-2 border-r border-slate-200 font-bold">agriculture</td>
+                                    <td class="px-3 py-2 border-r border-slate-200 font-bold">agricultural</td>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["agriculturally"]'></td>
+                                    <td class="px-3 py-2 bg-slate-50 text-center text-slate-400">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 border-r border-slate-200 font-bold">ecology</td>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["ecological"]'></td>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["ecologically"]'></td>
+                                    <td class="px-3 py-2 bg-slate-50 text-center text-slate-400">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["evolution"]'></td>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["evolutionary"]'></td>
+                                    <td class="px-3 py-2 border-r border-slate-200 bg-slate-50 text-center text-slate-400">-</td>
+                                    <td class="px-3 py-2 font-bold">evolve</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["extinction"]'></td>
+                                    <td class="px-3 py-2 border-r border-slate-200 font-bold">extinct</td>
+                                    <td class="px-3 py-2 border-r border-slate-200 bg-slate-50 text-center text-slate-400">-</td>
+                                    <td class="px-3 py-2"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["become extinct"]'></td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 border-r border-slate-200 font-bold">nature</td>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["natural"]'></td>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["naturally"]'></td>
+                                    <td class="px-3 py-2 bg-slate-50 text-center text-slate-400">-</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["genetics", "genes"]' placeholder="g..."></td>
+                                    <td class="px-3 py-2 border-r border-slate-200 font-bold">genetic</td>
+                                    <td class="px-3 py-2 border-r border-slate-200"><input type="text" class="input-blank w-24 p-0 m-0 text-xs" data-ex="2.3" data-ans='["genetically"]'></td>
+                                    <td class="px-3 py-2 bg-slate-50 text-center text-slate-400">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="flex items-center gap-3 mt-8">
+                        <button id="btn-2.3" onclick="checkExercise('2.3')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Page 4</button>
+                        <span id="score-2.3" class="ui-font text-sm font-bold hidden"></span>
+                    </div>
+                </div>
+                <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                    <span class="text-xs font-bold ui-font text-slate-400">4</span>
+                </div>
+            </div>
+
+            <!-- ==================== PAGE 5: Improve the Text ==================== -->
+            <div id="page-5" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                <div class="flex-grow">
+                    <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                        <h3 class="text-2xl font-bold text-slate-900">3. Improve the Text</h3>
+                        <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                    </div>
+                    
+                    <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">3.1</span> Improve the text by replacing the words in italics with a suitable word or phrase from this unit.</p>
+                    
+                    <div class="space-y-6 text-slate-800 text-[14px] leading-loose bg-white border border-slate-200 p-5 rounded shadow-sm">
+                        <p>
+                            Some farmers believe that growing (1) <em>fruit and vegetables</em> <input type="text" class="input-blank w-24 text-sm" data-ex="3.1" data-ans='["crops"]'> that have been (2) <em>changed so that their genes are different</em> <input type="text" class="input-blank w-36 text-sm" data-ex="3.1" data-ans='["genetically modified"]'> is a good way to (3) <em>totally stop</em> <input type="text" class="input-blank w-28 text-sm" data-ex="3.1" data-ans='["eradicate", "eliminate"]'> pests and improve the quality of their produce. However, this type of (4) <em>farming</em> <input type="text" class="input-blank w-28 text-sm" data-ex="3.1" data-ans='["agriculture"]'> has both advantages and disadvantages.
+                        </p>
+                        <p>
+                            One of the advantages is that farmers can grow plants that produce a poison that is harmful to (5) <em>small animals</em> <input type="text" class="input-blank w-24 text-sm" data-ex="3.1" data-ans='["insects"]'> like flies and caterpillars. This means that farmers will not have to use (6) <em>chemicals</em> <input type="text" class="input-blank w-28 text-sm" data-ex="3.1" data-ans='["pesticides"]'> to kill these animals and so this should be better for the surrounding environment and the (7) <em>earth</em> <input type="text" class="input-blank w-20 text-sm" data-ex="3.1" data-ans='["soil"]'> that plants grow in. As a result, it could help to protect other (8) <em>plants</em> <input type="text" class="input-blank w-28 text-sm" data-ex="3.1" data-ans='["vegetation", "flora"]'> as well as the (9) <em>living space</em> <input type="text" class="input-blank w-24 text-sm" data-ex="3.1" data-ans='["habitat"]'> of any animals in the area.
+                        </p>
+                        <p>
+                            On the other hand, farmers usually only spray their fields once or twice per year but these new plants would be toxic all year round. Furthermore, it is possible that over time the pests may (10) <em>stop being killed by</em> <input type="text" class="input-blank w-36 text-sm" data-ex="3.1" data-ans='["become resistant to"]'> the toxins and so the problem would be worse than ever. The toxins may also be poisonous to other plants and animals and this would upset the (11) <em>way plants and animals live and grow together</em> <input type="text" class="input-blank w-40 text-sm" data-ex="3.1" data-ans='["ecological balance"]'> and may lead to more animals becoming (12) <em>at risk of extinction</em> <input type="text" class="input-blank w-28 text-sm" data-ex="3.1" data-ans='["endangered"]'>.
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-3 mt-6">
+                        <button id="btn-3.1" onclick="checkExercise('3.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 3.1</button>
+                        <span id="score-3.1" class="ui-font text-sm font-bold hidden"></span>
+                    </div>
+                </div>
+                <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                    <span class="text-xs font-bold ui-font text-slate-400">5</span>
+                </div>
+            </div>
+
+            <!-- ==================== PAGE 6: Test Practice Reading (Left) ==================== -->
+            <div id="page-6" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                <div class="flex-grow">
+                    <div class="flex justify-between items-end mb-4 border-b-2 border-slate-800 pb-2">
+                        <h3 class="text-2xl font-bold text-slate-900">4. Test Practice: Reading</h3>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded p-5 text-slate-800 text-[12px] leading-relaxed shadow-sm">
+                        <h4 class="font-bold text-lg mb-4 text-center font-serif">Meet the hedgehog</h4>
+                        
+                        <p class="font-bold mb-1">A</p>
+                        <p class="mb-3">In Norwich, England, the first housing development designed for both hedgehogs and people has been built. All through the gardens and fences is a network of pathways and holes installed just for the ancient, spiny creatures. It's a paradise that Fay Vass, chief executive of the British Hedgehog Preservation Society, calls 'absolutely fantastic'. As for the developers, they have reason to think the animals will help make home sales fantastic, too. Part of the attraction is that many people simply love hedgehogs, particularly in Britain, where children's book writer Beatrix Potter introduced Mrs Tiggy-Winkle, a hedgehog character, over a century ago. But part of the attraction is also rooted in science. Studies have helped make clear that hedgehogs are good for gardens, eating vast numbers of slugs and other pests as they forage in the vegetation at night.</p>
+                        
+                        <p class="font-bold mb-1">B</p>
+                        <p class="mb-3">Recent scientific studies about hedgehogs have helped explain mysteries as varied as why hedgehogs apply saliva to their entire bodies, how they have survived on the planet for 30 million years, why they chew toxic toad skins and what secrets they may hold about evolution. As one of the most primitive mammals on the planet, the hedgehog has been helping geneticists understand evolutionary relationships among mammals and even uncover secrets of the human genome¹. At Duke University, for example, scientists chose the hedgehog and 14 other species to study the lineages of mammals. They determined among other things that marsupials (e.g. kangaroos) are not related to monotremes (the egg-laying platypus and echidna), which had long been a subject of debate. Such questions are not just academic. 'If you are trying to trace, for example, the evolutionary steps of foetal heart development to better understand how foetal defects occur, it helps to know which mammals are related so that you can make accurate inferences about one mammal from another mammal's development,' says researcher Keith Killian.</p>
+                        
+                        <p class="font-bold mb-1">C</p>
+                        <p class="mb-3">Still, much about hedgehogs remains unknown. For one thing, scientists think they haven't even discovered all the hedgehog species. 'We know of at least 14,' says hedgehog researcher Nigel Reeve of Britain's University of Surrey, Roehampton. 'It's almost certain that there are more species.' The 14 known species are native to Africa and parts of Asia as well as Europe. Some hibernate through cold winters in the north. Others tolerate desert heat near the equator. Some live in urban areas, adapting well to living in close proximity to humans. Others live in areas that rank among the most remote places on the planet.</p>
+                        
+                        <p class="font-bold mb-1">D</p>
+                        <p>Hedgehogs spend much of their time alone, but Reeve says it would be a mistake to think of them as solitary. 'Hedgehogs do approach each other and can detect the presence of others by their scent,' he says. 'It is true that they usually do not interact at close quarters, but that does not mean they are unaware of their neighbours. They may occasionally scrap over food items and rival males attracted to a female may also have aggressive interactions. Still, it's fair to say that, in adulthood, hedgehogs meet primarily to mate, producing litters of four or five hoglets as often as twice yearly.'</p>
+                    </div>
+                </div>
+                <div class="mt-6 border-t border-slate-200 pt-4 flex w-full justify-start">
+                    <span class="text-xs font-bold ui-font text-slate-400">6</span>
+                </div>
+            </div>
+
+            <!-- ==================== PAGE 7: Test Practice Reading (Right) ==================== -->
+            <div id="page-7" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                <div class="flex-grow">
+                    <div class="bg-slate-50 border border-slate-200 rounded p-5 text-slate-800 text-[12px] leading-relaxed shadow-sm h-full flex flex-col">
+                        
+                        <p class="font-bold mb-1">E</p>
+                        <p class="mb-3">Adult hedgehogs eat just about anything they can find: insects, snakes, bird eggs, small rodents and more. Veterinarians trying to understand gum disease in domesticated hedgehogs have concluded that the varied diet of wild hedgehogs gives them more than nutrition - the hard bodies of insects also scrape the hedgehogs' teeth clean.</p>
+                        
+                        <p class="font-bold mb-1">F</p>
+                        <p class="mb-3">All hedgehogs also share the same defence mechanism: they retract their vulnerable parts - head, feet, belly - into a quill-covered ball, using special skin down their sides and over their heads and feet. Any perceived threat can make them roll up, including the approach of a biologist, so researchers have invented a new measurement for the animals: ball length. Young hedgehogs have a few extra defence strategies. 'One is to spring up in the air,' says Reeve. 'A fox would get a face full of bristles. They make a little squeak while they do it.' Evidence suggests that hedgehogs may also add unpleasant chemicals to their quills to make them even less appealing. In behaviour that may be unique for a vertebrate, they chew substances laden with toxins and then apply frothy saliva to their entire bodies. In one 1977 study, human volunteers pricked themselves with quills from hedgehogs that had coated themselves after chewing on venomous toad skins. The volunteers found those quills much more irritating and painful than clean ones.</p>
+                        
+                        <p class="font-bold mb-1">G</p>
+                        <p class="mb-3">However, every year, many thousands of the animals die on roads in Europe and elsewhere as they go about their nightly business. Along with intensive farming and pesticides, road kill has taken its toll on hedgehog populations. One 2002 study found the animal numbers had dropped by between 20 and 30 per cent in a single decade. To help combat the decline, the British have established special clinics for injured hedgehogs, urged that anyone making a bonfire check for the animals underneath first, and ensured that hedgehogs can cope with cattle grids. Recently, they even persuaded McDonald's to alter the packaging of its McFlurry ice-cream container, which had been trapping foraging hedgehogs.</p>
+
+                        <p class="font-bold mb-1">H</p>
+                        <p class="mb-4">Ironically, for centuries the English considered these animals as vermin. Even 50 years ago gamekeepers were killing as many as 10,000 a year thinking they were no more than bird-egg-eating pests. In some places today, scientists are coming to the same conclusions all over again. In the 1970s, hedgehogs were introduced to the Hebrides Islands off Scotland to help combat garden slugs. With no natural enemies there, a few hedgehogs soon turned into thousands. Wildlife researchers have watched the hedgehogs reduce the numbers of rare ground-nesting wading birds by feasting on their eggs. Efforts to cull the animals in the past two years have upset Britain's conservationists who have countered with strategies to relocate the animals.</p>
+                        
+                        <div class="mt-auto border-t border-slate-300 pt-2 text-[10px] text-slate-500 italic">
+                            ¹ genome: the complete set of genetic material of a living thing
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                    <span class="text-xs font-bold ui-font text-slate-400">7</span>
+                </div>
+            </div>
+
+            <!-- ==================== PAGE 8: Test Practice Questions ==================== -->
+            <div id="page-8" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                <div class="flex-grow">
+                    <div class="flex justify-between items-end mb-4 border-b-2 border-slate-800 pb-2">
+                        <h3 class="text-xl font-bold text-slate-900">Questions 1-9</h3>
+                        <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                    </div>
+
+                    <p class="mb-4 text-slate-800 text-[13px] italic">The reading passage has eight sections A-H. Which sections contain the following information? Type the correct letter (A-H) next to questions 1-9 below.</p>
+                    
+                    <ol class="list-decimal list-outside ml-4 space-y-4 text-slate-800 text-[13px] leading-snug">
+                        <li>The significance of establishing the relationship between different species. 
+                            <input type="text" class="input-blank w-12 uppercase font-bold text-sm" data-ex="4.1" data-ans='["b"]'>
+                        </li>
+                        <li>The different habitats where hedgehogs can be found. 
+                            <input type="text" class="input-blank w-12 uppercase font-bold text-sm" data-ex="4.1" data-ans='["c"]'>
+                        </li>
+                        <li>The reason why standard forms of measurement cannot be used for the hedgehog. 
+                            <input type="text" class="input-blank w-12 uppercase font-bold text-sm" data-ex="4.1" data-ans='["f"]'>
+                        </li>
+                        <li>A problem associated with hedgehogs kept as pets. 
+                            <input type="text" class="input-blank w-12 uppercase font-bold text-sm" data-ex="4.1" data-ans='["e"]'>
+                        </li>
+                        <li>Two reasons why hedgehogs are popular with people in the UK. 
+                            <input type="text" class="input-blank w-12 uppercase font-bold text-sm" data-ex="4.1" data-ans='["a"]'>
+                        </li>
+                        <li>Four findings from the latest research into hedgehogs. 
+                            <input type="text" class="input-blank w-12 uppercase font-bold text-sm" data-ex="4.1" data-ans='["b"]'>
+                        </li>
+                        <li>The social habits of the hedgehog. 
+                            <input type="text" class="input-blank w-12 uppercase font-bold text-sm" data-ex="4.1" data-ans='["d"]'>
+                        </li>
+                        <li>The number of hedgehog species already identified. 
+                            <input type="text" class="input-blank w-12 uppercase font-bold text-sm" data-ex="4.1" data-ans='["c"]'>
+                        </li>
+                        <li>The name given to baby hedgehogs. 
+                            <input type="text" class="input-blank w-12 uppercase font-bold text-sm" data-ex="4.1" data-ans='["d"]'>
+                        </li>
+                    </ol>
+                    
+                    <div class="flex items-center gap-3 mt-8">
+                        <button id="btn-4.1" onclick="checkExercise('4.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[12px] font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Qs 1-9</button>
+                        <span id="score-4.1" class="ui-font text-[12px] font-bold hidden"></span>
+                    </div>
+
+                </div>
+                <div class="mt-6 border-t border-slate-200 pt-4 flex w-full justify-start">
+                    <span class="text-xs font-bold ui-font text-slate-400">8</span>
+                </div>
+            </div>
+
+            <!-- ==================== PAGE 9: Test Practice Questions ==================== -->
+            <div id="page-9" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                <div class="flex-grow flex flex-col justify-start">
+                    
+                    <div class="flex justify-between items-end mb-4 border-b-2 border-slate-800 pb-2">
+                        <h3 class="text-xl font-bold text-slate-900">Questions 10-13</h3>
+                    </div>
+
+                    <p class="mb-4 text-slate-800 text-[13px] italic">Choose the correct answer <strong>A, B, C or D</strong>.</p>
+                    
+                    <ol class="list-decimal list-outside ml-4 space-y-5 text-slate-800 text-[13px] leading-relaxed font-medium" start="10">
+                        <li>The study conducted in 1977 revealed a possible reason why
+                            <div class="ml-1 mt-1 flex flex-col gap-y-1 ui-font text-[12px] font-normal">
+                                <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q10" value="a" class="mr-2 accent-slate-600"><span>A. hedgehogs clean their quills.</span></label>
+                                <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q10" value="b" class="mr-2 accent-slate-600"><span>B. hedgehogs chew poisonous animal skins.</span></label>
+                                <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q10" value="c" class="mr-2 accent-slate-600"><span>C. adult hedgehogs do not leap into the air.</span></label>
+                                <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q10" value="d" class="mr-2 accent-slate-600"><span>D. young hedgehogs make a high-pitched noise.</span></label>
+                            </div>
+                            <input type="hidden" id="ans_q10" data-ans='["b"]'>
+                        </li>
+                        <li>In Britain, which of the following has NOT been done to protect hedgehogs?
+                            <div class="ml-1 mt-1 flex flex-col gap-y-1 ui-font text-[12px] font-normal">
+                                <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q11" value="a" class="mr-2 accent-slate-600"><span>A. The opening of hospitals just for hedgehogs.</span></label>
+                                <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q11" value="b" class="mr-2 accent-slate-600"><span>B. Imposing fines for littering in areas where hedgehogs live.</span></label>
+                                <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q11" value="c" class="mr-2 accent-slate-600"><span>C. The alteration of a container produced by a fast-food chain.</span></label>
+                                <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q11" value="d" class="mr-2 accent-slate-600"><span>D. Alerting people to the potential dangers faced by hedgehogs.</span></label>
+                            </div>
+                            <input type="hidden" id="ans_q11" data-ans='["b"]'>
+                        </li>
+                        <li>What are the 'conclusions' that scientists on the Hebrides Islands have reached again?
+                            <div class="ml-1 mt-1 flex flex-col gap-y-1 ui-font text-[12px] font-normal">
+                                <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q12" value="a" class="mr-2 accent-slate-600"><span>A. Hedgehog numbers are declining.</span></label>
+                                <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q12" value="b" class="mr-2 accent-slate-600"><span>B. Hedgehogs pose a threat to other wildlife.</span></label>
+                                <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q12" value="c" class="mr-2 accent-slate-600"><span>C. Hedgehogs can safely be introduced there.</span></label>
+                                <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q12" value="d" class="mr-2 accent-slate-600"><span>D. Hedgehogs can be used effectively as a natural predator.</span></label>
+                            </div>
+                            <input type="hidden" id="ans_q12" data-ans='["b"]'>
+                        </li>
+                        <li>What would conservationists prefer to do on the Hebrides Islands?
+                            <div class="ml-1 mt-1 flex flex-col gap-y-1 ui-font text-[12px] font-normal">
+                                <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q13" value="a" class="mr-2 accent-slate-600"><span>A. Introduce a native predator of hedgehogs.</span></label>
+                                <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q13" value="b" class="mr-2 accent-slate-600"><span>B. Kill a small number of hedgehogs.</span></label>
+                                <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q13" value="c" class="mr-2 accent-slate-600"><span>C. Remove ground-nesting birds.</span></label>
+                                <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q13" value="d" class="mr-2 accent-slate-600"><span>D. Move the hedgehogs elsewhere.</span></label>
+                            </div>
+                            <input type="hidden" id="ans_q13" data-ans='["d"]'>
+                        </li>
+                    </ol>
+
+                    <div class="flex items-center gap-3 mt-6">
+                        <button id="btn-4.2" onclick="checkRadios('4.2', 4, 10)" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[12px] font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Qs 10-13</button>
+                        <span id="score-4.2" class="ui-font text-[12px] font-bold hidden"></span>
+                    </div>
+
+                </div>
+                <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                    <span class="text-xs font-bold ui-font text-slate-400">9</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Sticky Right Arrow -->
+    <div class="hidden lg:block w-10 shrink-0 ml-2 xl:ml-4 relative">
+        <div class="sticky-nav-container flex justify-center">
+            <button id="next-btn" onclick="goNext()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Next Page">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<!-- Mobile Fixed Bottom Navigation -->
+<div class="lg:hidden fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-slate-200 p-3 flex justify-between z-50 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.1)]">
+    <button id="prev-btn-mobile" onclick="goPrev()" class="ui-font font-bold px-5 py-2 rounded-lg text-slate-700 bg-slate-100 active:bg-slate-200 transition-colors flex items-center gap-2">
+        &larr; Prev
+    </button>
+    <button id="next-btn-mobile" onclick="goNext()" class="ui-font font-bold px-5 py-2 rounded-lg text-white bg-slate-800 active:bg-slate-700 transition-colors flex items-center gap-2 shadow-sm">
+        Next &rarr;
+    </button>
+</div>
+
+<script>
+    const REQUIRED_SCORE = 0.8;
+    const totalPages = 10; // 0 to 9
+    let currentSpread = 0; // For desktop (0 = pages 0,1; 1 = pages 2,3; etc.)
+    let currentMobilePage = 0;
+
+    function updatePagination() {
+        const isDesktop = window.innerWidth >= 1024;
+        const pages = document.querySelectorAll('.page-content');
+        
+        // Hide all pages
+        pages.forEach(p => p.classList.add('hidden'));
+
+        if (isDesktop) {
+            let leftIdx = currentSpread * 2;
+            let rightIdx = leftIdx + 1;
+            
+            const leftPage = document.getElementById(`page-${leftIdx}`);
+            const rightPage = document.getElementById(`page-${rightIdx}`);
+            
+            if(leftPage) leftPage.classList.remove('hidden');
+            if(rightPage) rightPage.classList.remove('hidden');
+
+            // Update Nav Buttons
+            document.getElementById('prev-btn').disabled = currentSpread === 0;
+            document.getElementById('next-btn').disabled = currentSpread >= Math.ceil(totalPages/2) - 1;
+            
+        } else {
+            const activePage = document.getElementById(`page-${currentMobilePage}`);
+            if(activePage) activePage.classList.remove('hidden');
+
+            // Update Mobile Nav
+            const prevMob = document.getElementById('prev-btn-mobile');
+            const nextMob = document.getElementById('next-btn-mobile');
+            if(prevMob) prevMob.style.visibility = currentMobilePage === 0 ? 'hidden' : 'visible';
+            if(nextMob) nextMob.style.visibility = currentMobilePage === totalPages - 1 ? 'hidden' : 'visible';
         }
-        document.addEventListener('DOMContentLoaded', initAudioPlayer);
+    }
 
-        let selW = null;
-        function selectWord(b) {
-            if (b.classList.contains('used')) return;
-            document.querySelectorAll('.word-choice').forEach(x => x.classList.remove('selected'));
-            if (selW === b) { selW = null; return; }
-            b.classList.add('selected'); selW = b;
+    function goNext() {
+        const isDesktop = window.innerWidth >= 1024;
+        if (isDesktop) {
+            if (currentSpread < Math.ceil(totalPages/2) - 1) currentSpread++;
+        } else {
+            if (currentMobilePage < totalPages - 1) currentMobilePage++;
         }
+        updatePagination();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-        function placeWord(s) {
-            if (s.innerText.trim()) {
-                const w = s.innerText.trim();
-                const b = Array.from(s.closest('.exercise-section').querySelectorAll('.word-choice')).find(x => x.dataset.word === w);
-                if (b) b.classList.remove('used');
-                s.innerText = '';
+    function goPrev() {
+        const isDesktop = window.innerWidth >= 1024;
+        if (isDesktop) {
+            if (currentSpread > 0) currentSpread--;
+        } else {
+            if (currentMobilePage > 0) currentMobilePage--;
+        }
+        updatePagination();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.addEventListener('resize', () => {
+        const isDesktop = window.innerWidth >= 1024;
+        if(isDesktop) {
+            currentSpread = Math.floor(currentMobilePage / 2);
+        } else {
+            currentMobilePage = currentSpread * 2;
+        }
+        updatePagination();
+    });
+
+    // --- Core UI & Grading Logic ---
+    function showToast(message, type) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type} show`;
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function validateBlanks(inputs) {
+        let allFilled = true;
+        inputs.forEach(input => {
+            if (input.classList.contains('font-normal')) return; // skip subjective notes
+            const val = input.value !== undefined ? input.value : input.innerText;
+            if (val.trim() === "") {
+                allFilled = false;
+                input.style.borderBottomColor = '#f59e0b';
+                input.style.backgroundColor = '#fef3c7';
+                setTimeout(() => {
+                    input.style.borderBottomColor = '';
+                    input.style.backgroundColor = '';
+                }, 1500);
             }
-            if (selW && selW.closest('.exercise-section') === s.closest('.exercise-section')) {
-                s.innerText = selW.dataset.word;
-                selW.classList.add('used'); selW.classList.remove('selected'); selW = null;
+        });
+        return allFilled;
+    }
+
+    // Setup Radio Buttons
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            const name = e.target.name;
+            const hiddenInput = document.getElementById(`ans_${name}`);
+            if (hiddenInput) {
+                hiddenInput.value = e.target.value;
+            }
+        });
+    });
+
+    // Grading multiple choice (radio buttons)
+    // Offset is used when the questions don't start at q1 (e.g., q10-13)
+    function checkRadios(exerciseId, totalQs, offset = 1) {
+        let correctCount = 0;
+        let allAnswered = true;
+        let endQ = offset + totalQs - 1;
+
+        for (let i = offset; i <= endQ; i++) {
+            const hiddenInput = document.getElementById(`ans_q${i}`);
+            if (!hiddenInput.value) {
+                allAnswered = false;
+                const container = document.querySelector(`input[name="q${i}"]`).closest('div');
+                container.style.borderLeft = "4px solid #f59e0b";
+                container.style.paddingLeft = "8px";
+                setTimeout(() => {
+                    container.style.borderLeft = "";
+                    container.style.paddingLeft = "";
+                }, 1500);
             }
         }
 
-        function selectOdd(el) {
-            const row = el.closest('.odd-row');
-            if (row.classList.contains('checked')) return;
-            row.querySelectorAll('.odd-word').forEach(w => w.classList.remove('selected'));
-            el.classList.add('selected');
+        if (!allAnswered) {
+            showToast("Please answer all questions before checking!", "warning");
+            return;
         }
 
-        function checkOddOneOut() {
-            const rows = document.querySelectorAll('.odd-row');
-            let correct = 0;
-            rows.forEach(row => {
-                row.classList.add('checked');
-                const sel = row.querySelector('.odd-word.selected');
-                const ans = row.dataset.ans;
-                const expl = row.querySelector('.explanation');
-                row.querySelectorAll('.odd-word').forEach(w => {
-                    if (w.innerText.toLowerCase() === ans.toLowerCase()) w.classList.add('correct-choice');
-                    else if (w.classList.contains('selected')) w.classList.add('incorrect-choice');
-                });
-                if (sel && sel.innerText.toLowerCase() === ans.toLowerCase()) correct++;
-                expl.classList.add('show');
+        for (let i = offset; i <= endQ; i++) {
+            const hiddenInput = document.getElementById(`ans_q${i}`);
+            const userVal = hiddenInput.value;
+            const possibleAns = JSON.parse(hiddenInput.getAttribute('data-ans'));
+            
+            const checkedRadio = document.querySelector(`input[name="q${i}"]:checked`);
+            const label = checkedRadio.closest('label');
+            
+            // Clear previous highlights
+            document.querySelectorAll(`input[name="q${i}"]`).forEach(r => {
+                r.closest('label').classList.remove('text-green-700', 'font-bold', 'text-red-700', 'bg-green-100', 'bg-red-100');
             });
-            const pct = correct / rows.length;
-            const scoreLabel = document.getElementById('score-2-odd');
-            scoreLabel.textContent = `${Math.round(pct*100)}% Pass (${correct}/${rows.length})`;
-            scoreLabel.classList.remove('hidden');
-            scoreLabel.className = `ml-4 font-bold ${pct >= REQUIRED_SCORE ? 'text-green-600' : 'text-red-600'}`;
-            showToast(pct >= REQUIRED_SCORE ? "Odd One Out Passed!" : "Review reasons.", pct >= REQUIRED_SCORE ? "success" : "error");
-        }
 
-        function openTab(idx) {
-            document.querySelectorAll('.exercise-section').forEach(s => s.classList.add('section-hidden'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(`section-${idx}`).classList.remove('section-hidden');
-            document.getElementById(`tab-${idx}`).classList.add('active');
-        }
-
-        function showToast(m, t) {
-            const x = document.getElementById('toast');
-            x.textContent = m; x.className = `toast ${t} show`;
-            setTimeout(() => x.classList.remove('show'), 3000);
-        }
-
-        function checkExercise(...exIds) {
-            let t = 0, c = 0, filled = 0;
-            exIds.forEach(id => {
-                document.querySelectorAll(`[data-ex="${id}"]`).forEach(i => {
-                    const isInput = i.tagName === 'INPUT' || i.tagName === 'SELECT';
-                    const v = (isInput ? i.value : i.innerText).trim().toLowerCase().replace(/\s+/g, ' ');
-                    if (v !== "") filled++;
-                    const a = JSON.parse(i.dataset.ans);
-                    t++;
-                    if (v !== "" && a.includes(v)) { c++; i.classList.add('correct'); i.classList.remove('incorrect'); }
-                    else { i.classList.add('incorrect'); i.classList.remove('correct'); }
-                });
-            });
-            if (filled === 0) { showToast("Please enter answers first!", "error"); return; }
-            const p = c/t;
-            const scoreLabel = document.getElementById(`score-${exIds[0]}`);
-            if (scoreLabel) {
-                scoreLabel.textContent = `${Math.round(p*100)}% Pass (${c}/${t})`;
-                scoreLabel.classList.remove('hidden');
-                scoreLabel.className = `ml-4 font-bold ${p >= REQUIRED_SCORE ? 'text-green-600' : 'text-red-600'}`;
+            if (possibleAns.includes(userVal)) {
+                correctCount++;
+                label.classList.add('text-green-700', 'font-bold', 'bg-green-100');
+            } else {
+                label.classList.add('text-red-700', 'font-bold', 'bg-red-100');
             }
-            showToast(p >= REQUIRED_SCORE ? "Section Passed!" : "Try again.", p >= REQUIRED_SCORE ? "success" : "error");
         }
-    </script>
+
+        const scoreLabel = document.getElementById(`score-${exerciseId}`);
+        const percentage = correctCount / totalQs;
+        const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalQs})`;
+        
+        scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+        
+        if (percentage >= REQUIRED_SCORE) {
+            scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+            scoreLabel.classList.add('text-green-600');
+            const btn = document.getElementById(`btn-${exerciseId}`);
+            if (btn) { btn.disabled = true; btn.textContent = "Passed"; }
+            showToast("Good job!", "success");
+        } else {
+            scoreLabel.textContent = `❌ Failed. ${scoreText}`;
+            scoreLabel.classList.add('text-red-600');
+            showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
+        }
+    }
+
+    // Standard exercise checking (inputs, select boxes)
+    function checkExercise(exerciseId) {
+        const inputs = document.querySelectorAll(`[data-ex="${exerciseId}"]`);
+        if (!validateBlanks(inputs)) {
+            showToast("Please answer all required blanks before checking!", "warning");
+            return;
+        }
+
+        let correctCount = 0;
+        inputs.forEach(input => {
+            if(input.classList.contains('font-normal')) return;
+
+            const rawVal = input.value !== undefined ? input.value : input.innerText;
+            const userVal = rawVal.trim().toLowerCase().replace(/\s+/g, ' ');
+            const possibleAns = JSON.parse(input.getAttribute('data-ans'));
+            
+            if (possibleAns.includes(userVal)) {
+                correctCount++;
+                input.classList.add('correct');
+                input.classList.remove('incorrect');
+            } else {
+                input.classList.add('incorrect');
+                input.classList.remove('correct');
+            }
+        });
+
+        const scoreLabel = document.getElementById(`score-${exerciseId}`);
+        const totalCount = Array.from(inputs).filter(i => !i.classList.contains('font-normal')).length;
+        const percentage = correctCount / totalCount;
+        const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
+        
+        scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+        
+        if (percentage >= REQUIRED_SCORE) {
+            scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+            scoreLabel.classList.add('text-green-600');
+            
+            const btn = document.getElementById(`btn-${exerciseId}`);
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = "Passed";
+            }
+            showToast("Good job!", "success");
+        } else {
+            scoreLabel.textContent = `❌ Failed. ${scoreText}`;
+            scoreLabel.classList.add('text-red-600');
+            showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
+        }
+    }
+
+    // Initialize on Load
+    document.addEventListener('DOMContentLoaded', () => {
+        updatePagination();
+    });
+
+</script>
 </body>
 </html>
