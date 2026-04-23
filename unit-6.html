@@ -3,39 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Effective Communication - Language & Linguistics</title>
+    <title>Unit 6: Effective Communication - Textbook</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        body { 
+            font-family: 'Lora', serif; 
+            background-color: #d1d5db;
+            background-image: radial-gradient(#9ca3af 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .ui-font { font-family: 'Inter', sans-serif; }
+
+        /* Book & Paper Styles */
+        .book-wrapper {
+            background-color: #fdfcf8;
+            box-shadow: 
+                0 20px 40px -10px rgba(0,0,0,0.3), 
+                0 0 0 1px rgba(0,0,0,0.05),
+                inset 0 0 60px rgba(139, 115, 85, 0.05);
+            border-radius: 4px 8px 8px 4px;
+        }
+
+        .spine-shadow {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 80px;
+            transform: translateX(-50%);
+            background: linear-gradient(
+                to right,
+                transparent 0%,
+                rgba(0,0,0,0.02) 40%,
+                rgba(0,0,0,0.12) 50%,
+                rgba(0,0,0,0.02) 60%,
+                transparent 100%
+            );
+            pointer-events: none;
+            z-index: 10;
+            border-left: 1px solid rgba(255,255,255,0.4);
+            border-right: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* Sticky Nav for Desktop */
+        .sticky-nav-container {
+            position: sticky;
+            top: 50vh;
+            transform: translateY(-50%);
+            height: max-content;
+            z-index: 50;
+        }
+
+        /* Inputs */
         .input-blank {
+            font-family: 'Inter', sans-serif;
             border: none;
-            border-bottom: 2px solid #9ca3af;
-            background: transparent;
+            border-bottom: 2px dashed #94a3b8;
+            background: rgba(255,255,255,0.5);
             outline: none;
             text-align: center;
-            padding: 0.25rem;
-            transition: border-color 0.2s, background-color 0.2s;
+            padding: 0.1rem 0.25rem;
+            margin: 0 0.25rem;
+            transition: all 0.2s;
             font-weight: 600;
-            color: #1f2937;
+            color: #1e293b;
+            border-radius: 2px 2px 0 0;
         }
-        .input-blank:focus { border-bottom-color: #3b82f6; }
+        .input-blank:focus { 
+            border-bottom: 2px solid #0369a1; 
+            background: #f0f9ff;
+        }
         select.input-blank {
             text-align: left;
             cursor: pointer;
-            padding-right: 1.5rem;
+            padding-right: 1.2rem;
             appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
-            background-position: right 0.25rem center;
-            background-size: 1em;
+            background-position: right 0.1rem center;
+            background-size: 0.8em;
         }
-        .correct { border-bottom-color: #22c55e !important; color: #166534; background-color: #f0fdf4; }
-        .incorrect { border-bottom-color: #ef4444 !important; color: #991b1b; background-color: #fef2f2; }
-        
-        /* Tab & Interactivity Styles */
-        .tab-btn { transition: all 0.2s ease-in-out; }
-        .tab-btn.active { border-bottom-width: 4px; border-color: #3b82f6; color: #1e3a8a; font-weight: 700; background-color: #eff6ff; }
-        .section-hidden { display: none; }
+
+        .correct { 
+            border-bottom: 2px solid #16a34a !important; 
+            color: #166534; 
+            background-color: #dcfce7; 
+        }
+        .incorrect { 
+            border-bottom: 2px solid #dc2626 !important; 
+            color: #991b1b; 
+            background-color: #fee2e2; 
+        }
+
+        /* Callouts / Notes */
+        .textbook-note {
+            background-color: #f8fafc;
+            border-left: 4px solid #94a3b8;
+            position: relative;
+        }
+        .textbook-note::before {
+            content: "✍🏼 Note";
+            position: absolute;
+            top: -12px;
+            left: 8px;
+            background: #fdfcf8;
+            padding: 0 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            font-family: 'Inter', sans-serif;
+            color: #475569;
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb { background-color: #94a3b8; }
+
+        /* Buttons & Toasts */
+        .check-btn { transition: transform 0.1s, box-shadow 0.1s; }
+        .check-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            backdrop-filter: blur(4px);
+            transition: all 0.2s;
+        }
+        .nav-btn:hover:not(:disabled) { background: #fff; transform: scale(1.05); }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
 
         .toast {
             position: fixed; top: 20px; right: 20px;
@@ -44,6 +144,8 @@
             opacity: 0; transform: translateY(-20px);
             transition: opacity 0.3s, transform 0.3s;
             z-index: 1000; pointer-events: none;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
         }
         .toast.show { opacity: 1; transform: translateY(0); }
         .toast.error { background-color: #ef4444; }
@@ -51,570 +153,702 @@
         .toast.warning { background-color: #f59e0b; }
     </style>
 </head>
-<body class="text-gray-800 antialiased pb-20">
+<body class="text-slate-800 antialiased min-h-screen flex flex-col pt-4 lg:pt-10 pb-24 lg:pb-10">
 
-    <div id="toast" class="toast shadow-lg">Message</div>
+    <div id="toast" class="toast">Message</div>
 
-    <div class="max-w-7xl mx-auto mt-8 px-4">
+    <!-- Main Desk Area -->
+    <div class="w-full max-w-[1600px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
         
-        <!-- Header / Intro -->
-        <div class="bg-white rounded-xl shadow-md p-6 mb-8 border-l-4 border-indigo-600">
-            <h1 class="text-3xl font-bold mb-2 text-indigo-900">Unit 6: Effective Communication</h1>
-            <h2 class="text-xl font-semibold text-gray-700">Language, Linguistics</h2>
-            <p class="mt-4 text-gray-600">Work through the exercises below to improve your vocabulary and reading skills regarding language learning and linguistics.</p>
-        </div>
-
-        <!-- Tab Navigation -->
-        <div class="flex overflow-x-auto bg-white rounded-t-xl shadow-sm border-b-2 border-gray-200 mb-6 custom-scrollbar">
-            <button onclick="openTab(0)" id="tab-0" class="tab-btn active flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">1. Language Basics</button>
-            <button onclick="openTab(1)" id="tab-1" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">2. Errors & Synonyms</button>
-            <button onclick="openTab(2)" id="tab-2" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">3. Linguistics</button>
-            <button onclick="openTab(3)" id="tab-3" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">4. Communication Skills</button>
-            <button onclick="openTab(4)" id="tab-4" class="tab-btn flex-1 py-3 px-4 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">5. Test Practice</button>
-        </div>
-
-        <!-- Section 0: Language Basics -->
-        <div id="section-0" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">1. Language</h3>
-                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 100%</span>
+        <!-- Sticky Left Arrow (Desktop Only) -->
+        <div class="hidden lg:block w-10 shrink-0 mr-2 xl:mr-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="prev-btn" onclick="goPrev()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Previous Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
             </div>
+        </div>
+
+        <!-- The Book -->
+        <div class="book-wrapper flex-1 w-full max-w-7xl flex flex-col lg:flex-row relative min-h-[85vh]">
             
-            <div class="mb-8">
-                <p class="mb-4 text-gray-700 font-medium">1.1 Find words that match these definitions.</p>
+            <!-- Spine Decoration (Desktop Only) -->
+            <div class="spine-shadow hidden lg:block"></div>
+
+            <!-- Page Container (Flexible Height) -->
+            <div id="pages-container" class="w-full flex relative">
                 
-                <ol class="list-decimal list-inside space-y-4 mb-6 text-gray-800 text-lg">
-                    <li>change words from one language to another: <input type="text" class="input-blank w-48" data-ex="1.1" data-ans='["translate"]'></li>
-                    <li>the ability to do something without making mistakes: <input type="text" class="input-blank w-48" data-ex="1.1" data-ans='["accuracy"]'></li>
-                    <li>something that prevents successful communication: <input type="text" class="input-blank w-48" data-ex="1.1" data-ans='["language barrier"]'></li>
-                    <li>a person who has spoken the language from birth: <input type="text" class="input-blank w-48" data-ex="1.1" data-ans='["native speaker"]'></li>
-                    <li>the ability to speak without hesitation: <input type="text" class="input-blank w-48" data-ex="1.1" data-ans='["fluency"]'></li>
-                    <li>work or carry out daily tasks: <input type="text" class="input-blank w-48" data-ex="1.1" data-ans='["function"]'></li>
-                </ol>
-                
-                <div class="flex items-center gap-4 mt-6">
-                    <button id="btn-1.1" onclick="checkExercise('1.1', 0)" class="check-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (1.1)</button>
-                    <span id="score-1.1" class="font-bold text-lg hidden"></span>
-                </div>
-            </div>
-
-            <hr class="my-8 border-gray-200">
-
-            <div class="mb-8">
-                <p class="mb-4 text-gray-700 font-medium">1.2 Idioms: Complete sentences 1-8 with the correct phrase from the box.</p>
-                <div class="bg-indigo-50 text-indigo-900 p-4 rounded-lg mb-6 grid grid-cols-2 gap-4 font-semibold text-sm">
-                    <div>• There is something to be said for</div>
-                    <div>• When all is said and done</div>
-                    <div>• You can say that again!</div>
-                    <div>• Needless to say</div>
-                    <div>• having said that</div>
-                    <div>• That is to say</div>
-                    <div>• have a say</div>
-                    <div>• to say the least</div>
-                </div>
-
-                <ol class="list-decimal list-inside space-y-6 text-gray-800 text-lg leading-loose">
-                    <li>
-                        <strong>Bill:</strong> Hello, Sam, what a surprise meeting you here! <br>
-                        <strong>Sam:</strong> <select class="input-blank font-bold text-indigo-700 max-w-xs" data-ex="1.2" data-ans='["you can say that again!"]'>
-                            <option value="" disabled selected>Choose...</option>
-                            <option value="you can say that again!">You can say that again!</option>
-                            <option value="having said that">having said that</option>
-                            <option value="there is something to be said for">There is something to be said for</option>
-                            <option value="to say the least">to say the least</option>
-                            <option value="when all is said and done">When all is said and done</option>
-                            <option value="needless to say">Needless to say</option>
-                            <option value="that is to say">That is to say</option>
-                            <option value="have a say">have a say</option>
-                        </select>
-                    </li>
-                    <li>Nuclear power has its problems. However, <select class="input-blank font-bold text-indigo-700 max-w-xs" data-ex="1.2" data-ans='["having said that"]'>
-                            <option value="" disabled selected>Choose...</option>
-                            <option value="you can say that again!">You can say that again!</option>
-                            <option value="having said that">having said that</option>
-                            <option value="there is something to be said for">There is something to be said for</option>
-                            <option value="to say the least">to say the least</option>
-                            <option value="when all is said and done">When all is said and done</option>
-                            <option value="needless to say">Needless to say</option>
-                            <option value="that is to say">That is to say</option>
-                            <option value="have a say">have a say</option>
-                        </select> many people believe it is the energy source of the future.</li>
-                    <li><select class="input-blank font-bold text-indigo-700 max-w-xs" data-ex="1.2" data-ans='["there is something to be said for"]'>
-                            <option value="" disabled selected>Choose...</option>
-                            <option value="you can say that again!">You can say that again!</option>
-                            <option value="having said that">having said that</option>
-                            <option value="there is something to be said for">There is something to be said for</option>
-                            <option value="to say the least">to say the least</option>
-                            <option value="when all is said and done">When all is said and done</option>
-                            <option value="needless to say">Needless to say</option>
-                            <option value="that is to say">That is to say</option>
-                            <option value="have a say">have a say</option>
-                        </select> switching to solar energy, although it is still too expensive for many people.</li>
-                    <li>Life without a constant supply of water can be difficult, <select class="input-blank font-bold text-indigo-700 max-w-xs" data-ex="1.2" data-ans='["to say the least"]'>
-                            <option value="" disabled selected>Choose...</option>
-                            <option value="you can say that again!">You can say that again!</option>
-                            <option value="having said that">having said that</option>
-                            <option value="there is something to be said for">There is something to be said for</option>
-                            <option value="to say the least">to say the least</option>
-                            <option value="when all is said and done">When all is said and done</option>
-                            <option value="needless to say">Needless to say</option>
-                            <option value="that is to say">That is to say</option>
-                            <option value="have a say">have a say</option>
-                        </select>.</li>
-                    <li><select class="input-blank font-bold text-indigo-700 max-w-xs" data-ex="1.2" data-ans='["when all is said and done"]'>
-                            <option value="" disabled selected>Choose...</option>
-                            <option value="you can say that again!">You can say that again!</option>
-                            <option value="having said that">having said that</option>
-                            <option value="there is something to be said for">There is something to be said for</option>
-                            <option value="to say the least">to say the least</option>
-                            <option value="when all is said and done">When all is said and done</option>
-                            <option value="needless to say">Needless to say</option>
-                            <option value="that is to say">That is to say</option>
-                            <option value="have a say">have a say</option>
-                        </select>, there is little we can do to save the environment without the full support of industry and the government.</li>
-                    <li>The tanker spilled 5,000 megalitres of oil into the ocean. <select class="input-blank font-bold text-indigo-700 max-w-xs" data-ex="1.2" data-ans='["needless to say"]'>
-                            <option value="" disabled selected>Choose...</option>
-                            <option value="you can say that again!">You can say that again!</option>
-                            <option value="having said that">having said that</option>
-                            <option value="there is something to be said for">There is something to be said for</option>
-                            <option value="to say the least">to say the least</option>
-                            <option value="when all is said and done">When all is said and done</option>
-                            <option value="needless to say">Needless to say</option>
-                            <option value="that is to say">That is to say</option>
-                            <option value="have a say">have a say</option>
-                        </select>, this had a devastating effect on marine life in the area.</li>
-                    <li>There is a clear link between humans and environmental problems. <select class="input-blank font-bold text-indigo-700 max-w-xs" data-ex="1.2" data-ans='["that is to say"]'>
-                            <option value="" disabled selected>Choose...</option>
-                            <option value="you can say that again!">You can say that again!</option>
-                            <option value="having said that">having said that</option>
-                            <option value="there is something to be said for">There is something to be said for</option>
-                            <option value="to say the least">to say the least</option>
-                            <option value="when all is said and done">When all is said and done</option>
-                            <option value="needless to say">Needless to say</option>
-                            <option value="that is to say">That is to say</option>
-                            <option value="have a say">have a say</option>
-                        </select>, wherever humans live, they damage the environment in some way.</li>
-                    <li>I think it's important for everyone to <select class="input-blank font-bold text-indigo-700 max-w-xs" data-ex="1.2" data-ans='["have a say"]'>
-                            <option value="" disabled selected>Choose...</option>
-                            <option value="you can say that again!">You can say that again!</option>
-                            <option value="having said that">having said that</option>
-                            <option value="there is something to be said for">There is something to be said for</option>
-                            <option value="to say the least">to say the least</option>
-                            <option value="when all is said and done">When all is said and done</option>
-                            <option value="needless to say">Needless to say</option>
-                            <option value="that is to say">That is to say</option>
-                            <option value="have a say">have a say</option>
-                        </select> in how the government is elected.</li>
-                </ol>
-
-                <div class="flex items-center gap-4 mt-6">
-                    <button id="btn-1.2" onclick="checkExercise('1.2', 0)" class="check-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (1.2)</button>
-                    <span id="score-1.2" class="font-bold text-lg hidden"></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Section 1: Errors & Synonyms -->
-        <div id="section-1" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">2. Language Errors & Synonyms</h3>
-                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 100%</span>
-            </div>
-            
-            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 text-sm text-gray-700">
-                <h4 class="font-bold mb-1">Error warning:</h4>
-                <ul class="list-disc list-inside space-y-1 ml-2">
-                    <li>Note the following common errors with <strong>say, speak, talk, tell</strong>.</li>
-                    <li><i>I speak German.</i> NOT <i>I talk German.</i></li>
-                    <li><i>She's always talking about her dog.</i> NOT <i>tell about.</i></li>
-                    <li><i>Can I tell you something?</i> NOT <i>tell something.</i></li>
-                    <li><strong>NB:</strong> <i>Tell</i> can be used to refer to a chart/graph: <i>The chart tells us...</i> However, it is better to use language that is more impersonal: <i>The chart shows...</i></li>
-                    <li><strong>NB:</strong> You should <u>not</u> use <i>say</i> to talk about charts.</li>
-                </ul>
-            </div>
-
-            <div class="mb-8">
-                <p class="mb-4 text-gray-700 font-medium">2.1 Correct the mistakes in these sentences. Type the correct word or phrase to replace the crossed-out error.</p>
-                
-                <ol class="list-decimal list-inside space-y-6 mb-6 text-gray-800 text-lg">
-                    <li>The chart <span class="line-through text-red-500">talks</span> <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["shows", "tells"]'> us how many students were studying in the college in 1990.</li>
-                    <li>I can't understand what he is <span class="line-through text-red-500">speaking</span> <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["saying"]'>. He's almost incoherent.</li>
-                    <li>Today I'm going to <span class="line-through text-red-500">tell about</span> <input type="text" class="input-blank w-48" data-ex="2.1" data-ans='["talk about", "tell you about"]'> my last holiday in America.</li>
-                    <li>I can <span class="line-through text-red-500">talk</span> <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["speak"]'> three languages fluently, but Italian is my mother tongue.</li>
-                    <li>I learned English from a textbook, so I don't really understand it when it is <span class="line-through text-red-500">said</span> <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["spoken"]'>.</li>
-                    <li>The table <span class="line-through text-red-500">says</span> <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["shows"]'> the percentage of people moving into urban areas between 1960 and 1990.</li>
-                </ol>
-                
-                <div class="flex items-center gap-4 mt-4">
-                    <button id="btn-2.1" onclick="checkExercise('2.1', 1)" class="check-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (2.1)</button>
-                    <span id="score-2.1" class="font-bold text-lg hidden"></span>
-                </div>
-            </div>
-
-            <hr class="my-8 border-gray-200">
-
-            <div class="mb-8">
-                <p class="mb-4 text-gray-700 font-medium">2.2 Cross out the odd word in each group. Select the word that does <strong>NOT</strong> have a similar meaning to the others.</p>
-                
-                <ol class="list-decimal list-inside space-y-4 mb-6 text-gray-800 text-lg">
-                    <li>conclude, close, summarise, recap, 
-                        <select class="input-blank font-bold text-red-600" data-ex="2.2" data-ans='["recall"]'>
-                            <option value="" disabled selected>Select odd word</option>
-                            <option value="conclude">conclude</option>
-                            <option value="close">close</option>
-                            <option value="summarise">summarise</option>
-                            <option value="recap">recap</option>
-                            <option value="recall">recall</option>
-                        </select>
-                    </li>
-                    <li>explain, clarify, define, 
-                        <select class="input-blank font-bold text-red-600" data-ex="2.2" data-ans='["express"]'>
-                            <option value="" disabled selected>Select odd word</option>
-                            <option value="explain">explain</option>
-                            <option value="clarify">clarify</option>
-                            <option value="define">define</option>
-                            <option value="express">express</option>
-                            <option value="illustrate">illustrate</option>
-                        </select>, illustrate
-                    </li>
-                    <li>mean, indicate, intend, signify, 
-                        <select class="input-blank font-bold text-red-600" data-ex="2.2" data-ans='["stutter"]'>
-                            <option value="" disabled selected>Select odd word</option>
-                            <option value="mean">mean</option>
-                            <option value="indicate">indicate</option>
-                            <option value="intend">intend</option>
-                            <option value="signify">signify</option>
-                            <option value="stutter">stutter</option>
-                        </select>
-                    </li>
-                    <li>meaning, 
-                        <select class="input-blank font-bold text-red-600" data-ex="2.2" data-ans='["conjecture"]'>
-                            <option value="" disabled selected>Select odd word</option>
-                            <option value="meaning">meaning</option>
-                            <option value="conjecture">conjecture</option>
-                            <option value="connotation">connotation</option>
-                            <option value="significance">significance</option>
-                            <option value="sense">sense</option>
-                        </select>, connotation, significance, sense
-                    </li>
-                    <li>say, 
-                        <select class="input-blank font-bold text-red-600" data-ex="2.2" data-ans='["demonstrate"]'>
-                            <option value="" disabled selected>Select odd word</option>
-                            <option value="say">say</option>
-                            <option value="demonstrate">demonstrate</option>
-                            <option value="express">express</option>
-                            <option value="speak">speak</option>
-                            <option value="verbalise">verbalise</option>
-                        </select>, express, speak, verbalise
-                    </li>
-                    <li>suggest, imply, intimate, propose, 
-                        <select class="input-blank font-bold text-red-600" data-ex="2.2" data-ans='["state"]'>
-                            <option value="" disabled selected>Select odd word</option>
-                            <option value="suggest">suggest</option>
-                            <option value="imply">imply</option>
-                            <option value="intimate">intimate</option>
-                            <option value="propose">propose</option>
-                            <option value="state">state</option>
-                        </select>
-                    </li>
-                    <li>tell, 
-                        <select class="input-blank font-bold text-red-600" data-ex="2.2" data-ans='["gesture"]'>
-                            <option value="" disabled selected>Select odd word</option>
-                            <option value="tell">tell</option>
-                            <option value="gesture">gesture</option>
-                            <option value="narrate">narrate</option>
-                            <option value="recount">recount</option>
-                            <option value="relate">relate</option>
-                        </select>, narrate, recount, relate
-                    </li>
-                    <li>understand, comprehend, 
-                        <select class="input-blank font-bold text-red-600" data-ex="2.2" data-ans='["contradict"]'>
-                            <option value="" disabled selected>Select odd word</option>
-                            <option value="understand">understand</option>
-                            <option value="comprehend">comprehend</option>
-                            <option value="contradict">contradict</option>
-                            <option value="appreciate">appreciate</option>
-                            <option value="follow">follow</option>
-                        </select>, appreciate, follow
-                    </li>
-                </ol>
-
-                <div class="flex items-center gap-4 mt-4">
-                    <button id="btn-2.2" onclick="checkExercise('2.2', 1)" class="check-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (2.2)</button>
-                    <span id="score-2.2" class="font-bold text-lg hidden"></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Section 2: Linguistics -->
-        <div id="section-2" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">3. Linguistics Reading</h3>
-                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
-            </div>
-            
-            <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 mb-8 text-gray-800 leading-relaxed font-serif text-lg">
-                <h4 class="font-bold text-xl mb-4 text-center">Signs of success</h4>
-                <p class="mb-4 text-sm text-center text-gray-500 italic">Deaf people are making a profound contribution to the study of language</p>
-                <p class="mb-4">Just as biologists rarely see a new species arise, linguists rarely get to discover an unknown dialect or even better, to see a new language being born. But the past few decades have seen an exception. Academics have been able to follow the formation of a new language in Nicaragua. The catch is that it is not a spoken language but, rather, a sign language which arose spontaneously in deaf children.</p>
-                <p class="mb-4">The thing that makes language different from other means of communication is that it is made of units that can be combined in different ways to create different meanings. In a spoken language these units are words; in a sign language these units are gestures. Ann Senghas, of Columbia University, in New York, is one of the linguists who have been studying the way these have gradually evolved in Nicaraguan Sign Language (NSL).</p>
-                <p class="mb-4">The language emerged in the late 1970s, at a new school for deaf children. Initially, the children were instructed by teachers who could hear. No one taught them how to sign; they simply worked it out for themselves. By conducting experiments on people who attended the school at various points in its history, Dr Senghas has shown how NSL has become more sophisticated over time. For example, concepts that an older signer uses a single sign for, such as rolling and falling, have been unpacked into separate signs by youngsters. Early users, too, did not develop a way of distinguishing left from right. Dr Senghas showed this by asking signers of different ages to converse about a set of photographs that each could see. One signer had to pick a photograph and describe it. The other had to guess which photograph he was referring to.</p>
-                <p>When all the photographs contained the same elements, merely arranged differently, older people, who had learned the early form of the language, could neither signal which photo they meant, nor understand the signals of their younger partners. Nor could their younger partners teach them the signs that indicate left and right. The older people clearly understood the concept of left and right, they just could not express it. What intrigues the linguists is that, for a sign language to emerge spontaneously, deaf children must have some inherent tendency to link gestures to meaning.</p>
-            </div>
-
-            <div class="mb-8">
-                <p class="mb-4 text-gray-700 font-medium">3.1 Say whether the following statements are <strong>True</strong> or <strong>False</strong> based on the text.</p>
-                
-                <ol class="list-decimal list-inside space-y-6 text-gray-800 text-lg">
-                    <li>Ann Senghas studies languages. 
-                        <select class="input-blank font-bold" data-ex="3.1" data-ans='["true"]'>
-                            <option value="" disabled selected>Select</option>
-                            <option value="true">True</option>
-                            <option value="false">False</option>
-                        </select>
-                    </li>
-                    <li>Teachers taught the Nicaraguan deaf children how to use sign language.
-                        <select class="input-blank font-bold" data-ex="3.1" data-ans='["false"]'>
-                            <option value="" disabled selected>Select</option>
-                            <option value="true">True</option>
-                            <option value="false">False</option>
-                        </select>
-                    </li>
-                    <li>The earliest form of the sign language was very basic.
-                        <select class="input-blank font-bold" data-ex="3.1" data-ans='["true"]'>
-                            <option value="" disabled selected>Select</option>
-                            <option value="true">True</option>
-                            <option value="false">False</option>
-                        </select>
-                    </li>
-                    <li>The older signers were able to show the difference between left and right.
-                        <select class="input-blank font-bold" data-ex="3.1" data-ans='["false"]'>
-                            <option value="" disabled selected>Select</option>
-                            <option value="true">True</option>
-                            <option value="false">False</option>
-                        </select>
-                    </li>
-                    <li>Linguists believe that deaf children are born with the ability to link gestures to meaning.
-                        <select class="input-blank font-bold" data-ex="3.1" data-ans='["true"]'>
-                            <option value="" disabled selected>Select</option>
-                            <option value="true">True</option>
-                            <option value="false">False</option>
-                        </select>
-                    </li>
-                </ol>
-                <div class="flex items-center gap-4 mt-6">
-                    <button id="btn-3.1" onclick="checkExercise('3.1', 2)" class="check-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (3.1)</button>
-                    <span id="score-3.1" class="font-bold text-lg hidden"></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Section 3: Communication Skills -->
-        <div id="section-3" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">4. Communication Skills</h3>
-                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
-            </div>
-            
-            <div class="mb-8">
-                <p class="mb-4 text-gray-700 font-medium">4.1 Look at these answers to questions about language learning. Complete them with a suitable word from this unit.</p>
-                
-                <div class="space-y-8 text-gray-800 text-lg leading-loose bg-indigo-50 p-6 rounded-lg border border-indigo-100">
-                    <div>
-                        <p class="font-bold text-indigo-900 mb-2">Q: What do you need to do to be a good language learner?</p>
-                        <p>Well, you need to be able to put down your textbooks from time to time and forget about (1) <input type="text" class="input-blank w-32" data-ex="4.1" data-ans='["accuracy", "grammar"]'>. That's the only way to become more (2) <input type="text" class="input-blank w-32" data-ex="4.1" data-ans='["fluent"]'> in a language. You also need to (3) <input type="text" class="input-blank w-32" data-ex="4.1" data-ans='["speak", "talk"]'> to (4) <input type="text" class="input-blank w-32" data-ex="4.1" data-ans='["native"]'> speakers of the language as much as you can.</p>
-                    </div>
-                    
-                    <div>
-                        <p class="font-bold text-indigo-900 mb-2">Q: What do you think makes a good language teacher?</p>
-                        <p>I think the best language teachers are those who can (5) <input type="text" class="input-blank w-32" data-ex="4.1" data-ans='["speak"]'> another language themselves. They also need to be able to (6) <input type="text" class="input-blank w-32" data-ex="4.1" data-ans='["explain"]'> things clearly and in a way that is easy to (7) <input type="text" class="input-blank w-48" data-ex="4.1" data-ans='["follow", "understand", "comprehend"]'>.</p>
-                    </div>
-
-                    <div>
-                        <p class="font-bold text-indigo-900 mb-2">Q: What problems do people experience when they learn your language?</p>
-                        <p>My (8) <input type="text" class="input-blank w-32" data-ex="4.1" data-ans='["first", "native"]'> language is very difficult to learn because of the (9) <input type="text" class="input-blank w-40" data-ex="4.1" data-ans='["pronunciation"]'>. The individual sounds are very strange to other nationalities and difficult for them to (10) <input type="text" class="input-blank w-32" data-ex="4.1" data-ans='["pronounce"]'>.</p>
-                    </div>
-                </div>
-
-                <div class="flex items-center gap-4 mt-6">
-                    <button id="btn-4.1" onclick="checkExercise('4.1', 3)" class="check-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (4.1)</button>
-                    <span id="score-4.1" class="font-bold text-lg hidden"></span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Section 4: Test Practice -->
-        <div id="section-4" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">5. Test Practice: Academic Reading</h3>
-                <span class="text-sm font-semibold bg-gray-200 text-gray-700 px-3 py-1 rounded-full target-score">Target: 80%</span>
-            </div>
-
-            <!-- Split View Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-                
-                <!-- Left Side: Reading Text -->
-                <div>
-                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-6 text-gray-800 leading-relaxed font-serif text-lg">
-                        <h4 class="font-bold text-2xl mb-4 text-center">First words</h4>
-                        <p class="mb-4 text-center italic text-gray-600">There are over 6, 000 different languages today, but how did language evolve in the first place?</p>
-                        <p class="mb-4">Pinpointing the origin of language might seem like idle speculation, because sound does not fossilise. However, music, chit-chat and even humour may have been driving forces in the evolution of language, and gossip possibly freed our ancestors from sitting around wondering what to say next.</p>
-                        <p class="mb-4">There are over 6,000 different languages today, and the main language families are thought to have arisen as modern humans wandered about the globe in four great migrations beginning 100,000 years ago. But how did language evolve in the first place? Potential indicators of early language are written in our genetic code, behaviour and culture. The genetic evidence is a gene called FOXP2, in which mutations appear to be responsible for speech defects. FOXP2 in humans differs only slightly from the gene in chimpanzees, and may be about 200,000 years old, slightly older than the earliest modern humans. Such a recent origin for language seems at first rather silly. How could our speechless Homo sapiens ancestors colonise the ancient world, spreading from Africa to Asia, and perhaps making a short sea-crossing to Indonesia, without language? Well, language can have two meanings: the infinite variety of sentences that we string together, and the pointing and grunting communication that we share with other animals.</p>
-                        <p class="mb-4">Marc Hauser (Harvard University) and colleagues argue that the study of animal behaviour and communication can teach us how the faculty of language in the narrow human sense evolved. Other animals don't come close to understanding our sophisticated thought processes. Nevertheless, the complexity of human expression may have started off as simple stages in animal 'thinking' or problem-solving. For example, number processing (how many lions are we up against?), navigation (time to fly south for the winter), or social relations (we need teamwork to build this shelter). In other words, we can potentially track language by looking at the behaviour of other animals.</p>
-                        <p class="mb-4">William Noble and Iain Davidson (University of New England) look for the origin of language in early symbolic behaviour and the evolutionary selection in fine motor control. For example, throwing and making stone tools could have developed into simple gestures like pointing that eventually entailed a sense of self-awareness. They argue that language is a form of symbolic communication that has its roots in behavioural evolution. Even if archaic humans were physically capable of speech (a hyoid bone for supporting the larynx and tongue has been found in a Neanderthal skeleton), we cannot assume symbolic communication. They conclude that language is a feature of anatomically modern humans, and an essential precursor of the earliest symbolic pictures in rock art, ritual burial, major sea-crossings, structured shelters and hearths - all dating, they argue, to the last 100,000 years.</p>
-                        <p class="mb-4">But the archaeological debate of when does not really help us with what was occurring in those first chats. Robin Dunbar (University of Liverpool) believes they were probably talking about each other - in other words, gossiping. He discovered a relationship between an animal's group size and its neocortex (the thinking part of the brain), and tried to reconstruct grooming times and group sizes for early humans based on overall size of fossil skulls. Dunbar argues that gossip provides the social glue permitting humans to live in cohesive groups up to the size of about 150, found in population studies among hunter-gatherers, personal networks and corporate organisations. Apes are reliant on grooming to stick together, and that basically constrains their social complexity to groups of 50. Gelada baboons stroke and groom each other for several hours per day. Dunbar thus concludes that, if humans had no speech faculty, we would need to devote 40 per cent of the day to physical grooming, just to meet our social needs.</p>
-                        <p class="mb-4">Humans manage large social networks by 'verbal grooming' or gossiping - chatting with friends over coffee, for example. So the 'audience' can be much bigger than for grooming or one-on-one massage. Giselle Bastion, who recently completed her PhD at Flinders University, argues that gossip has acquired a bad name, being particularly associated with women and opposed by men who are defending their supposedly objective world. Yet it's no secret that men gossip too. We are all bent on keeping track of other people and maintaining alliances. But how did we graduate from grooming to gossip? Dunbar notes that just as grooming releases opiates that create a feeling of wellbeing in monkeys and apes, so do the smiles and laughter associated with human banter.</p>
-                        <p class="mb-4">Dean Falk (Florida State University) suggests that, before the first smattering of language there was motherese, that musical gurgling between a mother and her baby, along with a lot of eye contact and touching. Early human babies could not cling on to their mother as she walked on two feet, so motherese evolved to soothe and control infants. Motherese is a small social step up from the contact calls of primates, but at this stage grooming probably still did most of the bonding.</p>
-                        <p>So when did archaic human groups get too big to groom each other? Dunbar suggests that nomadic expansion out of Africa, maybe 500,000 years ago, demanded larger group sizes and language sophistication to form the various alliances necessary for survival. Davidson and Noble, who reject Dunbar's gossip theory, suggest that there was a significant increase in brain size from about 400,000 years ago, and this may correlate with increasing infant dependence. Still, it probably took a long time before a mother delivered humanity's maiden speech. Nevertheless, once the words were out, and eventually put on paper, they acquired an existence of their own. Reading gossip magazines and newspapers today is essentially one-way communication with total strangers - a far cry from the roots of language.</p>
-                    </div>
-                </div>
-
-                <!-- Right Side: Questions -->
-                <div>
-                    <div class="mb-8">
-                        <h4 class="font-bold text-lg mb-4 text-gray-800">Questions 1-5</h4>
-                        <p class="mb-4 text-gray-700">Choose the correct answer <strong>A, B, C or D</strong>.</p>
+                <!-- ==================== PAGE 0: Title & Intro ==================== -->
+                <div id="page-0" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow flex flex-col justify-center items-center text-center">
+                        <div class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-8 shadow-inner border border-slate-200">
+                            <svg class="w-12 h-12 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                        </div>
+                        <h4 class="text-sm uppercase tracking-widest text-slate-500 font-bold ui-font mb-2">Unit 6</h4>
+                        <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-slate-800 leading-tight">Effective Communication</h1>
+                        <h2 class="text-2xl italic text-slate-600 mb-8 border-b pb-8 border-slate-200">Language & Linguistics</h2>
                         
-                        <ol class="list-decimal list-inside space-y-6 text-gray-800 text-lg">
-                            <li>In paragraph 1, the writer uses the term 'idle speculation' to refer to the study of
-                                <div class="ml-6 mt-2 space-y-2">
-                                    <label class="block"><input type="radio" name="q1" value="a" class="mr-2">A. why people began to use music.</label>
-                                    <label class="block"><input type="radio" name="q1" value="b" class="mr-2">B. where language first evolved.</label>
-                                    <label class="block"><input type="radio" name="q1" value="c" class="mr-2">C. when people began to talk.</label>
-                                    <label class="block"><input type="radio" name="q1" value="d" class="mr-2">D. how humour first began.</label>
-                                </div>
-                                <input type="hidden" class="input-blank" data-ex="5.1" data-ans='["c"]' id="ans_q1">
+                        <p class="text-lg text-slate-600 leading-relaxed max-w-md mx-auto">
+                            Welcome to Unit 6. Work through the exercises on the following pages to improve your vocabulary and reading skills regarding language learning and linguistics.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">i</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 1: Language Basics ==================== -->
+                <div id="page-1" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">1. Language</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">1.1</span> Find words that match these definitions.</p>
+                        
+                        <ol class="list-decimal list-outside ml-4 space-y-6 text-slate-800 leading-loose text-[15px]">
+                            <li>change words from one language to another: <input type="text" class="input-blank w-36" data-ex="1.1" data-ans='["translate"]'></li>
+                            <li>the ability to do something without making mistakes: <input type="text" class="input-blank w-36" data-ex="1.1" data-ans='["accuracy"]'></li>
+                            <li>something that prevents successful communication: <input type="text" class="input-blank w-40" data-ex="1.1" data-ans='["language barrier"]'></li>
+                            <li>a person who has spoken the language from birth: <input type="text" class="input-blank w-40" data-ex="1.1" data-ans='["native speaker"]'></li>
+                            <li>the ability to speak without hesitation: <input type="text" class="input-blank w-36" data-ex="1.1" data-ans='["fluency"]'></li>
+                            <li>work or carry out daily tasks: <input type="text" class="input-blank w-36" data-ex="1.1" data-ans='["function"]'></li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-1.1" onclick="checkExercise('1.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.1</button>
+                            <span id="score-1.1" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">1</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 2: Idioms ==================== -->
+                <div id="page-2" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Language Idioms</h3>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">1.2</span> Complete sentences 1-8 with the correct phrase from the box.</p>
+
+                        <div class="bg-white border border-slate-200 p-4 rounded mb-6 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 font-mono text-[11px] leading-relaxed font-bold text-slate-600 shadow-inner">
+                            <span>• There is something to be said for</span>
+                            <span>• When all is said and done</span>
+                            <span>• You can say that again!</span>
+                            <span>• Needless to say</span>
+                            <span>• having said that</span>
+                            <span>• That is to say</span>
+                            <span>• have a say</span>
+                            <span>• to say the least</span>
+                        </div>
+
+                        <ol class="list-decimal list-outside ml-4 space-y-5 text-slate-800 text-[14px] leading-loose">
+                            <li>
+                                <strong>Bill:</strong> Hello, Sam, what a surprise meeting you here! <br>
+                                <strong>Sam:</strong> <select class="input-blank font-bold text-slate-700 w-36 text-xs" data-ex="1.2" data-ans='["you can say that again!"]'>
+                                    <option value="" disabled selected>Choose...</option>
+                                    <option value="you can say that again!">You can say that again!</option>
+                                    <option value="having said that">having said that</option>
+                                    <option value="there is something to be said for">There is something to be said for</option>
+                                    <option value="to say the least">to say the least</option>
+                                    <option value="when all is said and done">When all is said and done</option>
+                                    <option value="needless to say">Needless to say</option>
+                                    <option value="that is to say">That is to say</option>
+                                    <option value="have a say">have a say</option>
+                                </select>
                             </li>
-                            <li>What does the writer tell us about FOXP2?
-                                <div class="ml-6 mt-2 space-y-2">
-                                    <label class="block"><input type="radio" name="q2" value="a" class="mr-2">A. It helps prevent speech problems.</label>
-                                    <label class="block"><input type="radio" name="q2" value="b" class="mr-2">B. It is the same in chimpanzees as in humans.</label>
-                                    <label class="block"><input type="radio" name="q2" value="c" class="mr-2">C. It could have first occurred 100,000 years ago.</label>
-                                    <label class="block"><input type="radio" name="q2" value="d" class="mr-2">D. It could have first occurred 200,000 years ago.</label>
-                                </div>
-                                <input type="hidden" class="input-blank" data-ex="5.1" data-ans='["d"]' id="ans_q2">
+                            <li>Nuclear power has its problems. However, <select class="input-blank font-bold text-slate-700 w-36 text-xs" data-ex="1.2" data-ans='["having said that"]'>
+                                    <option value="" disabled selected>Choose...</option>
+                                    <option value="you can say that again!">You can say that again!</option>
+                                    <option value="having said that">having said that</option>
+                                    <option value="there is something to be said for">There is something to be said for</option>
+                                    <option value="to say the least">to say the least</option>
+                                    <option value="when all is said and done">When all is said and done</option>
+                                    <option value="needless to say">Needless to say</option>
+                                    <option value="that is to say">That is to say</option>
+                                    <option value="have a say">have a say</option>
+                                </select> many people believe it is the energy source of the future.</li>
+                            <li><select class="input-blank font-bold text-slate-700 w-36 text-xs" data-ex="1.2" data-ans='["there is something to be said for"]'>
+                                    <option value="" disabled selected>Choose...</option>
+                                    <option value="you can say that again!">You can say that again!</option>
+                                    <option value="having said that">having said that</option>
+                                    <option value="there is something to be said for">There is something to be said for</option>
+                                    <option value="to say the least">to say the least</option>
+                                    <option value="when all is said and done">When all is said and done</option>
+                                    <option value="needless to say">Needless to say</option>
+                                    <option value="that is to say">That is to say</option>
+                                    <option value="have a say">have a say</option>
+                                </select> switching to solar energy, although it is still too expensive for many people.</li>
+                            <li>Life without a constant supply of water can be difficult, <select class="input-blank font-bold text-slate-700 w-36 text-xs" data-ex="1.2" data-ans='["to say the least"]'>
+                                    <option value="" disabled selected>Choose...</option>
+                                    <option value="you can say that again!">You can say that again!</option>
+                                    <option value="having said that">having said that</option>
+                                    <option value="there is something to be said for">There is something to be said for</option>
+                                    <option value="to say the least">to say the least</option>
+                                    <option value="when all is said and done">When all is said and done</option>
+                                    <option value="needless to say">Needless to say</option>
+                                    <option value="that is to say">That is to say</option>
+                                    <option value="have a say">have a say</option>
+                                </select>.</li>
+                            <li><select class="input-blank font-bold text-slate-700 w-36 text-xs" data-ex="1.2" data-ans='["when all is said and done"]'>
+                                    <option value="" disabled selected>Choose...</option>
+                                    <option value="you can say that again!">You can say that again!</option>
+                                    <option value="having said that">having said that</option>
+                                    <option value="there is something to be said for">There is something to be said for</option>
+                                    <option value="to say the least">to say the least</option>
+                                    <option value="when all is said and done">When all is said and done</option>
+                                    <option value="needless to say">Needless to say</option>
+                                    <option value="that is to say">That is to say</option>
+                                    <option value="have a say">have a say</option>
+                                </select>, there is little we can do to save the environment without the full support of industry and the government.</li>
+                            <li>The tanker spilled 5,000 megalitres of oil into the ocean. <select class="input-blank font-bold text-slate-700 w-36 text-xs" data-ex="1.2" data-ans='["needless to say"]'>
+                                    <option value="" disabled selected>Choose...</option>
+                                    <option value="you can say that again!">You can say that again!</option>
+                                    <option value="having said that">having said that</option>
+                                    <option value="there is something to be said for">There is something to be said for</option>
+                                    <option value="to say the least">to say the least</option>
+                                    <option value="when all is said and done">When all is said and done</option>
+                                    <option value="needless to say">Needless to say</option>
+                                    <option value="that is to say">That is to say</option>
+                                    <option value="have a say">have a say</option>
+                                </select>, this had a devastating effect on marine life in the area.</li>
+                            <li>There is a clear link between humans and environmental problems. <select class="input-blank font-bold text-slate-700 w-36 text-xs" data-ex="1.2" data-ans='["that is to say"]'>
+                                    <option value="" disabled selected>Choose...</option>
+                                    <option value="you can say that again!">You can say that again!</option>
+                                    <option value="having said that">having said that</option>
+                                    <option value="there is something to be said for">There is something to be said for</option>
+                                    <option value="to say the least">to say the least</option>
+                                    <option value="when all is said and done">When all is said and done</option>
+                                    <option value="needless to say">Needless to say</option>
+                                    <option value="that is to say">That is to say</option>
+                                    <option value="have a say">have a say</option>
+                                </select>, wherever humans live, they damage the environment in some way.</li>
+                            <li>I think it's important for everyone to <select class="input-blank font-bold text-slate-700 w-36 text-xs" data-ex="1.2" data-ans='["have a say"]'>
+                                    <option value="" disabled selected>Choose...</option>
+                                    <option value="you can say that again!">You can say that again!</option>
+                                    <option value="having said that">having said that</option>
+                                    <option value="there is something to be said for">There is something to be said for</option>
+                                    <option value="to say the least">to say the least</option>
+                                    <option value="when all is said and done">When all is said and done</option>
+                                    <option value="needless to say">Needless to say</option>
+                                    <option value="that is to say">That is to say</option>
+                                    <option value="have a say">have a say</option>
+                                </select> in how the government is elected.</li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-1.2" onclick="checkExercise('1.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.2</button>
+                            <span id="score-1.2" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">2</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 3: Errors ==================== -->
+                <div id="page-3" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">2. Language Errors</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <div class="textbook-note p-4 mt-4 mb-6 text-sm text-slate-700 leading-relaxed shadow-sm rounded-r ui-font">
+                            <p class="font-bold mb-1 text-slate-800">Error warning with say, speak, talk, tell:</p>
+                            <ul class="list-disc list-inside space-y-1 ml-1 text-xs">
+                                <li><i>I speak German.</i> NOT <i>I talk German.</i></li>
+                                <li><i>She's always talking about her dog.</i> NOT <i>tell about.</i></li>
+                                <li><i>Can I tell you something?</i> NOT <i>tell something.</i></li>
+                                <li><strong>NB:</strong> <i>Tell</i> can refer to a chart: <i>The chart tells us...</i> However, impersonal language is better: <i>The chart shows...</i></li>
+                                <li><strong>NB:</strong> You should <u>not</u> use <i>say</i> to talk about charts.</li>
+                            </ul>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.1</span> Correct the mistakes in these sentences. Type the correct word/phrase to replace the crossed-out error.</p>
+                        
+                        <ol class="list-decimal list-outside ml-4 space-y-5 text-slate-800 text-[15px] leading-loose">
+                            <li>The chart <span class="line-through text-red-600 decoration-2 opacity-60">talks</span> <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["shows", "tells"]'> us how many students were studying in the college in 1990.</li>
+                            <li>I can't understand what he is <span class="line-through text-red-600 decoration-2 opacity-60">speaking</span> <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["saying"]'>. He's almost incoherent.</li>
+                            <li>Today I'm going to <span class="line-through text-red-600 decoration-2 opacity-60">tell about</span> <input type="text" class="input-blank w-32" data-ex="2.1" data-ans='["talk about", "tell you about"]'> my last holiday in America.</li>
+                            <li>I can <span class="line-through text-red-600 decoration-2 opacity-60">talk</span> <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["speak"]'> three languages fluently, but Italian is my mother tongue.</li>
+                            <li>I learned English from a textbook, so I don't really understand it when it is <span class="line-through text-red-600 decoration-2 opacity-60">said</span> <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["spoken"]'>.</li>
+                            <li>The table <span class="line-through text-red-600 decoration-2 opacity-60">says</span> <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["shows"]'> the percentage of people moving into urban areas between 1960 and 1990.</li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-2.1" onclick="checkExercise('2.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.1</button>
+                            <span id="score-2.1" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">3</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 4: Synonyms ==================== -->
+                <div id="page-4" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Synonyms Practice</h3>
+                        </div>
+                        
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.2</span> Cross out the odd word in each group. Select the word that does <strong>NOT</strong> have a similar meaning to the others.</p>
+                        
+                        <ol class="list-decimal list-outside ml-4 space-y-5 text-slate-800 text-[15px] leading-loose">
+                            <li>conclude, close, summarise, recap, 
+                                <select class="input-blank font-bold text-red-700 w-32 text-xs" data-ex="2.2" data-ans='["recall"]'>
+                                    <option value="" disabled selected>Select odd</option>
+                                    <option value="conclude">conclude</option><option value="close">close</option><option value="summarise">summarise</option><option value="recap">recap</option><option value="recall">recall</option>
+                                </select>
                             </li>
-                            <li>In paragraph 2, what notion does the writer refer to as being 'rather silly'?
-                                <div class="ml-6 mt-2 space-y-2">
-                                    <label class="block"><input type="radio" name="q3" value="a" class="mr-2">A. That language began such a long time ago.</label>
-                                    <label class="block"><input type="radio" name="q3" value="b" class="mr-2">B. That man could travel around the world unable to talk.</label>
-                                    <label class="block"><input type="radio" name="q3" value="c" class="mr-2">C. That chimpanzees may have been able to talk.</label>
-                                    <label class="block"><input type="radio" name="q3" value="d" class="mr-2">D. That communication between chimpanzees pre-dates man.</label>
-                                </div>
-                                <input type="hidden" class="input-blank" data-ex="5.1" data-ans='["b"]' id="ans_q3">
+                            <li>explain, clarify, define, 
+                                <select class="input-blank font-bold text-red-700 w-32 text-xs" data-ex="2.2" data-ans='["express"]'>
+                                    <option value="" disabled selected>Select odd</option>
+                                    <option value="explain">explain</option><option value="clarify">clarify</option><option value="define">define</option><option value="express">express</option><option value="illustrate">illustrate</option>
+                                </select>, illustrate
                             </li>
-                            <li>Why does the writer refer to 'lions' in paragraph 3?
-                                <div class="ml-6 mt-2 space-y-2">
-                                    <label class="block"><input type="radio" name="q4" value="a" class="mr-2">A. To illustrate the type of communication needs faced by early man.</label>
-                                    <label class="block"><input type="radio" name="q4" value="b" class="mr-2">B. To indicate how vulnerable early man was to predators.</label>
-                                    <label class="block"><input type="radio" name="q4" value="c" class="mr-2">C. To provide evidence of other species existing at the same time.</label>
-                                    <label class="block"><input type="radio" name="q4" value="d" class="mr-2">D. To show the relationship between early humans and other animals.</label>
-                                </div>
-                                <input type="hidden" class="input-blank" data-ex="5.1" data-ans='["a"]' id="ans_q4">
+                            <li>mean, indicate, intend, signify, 
+                                <select class="input-blank font-bold text-red-700 w-32 text-xs" data-ex="2.2" data-ans='["stutter"]'>
+                                    <option value="" disabled selected>Select odd</option>
+                                    <option value="mean">mean</option><option value="indicate">indicate</option><option value="intend">intend</option><option value="signify">signify</option><option value="stutter">stutter</option>
+                                </select>
                             </li>
-                            <li>Gelada baboons are mentioned in order to show that
-                                <div class="ml-6 mt-2 space-y-2">
-                                    <label class="block"><input type="radio" name="q5" value="a" class="mr-2">A. using grooming to form social bonds limits the size of a social group.</label>
-                                    <label class="block"><input type="radio" name="q5" value="b" class="mr-2">B. early humans would probably have lived in groups of up to 50.</label>
-                                    <label class="block"><input type="radio" name="q5" value="c" class="mr-2">C. baboons' social groups are larger than those of early humans.</label>
-                                    <label class="block"><input type="radio" name="q5" value="d" class="mr-2">D. baboons spend 40 per cent of their time grooming each other.</label>
-                                </div>
-                                <input type="hidden" class="input-blank" data-ex="5.1" data-ans='["a"]' id="ans_q5">
+                            <li>meaning, 
+                                <select class="input-blank font-bold text-red-700 w-32 text-xs" data-ex="2.2" data-ans='["conjecture"]'>
+                                    <option value="" disabled selected>Select odd</option>
+                                    <option value="meaning">meaning</option><option value="conjecture">conjecture</option><option value="connotation">connotation</option><option value="significance">significance</option><option value="sense">sense</option>
+                                </select>, connotation, significance, sense
+                            </li>
+                            <li>say, 
+                                <select class="input-blank font-bold text-red-700 w-32 text-xs" data-ex="2.2" data-ans='["demonstrate"]'>
+                                    <option value="" disabled selected>Select odd</option>
+                                    <option value="say">say</option><option value="demonstrate">demonstrate</option><option value="express">express</option><option value="speak">speak</option><option value="verbalise">verbalise</option>
+                                </select>, express, speak, verbalise
+                            </li>
+                            <li>suggest, imply, intimate, propose, 
+                                <select class="input-blank font-bold text-red-700 w-32 text-xs" data-ex="2.2" data-ans='["state"]'>
+                                    <option value="" disabled selected>Select odd</option>
+                                    <option value="suggest">suggest</option><option value="imply">imply</option><option value="intimate">intimate</option><option value="propose">propose</option><option value="state">state</option>
+                                </select>
+                            </li>
+                            <li>tell, 
+                                <select class="input-blank font-bold text-red-700 w-32 text-xs" data-ex="2.2" data-ans='["gesture"]'>
+                                    <option value="" disabled selected>Select odd</option>
+                                    <option value="tell">tell</option><option value="gesture">gesture</option><option value="narrate">narrate</option><option value="recount">recount</option><option value="relate">relate</option>
+                                </select>, narrate, recount, relate
+                            </li>
+                            <li>understand, comprehend, 
+                                <select class="input-blank font-bold text-red-700 w-32 text-xs" data-ex="2.2" data-ans='["contradict"]'>
+                                    <option value="" disabled selected>Select odd</option>
+                                    <option value="understand">understand</option><option value="comprehend">comprehend</option><option value="contradict">contradict</option><option value="appreciate">appreciate</option><option value="follow">follow</option>
+                                </select>, appreciate, follow
                             </li>
                         </ol>
 
-                        <div class="flex items-center gap-4 mt-6">
-                            <button id="btn-5.1" onclick="checkRadios('5.1', null, 5)" class="check-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (Qs 1-5)</button>
-                            <span id="score-5.1" class="font-bold text-lg hidden"></span>
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-2.2" onclick="checkExercise('2.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.2</button>
+                            <span id="score-2.2" class="ui-font text-sm font-bold hidden"></span>
                         </div>
                     </div>
-
-                    <hr class="my-8 border-gray-200">
-
-                    <div class="mb-8">
-                        <h4 class="font-bold text-lg mb-4 text-gray-800">Questions 6-14</h4>
-                        <p class="mb-4 text-gray-700">Look at the following statements (questions 6-14) below and the list of people. Match each statement with the correct person or people, <strong>A-E</strong>. <br><i>NB: You may use any letter more than once.</i></p>
-                        
-                        <div class="bg-indigo-50 border border-indigo-200 rounded p-4 mb-6 text-indigo-900 font-semibold flex flex-wrap gap-6 justify-center">
-                            <div>A. Hauser</div>
-                            <div>B. Noble and Davidson</div>
-                            <div>C. Dunbar</div>
-                            <div>D. Bastion</div>
-                            <div>E. Falk</div>
-                        </div>
-
-                        <ol class="list-decimal list-inside space-y-4 text-gray-800 text-lg" start="6">
-                            <li>There is physical evidence of increased human intelligence up to 400,000 years ago.
-                                <select class="input-blank font-bold ml-2" data-ex="5.2" data-ans='["b"]'>
-                                    <option value="" disabled selected>Select</option>
-                                    <option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option>
-                                </select>
-                            </li>
-                            <li>In the modern world, gossiping is seen in a negative way.
-                                <select class="input-blank font-bold ml-2" data-ex="5.2" data-ans='["d"]'>
-                                    <option value="" disabled selected>Select</option>
-                                    <option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option>
-                                </select>
-                            </li>
-                            <li>Language must have developed before art and travel.
-                                <select class="input-blank font-bold ml-2" data-ex="5.2" data-ans='["b"]'>
-                                    <option value="" disabled selected>Select</option>
-                                    <option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option>
-                                </select>
-                            </li>
-                            <li>The development of human language can be gauged by studying other species.
-                                <select class="input-blank font-bold ml-2" data-ex="5.2" data-ans='["a"]'>
-                                    <option value="" disabled selected>Select</option>
-                                    <option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option>
-                                </select>
-                            </li>
-                            <li>Gossiping makes humans feel good.
-                                <select class="input-blank font-bold ml-2" data-ex="5.2" data-ans='["c"]'>
-                                    <option value="" disabled selected>Select</option>
-                                    <option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option>
-                                </select>
-                            </li>
-                            <li>The actions of early humans could have evolved into a form of communication.
-                                <select class="input-blank font-bold ml-2" data-ex="5.2" data-ans='["b"]'>
-                                    <option value="" disabled selected>Select</option>
-                                    <option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option>
-                                </select>
-                            </li>
-                            <li>The first language emerged through a parent talking to an infant.
-                                <select class="input-blank font-bold ml-2" data-ex="5.2" data-ans='["e"]'>
-                                    <option value="" disabled selected>Select</option>
-                                    <option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option>
-                                </select>
-                            </li>
-                            <li>Gossip was the first purpose of human communication.
-                                <select class="input-blank font-bold ml-2" data-ex="5.2" data-ans='["c"]'>
-                                    <option value="" disabled selected>Select</option>
-                                    <option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option>
-                                </select>
-                            </li>
-                            <li>Early humans used language to help them live together.
-                                <select class="input-blank font-bold ml-2" data-ex="5.2" data-ans='["c"]'>
-                                    <option value="" disabled selected>Select</option>
-                                    <option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option>
-                                </select>
-                            </li>
-                        </ol>
-                        <div class="flex items-center gap-4 mt-6">
-                            <button id="btn-5.2" onclick="checkExercise('5.2', 4)" class="check-btn bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers (Qs 6-14)</button>
-                            <span id="score-5.2" class="font-bold text-lg hidden"></span>
-                        </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">4</span>
                     </div>
                 </div>
 
+                <!-- ==================== PAGE 5: Communication Skills ==================== -->
+                <div id="page-5" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">4. Communication Skills</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+                        
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">4.1</span> Complete the answers with a suitable word from this unit.</p>
+                        
+                        <div class="space-y-6 text-slate-800 text-[14px] leading-relaxed bg-white border border-slate-200 p-5 rounded shadow-sm">
+                            <div>
+                                <p class="font-bold text-slate-900 text-xs uppercase mb-2 tracking-wide">Q: What do you need to do to be a good language learner?</p>
+                                <p>A: Put down your textbooks and forget about (1) <input type="text" class="input-blank w-28 text-sm" data-ex="4.1" data-ans='["accuracy", "grammar"]'>. That's the only way to become more (2) <input type="text" class="input-blank w-20 text-sm" data-ex="4.1" data-ans='["fluent"]'>. You also need to (3) <input type="text" class="input-blank w-24 text-sm" data-ex="4.1" data-ans='["speak", "talk"]'> to (4) <input type="text" class="input-blank w-20 text-sm" data-ex="4.1" data-ans='["native"]'> speakers as much as you can.</p>
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-900 text-xs uppercase mb-2 tracking-wide">Q: What makes a good language teacher?</p>
+                                <p>A: Those who can (5) <input type="text" class="input-blank w-24 text-sm" data-ex="4.1" data-ans='["speak"]'> another language themselves. They need to be able to (6) <input type="text" class="input-blank w-24 text-sm" data-ex="4.1" data-ans='["explain"]'> things clearly and in a way that is easy to (7) <input type="text" class="input-blank w-28 text-sm" data-ex="4.1" data-ans='["follow", "understand", "comprehend"]'>.</p>
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-900 text-xs uppercase mb-2 tracking-wide">Q: Problems learning your language?</p>
+                                <p>A: My (8) <input type="text" class="input-blank w-20 text-sm" data-ex="4.1" data-ans='["first", "native"]'> language is difficult because of the (9) <input type="text" class="input-blank w-32 text-sm" data-ex="4.1" data-ans='["pronunciation"]'>. The sounds are strange and difficult for them to (10) <input type="text" class="input-blank w-28 text-sm" data-ex="4.1" data-ans='["pronounce"]'>.</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-4.1" onclick="checkExercise('4.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 4.1</button>
+                            <span id="score-4.1" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">5</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 6: Linguistics Reading (LEFT SIDE) ==================== -->
+                <div id="page-6" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">3. Linguistics Reading</h3>
+                        </div>
+
+                        <!-- Reading text fully expanded without scrolling -->
+                        <div class="bg-amber-50/60 border border-amber-100 rounded-md p-6 text-slate-800 text-[14px] leading-relaxed shadow-sm">
+                            <h4 class="font-bold text-xl mb-2 text-center">Signs of success</h4>
+                            <p class="mb-5 text-xs text-center text-slate-500 italic">Deaf people are making a profound contribution to the study of language</p>
+                            
+                            <p class="mb-4">Just as biologists rarely see a new species arise, linguists rarely get to discover an unknown dialect or even better, to see a new language being born. But the past few decades have seen an exception. Academics have been able to follow the formation of a new language in Nicaragua. The catch is that it is not a spoken language but, rather, a sign language which arose spontaneously in deaf children.</p>
+                            
+                            <p class="mb-4">The thing that makes language different from other means of communication is that it is made of units that can be combined in different ways to create different meanings. In a spoken language these units are words; in a sign language these units are gestures. Ann Senghas, of Columbia University, in New York, is one of the linguists who have been studying the way these have gradually evolved in Nicaraguan Sign Language (NSL).</p>
+                            
+                            <p class="mb-4">The language emerged in the late 1970s, at a new school for deaf children. Initially, the children were instructed by teachers who could hear. No one taught them how to sign; they simply worked it out for themselves. By conducting experiments on people who attended the school at various points in its history, Dr Senghas has shown how NSL has become more sophisticated over time. For example, concepts that an older signer uses a single sign for, such as rolling and falling, have been unpacked into separate signs by youngsters. Early users, too, did not develop a way of distinguishing left from right. Dr Senghas showed this by asking signers of different ages to converse about a set of photographs that each could see. One signer had to pick a photograph and describe it. The other had to guess which photograph he was referring to.</p>
+                            
+                            <p>When all the photographs contained the same elements, merely arranged differently, older people, who had learned the early form of the language, could neither signal which photo they meant, nor understand the signals of their younger partners. Nor could their younger partners teach them the signs that indicate left and right. The older people clearly understood the concept of left and right, they just could not express it. What intrigues the linguists is that, for a sign language to emerge spontaneously, deaf children must have some inherent tendency to link gestures to meaning.</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">6</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 7: Linguistics Questions (RIGHT SIDE) ==================== -->
+                <div id="page-7" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Linguistics Questions</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+                        
+                        <p class="mb-5 leading-relaxed text-sm"><span class="font-bold">3.1</span> Say whether the following statements are <strong>True</strong> or <strong>False</strong> based on the text.</p>
+                        
+                        <ol class="list-decimal list-outside ml-4 space-y-6 text-slate-800 text-[15px] leading-relaxed">
+                            <li>Ann Senghas studies languages. 
+                                <select class="input-blank font-bold text-sm w-24" data-ex="3.1" data-ans='["true"]'>
+                                    <option value="" disabled selected>Select</option><option value="true">True</option><option value="false">False</option>
+                                </select>
+                            </li>
+                            <li>Teachers taught the Nicaraguan deaf children how to use sign language.
+                                <select class="input-blank font-bold text-sm w-24" data-ex="3.1" data-ans='["false"]'>
+                                    <option value="" disabled selected>Select</option><option value="true">True</option><option value="false">False</option>
+                                </select>
+                            </li>
+                            <li>The earliest form of the sign language was very basic.
+                                <select class="input-blank font-bold text-sm w-24" data-ex="3.1" data-ans='["true"]'>
+                                    <option value="" disabled selected>Select</option><option value="true">True</option><option value="false">False</option>
+                                </select>
+                            </li>
+                            <li>The older signers were able to show the difference between left and right.
+                                <select class="input-blank font-bold text-sm w-24" data-ex="3.1" data-ans='["false"]'>
+                                    <option value="" disabled selected>Select</option><option value="true">True</option><option value="false">False</option>
+                                </select>
+                            </li>
+                            <li>Linguists believe that deaf children are born with the ability to link gestures to meaning.
+                                <select class="input-blank font-bold text-sm w-24" data-ex="3.1" data-ans='["true"]'>
+                                    <option value="" disabled selected>Select</option><option value="true">True</option><option value="false">False</option>
+                                </select>
+                            </li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-3.1" onclick="checkExercise('3.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 3.1</button>
+                            <span id="score-3.1" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">7</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 8: Test Practice Reading (LEFT SIDE, COLUMNS) ==================== -->
+                <div id="page-8" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-4 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">5. Test Practice: Reading</h3>
+                        </div>
+
+                        <!-- 2-column layout to fit the whole massive text perfectly on one page -->
+                        <div class="bg-slate-50 border border-slate-200 rounded p-4 text-slate-800 text-[11px] leading-relaxed shadow-sm columns-2 gap-5">
+                            <h4 class="font-bold text-base mb-1 text-center font-serif col-span-2" style="column-span: all;">First words</h4>
+                            <p class="mb-3 text-center italic text-slate-500 col-span-2 text-[10px]" style="column-span: all;">There are over 6, 000 different languages today, but how did language evolve in the first place?</p>
+                            
+                            <p class="mb-2">Pinpointing the origin of language might seem like idle speculation, because sound does not fossilise. However, music, chit-chat and even humour may have been driving forces in the evolution of language, and gossip possibly freed our ancestors from sitting around wondering what to say next.</p>
+                            
+                            <p class="mb-2">There are over 6,000 different languages today, and the main language families are thought to have arisen as modern humans wandered about the globe in four great migrations beginning 100,000 years ago. But how did language evolve in the first place? Potential indicators of early language are written in our genetic code, behaviour and culture. The genetic evidence is a gene called FOXP2, in which mutations appear to be responsible for speech defects. FOXP2 in humans differs only slightly from the gene in chimpanzees, and may be about 200,000 years old, slightly older than the earliest modern humans. Such a recent origin for language seems at first rather silly. How could our speechless Homo sapiens ancestors colonise the ancient world, spreading from Africa to Asia, and perhaps making a short sea-crossing to Indonesia, without language? Well, language can have two meanings: the infinite variety of sentences that we string together, and the pointing and grunting communication that we share with other animals.</p>
+                            
+                            <p class="mb-2">Marc Hauser (Harvard University) and colleagues argue that the study of animal behaviour and communication can teach us how the faculty of language in the narrow human sense evolved. Other animals don't come close to understanding our sophisticated thought processes. Nevertheless, the complexity of human expression may have started off as simple stages in animal 'thinking' or problem-solving. For example, number processing (how many lions are we up against?), navigation (time to fly south for the winter), or social relations (we need teamwork to build this shelter). In other words, we can potentially track language by looking at the behaviour of other animals.</p>
+                            
+                            <p class="mb-2">William Noble and Iain Davidson (University of New England) look for the origin of language in early symbolic behaviour and the evolutionary selection in fine motor control. For example, throwing and making stone tools could have developed into simple gestures like pointing that eventually entailed a sense of self-awareness. They argue that language is a form of symbolic communication that has its roots in behavioural evolution. Even if archaic humans were physically capable of speech (a hyoid bone for supporting the larynx and tongue has been found in a Neanderthal skeleton), we cannot assume symbolic communication. They conclude that language is a feature of anatomically modern humans, and an essential precursor of the earliest symbolic pictures in rock art, ritual burial, major sea-crossings, structured shelters and hearths - all dating, they argue, to the last 100,000 years.</p>
+                            
+                            <p class="mb-2">But the archaeological debate of when does not really help us with what was occurring in those first chats. Robin Dunbar (University of Liverpool) believes they were probably talking about each other - in other words, gossiping. He discovered a relationship between an animal's group size and its neocortex (the thinking part of the brain), and tried to reconstruct grooming times and group sizes for early humans based on overall size of fossil skulls. Dunbar argues that gossip provides the social glue permitting humans to live in cohesive groups up to the size of about 150, found in population studies among hunter-gatherers, personal networks and corporate organisations. Apes are reliant on grooming to stick together, and that basically constrains their social complexity to groups of 50. Gelada baboons stroke and groom each other for several hours per day. Dunbar thus concludes that, if humans had no speech faculty, we would need to devote 40 per cent of the day to physical grooming, just to meet our social needs.</p>
+                            
+                            <p class="mb-2">Humans manage large social networks by 'verbal grooming' or gossiping - chatting with friends over coffee, for example. So the 'audience' can be much bigger than for grooming or one-on-one massage. Giselle Bastion, who recently completed her PhD at Flinders University, argues that gossip has acquired a bad name, being particularly associated with women and opposed by men who are defending their supposedly objective world. Yet it's no secret that men gossip too. We are all bent on keeping track of other people and maintaining alliances. But how did we graduate from grooming to gossip? Dunbar notes that just as grooming releases opiates that create a feeling of wellbeing in monkeys and apes, so do the smiles and laughter associated with human banter.</p>
+                            
+                            <p class="mb-2">Dean Falk (Florida State University) suggests that, before the first smattering of language there was motherese, that musical gurgling between a mother and her baby, along with a lot of eye contact and touching. Early human babies could not cling on to their mother as she walked on two feet, so motherese evolved to soothe and control infants. Motherese is a small social step up from the contact calls of primates, but at this stage grooming probably still did most of the bonding.</p>
+                            
+                            <p>So when did archaic human groups get too big to groom each other? Dunbar suggests that nomadic expansion out of Africa, maybe 500,000 years ago, demanded larger group sizes and language sophistication to form the various alliances necessary for survival. Davidson and Noble, who reject Dunbar's gossip theory, suggest that there was a significant increase in brain size from about 400,000 years ago, and this may correlate with increasing infant dependence. Still, it probably took a long time before a mother delivered humanity's maiden speech. Nevertheless, once the words were out, and eventually put on paper, they acquired an existence of their own. Reading gossip magazines and newspapers today is essentially one-way communication with total strangers - a far cry from the roots of language.</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">8</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 9: Test Practice Questions (RIGHT SIDE) ==================== -->
+                <div id="page-9" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow flex flex-col justify-between">
+                        
+                        <!-- Questions 1-5 -->
+                        <div class="mb-4">
+                            <div class="flex justify-between items-end mb-2 border-b-2 border-slate-800 pb-1">
+                                <h3 class="text-lg font-bold text-slate-900">Questions 1-5</h3>
+                                <span class="ui-font text-[10px] font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                            </div>
+
+                            <p class="mb-2 text-slate-800 text-[11px] italic">Choose the correct answer <strong>A, B, C or D</strong>.</p>
+                            
+                            <ol class="list-decimal list-outside ml-4 space-y-2.5 text-slate-800 text-[12px] leading-snug">
+                                <li>In paragraph 1, the writer uses the term 'idle speculation' to refer to the study of
+                                    <div class="ml-1 mt-1 grid grid-cols-2 gap-x-2 gap-y-0.5 ui-font text-[11px]">
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q1" value="a" class="mr-1.5 mt-0.5 accent-slate-600"><span>A. why people began to use music.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q1" value="b" class="mr-1.5 mt-0.5 accent-slate-600"><span>B. where language first evolved.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q1" value="c" class="mr-1.5 mt-0.5 accent-slate-600"><span>C. when people began to talk.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q1" value="d" class="mr-1.5 mt-0.5 accent-slate-600"><span>D. how humour first began.</span></label>
+                                    </div>
+                                    <input type="hidden" id="ans_q1" data-ans='["c"]'>
+                                </li>
+                                <li>What does the writer tell us about FOXP2?
+                                    <div class="ml-1 mt-1 grid grid-cols-2 gap-x-2 gap-y-0.5 ui-font text-[11px]">
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q2" value="a" class="mr-1.5 mt-0.5 accent-slate-600"><span>A. It helps prevent speech problems.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q2" value="b" class="mr-1.5 mt-0.5 accent-slate-600"><span>B. It is the same in chimps and humans.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q2" value="c" class="mr-1.5 mt-0.5 accent-slate-600"><span>C. It occurred 100,000 years ago.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q2" value="d" class="mr-1.5 mt-0.5 accent-slate-600"><span>D. It occurred 200,000 years ago.</span></label>
+                                    </div>
+                                    <input type="hidden" id="ans_q2" data-ans='["d"]'>
+                                </li>
+                                <li>In paragraph 2, what notion does the writer refer to as being 'rather silly'?
+                                    <div class="ml-1 mt-1 grid grid-cols-2 gap-x-2 gap-y-0.5 ui-font text-[11px]">
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q3" value="a" class="mr-1.5 mt-0.5 accent-slate-600"><span>A. That language began long ago.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q3" value="b" class="mr-1.5 mt-0.5 accent-slate-600"><span>B. Man travelled the world unable to talk.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q3" value="c" class="mr-1.5 mt-0.5 accent-slate-600"><span>C. That chimps may have been able to talk.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q3" value="d" class="mr-1.5 mt-0.5 accent-slate-600"><span>D. Chimp communication pre-dates man.</span></label>
+                                    </div>
+                                    <input type="hidden" id="ans_q3" data-ans='["b"]'>
+                                </li>
+                                <li>Why does the writer refer to 'lions' in paragraph 3?
+                                    <div class="ml-1 mt-1 grid grid-cols-2 gap-x-2 gap-y-0.5 ui-font text-[11px]">
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q4" value="a" class="mr-1.5 mt-0.5 accent-slate-600"><span>A. To illustrate communication needs.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q4" value="b" class="mr-1.5 mt-0.5 accent-slate-600"><span>B. To show vulnerability to predators.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q4" value="c" class="mr-1.5 mt-0.5 accent-slate-600"><span>C. Evidence of other species existing.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q4" value="d" class="mr-1.5 mt-0.5 accent-slate-600"><span>D. To show relationships with animals.</span></label>
+                                    </div>
+                                    <input type="hidden" id="ans_q4" data-ans='["a"]'>
+                                </li>
+                                <li>Gelada baboons are mentioned in order to show that
+                                    <div class="ml-1 mt-1 grid grid-cols-2 gap-x-2 gap-y-0.5 ui-font text-[11px]">
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q5" value="a" class="mr-1.5 mt-0.5 accent-slate-600"><span>A. using grooming limits social groups.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q5" value="b" class="mr-1.5 mt-0.5 accent-slate-600"><span>B. early humans lived in groups of 50.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q5" value="c" class="mr-1.5 mt-0.5 accent-slate-600"><span>C. baboon groups are larger than humans.</span></label>
+                                        <label class="flex items-start cursor-pointer transition-colors"><input type="radio" name="q5" value="d" class="mr-1.5 mt-0.5 accent-slate-600"><span>D. baboons spend 40% of time grooming.</span></label>
+                                    </div>
+                                    <input type="hidden" id="ans_q5" data-ans='["a"]'>
+                                </li>
+                            </ol>
+                            <div class="flex items-center gap-3 mt-3">
+                                <button id="btn-5.1" onclick="checkRadios('5.1', 5)" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check Qs 1-5</button>
+                                <span id="score-5.1" class="ui-font text-[11px] font-bold hidden"></span>
+                            </div>
+                        </div>
+
+                        <!-- Questions 6-14 -->
+                        <div>
+                            <div class="flex justify-between items-end mb-2 border-b-2 border-slate-800 pb-1 mt-2">
+                                <h3 class="text-lg font-bold text-slate-900">Questions 6-14</h3>
+                            </div>
+
+                            <p class="mb-2 text-slate-800 text-[11px] italic">Match statement with person, <strong>A-E</strong>.</p>
+                            
+                            <div class="bg-white border border-slate-200 p-2 rounded mb-3 flex flex-wrap gap-x-4 gap-y-1 text-[10px] justify-center font-bold text-slate-600 ui-font shadow-inner">
+                                <span>A. Hauser</span>
+                                <span>B. Noble & Davidson</span>
+                                <span>C. Dunbar</span>
+                                <span>D. Bastion</span>
+                                <span>E. Falk</span>
+                            </div>
+
+                            <ol class="list-decimal list-outside ml-4 space-y-1.5 text-slate-800 text-[11.5px] leading-snug" start="6">
+                                <li>Physical evidence of increased human intelligence up to 400,000 yrs ago.
+                                    <select class="input-blank font-bold ml-1 w-12 text-[10px] py-0" data-ex="5.2" data-ans='["b"]'><option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select>
+                                </li>
+                                <li>In the modern world, gossiping is seen in a negative way.
+                                    <select class="input-blank font-bold ml-1 w-12 text-[10px] py-0" data-ex="5.2" data-ans='["d"]'><option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select>
+                                </li>
+                                <li>Language must have developed before art and travel.
+                                    <select class="input-blank font-bold ml-1 w-12 text-[10px] py-0" data-ex="5.2" data-ans='["b"]'><option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select>
+                                </li>
+                                <li>The development of human language can be gauged by studying other species.
+                                    <select class="input-blank font-bold ml-1 w-12 text-[10px] py-0" data-ex="5.2" data-ans='["a"]'><option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select>
+                                </li>
+                                <li>Gossiping makes humans feel good.
+                                    <select class="input-blank font-bold ml-1 w-12 text-[10px] py-0" data-ex="5.2" data-ans='["c"]'><option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select>
+                                </li>
+                                <li>The actions of early humans could have evolved into communication.
+                                    <select class="input-blank font-bold ml-1 w-12 text-[10px] py-0" data-ex="5.2" data-ans='["b"]'><option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select>
+                                </li>
+                                <li>The first language emerged through a parent talking to an infant.
+                                    <select class="input-blank font-bold ml-1 w-12 text-[10px] py-0" data-ex="5.2" data-ans='["e"]'><option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select>
+                                </li>
+                                <li>Gossip was the first purpose of human communication.
+                                    <select class="input-blank font-bold ml-1 w-12 text-[10px] py-0" data-ex="5.2" data-ans='["c"]'><option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select>
+                                </li>
+                                <li>Early humans used language to help them live together.
+                                    <select class="input-blank font-bold ml-1 w-12 text-[10px] py-0" data-ex="5.2" data-ans='["c"]'><option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option></select>
+                                </li>
+                            </ol>
+                            
+                            <div class="flex items-center gap-3 mt-3">
+                                <button id="btn-5.2" onclick="checkExercise('5.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check Qs 6-14</button>
+                                <span id="score-5.2" class="ui-font text-[11px] font-bold hidden"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">9</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Sticky Right Arrow (Desktop Only) -->
+        <div class="hidden lg:block w-10 shrink-0 ml-2 xl:ml-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="next-btn" onclick="goNext()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Next Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
             </div>
         </div>
 
     </div>
 
-    <script>
-        const REQUIRED_SCORE = 0.8; // 80% to pass
+    <!-- Mobile Fixed Bottom Navigation -->
+    <div class="lg:hidden fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-slate-200 p-3 flex justify-between z-50 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.1)]">
+        <button id="prev-btn-mobile" onclick="goPrev()" class="ui-font font-bold px-5 py-2 rounded-lg text-slate-700 bg-slate-100 active:bg-slate-200 transition-colors flex items-center gap-2">
+            &larr; Prev
+        </button>
+        <button id="next-btn-mobile" onclick="goNext()" class="ui-font font-bold px-5 py-2 rounded-lg text-white bg-slate-800 active:bg-slate-700 transition-colors flex items-center gap-2 shadow-sm">
+            Next &rarr;
+        </button>
+    </div>
 
-        // Event listeners to sync radio buttons with hidden inputs for validation
+    <script>
+        const REQUIRED_SCORE = 0.8;
+        const totalPages = 10; // 0 to 9
+        let currentSpread = 0; // For desktop (0 = pages 0,1; 1 = pages 2,3; etc.)
+        let currentMobilePage = 0;
+
+        function updatePagination() {
+            const isDesktop = window.innerWidth >= 1024;
+            const pages = document.querySelectorAll('.page-content');
+            
+            // Hide all pages
+            pages.forEach(p => p.classList.add('hidden'));
+
+            if (isDesktop) {
+                let leftIdx = currentSpread * 2;
+                let rightIdx = leftIdx + 1;
+                
+                const leftPage = document.getElementById(`page-${leftIdx}`);
+                const rightPage = document.getElementById(`page-${rightIdx}`);
+                
+                if(leftPage) leftPage.classList.remove('hidden');
+                if(rightPage) rightPage.classList.remove('hidden');
+
+                // Update Nav Buttons
+                document.getElementById('prev-btn').disabled = currentSpread === 0;
+                document.getElementById('next-btn').disabled = currentSpread >= Math.ceil(totalPages/2) - 1;
+                
+            } else {
+                const activePage = document.getElementById(`page-${currentMobilePage}`);
+                if(activePage) activePage.classList.remove('hidden');
+
+                // Update Mobile Nav
+                const prevMob = document.getElementById('prev-btn-mobile');
+                const nextMob = document.getElementById('next-btn-mobile');
+                if(prevMob) prevMob.style.visibility = currentMobilePage === 0 ? 'hidden' : 'visible';
+                if(nextMob) nextMob.style.visibility = currentMobilePage === totalPages - 1 ? 'hidden' : 'visible';
+            }
+        }
+
+        function goNext() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread < Math.ceil(totalPages/2) - 1) currentSpread++;
+            } else {
+                if (currentMobilePage < totalPages - 1) currentMobilePage++;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goPrev() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread > 0) currentSpread--;
+            } else {
+                if (currentMobilePage > 0) currentMobilePage--;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('resize', () => {
+            const isDesktop = window.innerWidth >= 1024;
+            if(isDesktop) {
+                currentSpread = Math.floor(currentMobilePage / 2);
+            } else {
+                currentMobilePage = currentSpread * 2;
+            }
+            updatePagination();
+        });
+
+        // --- Core UI & Grading Logic ---
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function validateBlanks(inputs) {
+            let allFilled = true;
+            inputs.forEach(input => {
+                if (input.classList.contains('font-normal')) return; // skip subjective notes
+                const val = input.value !== undefined ? input.value : input.innerText;
+                if (val.trim() === "") {
+                    allFilled = false;
+                    input.style.borderBottomColor = '#f59e0b';
+                    input.style.backgroundColor = '#fef3c7';
+                    setTimeout(() => {
+                        input.style.borderBottomColor = '';
+                        input.style.backgroundColor = '';
+                    }, 1500);
+                }
+            });
+            return allFilled;
+        }
+
+        // Setup Radio Buttons
         document.querySelectorAll('input[type="radio"]').forEach(radio => {
             radio.addEventListener('change', (e) => {
                 const name = e.target.name;
@@ -625,134 +859,8 @@
             });
         });
 
-        // --- Tab Navigation Logic ---
-        function openTab(tabIndex) {
-            // Hide all sections
-            document.querySelectorAll('.exercise-section').forEach(sec => sec.classList.add('section-hidden'));
-            // Remove active class from all tabs
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
-            // Show selected section
-            document.getElementById(`section-${tabIndex}`).classList.remove('section-hidden');
-            // Set active class to selected tab
-            document.getElementById(`tab-${tabIndex}`).classList.add('active');
-        }
-
-        // --- Core UI logic ---
-        function showToast(message, type) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = `toast ${type} show`;
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        function unlockNext(currentIndex) {
-            const nextIndex = currentIndex + 1;
-            const nextTab = document.getElementById(`tab-${nextIndex}`);
-            
-            if (nextTab) {
-                setTimeout(() => {
-                    openTab(nextIndex);
-                    document.querySelector('.flex.overflow-x-auto').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 1000);
-            } else {
-                showToast("🎉 Congratulations! You have completed Unit 6!", "success");
-            }
-        }
-
-        function validateBlanks(inputs) {
-            let allFilled = true;
-            inputs.forEach(input => {
-                const val = input.value !== undefined ? input.value : input.innerText;
-                if (val.trim() === "") {
-                    allFilled = false;
-                    // For text and select
-                    if (input.type !== 'hidden') {
-                        input.style.borderBottomColor = '#f59e0b';
-                        input.style.backgroundColor = '#fef3c7';
-                        setTimeout(() => {
-                            input.style.borderBottomColor = '';
-                            input.style.backgroundColor = '';
-                        }, 1500);
-                    }
-                }
-            });
-            return allFilled;
-        }
-
-        function processScore(exerciseId, correctCount, totalCount, sectionIndex) {
-            const scoreLabel = document.getElementById(`score-${exerciseId}`);
-            const percentage = correctCount / totalCount;
-            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
-            
-            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
-            
-            if (percentage >= REQUIRED_SCORE) {
-                scoreLabel.textContent = `✅ Passed! Score: ${scoreText}`;
-                scoreLabel.classList.add('text-green-600');
-                
-                // Disable button
-                const btn = document.getElementById(`btn-${exerciseId}`);
-                if (btn) {
-                    btn.disabled = true;
-                    btn.classList.add('opacity-50', 'cursor-not-allowed');
-                    btn.textContent = "Passed";
-                }
-
-                // Check if all exercises in this section are passed to unlock the next tab
-                if (sectionIndex !== undefined && sectionIndex !== null) {
-                    const section = document.getElementById(`section-${sectionIndex}`);
-                    if (section) {
-                        const allButtons = Array.from(section.querySelectorAll('.check-btn'));
-                        const allPassed = allButtons.every(b => b.disabled);
-                        if (allPassed) {
-                            showToast("Section Complete! Moving to the next section.", "success");
-                            unlockNext(sectionIndex);
-                        } else {
-                            showToast("Great job! Complete the other exercises in this section.", "success");
-                        }
-                    }
-                }
-            } else {
-                scoreLabel.textContent = `❌ Failed. Score: ${scoreText} (Need 80%)`;
-                scoreLabel.classList.add('text-red-600');
-                showToast(`You scored ${Math.round(percentage * 100)}%. Please try again.`, "error");
-            }
-        }
-
-        // Standard exercise checker (Handles text inputs and selects)
-        function checkExercise(exerciseId, sectionIndex) {
-            const inputs = document.querySelectorAll(`[data-ex="${exerciseId}"]`);
-            
-            if (!validateBlanks(inputs)) {
-                showToast("Please answer all questions before checking!", "warning");
-                return;
-            }
-
-            let correctCount = 0;
-
-            inputs.forEach(input => {
-                const rawVal = input.value !== undefined ? input.value : input.innerText;
-                const userVal = rawVal.trim().toLowerCase().replace(/\s+/g, ' '); 
-                const possibleAns = JSON.parse(input.getAttribute('data-ans'));
-                
-                if (possibleAns.includes(userVal)) {
-                    correctCount++;
-                    input.classList.add('correct');
-                    input.classList.remove('incorrect');
-                } else {
-                    input.classList.add('incorrect');
-                    input.classList.remove('correct');
-                }
-            });
-
-            processScore(exerciseId, correctCount, inputs.length, sectionIndex);
-        }
-
-        // Custom checker for radio button questions (Ex 5.1)
-        function checkRadios(exerciseId, sectionIndex, totalQs) {
+        // Grading multiple choice (radio buttons)
+        function checkRadios(exerciseId, totalQs) {
             let correctCount = 0;
             let allAnswered = true;
 
@@ -761,8 +869,12 @@
                 if (!hiddenInput.value) {
                     allAnswered = false;
                     const container = document.querySelector(`input[name="q${i}"]`).closest('div');
-                    container.classList.add('border-l-4', 'border-yellow-400', 'pl-2');
-                    setTimeout(() => container.classList.remove('border-l-4', 'border-yellow-400', 'pl-2'), 1500);
+                    container.style.borderLeft = "4px solid #f59e0b";
+                    container.style.paddingLeft = "8px";
+                    setTimeout(() => {
+                        container.style.borderLeft = "";
+                        container.style.paddingLeft = "";
+                    }, 1500);
                 }
             }
 
@@ -779,21 +891,93 @@
                 const checkedRadio = document.querySelector(`input[name="q${i}"]:checked`);
                 const label = checkedRadio.closest('label');
                 
-                // Clear previous highlights in the group
+                // Clear previous highlights
                 document.querySelectorAll(`input[name="q${i}"]`).forEach(r => {
-                    r.closest('label').classList.remove('text-green-600', 'font-bold', 'text-red-600');
+                    r.closest('label').classList.remove('text-green-700', 'font-bold', 'text-red-700', 'bg-green-100', 'bg-red-100');
                 });
 
                 if (possibleAns.includes(userVal)) {
                     correctCount++;
-                    label.classList.add('text-green-600', 'font-bold');
+                    label.classList.add('text-green-700', 'font-bold', 'bg-green-100');
                 } else {
-                    label.classList.add('text-red-600', 'font-bold');
+                    label.classList.add('text-red-700', 'font-bold', 'bg-red-100');
                 }
             }
 
-            processScore(exerciseId, correctCount, totalQs, sectionIndex);
+            const scoreLabel = document.getElementById(`score-${exerciseId}`);
+            const percentage = correctCount / totalQs;
+            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalQs})`;
+            
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (percentage >= REQUIRED_SCORE) {
+                scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
+                const btn = document.getElementById(`btn-${exerciseId}`);
+                if (btn) { btn.disabled = true; btn.textContent = "Passed"; }
+                showToast("Good job!", "success");
+            } else {
+                scoreLabel.textContent = `❌ Failed. ${scoreText}`;
+                scoreLabel.classList.add('text-red-600');
+                showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
+            }
         }
+
+        // Standard exercise checking (inputs, select boxes)
+        function checkExercise(exerciseId) {
+            const inputs = document.querySelectorAll(`[data-ex="${exerciseId}"]`);
+            if (!validateBlanks(inputs)) {
+                showToast("Please answer all required blanks before checking!", "warning");
+                return;
+            }
+
+            let correctCount = 0;
+            inputs.forEach(input => {
+                if(input.classList.contains('font-normal')) return;
+
+                const rawVal = input.value !== undefined ? input.value : input.innerText;
+                const userVal = rawVal.trim().toLowerCase().replace(/\s+/g, ' ');
+                const possibleAns = JSON.parse(input.getAttribute('data-ans'));
+                
+                if (possibleAns.includes(userVal)) {
+                    correctCount++;
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+
+            const scoreLabel = document.getElementById(`score-${exerciseId}`);
+            const totalCount = Array.from(inputs).filter(i => !i.classList.contains('font-normal')).length;
+            const percentage = correctCount / totalCount;
+            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
+            
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (percentage >= REQUIRED_SCORE) {
+                scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
+                
+                const btn = document.getElementById(`btn-${exerciseId}`);
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = "Passed";
+                }
+                showToast("Good job!", "success");
+            } else {
+                scoreLabel.textContent = `❌ Failed. ${scoreText}`;
+                scoreLabel.classList.add('text-red-600');
+                showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
+            }
+        }
+
+        // Initialize on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePagination();
+        });
+
     </script>
 </body>
 </html>
