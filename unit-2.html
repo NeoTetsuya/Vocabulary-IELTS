@@ -3,52 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mental and Physical Development - Self Study</title>
+    <title>Unit 2: Mental and Physical Development - Textbook</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://w.soundcloud.com/player/api.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f0fdf4; } /* Soft green tint for a fresh theme */
+        body { 
+            font-family: 'Lora', serif; 
+            background-color: #d1d5db;
+            background-image: radial-gradient(#9ca3af 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
         
+        .ui-font { font-family: 'Inter', sans-serif; }
+
+        /* Book & Paper Styles */
+        .book-wrapper {
+            background-color: #fdfcf8;
+            box-shadow: 
+                0 20px 40px -10px rgba(0,0,0,0.3), 
+                0 0 0 1px rgba(0,0,0,0.05),
+                inset 0 0 60px rgba(139, 115, 85, 0.05);
+            border-radius: 4px 8px 8px 4px;
+        }
+
+        .spine-shadow {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 80px;
+            transform: translateX(-50%);
+            background: linear-gradient(
+                to right,
+                transparent 0%,
+                rgba(0,0,0,0.02) 40%,
+                rgba(0,0,0,0.12) 50%,
+                rgba(0,0,0,0.02) 60%,
+                transparent 100%
+            );
+            pointer-events: none;
+            z-index: 10;
+            border-left: 1px solid rgba(255,255,255,0.4);
+            border-right: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* Sticky Nav for Desktop */
+        .sticky-nav-container {
+            position: sticky;
+            top: 50vh;
+            transform: translateY(-50%);
+            height: max-content;
+            z-index: 50;
+        }
+
+        /* Inputs */
         .input-blank {
+            font-family: 'Inter', sans-serif;
             border: none;
-            border-bottom: 2px solid #9ca3af;
-            background: transparent;
+            border-bottom: 2px dashed #94a3b8;
+            background: rgba(255,255,255,0.5);
             outline: none;
             text-align: center;
-            padding: 0.25rem;
-            transition: border-color 0.2s;
+            padding: 0.1rem 0.25rem;
+            margin: 0 0.25rem;
+            transition: all 0.2s;
             font-weight: 600;
-            color: #1f2937;
+            color: #1e293b;
+            border-radius: 2px 2px 0 0;
         }
-        .input-blank:focus { border-bottom-color: #10b981; }
-        .correct { border-bottom-color: #22c55e !important; color: #166534; background-color: #f0fdf4; }
-        .incorrect { border-bottom-color: #ef4444 !important; color: #991b1b; background-color: #fef2f2; }
-        
-        /* Tab & Interactivity Styles */
-        .tab-btn { transition: all 0.2s ease-in-out; flex-shrink: 0; }
-        .tab-btn.active { border-bottom-width: 4px; border-color: #10b981; color: #065f46; font-weight: 700; background-color: #ecfdf5; }
-        .section-hidden { display: none; }
-        .word-used { text-decoration: line-through; opacity: 0.4; transition: all 0.2s; }
+        .input-blank:focus { 
+            border-bottom: 2px solid #10b981; 
+            background: #ecfdf5;
+        }
+        .correct { 
+            border-bottom: 2px solid #16a34a !important; 
+            color: #166534; 
+            background-color: #dcfce7; 
+        }
+        .incorrect { 
+            border-bottom: 2px solid #dc2626 !important; 
+            color: #991b1b; 
+            background-color: #fee2e2; 
+        }
 
         /* Click & Match Styles */
-        .word-choice { transition: all 0.2s; cursor: pointer; padding: 0.25rem 0.75rem; border-radius: 0.375rem; border: 2px solid transparent; font-weight: 600; background-color: transparent; }
-        .word-choice:hover:not(.used) { background-color: #d1fae5; border-color: #6ee7b7; }
-        .word-choice.selected { background-color: #a7f3d0; border-color: #10b981; transform: scale(1.05); }
-        .word-choice.used { opacity: 0.4; text-decoration: line-through; pointer-events: none; }
-        .match-slot { display: inline-block; min-width: 8rem; height: 1.75rem; border-bottom: 2px solid #9ca3af; text-align: center; cursor: pointer; padding: 0 0.5rem; font-weight: 600; color: #047857; vertical-align: bottom; transition: all 0.2s; line-height: 1.75rem; }
-        .match-slot:hover { border-bottom-color: #10b981; background-color: #f3f4f6; border-radius: 0.25rem 0.25rem 0 0; }
-        .match-slot:empty::after { content: '...'; color: #cbd5e1; font-weight: normal; }
+        .word-choice { 
+            transition: all 0.2s; cursor: pointer; padding: 0.15rem 0.6rem; 
+            border-radius: 0.25rem; border: 1px solid #cbd5e1; font-weight: 600; 
+            background-color: white; color: #047857; font-family: 'Inter', sans-serif;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .word-choice:hover:not(.used) { background-color: #ecfdf5; border-color: #6ee7b7; }
+        .word-choice.selected { background-color: #d1fae5; border-color: #10b981; transform: scale(1.05); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .word-choice.used { opacity: 0.4; text-decoration: line-through; pointer-events: none; background: transparent; box-shadow: none; border-color: transparent;}
         
-        /* Table Styles */
-        table { border-collapse: collapse; width: 100%; margin-bottom: 1.5rem; background-color: #ffffff; }
-        th, td { border: 1px solid #d1d5db; padding: 0.75rem; text-align: left; }
-        th { background-color: #f3f4f6; font-weight: 600; color: #374151; }
+        .match-slot { 
+            display: inline-block; min-width: 6rem; height: 1.5rem; 
+            border-bottom: 2px dashed #94a3b8; text-align: center; cursor: pointer; 
+            padding: 0 0.25rem; font-weight: 600; color: #047857; vertical-align: bottom; 
+            transition: all 0.2s; line-height: 1.5rem; font-family: 'Inter', sans-serif;
+        }
+        .match-slot:hover { border-bottom-style: solid; border-bottom-color: #10b981; background-color: #ecfdf5; border-radius: 2px 2px 0 0; }
+        .match-slot:empty::after { content: '...'; color: #cbd5e1; font-weight: normal; }
 
         /* Vocabulary Highlight & Tooltip Styles */
         .vocab-word {
             position: relative;
             cursor: pointer;
-            border-bottom: 2px dashed #10b981;
+            border-bottom: 2px dotted #10b981;
             color: #047857;
             font-weight: 600;
             transition: all 0.2s ease;
@@ -56,646 +121,624 @@
         }
         .vocab-word:hover { background-color: #ecfdf5; border-bottom-style: solid; }
         .vocab-tooltip {
-            visibility: hidden; background-color: #1f2937; color: #fff; text-align: center; border-radius: 6px;
+            visibility: hidden; background-color: #1e293b; color: #fff; text-align: center; border-radius: 6px;
             padding: 6px 12px; position: absolute; z-index: 50; bottom: 130%; left: 50%; transform: translateX(-50%);
-            opacity: 0; transition: opacity 0.2s; font-size: 0.85rem; font-family: sans-serif; white-space: nowrap; font-weight: 500;
-            pointer-events: none;
+            opacity: 0; transition: opacity 0.2s; font-size: 0.75rem; font-family: 'Inter', sans-serif; white-space: nowrap; font-weight: 500;
+            pointer-events: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
         .vocab-tooltip::after {
             content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px;
-            border-style: solid; border-color: #1f2937 transparent transparent transparent;
+            border-style: solid; border-color: #1e293b transparent transparent transparent;
         }
         .vocab-word:hover .vocab-tooltip { visibility: visible; opacity: 1; }
 
+        /* Custom Vocab Table */
+        .vocab-table { width: 100%; text-align: left; border-collapse: collapse; }
+        .vocab-table th { 
+            border-bottom: 2px solid #475569; padding: 8px; font-family: 'Inter', sans-serif; 
+            text-transform: uppercase; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: #334155; 
+        }
+        .vocab-table td { border-bottom: 1px dashed #cbd5e1; padding: 10px 8px; font-size: 13px; }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb { background-color: #94a3b8; }
+
+        /* Buttons & Toasts */
+        .check-btn { transition: transform 0.1s, box-shadow 0.1s; }
+        .check-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            backdrop-filter: blur(4px);
+            transition: all 0.2s;
+        }
+        .nav-btn:hover:not(:disabled) { background: #fff; transform: scale(1.05); }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+
         .toast {
-            position: fixed; top: 20px; right: 20px; padding: 15px 25px; border-radius: 8px; color: white; font-weight: bold;
-            opacity: 0; transform: translateY(-20px); transition: opacity 0.3s, transform 0.3s; z-index: 1000; pointer-events: none;
+            position: fixed; top: 20px; right: 20px;
+            padding: 15px 25px; border-radius: 8px;
+            color: white; font-weight: bold;
+            opacity: 0; transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000; pointer-events: none;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
         }
         .toast.show { opacity: 1; transform: translateY(0); }
         .toast.error { background-color: #ef4444; }
-        .toast.success { background-color: #22c55e; }
+        .toast.success { background-color: #10b981; }
         .toast.warning { background-color: #f59e0b; }
     </style>
 </head>
-<body class="text-gray-800 antialiased pb-20">
+<body class="text-slate-800 antialiased min-h-screen flex flex-col pt-4 lg:pt-10 pb-24 lg:pb-10">
 
-    <div id="toast" class="toast shadow-lg">Message</div>
+    <div id="toast" class="toast">Message</div>
 
-    <div class="max-w-5xl mx-auto mt-8 px-4">
+    <!-- Main Desk Area -->
+    <div class="w-full max-w-[1600px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
         
-        <div class="bg-emerald-800 rounded-xl shadow-md p-6 mb-8 text-white text-center">
-            <h1 class="text-3xl font-bold mb-2">Mental and Physical Development</h1>
-            <p class="text-emerald-100">Self-Study Interactive Exercises</p>
+        <!-- Sticky Left Arrow (Desktop Only) -->
+        <div class="hidden lg:block w-10 shrink-0 mr-2 xl:mr-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="prev-btn" onclick="goPrev()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Previous Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+            </div>
         </div>
 
-        <!-- Tab Navigation (Scrollable & Unlocked) -->
-        <div class="flex overflow-x-auto bg-white rounded-t-xl shadow-sm border-b-2 border-gray-200 mb-6 custom-scrollbar">
-            <button onclick="openTab(0)" id="tab-0" class="tab-btn active py-3 px-6 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">Ex 1 & 2</button>
-            <button onclick="openTab(1)" id="tab-1" class="tab-btn py-3 px-6 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">Ex 3</button>
-            <button onclick="openTab(2)" id="tab-2" class="tab-btn py-3 px-6 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">Ex 4</button>
-            <button onclick="openTab(3)" id="tab-3" class="tab-btn py-3 px-6 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">Ex 5</button>
-            <button onclick="openTab(4)" id="tab-4" class="tab-btn py-3 px-6 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">Ex 6</button>
-            <button onclick="openTab(5)" id="tab-5" class="tab-btn py-3 px-6 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">Ex 7</button>
-            <button onclick="openTab(6)" id="tab-6" class="tab-btn py-3 px-6 text-center font-semibold text-gray-600 hover:bg-gray-50 focus:outline-none whitespace-nowrap">Ex 8</button>
-        </div>
-
-        <!-- Exercise 1 & 2 Container -->
-        <div id="section-0" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section">
+        <!-- The Book -->
+        <div class="book-wrapper flex-1 w-full max-w-7xl flex flex-col lg:flex-row relative min-h-[85vh]">
             
-            <!-- Exercise 1 -->
-            <div class="mb-10">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-gray-800">Exercise 1: Early Development in Children</h3>
-                    <span class="text-sm font-semibold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full target-score">Target: 80%</span>
-                </div>
+            <!-- Spine Decoration (Desktop Only) -->
+            <div class="spine-shadow hidden lg:block"></div>
+
+            <!-- Page Container (Flexible Height) -->
+            <div id="pages-container" class="w-full flex relative">
                 
-                <!-- Audio Player (Tab 1 Only) -->
-                <div class="bg-white border-2 border-emerald-100 rounded-xl px-6 py-4 mb-6 shadow-sm">
-                    <div class="flex flex-col sm:flex-row items-center gap-4">
-                        <div class="text-sm text-emerald-600 font-bold whitespace-nowrap shrink-0">
-                            Listening Track 🎧
+                <!-- ==================== PAGE 0: Title & Intro ==================== -->
+                <div id="page-0" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow flex flex-col justify-center items-center text-center">
+                        <div class="w-24 h-24 bg-emerald-50 rounded-full flex items-center justify-center mb-8 shadow-inner border border-emerald-100">
+                            <svg class="w-12 h-12 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                         </div>
-                        <div class="w-full flex items-center bg-gray-50 border border-gray-200 rounded-full px-4 py-2 shadow-inner">
-                            <button id="audio-play-btn" class="w-9 h-9 flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-400 shrink-0">
-                                <!-- Play Icon -->
-                                <svg id="play-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-0.5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
-                                </svg>
-                                <!-- Pause Icon -->
-                                <svg id="pause-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                </svg>
-                            </button>
+                        <h4 class="text-sm uppercase tracking-widest text-emerald-600 font-bold ui-font mb-2">Unit 2</h4>
+                        <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-slate-800 leading-tight">Mental & Physical Development</h1>
+                        <h2 class="text-2xl italic text-slate-600 mb-8 border-b pb-8 border-slate-200">Growing Up & The Mind</h2>
+                        
+                        <p class="text-lg text-slate-600 leading-relaxed max-w-md mx-auto">
+                            Welcome to Unit 2. Explore vocabulary, listening, and reading exercises focused on childhood development, learning, and the human mind on the following pages.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">i</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 1: Early Development (Listening) ==================== -->
+                <div id="page-1" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">1. Early Development</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <!-- Custom Audio Player -->
+                        <div class="custom-audio-player bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mb-6 shadow-inner ui-font flex flex-col sm:flex-row items-center gap-4" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784935&auto_play=false&enable_api=1">
+                            <div class="text-xs font-bold text-emerald-600 uppercase tracking-widest shrink-0">Track 2a</div>
+                            <div class="w-full flex items-center gap-3">
+                                <button class="audio-play-btn w-8 h-8 flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-full transition-colors shrink-0 focus:outline-none">
+                                    <svg class="play-icon h-4 w-4 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                    <svg class="pause-icon h-4 w-4 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                </button>
+                                <span class="audio-current-time text-xs font-mono text-slate-500 w-9 text-right">00:00</span>
+                                <div class="relative w-full h-1.5 bg-slate-300 rounded-full cursor-pointer flex-1 group">
+                                     <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                     <div class="audio-progress-bar absolute h-full bg-emerald-500 rounded-full group-hover:bg-emerald-600 transition-colors" style="width: 0%;"></div>
+                                </div>
+                                <span class="audio-total-time text-xs font-mono text-slate-500 w-9">00:00</span>
+                            </div>
+                            <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-[13px]"><span class="font-bold">1.1</span> Listen to the audio and complete the table below. Write <strong>NO MORE THAN TWO WORDS</strong>.</p>
+                        
+                        <div class="bg-white border border-slate-200 shadow-sm rounded overflow-hidden">
+                            <table class="vocab-table">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="w-1/5">Stage</th>
+                                        <th class="w-2/5">Social/Emotional</th>
+                                        <th class="w-2/5">Physical/Cognitive</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="font-semibold text-emerald-700">Infant</td>
+                                        <td>tries to see how parents react to their (1) <input type="text" class="input-blank w-full" data-ex="0" data-ans='["behaviour", "behavior"]'></td>
+                                        <td>can use basic words and (2) <input type="text" class="input-blank w-full" data-ex="0" data-ans='["gestures"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-semibold text-emerald-700">(3) <input type="text" class="input-blank w-full" data-ex="0" data-ans='["toddler"]'></td>
+                                        <td>is more (4) <input type="text" class="input-blank w-full" data-ex="0" data-ans='["independent"]'>, takes turns</td>
+                                        <td>able to (5) <input type="text" class="input-blank w-20" data-ex="0" data-ans='["climb"]'> things; uses (6) <input type="text" class="input-blank w-full" data-ex="0" data-ans='["make-believe", "imagination"]'> in play</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-semibold text-emerald-700">Middle childhood</td>
+                                        <td>the (7) <input type="text" class="input-blank w-full" data-ex="0" data-ans='["outside world"]'> has greater impact; others are (8) <input type="text" class="input-blank w-full" data-ex="0" data-ans='["immature"]'></td>
+                                        <td>growth isn't as (9) <input type="text" class="input-blank w-20" data-ex="0" data-ans='["rapid"]'>; (10) <input type="text" class="input-blank w-20" data-ex="0" data-ans='["teeth", "eyes"]'> and (11) <input type="text" class="input-blank w-20" data-ex="0" data-ans='["eyes", "teeth"]'> are adult size; good reading (12) <input type="text" class="input-blank w-20" data-ex="0" data-ans='["skills"]'></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-check-0" onclick="checkExercise0()" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.1</button>
+                            <span id="score-0" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">1</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 2: Vocab Matching ==================== -->
+                <div id="page-2" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">2. Vocabulary Matching</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">1.2</span> Find words that mean the same as the listening track. <strong class="text-emerald-700">Click a word to select it, then click a blank line to place it.</strong></p>
+
+                        <div class="bg-emerald-50/50 border border-emerald-200 p-4 rounded mb-6 flex flex-wrap gap-2.5 font-mono text-[11px] justify-center shadow-inner" id="wb-1">
+                            <button class="word-choice" onclick="selectWord(this)" data-word="imitating">imitating</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="stage">stage</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="spontaneously">spontaneously</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="acquired">acquired</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="mastered">mastered</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="unassisted">unassisted</button>
+                        </div>
+
+                        <ol class="list-decimal list-outside ml-4 space-y-6 text-slate-800 text-[14px] leading-loose">
+                            <li>learned (a skill): <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["acquired"]'></span></li>
+                            <li>copying people: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["imitating"]'></span></li>
+                            <li>without help: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["unassisted", "without support"]'></span></li>
+                            <li>in a natural, unforced way: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["spontaneously"]'></span></li>
+                            <li>developed a skill to a high level: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["mastered"]'></span></li>
+                            <li>phase: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["stage", "period"]'></span></li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-check-1" onclick="checkExercise(1)" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.2</button>
+                            <span id="score-1" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">2</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 3: Word Building ==================== -->
+                <div id="page-3" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">3. Word Building</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.1</span> Complete the table with the correct forms of the words.</p>
+
+                        <div class="bg-white border border-slate-200 shadow-sm rounded overflow-hidden">
+                            <table class="vocab-table">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="w-1/3">Verb</th>
+                                        <th class="w-1/3 border-l border-slate-200">Noun</th>
+                                        <th class="w-1/3 border-l border-slate-200">Adjective</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="font-bold text-emerald-700">develop</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="2" data-ans='["development"]'></td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="2" data-ans='["developed", "developing", "overdeveloped"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-bold text-emerald-700">grow</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="2" data-ans='["growth"]'></td>
+                                        <td class="border-l border-slate-200 text-slate-500 italic text-[12px] text-center">fully-grown</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="input-blank w-full text-[13px]" data-ex="2" data-ans='["mature", "reach maturity"]'></td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="2" data-ans='["maturity"]'></td>
+                                        <td class="border-l border-slate-200 font-bold text-emerald-700">mature</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-check-2" onclick="checkExercise(2)" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.1</button>
+                            <span id="score-2" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">3</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 4: Development Reading ==================== -->
+                <div id="page-4" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">4. Adolescence (Reading)</h3>
+                        </div>
+
+                        <p class="mb-4 text-[13px] text-slate-500 italic text-center">Hover over dotted words to see definitions. Click to hear pronunciation.</p>
+
+                        <!-- Reading Text -->
+                        <div class="bg-emerald-50/60 border border-emerald-100 rounded-md p-6 text-slate-800 text-[14px] leading-[1.8] shadow-sm font-serif">
+                            <p class="mb-4">The final stage before adulthood is <span class="vocab-word" onclick="speakWord('adolescence')">adolescence<span class="vocab-tooltip">the stage between childhood and adulthood 🔊</span></span>. This is a period of <span class="vocab-word" onclick="speakWord('transition')">transition<span class="vocab-tooltip">a change from one state to another 🔊</span></span> for teenagers and there are many crucial milestones. Socially and emotionally, teens worry that they may not be developing at the same rate as their <span class="vocab-word" onclick="speakWord('peers')">peers<span class="vocab-tooltip">people of the same age or status 🔊</span></span>. They become extremely self-conscious and may be overly sensitive about their appearance. Teens may rebel against their parents but are also more able to accept the <span class="vocab-word" onclick="speakWord('consequences')">consequences<span class="vocab-tooltip">results or effects of an action 🔊</span></span> of their actions.</p>
                             
-                            <div class="flex-1 mx-4 flex items-center space-x-3">
-                                <span id="audio-current-time" class="text-xs font-mono text-gray-500 w-10 text-right">00:00</span>
-                                <div class="relative w-full h-2 bg-gray-300 rounded-full cursor-pointer flex-1 flex items-center group">
-                                     <input type="range" id="audio-progress" class="absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
-                                     <div id="audio-progress-bar" class="absolute h-full bg-emerald-500 rounded-full pointer-events-none group-hover:bg-emerald-600 transition-colors" style="width: 0%;"></div>
+                            <p>This is also a period of enormous physical change and adolescents experience changes in their physical development at a rate <span class="vocab-word" onclick="speakWord('unparalleled')">unparalleled<span class="vocab-tooltip">having no equal; exceptional 🔊</span></span> since infancy. These changes include significant gains in height and weight. Within a year, boys and girls can gain an average of 4.1 inches and 3.5 inches in height respectively. This growth spurt typically occurs two years earlier for girls than for boys and can tend to make both sexes go through a clumsy phase. In terms of their <span class="vocab-word" onclick="speakWord('cognitive')">cognitive<span class="vocab-tooltip">connected with thinking or mental processes 🔊</span></span> development, adolescents have greater reasoning skills and have developed the ability to think logically and hypothetically. They are also able to discuss more <span class="vocab-word" onclick="speakWord('abstract')">abstract<span class="vocab-tooltip">existing in thought, not physical 🔊</span></span> <span class="vocab-word" onclick="speakWord('concepts')">concepts<span class="vocab-tooltip">ideas or principles 🔊</span></span>. They should also have developed strategies to help them study.</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">4</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 5: Adolescence Gap Fill ==================== -->
+                <div id="page-5" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Vocabulary Gap Fill</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">4.1</span> Complete the following sentences with words from the text on the left.</p>
+                        
+                        <div class="bg-emerald-50/50 border border-emerald-200 p-4 rounded mb-6 flex flex-wrap gap-2.5 font-mono text-[11px] justify-center shadow-inner" id="wb-3">
+                            <button class="word-choice" onclick="selectWord(this)" data-word="peers">peers</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="abstract">abstract</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="concept">concept</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="transition">transition</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="unparalleled">unparalleled</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="consequence">consequence</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="rate">rate</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="typically">typically</button>
+                        </div>
+
+                        <ol class="list-decimal list-outside ml-4 space-y-4 text-slate-800 text-[13px] leading-loose">
+                            <li>First-year students often struggle with the <span class="match-slot" onclick="placeWord(this)" data-ex="3" data-ans='["transition"]'></span> from high school to university.</li>
+                            <li>The <span class="match-slot" onclick="placeWord(this)" data-ex="3" data-ans='["rate"]'></span> at which a change occurs can cause problems for both the very young and the elderly.</li>
+                            <li>It can be less stressful to make a presentation to your <span class="match-slot" onclick="placeWord(this)" data-ex="3" data-ans='["peers"]'></span> rather than to your teachers.</li>
+                            <li>The increase in violence among young people may be a <span class="match-slot" onclick="placeWord(this)" data-ex="3" data-ans='["consequence"]'></span> of watching too much violence on TV and in video games.</li>
+                            <li>Petrol prices are increasing at a speed that is <span class="match-slot" onclick="placeWord(this)" data-ex="3" data-ans='["unparalleled"]'></span> since the oil crisis of the 70s.</li>
+                            <li>Teenagers <span class="match-slot" onclick="placeWord(this)" data-ex="3" data-ans='["may", "typically"]'></span> rebel against their parents between the ages of 14 and 16.</li>
+                            <li>In part three of the speaking test you are expected to be able to talk about more <span class="match-slot" onclick="placeWord(this)" data-ex="3" data-ans='["abstract"]'></span> topics.</li>
+                            <li>Infinity is a very difficult <span class="match-slot" onclick="placeWord(this)" data-ex="3" data-ans='["concept"]'></span> for children to grasp.</li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-check-3" onclick="checkExercise(3)" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 4.1</button>
+                            <span id="score-3" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">5</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 6: Categorization ==================== -->
+                <div id="page-6" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">5. Categorization</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">5.1</span> What stage would you associate the following words and phrases with? Write the words in the correct column below.</p>
+                        
+                        <div class="bg-white border border-slate-200 p-4 rounded mb-6 font-mono text-[11px] leading-relaxed text-center font-bold text-slate-600 shadow-inner">
+                            crawling | irresponsible | overindulgent | patient | throw a tantrum | unsteady | immature | nurturing | overprotective | rebellious | tolerant
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <!-- Childhood Column -->
+                            <div class="bg-amber-50/50 rounded p-4 border border-amber-100 shadow-sm">
+                                <h4 class="text-center font-bold text-amber-800 text-sm border-b-2 border-amber-200 pb-1 mb-3 uppercase tracking-wide">Childhood</h4>
+                                <div class="space-y-2 flex flex-col items-center">
+                                    <span class="text-slate-400 italic text-[11px]">Example: clumsy</span>
+                                    <input type="text" class="input-blank w-full max-w-[140px] text-xs child-input" placeholder="1." data-ex="4" data-ans='["crawling", "immature", "irresponsible", "rebellious", "throw a tantrum", "unsteady"]'>
+                                    <input type="text" class="input-blank w-full max-w-[140px] text-xs child-input" placeholder="2." data-ex="4" data-ans='["crawling", "immature", "irresponsible", "rebellious", "throw a tantrum", "unsteady"]'>
+                                    <input type="text" class="input-blank w-full max-w-[140px] text-xs child-input" placeholder="3." data-ex="4" data-ans='["crawling", "immature", "irresponsible", "rebellious", "throw a tantrum", "unsteady"]'>
+                                    <input type="text" class="input-blank w-full max-w-[140px] text-xs child-input" placeholder="4." data-ex="4" data-ans='["crawling", "immature", "irresponsible", "rebellious", "throw a tantrum", "unsteady"]'>
+                                    <input type="text" class="input-blank w-full max-w-[140px] text-xs child-input" placeholder="5." data-ex="4" data-ans='["crawling", "immature", "irresponsible", "rebellious", "throw a tantrum", "unsteady"]'>
+                                    <input type="text" class="input-blank w-full max-w-[140px] text-xs child-input" placeholder="6." data-ex="4" data-ans='["crawling", "immature", "irresponsible", "rebellious", "throw a tantrum", "unsteady"]'>
                                 </div>
-                                <span id="audio-total-time" class="text-xs font-mono text-gray-500 w-10">00:00</span>
                             </div>
 
-                            <!-- Volume Control -->
-                            <div class="flex items-center space-x-2 ml-2 pl-4 border-l border-gray-200 hidden sm:flex shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clip-rule="evenodd" />
-                                </svg>
-                                <div class="relative w-16 h-1.5 bg-gray-300 rounded-full cursor-pointer flex items-center group">
-                                     <input type="range" id="audio-volume" class="absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="1" value="1" step="0.05">
-                                     <div id="audio-volume-bar" class="absolute h-full bg-emerald-500 rounded-full pointer-events-none group-hover:bg-emerald-600 transition-colors" style="width: 100%;"></div>
+                            <!-- Parenthood Column -->
+                            <div class="bg-indigo-50/50 rounded p-4 border border-indigo-100 shadow-sm">
+                                <h4 class="text-center font-bold text-indigo-800 text-sm border-b-2 border-indigo-200 pb-1 mb-3 uppercase tracking-wide">Parenthood</h4>
+                                <div class="space-y-2 flex flex-col items-center">
+                                    <span class="text-slate-400 italic text-[11px]">Example: mature</span>
+                                    <input type="text" class="input-blank w-full max-w-[140px] text-xs parent-input" placeholder="1." data-ex="4" data-ans='["nurturing", "overindulgent", "overprotective", "patient", "tolerant"]'>
+                                    <input type="text" class="input-blank w-full max-w-[140px] text-xs parent-input" placeholder="2." data-ex="4" data-ans='["nurturing", "overindulgent", "overprotective", "patient", "tolerant"]'>
+                                    <input type="text" class="input-blank w-full max-w-[140px] text-xs parent-input" placeholder="3." data-ex="4" data-ans='["nurturing", "overindulgent", "overprotective", "patient", "tolerant"]'>
+                                    <input type="text" class="input-blank w-full max-w-[140px] text-xs parent-input" placeholder="4." data-ex="4" data-ans='["nurturing", "overindulgent", "overprotective", "patient", "tolerant"]'>
+                                    <input type="text" class="input-blank w-full max-w-[140px] text-xs parent-input" placeholder="5." data-ex="4" data-ans='["nurturing", "overindulgent", "overprotective", "patient", "tolerant"]'>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="flex items-center gap-3 mt-4">
+                            <button id="btn-check-4" onclick="checkExercise4()" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 5.1</button>
+                            <span id="score-4" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
                     </div>
-                    
-                    <!-- Hidden SoundCloud Widget to power the Custom Audio Player -->
-                    <!-- Note the appended &enable_api=1 to allow Javascript control -->
-                    <iframe id="sc-widget" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A1583784935&auto_play=false&enable_api=1" style="position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none;" frameborder="0" allow="autoplay"></iframe>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">6</span>
+                    </div>
                 </div>
 
-                <p class="mb-4 text-gray-600">Listen to the audio and complete the table below. Write <strong>NO MORE THAN TWO WORDS</strong> for each answer.</p>
+                <!-- ==================== PAGE 7: Data & Statistics ==================== -->
+                <div id="page-7" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">6. Data & Statistics</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
 
-                <div class="overflow-x-auto">
-                    <table class="min-w-full text-sm">
-                        <thead>
-                            <tr>
-                                <th>Stage</th>
-                                <th>Social and emotional milestones</th>
-                                <th>Physical milestones</th>
-                                <th>Cognitive and communicative milestones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="font-semibold text-emerald-700">Infant</td>
-                                <td>likes to mimic, tries to see how parents react to their (1) <input type="text" class="input-blank w-24 interactive-input" data-ex="0" data-ans='["behaviour", "behavior"]'></td>
-                                <td>can sit and stand without help</td>
-                                <td>can use basic words and (2) <input type="text" class="input-blank w-24 interactive-input" data-ex="0" data-ans='["gestures"]'>, uses objects for their intended purpose</td>
-                            </tr>
-                            <tr>
-                                <td class="font-semibold text-emerald-700">(3) <input type="text" class="input-blank w-24 interactive-input" data-ex="0" data-ans='["toddler"]'></td>
-                                <td>is more (4) <input type="text" class="input-blank w-24 interactive-input" data-ex="0" data-ans='["independent"]'>, takes turns</td>
-                                <td>is able to run, (5) <input type="text" class="input-blank w-20 interactive-input" data-ex="0" data-ans='["climb"]'> things, ride a tricycle</td>
-                                <td>greater understanding of language, uses (6) <input type="text" class="input-blank w-32 interactive-input" data-ex="0" data-ans='["make-believe", "imagination"]'> in play</td>
-                            </tr>
-                            <tr>
-                                <td class="font-semibold text-emerald-700">Middle childhood</td>
-                                <td>the (7) <input type="text" class="input-blank w-28 interactive-input" data-ex="0" data-ans='["outside world"]'> has a greater impact on development, "some children appear grown up, others are (8) <input type="text" class="input-blank w-24 interactive-input" data-ex="0" data-ans='["immature"]'>"</td>
-                                <td>growth is not as (9) <input type="text" class="input-blank w-20 interactive-input" data-ex="0" data-ans='["rapid"]'> as in earlier stages, (10) <input type="text" class="input-blank w-20 interactive-input" data-ex="0" data-ans='["teeth", "eyes"]'> and (11) <input type="text" class="input-blank w-20 interactive-input" data-ex="0" data-ans='["eyes", "teeth"]'> are the same size as in adulthood</td>
-                                <td>good reading and writing (12) <input type="text" class="input-blank w-20 interactive-input" data-ex="0" data-ans='["skills"]'></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="flex items-center gap-4 mt-4">
-                    <button id="btn-check-0" onclick="checkExercise0()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
-                    <span id="score-0" class="font-bold text-lg hidden"></span>
-                </div>
-            </div>
+                        <p class="mb-6 leading-relaxed text-sm"><span class="font-bold">6.1</span> Many words used to talk about human growth can also be used to talk about data and statistics. Complete the sentences. The first letter is given for you.</p>
 
-            <!-- Exercise 2 -->
-            <div id="inner-ex-2" class="pt-8 border-t-2 border-emerald-100">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-xl font-bold text-gray-800">Exercise 2: Vocabulary Matching</h3>
-                    <span class="text-sm font-semibold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full target-score">Target: 80%</span>
-                </div>
-                <p class="mb-4 text-gray-600">Find words that mean the same as the listening above. <br><strong class="text-emerald-600 text-sm">Click a word in the box to select it, then click a blank line to place it.</strong></p>
-                
-                <div class="bg-emerald-50 text-emerald-800 p-4 rounded-lg mb-6 flex flex-wrap gap-3 font-mono text-sm justify-center select-none" id="wb-1">
-                    <button class="word-choice" onclick="selectWord(this)" data-word="imitating">imitating</button>
-                    <button class="word-choice" onclick="selectWord(this)" data-word="stage">stage</button>
-                    <button class="word-choice" onclick="selectWord(this)" data-word="spontaneously">spontaneously</button>
-                    <button class="word-choice" onclick="selectWord(this)" data-word="acquired">acquired</button>
-                    <button class="word-choice" onclick="selectWord(this)" data-word="mastered">mastered</button>
-                    <button class="word-choice" onclick="selectWord(this)" data-word="unassisted">unassisted</button>
+                        <ol class="list-decimal list-outside ml-4 space-y-6 text-slate-800 text-[15px] leading-loose">
+                            <li>The p<input type="text" class="input-blank w-24" data-ex="5" data-ans='["eriod"]'> of greatest stability occurred between 1985 and 1990.</li>
+                            <li>The greatest period of g<input type="text" class="input-blank w-24" data-ex="5" data-ans='["rowth"]'> was in 2004.</li>
+                            <li>The figures g<input type="text" class="input-blank w-24" data-ex="5" data-ans='["rew"]'> from 2,500 to 6,000 in 2007.</li>
+                            <li>The company g<input type="text" class="input-blank w-24" data-ex="5" data-ans='["ained"]'> an extra 2,000 employees in 2002.</li>
+                            <li>Sales increased at a significant r<input type="text" class="input-blank w-24" data-ex="5" data-ans='["ate"]'> between 2001 and 2005.</li>
+                            <li>The number of migrants rose s<input type="text" class="input-blank w-36" data-ex="5" data-ans='["ignificantly"]'> from 1980 to 2000.</li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-check-5" onclick="checkExercise(5)" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 6.1</button>
+                            <span id="score-5" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">7</span>
+                    </div>
                 </div>
 
-                <ol class="list-decimal list-inside space-y-5 mb-6 leading-loose select-none pl-4">
-                    <li>learned (a skill): <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["acquired"]'></span></li>
-                    <li>copying people: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["imitating"]'></span></li>
-                    <li>without help: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["unassisted", "without support"]'></span></li>
-                    <li>in a natural, unforced way: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["spontaneously"]'></span></li>
-                    <li>developed a skill to a high level: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["mastered"]'></span></li>
-                    <li>phase: <span class="match-slot" onclick="placeWord(this)" data-ex="1" data-ans='["stage", "period"]'></span></li>
-                </ol>
-                
-                <div class="flex items-center gap-4">
-                    <button id="btn-check-1" onclick="checkExercise(1)" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
-                    <span id="score-1" class="font-bold text-lg hidden"></span>
+                <!-- ==================== PAGE 8: Idioms ==================== -->
+                <div id="page-8" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">7. The Mind (Idioms)</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-[13px]"><span class="font-bold">7.1</span> Match the phrases in the box with their definitions below. <strong class="text-emerald-700">Click a phrase to select it, then click a blank line to place it.</strong></p>
+
+                        <div class="bg-emerald-50/50 border border-emerald-200 p-4 rounded mb-6 flex flex-wrap gap-2.5 font-mono text-[11px] justify-center shadow-inner" id="wb-6">
+                            <button class="word-choice" onclick="selectWord(this)" data-word="bear in mind">bear in mind</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="put your mind at ease">put your mind at ease</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="my mind went blank">my mind went blank</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="keep an open mind">keep an open mind</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="it slipped my mind">it slipped my mind</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="have something in mind">have something in mind</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="broaden the mind">broaden the mind</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="have something on your mind">have something on your mind</button>
+                        </div>
+
+                        <ol class="list-[upper-alpha] list-outside ml-4 space-y-4 text-slate-800 text-[13px] leading-loose">
+                            <li>increase your knowledge: <span class="match-slot !min-w-[12rem]" onclick="placeWord(this)" data-ex="6" data-ans='["broaden the mind"]'></span></li>
+                            <li>I forgot: <span class="match-slot !min-w-[12rem]" onclick="placeWord(this)" data-ex="6" data-ans='["it slipped my mind"]'></span></li>
+                            <li>I couldn't remember a thing: <span class="match-slot !min-w-[12rem]" onclick="placeWord(this)" data-ex="6" data-ans='["my mind went blank"]'></span></li>
+                            <li>remember: <span class="match-slot !min-w-[12rem]" onclick="placeWord(this)" data-ex="6" data-ans='["bear in mind"]'></span></li>
+                            <li>try not to judge before knowing facts: <span class="match-slot !min-w-[12rem]" onclick="placeWord(this)" data-ex="6" data-ans='["keep an open mind"]'></span></li>
+                            <li>be worried about something: <span class="match-slot !min-w-[12rem]" onclick="placeWord(this)" data-ex="6" data-ans='["have something on your mind"]'></span></li>
+                            <li>have an idea: <span class="match-slot !min-w-[12rem]" onclick="placeWord(this)" data-ex="6" data-ans='["have something in mind"]'></span></li>
+                            <li>stop you from worrying: <span class="match-slot !min-w-[12rem]" onclick="placeWord(this)" data-ex="6" data-ans='["put your mind at ease"]'></span></li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-check-6" onclick="checkExercise(6)" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 7.1</button>
+                            <span id="score-6" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">8</span>
+                    </div>
                 </div>
-            </div>
 
-        </div>
+                <!-- ==================== PAGE 9: Error Correction ==================== -->
+                <div id="page-9" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">8. Error Correction</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
 
-        <!-- Exercise 3: Word Building -->
-        <div id="section-1" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Exercise 3: Word Building</h3>
-                <span class="text-sm font-semibold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full target-score">Target: 80%</span>
-            </div>
-            <p class="mb-4 text-gray-600">Complete the table with the correct forms of the words.</p>
-            
-            <table class="w-full max-w-lg mx-auto text-center border-2 border-gray-300">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="text-center py-3">Verb</th>
-                        <th class="text-center py-3">Noun</th>
-                        <th class="text-center py-3">Adjective</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-200">
-                    <tr>
-                        <td class="py-3 font-semibold text-gray-700">develop</td>
-                        <td class="py-3"><input type="text" class="input-blank w-28 interactive-input" data-ex="2" data-ans='["development"]'></td>
-                        <td class="py-3"><input type="text" class="input-blank w-36 interactive-input" data-ex="2" data-ans='["developed", "developing", "overdeveloped"]'></td>
-                    </tr>
-                    <tr>
-                        <td class="py-3 font-semibold text-gray-700">grow</td>
-                        <td class="py-3"><input type="text" class="input-blank w-28 interactive-input" data-ex="2" data-ans='["growth"]'></td>
-                        <td class="py-3 text-gray-500">fully-grown</td>
-                    </tr>
-                    <tr>
-                        <td class="py-3"><input type="text" class="input-blank w-28 interactive-input" data-ex="2" data-ans='["mature", "reach maturity"]'></td>
-                        <td class="py-3"><input type="text" class="input-blank w-28 interactive-input" data-ex="2" data-ans='["maturity"]'></td>
-                        <td class="py-3 font-semibold text-gray-700">mature</td>
-                    </tr>
-                </tbody>
-            </table>
-            
-            <div class="flex items-center gap-4 mt-6">
-                <button id="btn-check-2" onclick="checkExercise(2)" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
-                <span id="score-2" class="font-bold text-lg hidden"></span>
-            </div>
-        </div>
+                        <p class="mb-6 leading-relaxed text-sm"><span class="font-bold">8.1</span> Find and correct the vocabulary mistakes in these sentences. Type the correct word in the box provided.</p>
 
-        <!-- Exercise 4: Reading -->
-        <div id="section-2" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Exercise 4: Development in Adolescence</h3>
-                <span class="text-sm font-semibold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full target-score">Target: 80%</span>
-            </div>
-            
-            <!-- Reading Text -->
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-5 rounded-r-lg mb-6 text-gray-700 leading-relaxed shadow-sm">
-                <p class="text-sm text-blue-500 italic mb-2">Hover over highlighted words to see definitions. Click to hear pronunciation.</p>
-                <p class="mb-3">The final stage before adulthood is <span class="vocab-word" onclick="speakWord('adolescence')">adolescence<span class="vocab-tooltip">the stage between childhood and adulthood 🔊</span></span>. This is a period of <span class="vocab-word" onclick="speakWord('transition')">transition<span class="vocab-tooltip">a change from one state to another 🔊</span></span> for teenagers and there are many crucial milestones. Socially and emotionally, teens worry that they may not be developing at the same rate as their <span class="vocab-word" onclick="speakWord('peers')">peers<span class="vocab-tooltip">people of the same age or status 🔊</span></span>. They become extremely self-conscious and may be overly sensitive about their appearance. Teens may rebel against their parents but are also more able to accept the <span class="vocab-word" onclick="speakWord('consequences')">consequences<span class="vocab-tooltip">results or effects of an action 🔊</span></span> of their actions.</p>
-                <p>This is also a period of enormous physical change and adolescents experience changes in their physical development at a rate <span class="vocab-word" onclick="speakWord('unparalleled')">unparalleled<span class="vocab-tooltip">having no equal; exceptional 🔊</span></span> since infancy. These changes include significant gains in height and weight. Within a year, boys and girls can gain an average of 4.1 inches and 3.5 inches in height respectively. This growth spurt typically occurs two years earlier for girls than for boys and can tend to make both sexes go through a clumsy phase. In terms of their <span class="vocab-word" onclick="speakWord('cognitive')">cognitive<span class="vocab-tooltip">connected with thinking or mental processes 🔊</span></span> development, adolescents have greater reasoning skills and have developed the ability to think logically and hypothetically. They are also able to discuss more <span class="vocab-word" onclick="speakWord('abstract')">abstract<span class="vocab-tooltip">existing in thought, not physical 🔊</span></span> <span class="vocab-word" onclick="speakWord('concepts')">concepts<span class="vocab-tooltip">ideas or principles 🔊</span></span>. They should also have developed strategies to help them study.</p>
-            </div>
+                        <ol class="list-decimal list-outside ml-4 space-y-5 text-slate-800 text-[14px] leading-loose">
+                            <li class="bg-white border border-slate-200 p-4 rounded shadow-sm">
+                                <span class="text-slate-800 block mb-2">I will always <span class="line-through text-red-600 decoration-2 opacity-60">memory</span> how beautiful the sunset was on that day.</span>
+                                <div class="flex items-center">
+                                    <span class="text-xs font-semibold text-emerald-700 uppercase tracking-wide mr-3">Correction:</span>
+                                    <input type="text" class="input-blank w-32" data-ex="7" data-ans='["remember"]'>
+                                </div>
+                            </li>
+                            <li class="bg-white border border-slate-200 p-4 rounded shadow-sm">
+                                <span class="text-slate-800 block mb-2">I have very fond <span class="line-through text-red-600 decoration-2 opacity-60">reminders</span> of my school days.</span>
+                                <div class="flex items-center">
+                                    <span class="text-xs font-semibold text-emerald-700 uppercase tracking-wide mr-3">Correction:</span>
+                                    <input type="text" class="input-blank w-32" data-ex="7" data-ans='["memories"]'>
+                                </div>
+                            </li>
+                            <li class="bg-white border border-slate-200 p-4 rounded shadow-sm">
+                                <span class="text-slate-800 block mb-2">Could you <span class="line-through text-red-600 decoration-2 opacity-60">remember</span> me to buy some bread on the way home?</span>
+                                <div class="flex items-center">
+                                    <span class="text-xs font-semibold text-emerald-700 uppercase tracking-wide mr-3">Correction:</span>
+                                    <input type="text" class="input-blank w-32" data-ex="7" data-ans='["remind"]'>
+                                </div>
+                            </li>
+                            <li class="bg-white border border-slate-200 p-4 rounded shadow-sm">
+                                <span class="text-slate-800 block mb-2">At school we always had to <span class="line-through text-red-600 decoration-2 opacity-60">memory</span> long lists of vocabulary.</span>
+                                <div class="flex items-center">
+                                    <span class="text-xs font-semibold text-emerald-700 uppercase tracking-wide mr-3">Correction:</span>
+                                    <input type="text" class="input-blank w-32" data-ex="7" data-ans='["memorise", "memorize"]'>
+                                </div>
+                            </li>
+                            <li class="bg-white border border-slate-200 p-4 rounded shadow-sm">
+                                <span class="text-slate-800 block mb-2">I <span class="line-through text-red-600 decoration-2 opacity-60">remind</span> how happy our childhood was.</span>
+                                <div class="flex items-center">
+                                    <span class="text-xs font-semibold text-emerald-700 uppercase tracking-wide mr-3">Correction:</span>
+                                    <input type="text" class="input-blank w-32" data-ex="7" data-ans='["remember"]'>
+                                </div>
+                            </li>
+                        </ol>
 
-            <p class="mb-4 text-gray-600">Complete the following sentences with words from the text.</p>
-            <div class="bg-indigo-50 text-indigo-800 p-4 rounded-lg mb-6 flex flex-wrap gap-3 font-mono text-sm justify-center select-none" id="wb-3">
-                <button class="word-choice" onclick="selectWord(this)" data-word="peers">peers</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="abstract">abstract</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="concept">concept</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="transition">transition</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="unparalleled">unparalleled</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="consequence">consequence</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="rate">rate</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="typically">typically</button>
-            </div>
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-check-7" onclick="checkExercise(7)" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 8.1</button>
+                            <span id="score-7" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">9</span>
+                    </div>
+                </div>
 
-            <ol class="list-decimal list-inside space-y-5 mb-6 leading-loose select-none pl-4">
-                <li>First-year students often struggle with the <span class="match-slot" onclick="placeWord(this)" data-ex="3" data-ans='["transition"]'></span> from high school to university.</li>
-                <li>The <span class="match-slot" onclick="placeWord(this)" data-ex="3" data-ans='["rate"]'></span> at which a change occurs can cause problems for both the very young and the elderly.</li>
-                <li>It can be less stressful to make a presentation to your <span class="match-slot" onclick="placeWord(this)" data-ex="3" data-ans='["peers"]'></span> rather than to your teachers.</li>
-                <li>The increase in violence among young people may be a <span class="match-slot" onclick="placeWord(this)" data-ex="3" data-ans='["consequence"]'></span> of watching too much violence on TV and in video games.</li>
-                <li>Petrol prices are increasing at a speed that is <span class="match-slot" onclick="placeWord(this)" data-ex="3" data-ans='["unparalleled"]'></span> since the oil crisis of the 70s.</li>
-                <li>Teenagers <span class="match-slot" onclick="placeWord(this)" data-ex="3" data-ans='["may", "typically"]'></span> rebel against their parents between the ages of 14 and 16.</li>
-                <li>In part three of the speaking test you are expected to be able to talk about more <span class="match-slot" onclick="placeWord(this)" data-ex="3" data-ans='["abstract"]'></span> topics.</li>
-                <li>Infinity is a very difficult <span class="match-slot" onclick="placeWord(this)" data-ex="3" data-ans='["concept"]'></span> for children to grasp.</li>
-            </ol>
-            
-            <div class="flex items-center gap-4">
-                <button id="btn-check-3" onclick="checkExercise(3)" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
-                <span id="score-3" class="font-bold text-lg hidden"></span>
             </div>
         </div>
 
-        <!-- Exercise 5: Categories -->
-        <div id="section-3" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Exercise 5: Categorization</h3>
-                <span class="text-sm font-semibold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full target-score">Target: 80%</span>
-            </div>
-            <p class="mb-4 text-gray-600">What stage would you associate the following words and phrases with? Write the words in the correct column below.</p>
-            
-            <div class="bg-gray-100 border border-gray-300 p-4 rounded-lg mb-6 font-mono text-sm leading-relaxed text-center" id="wb-4">
-                crawling | irresponsible | overindulgent | patient | throw a tantrum | unsteady | immature | nurturing | overprotective | rebellious | tolerant
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
-                <!-- Childhood Column -->
-                <div class="bg-yellow-50 rounded-lg p-5 border border-yellow-200 shadow-sm">
-                    <h4 class="text-center font-bold text-yellow-800 text-lg border-b-2 border-yellow-300 pb-2 mb-4">Childhood</h4>
-                    <div class="space-y-3 flex flex-col items-center">
-                        <span class="text-gray-500 italic text-sm">Example: clumsy</span>
-                        <input type="text" class="input-blank w-full max-w-[200px] interactive-input child-input" placeholder="1." data-ex="4">
-                        <input type="text" class="input-blank w-full max-w-[200px] interactive-input child-input" placeholder="2." data-ex="4">
-                        <input type="text" class="input-blank w-full max-w-[200px] interactive-input child-input" placeholder="3." data-ex="4">
-                        <input type="text" class="input-blank w-full max-w-[200px] interactive-input child-input" placeholder="4." data-ex="4">
-                        <input type="text" class="input-blank w-full max-w-[200px] interactive-input child-input" placeholder="5." data-ex="4">
-                        <input type="text" class="input-blank w-full max-w-[200px] interactive-input child-input" placeholder="6." data-ex="4">
-                    </div>
-                </div>
-
-                <!-- Parenthood Column -->
-                <div class="bg-purple-50 rounded-lg p-5 border border-purple-200 shadow-sm">
-                    <h4 class="text-center font-bold text-purple-800 text-lg border-b-2 border-purple-300 pb-2 mb-4">Parenthood</h4>
-                    <div class="space-y-3 flex flex-col items-center">
-                        <span class="text-gray-500 italic text-sm">Example: mature</span>
-                        <input type="text" class="input-blank w-full max-w-[200px] interactive-input parent-input" placeholder="1." data-ex="4">
-                        <input type="text" class="input-blank w-full max-w-[200px] interactive-input parent-input" placeholder="2." data-ex="4">
-                        <input type="text" class="input-blank w-full max-w-[200px] interactive-input parent-input" placeholder="3." data-ex="4">
-                        <input type="text" class="input-blank w-full max-w-[200px] interactive-input parent-input" placeholder="4." data-ex="4">
-                        <input type="text" class="input-blank w-full max-w-[200px] interactive-input parent-input" placeholder="5." data-ex="4">
-                    </div>
-                </div>
-            </div>
-            
-            <div class="flex items-center gap-4">
-                <button id="btn-check-4" onclick="checkExercise4()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
-                <span id="score-4" class="font-bold text-lg hidden"></span>
-            </div>
-        </div>
-
-        <!-- Exercise 6: Statistics -->
-        <div id="section-4" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Exercise 6: Data & Statistics Vocabulary</h3>
-                <span class="text-sm font-semibold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full target-score">Target: 80%</span>
-            </div>
-            <p class="mb-4 text-gray-600">Many words used to talk about human growth can also be used to talk about data and statistics. Complete the sentences. The first letter is given for you.</p>
-            
-            <ol class="list-decimal list-inside space-y-4 mb-6 leading-loose pl-4">
-                <li>The p<input type="text" class="input-blank w-24 interactive-input" data-ex="5" data-ans='["eriod"]'> of greatest stability occurred between 1985 and 1990.</li>
-                <li>The greatest period of g<input type="text" class="input-blank w-24 interactive-input" data-ex="5" data-ans='["rowth"]'> was in 2004.</li>
-                <li>The figures g<input type="text" class="input-blank w-24 interactive-input" data-ex="5" data-ans='["rew"]'> from 2,500 to 6,000 in 2007.</li>
-                <li>The company g<input type="text" class="input-blank w-24 interactive-input" data-ex="5" data-ans='["ained"]'> an extra 2,000 employees in 2002.</li>
-                <li>Sales increased at a significant r<input type="text" class="input-blank w-24 interactive-input" data-ex="5" data-ans='["ate"]'> between 2001 and 2005.</li>
-                <li>The number of migrants rose s<input type="text" class="input-blank w-32 interactive-input" data-ex="5" data-ans='["ignificantly"]'> from 1980 to 2000.</li>
-            </ol>
-            
-            <div class="flex items-center gap-4">
-                <button id="btn-check-5" onclick="checkExercise(5)" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
-                <span id="score-5" class="font-bold text-lg hidden"></span>
-            </div>
-        </div>
-
-        <!-- Exercise 7: Idioms -->
-        <div id="section-5" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Exercise 7: The Mind (Idioms)</h3>
-                <span class="text-sm font-semibold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full target-score">Target: 80%</span>
-            </div>
-            <p class="mb-4 text-gray-600">Match the phrases in the box with their definitions below. <br><strong class="text-emerald-600 text-sm">Click a phrase to select it, then click a blank line to place it.</strong></p>
-            
-            <div class="bg-orange-50 text-orange-800 p-4 rounded-lg mb-6 flex flex-wrap gap-3 font-mono text-sm justify-center select-none" id="wb-6">
-                <button class="word-choice" onclick="selectWord(this)" data-word="bear in mind">bear in mind</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="put your mind at ease">put your mind at ease</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="my mind went blank">my mind went blank</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="keep an open mind">keep an open mind</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="it slipped my mind">it slipped my mind</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="have something in mind">have something in mind</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="broaden the mind">broaden the mind</button>
-                <button class="word-choice" onclick="selectWord(this)" data-word="have something on your mind">have something on your mind</button>
-            </div>
-
-            <ol class="list-[upper-alpha] list-inside space-y-5 mb-6 leading-loose select-none pl-4">
-                <li>increase your knowledge: <span class="match-slot !min-w-[14rem]" onclick="placeWord(this)" data-ex="6" data-ans='["broaden the mind"]'></span></li>
-                <li>I forgot: <span class="match-slot !min-w-[14rem]" onclick="placeWord(this)" data-ex="6" data-ans='["it slipped my mind"]'></span></li>
-                <li>I couldn't remember a thing: <span class="match-slot !min-w-[14rem]" onclick="placeWord(this)" data-ex="6" data-ans='["my mind went blank"]'></span></li>
-                <li>remember: <span class="match-slot !min-w-[14rem]" onclick="placeWord(this)" data-ex="6" data-ans='["bear in mind"]'></span></li>
-                <li>try not to judge before you know the facts: <span class="match-slot !min-w-[14rem]" onclick="placeWord(this)" data-ex="6" data-ans='["keep an open mind"]'></span></li>
-                <li>be worried about something: <span class="match-slot !min-w-[14rem]" onclick="placeWord(this)" data-ex="6" data-ans='["have something on your mind"]'></span></li>
-                <li>have an idea: <span class="match-slot !min-w-[14rem]" onclick="placeWord(this)" data-ex="6" data-ans='["have something in mind"]'></span></li>
-                <li>stop you from worrying: <span class="match-slot !min-w-[14rem]" onclick="placeWord(this)" data-ex="6" data-ans='["put your mind at ease"]'></span></li>
-            </ol>
-            
-            <div class="flex items-center gap-4">
-                <button id="btn-check-6" onclick="checkExercise(6)" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
-                <span id="score-6" class="font-bold text-lg hidden"></span>
-            </div>
-        </div>
-
-        <!-- Exercise 8: Errors -->
-        <div id="section-6" class="bg-white rounded-b-xl rounded-t-none shadow-md p-6 mb-8 exercise-section section-hidden">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold text-gray-800">Exercise 8: Error Correction</h3>
-                <span class="text-sm font-semibold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full target-score">Target: 80%</span>
-            </div>
-            <p class="mb-6 text-gray-600">Find and correct the vocabulary mistakes in these sentences. Type the correct word in the box provided.</p>
-            
-            <ol class="list-decimal list-inside space-y-6 mb-6 leading-loose pl-4">
-                <li class="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                    <span class="text-gray-800">I will always memory how beautiful the sunset was on that day.</span>
-                    <div class="mt-2 flex items-center ml-5">
-                        <span class="text-sm font-semibold text-emerald-700 mr-3">Correction:</span>
-                        <input type="text" class="input-blank w-32 interactive-input" data-ex="7" data-ans='["remember"]'>
-                    </div>
-                </li>
-                <li class="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                    <span class="text-gray-800">I have very fond reminders of my school days.</span>
-                    <div class="mt-2 flex items-center ml-5">
-                        <span class="text-sm font-semibold text-emerald-700 mr-3">Correction:</span>
-                        <input type="text" class="input-blank w-32 interactive-input" data-ex="7" data-ans='["memories"]'>
-                    </div>
-                </li>
-                <li class="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                    <span class="text-gray-800">Could you remember me to buy some bread on the way home?</span>
-                    <div class="mt-2 flex items-center ml-5">
-                        <span class="text-sm font-semibold text-emerald-700 mr-3">Correction:</span>
-                        <input type="text" class="input-blank w-32 interactive-input" data-ex="7" data-ans='["remind"]'>
-                    </div>
-                </li>
-                <li class="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                    <span class="text-gray-800">At school we always had to memory long lists of vocabulary.</span>
-                    <div class="mt-2 flex items-center ml-5">
-                        <span class="text-sm font-semibold text-emerald-700 mr-3">Correction:</span>
-                        <input type="text" class="input-blank w-32 interactive-input" data-ex="7" data-ans='["memorise", "memorize"]'>
-                    </div>
-                </li>
-                <li class="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                    <span class="text-gray-800">I remind how happy our childhood was.</span>
-                    <div class="mt-2 flex items-center ml-5">
-                        <span class="text-sm font-semibold text-emerald-700 mr-3">Correction:</span>
-                        <input type="text" class="input-blank w-32 interactive-input" data-ex="7" data-ans='["remember"]'>
-                    </div>
-                </li>
-            </ol>
-            
-            <div class="flex items-center gap-4">
-                <button id="btn-check-7" onclick="checkExercise(7)" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-6 rounded shadow transition">Check Answers</button>
-                <span id="score-7" class="font-bold text-lg hidden"></span>
+        <!-- Sticky Right Arrow (Desktop Only) -->
+        <div class="hidden lg:block w-10 shrink-0 ml-2 xl:ml-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="next-btn" onclick="goNext()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Next Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
             </div>
         </div>
 
     </div>
 
+    <!-- Mobile Fixed Bottom Navigation -->
+    <div class="lg:hidden fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-slate-200 p-3 flex justify-between z-50 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.1)]">
+        <button id="prev-btn-mobile" onclick="goPrev()" class="ui-font font-bold px-5 py-2 rounded-lg text-slate-700 bg-slate-100 active:bg-slate-200 transition-colors flex items-center gap-2">
+            &larr; Prev
+        </button>
+        <button id="next-btn-mobile" onclick="goNext()" class="ui-font font-bold px-5 py-2 rounded-lg text-white bg-emerald-600 active:bg-emerald-700 transition-colors flex items-center gap-2 shadow-sm">
+            Next &rarr;
+        </button>
+    </div>
+
     <script>
-        const REQUIRED_SCORE = 0.8; // 80% to pass
+        const REQUIRED_SCORE = 0.8;
+        const totalPages = 10; // Pages 0 to 9
+        let currentSpread = 0; // For desktop (0 = pages 0,1; 1 = pages 2,3; etc.)
+        let currentMobilePage = 0;
 
-        // --- Audio Player Initialization via SoundCloud Widget API ---
-        function initAudioPlayer() {
-            const iframeElement = document.getElementById('sc-widget');
-            if (!iframeElement) return;
+        function updatePagination() {
+            const isDesktop = window.innerWidth >= 1024;
+            const pages = document.querySelectorAll('.page-content');
             
-            const widget = SC.Widget(iframeElement);
-            const playBtn = document.getElementById('audio-play-btn');
-            const playIcon = document.getElementById('play-icon');
-            const pauseIcon = document.getElementById('pause-icon');
-            const progressBar = document.getElementById('audio-progress');
-            const progressFill = document.getElementById('audio-progress-bar');
-            const currentTimeEl = document.getElementById('audio-current-time');
-            const totalTimeEl = document.getElementById('audio-total-time');
-            const volumeBar = document.getElementById('audio-volume');
-            const volumeFill = document.getElementById('audio-volume-bar');
+            // Hide all pages
+            pages.forEach(p => p.classList.add('hidden'));
 
-            let isPlaying = false;
-            let durationSec = 0;
+            if (isDesktop) {
+                let leftIdx = currentSpread * 2;
+                let rightIdx = leftIdx + 1;
+                
+                const leftPage = document.getElementById(`page-${leftIdx}`);
+                const rightPage = document.getElementById(`page-${rightIdx}`);
+                
+                if(leftPage) leftPage.classList.remove('hidden');
+                if(rightPage) rightPage.classList.remove('hidden');
 
-            const formatTime = (timeInSeconds) => {
-                if (isNaN(timeInSeconds) || timeInSeconds === Infinity) return "00:00";
-                const min = Math.floor(timeInSeconds / 60);
-                const sec = Math.floor(timeInSeconds % 60);
-                return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
-            };
-
-            const updateDuration = () => {
-                widget.getDuration((durationMs) => {
-                    if (durationMs) {
-                        durationSec = durationMs / 1000;
-                        totalTimeEl.textContent = formatTime(durationSec);
-                        progressBar.max = durationSec;
-                    }
-                });
-            };
-
-            widget.bind(SC.Widget.Events.READY, () => {
-                updateDuration();
-            });
-
-            widget.bind(SC.Widget.Events.PLAY_PROGRESS, (info) => {
-                if (!durationSec) updateDuration(); // Fallback if READY didn't get it
-                const currentPositionSec = info.currentPosition / 1000;
-                currentTimeEl.textContent = formatTime(currentPositionSec);
-                progressBar.value = currentPositionSec;
-                if (durationSec > 0) {
-                    const percent = (currentPositionSec / durationSec) * 100;
-                    progressFill.style.width = `${percent}%`;
-                }
-            });
-
-            widget.bind(SC.Widget.Events.PLAY, () => {
-                isPlaying = true;
-                playIcon.classList.add('hidden');
-                pauseIcon.classList.remove('hidden');
-                updateDuration();
-            });
-
-            widget.bind(SC.Widget.Events.PAUSE, () => {
-                isPlaying = false;
-                pauseIcon.classList.add('hidden');
-                playIcon.classList.remove('hidden');
-            });
-
-            widget.bind(SC.Widget.Events.FINISH, () => {
-                isPlaying = false;
-                playIcon.classList.remove('hidden');
-                pauseIcon.classList.add('hidden');
-                progressFill.style.width = '0%';
-                progressBar.value = 0;
-                widget.seekTo(0);
-            });
-
-            playBtn.addEventListener('click', () => {
-                widget.toggle();
-            });
-
-            progressBar.addEventListener('input', () => {
-                widget.seekTo(progressBar.value * 1000);
-            });
-
-            if (volumeBar && volumeFill) {
-                volumeBar.addEventListener('input', () => {
-                    const vol = volumeBar.value;
-                    widget.setVolume(vol * 100); 
-                    volumeFill.style.width = `${vol * 100}%`;
-                });
-            }
-        }
-        
-        document.addEventListener('DOMContentLoaded', initAudioPlayer);
-
-
-        // --- Audio Pronunciation Logic ---
-        function speakWord(word) {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel(); 
-                const utterance = new SpeechSynthesisUtterance(word);
-                utterance.lang = 'en-US';
-                utterance.rate = 0.85; 
-                window.speechSynthesis.speak(utterance);
-                showToast(`Pronouncing: ${word}`, "success");
+                // Update Nav Buttons
+                document.getElementById('prev-btn').disabled = currentSpread === 0;
+                document.getElementById('next-btn').disabled = currentSpread >= Math.ceil(totalPages/2) - 1;
+                
             } else {
-                showToast("Audio pronunciation is not supported in your browser.", "error");
+                const activePage = document.getElementById(`page-${currentMobilePage}`);
+                if(activePage) activePage.classList.remove('hidden');
+
+                // Update Mobile Nav
+                const prevMob = document.getElementById('prev-btn-mobile');
+                const nextMob = document.getElementById('next-btn-mobile');
+                if(prevMob) prevMob.style.visibility = currentMobilePage === 0 ? 'hidden' : 'visible';
+                if(nextMob) nextMob.style.visibility = currentMobilePage === totalPages - 1 ? 'hidden' : 'visible';
             }
         }
 
-        // --- Click & Match Logic ---
-        let selectedWordBtn = null;
-
-        function selectWord(btn) {
-            if (btn.classList.contains('used')) return;
-            
-            // Deselect all within the current section
-            const section = btn.closest('.exercise-section');
-            section.querySelectorAll('.word-choice').forEach(b => b.classList.remove('selected'));
-            
-            if (selectedWordBtn === btn) {
-                selectedWordBtn = null; 
-                return;
+        function goNext() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread < Math.ceil(totalPages/2) - 1) currentSpread++;
+            } else {
+                if (currentMobilePage < totalPages - 1) currentMobilePage++;
             }
-            
-            btn.classList.add('selected');
-            selectedWordBtn = btn;
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function placeWord(slot) {
-            if (slot.innerText.trim() !== '') {
-                const existingWord = slot.innerText.trim();
-                const bankBtn = Array.from(slot.closest('.exercise-section').querySelectorAll('.word-choice'))
-                                     .find(b => b.getAttribute('data-word') === existingWord);
-                if (bankBtn) bankBtn.classList.remove('used');
-                slot.innerText = '';
+        function goPrev() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread > 0) currentSpread--;
+            } else {
+                if (currentMobilePage > 0) currentMobilePage--;
             }
-
-            if (selectedWordBtn) {
-                if (selectedWordBtn.closest('.exercise-section') === slot.closest('.exercise-section')) {
-                    slot.innerText = selectedWordBtn.getAttribute('data-word');
-                    selectedWordBtn.classList.add('used');
-                    selectedWordBtn.classList.remove('selected');
-                    selectedWordBtn = null;
-                }
-            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // --- Tab Navigation Logic ---
-        function openTab(tabIndex) {
-            document.querySelectorAll('.exercise-section').forEach(sec => sec.classList.add('section-hidden'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            
-            document.getElementById(`section-${tabIndex}`).classList.remove('section-hidden');
-            document.getElementById(`tab-${tabIndex}`).classList.add('active');
-        }
-
-        // --- Interactive Word Bank (Cross-out effect for typed inputs) ---
-        document.addEventListener('input', (e) => {
-            if (e.target.classList.contains('interactive-input')) {
-                const exerciseIndex = e.target.getAttribute('data-ex');
-                const wb = document.getElementById(`wb-${exerciseIndex}`);
-                if (!wb) return;
-                
-                const inputs = document.querySelectorAll(`input[data-ex="${exerciseIndex}"]`);
-                const typedWords = Array.from(inputs).map(inp => inp.value.trim().toLowerCase());
-                
-                // Ex 4 specific crossout logic (raw words)
-                const textNodes = wb.innerText.split('|').map(s => s.trim().toLowerCase());
-                if(exerciseIndex === "4") {
-                    let newHTML = textNodes.map(word => {
-                        return typedWords.includes(word) ? `<span class="line-through opacity-40">${word}</span>` : word;
-                    }).join(' | ');
-                    wb.innerHTML = newHTML;
-                }
+        window.addEventListener('resize', () => {
+            const isDesktop = window.innerWidth >= 1024;
+            if(isDesktop) {
+                currentSpread = Math.floor(currentMobilePage / 2);
+            } else {
+                currentMobilePage = currentSpread * 2;
             }
+            updatePagination();
         });
 
+        // --- Core UI & Grading Logic ---
         function showToast(message, type) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
             toast.className = `toast ${type} show`;
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        function unlockNext(currentExerciseIndex) {
-            // Keep smooth scrolling behavior when passing, but without "unlocking" restrictions
-            if (currentExerciseIndex === 0) {
-                const target = document.getElementById('inner-ex-2');
-                if (target) {
-                    setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'center' }), 500);
-                }
-            } else if (currentExerciseIndex < 7) {
-                const nextTabIndex = currentExerciseIndex === 1 ? 1 : currentExerciseIndex; // Mapping Ex index to tab index
-                setTimeout(() => {
-                    openTab(nextTabIndex);
-                    const nextTab = document.getElementById(`tab-${nextTabIndex}`);
-                    const tabContainer = document.querySelector('.flex.overflow-x-auto');
-                    if (nextTab && tabContainer) {
-                        const scrollLeftPos = nextTab.offsetLeft - (tabContainer.clientWidth / 2) + (nextTab.clientWidth / 2);
-                        tabContainer.scrollTo({ left: scrollLeftPos, behavior: 'smooth' });
-                    }
-                }, 1000);
-            } else if (currentExerciseIndex === 7) {
-                showToast("🎉 Congratulations! You have completed all exercises!", "success");
-            }
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
         function validateBlanks(inputs) {
             let allFilled = true;
             inputs.forEach(input => {
+                if (input.classList.contains('font-normal')) return; // skip subjective notes
                 const val = input.value !== undefined ? input.value : input.innerText;
-                if (val.trim() === "") {
+                if (val.trim() === "" || val.trim() === "...") {
                     allFilled = false;
                     if(input.classList.contains('match-slot')) {
                         input.style.borderBottomColor = '#ef4444';
                         input.style.backgroundColor = '#fef2f2';
                         setTimeout(() => { input.style.borderBottomColor = ''; input.style.backgroundColor = ''; }, 1500);
                     } else {
-                        input.classList.add('border-yellow-400');
-                        setTimeout(() => input.classList.remove('border-yellow-400'), 1500);
+                        input.style.borderBottomColor = '#f59e0b';
+                        input.style.backgroundColor = '#fef3c7';
+                        setTimeout(() => {
+                            input.style.borderBottomColor = '';
+                            input.style.backgroundColor = '';
+                        }, 1500);
                     }
                 }
             });
@@ -707,25 +750,22 @@
             const percentage = correctCount / totalCount;
             const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
             
-            scoreLabel.classList.remove('hidden', 'text-emerald-600', 'text-red-600');
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
             
             if (percentage >= REQUIRED_SCORE) {
-                scoreLabel.textContent = `✅ Passed! Score: ${scoreText}`;
-                scoreLabel.classList.add('text-emerald-600');
-                showToast("Great job! Moving to the next exercise.", "success");
+                scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
                 
                 const btn = document.getElementById(`btn-check-${exerciseIndex}`);
                 if(btn) {
                     btn.disabled = true;
-                    btn.classList.add('opacity-50', 'cursor-not-allowed');
                     btn.textContent = "Passed";
                 }
-
-                unlockNext(exerciseIndex);
+                showToast("Good job!", "success");
             } else {
-                scoreLabel.textContent = `❌ Failed. Score: ${scoreText} (Need 80%)`;
+                scoreLabel.textContent = `❌ Failed. ${scoreText}`;
                 scoreLabel.classList.add('text-red-600');
-                showToast(`You scored ${Math.round(percentage * 100)}%. Please try again to reach 80%.`, "error");
+                showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
             }
         }
 
@@ -770,7 +810,7 @@
             processScore(exerciseIndex, correctCount, inputs.length);
         }
 
-        // Custom checker for Exercise 5 (Two separate unordered lists)
+        // Custom checker for Exercise 5 Categorization (Two separate unordered lists)
         function checkExercise4() {
             const exerciseIndex = 4;
             const childInputs = document.querySelectorAll('.child-input');
@@ -807,7 +847,7 @@
             processScore(exerciseIndex, correctCount, allInputs.length);
         }
 
-        // Standard exercise checker (Ex 2, 3, 4, 6, 7, 8)
+        // Standard exercise checker (Ex 2, 3, 6, 7, 8)
         function checkExercise(exerciseIndex) {
             const inputs = document.querySelectorAll(`[data-ex="${exerciseIndex}"]`);
             if (!validateBlanks(inputs)) { showToast("Please fill in all the blanks before checking!", "warning"); return; }
@@ -829,6 +869,147 @@
 
             processScore(exerciseIndex, correctCount, inputs.length);
         }
+
+        // --- Click & Match Logic ---
+        let selectedWordBtn = null;
+
+        function selectWord(btn) {
+            if (btn.classList.contains('used')) return;
+            
+            // Deselect all globally to keep it clean
+            document.querySelectorAll('.word-choice').forEach(b => b.classList.remove('selected'));
+            
+            if (selectedWordBtn === btn) {
+                selectedWordBtn = null; 
+                return;
+            }
+            
+            btn.classList.add('selected');
+            selectedWordBtn = btn;
+        }
+
+        function placeWord(slot) {
+            if (slot.innerText.trim() !== '' && slot.innerText.trim() !== '...') {
+                const existingWord = slot.innerText.trim();
+                const bankBtn = Array.from(slot.closest('.page-content').querySelectorAll('.word-choice'))
+                                     .find(b => b.getAttribute('data-word') === existingWord);
+                if (bankBtn) bankBtn.classList.remove('used');
+                slot.innerText = '';
+            }
+
+            if (selectedWordBtn) {
+                if (selectedWordBtn.closest('.page-content') === slot.closest('.page-content')) {
+                    slot.innerText = selectedWordBtn.getAttribute('data-word');
+                    selectedWordBtn.classList.add('used');
+                    selectedWordBtn.classList.remove('selected');
+                    selectedWordBtn = null;
+                }
+            }
+        }
+
+        // --- Audio Pronunciation Logic ---
+        function speakWord(word) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); 
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85; 
+                window.speechSynthesis.speak(utterance);
+            } else {
+                showToast("Audio pronunciation is not supported in your browser.", "error");
+            }
+        }
+
+        // --- Audio Player Initialization via SoundCloud Widget API ---
+        function initAudioPlayer() {
+            const players = document.querySelectorAll('.custom-audio-player');
+            
+            players.forEach((playerEl) => {
+                const scUrl = playerEl.getAttribute('data-sc-url');
+                const iframeElement = playerEl.querySelector('.sc-widget-iframe');
+                
+                if (!iframeElement || !scUrl) return;
+                
+                iframeElement.src = scUrl;
+                
+                const widget = SC.Widget(iframeElement);
+                const playBtn = playerEl.querySelector('.audio-play-btn');
+                const playIcon = playerEl.querySelector('.play-icon');
+                const pauseIcon = playerEl.querySelector('.pause-icon');
+                const progressBar = playerEl.querySelector('.audio-progress');
+                const progressFill = playerEl.querySelector('.audio-progress-bar');
+                const currentTimeEl = playerEl.querySelector('.audio-current-time');
+                const totalTimeEl = playerEl.querySelector('.audio-total-time');
+
+                let durationSec = 0;
+
+                const formatTime = (timeInSeconds) => {
+                    if (isNaN(timeInSeconds) || timeInSeconds === Infinity) return "00:00";
+                    const min = Math.floor(timeInSeconds / 60);
+                    const sec = Math.floor(timeInSeconds % 60);
+                    return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+                };
+
+                const updateDuration = () => {
+                    widget.getDuration((durationMs) => {
+                        if (durationMs) {
+                            durationSec = durationMs / 1000;
+                            if (totalTimeEl) totalTimeEl.textContent = formatTime(durationSec);
+                            if (progressBar) progressBar.max = durationSec;
+                        }
+                    });
+                };
+
+                widget.bind(SC.Widget.Events.READY, () => { updateDuration(); });
+
+                widget.bind(SC.Widget.Events.PLAY_PROGRESS, (info) => {
+                    if (!durationSec) updateDuration(); 
+                    const currentPositionSec = info.currentPosition / 1000;
+                    if (currentTimeEl) currentTimeEl.textContent = formatTime(currentPositionSec);
+                    if (progressBar) progressBar.value = currentPositionSec;
+                    if (durationSec > 0 && progressFill) {
+                        const percent = (currentPositionSec / durationSec) * 100;
+                        progressFill.style.width = `${percent}%`;
+                    }
+                });
+
+                widget.bind(SC.Widget.Events.PLAY, () => {
+                    if(playIcon) playIcon.classList.add('hidden');
+                    if(pauseIcon) pauseIcon.classList.remove('hidden');
+                    updateDuration();
+                });
+
+                widget.bind(SC.Widget.Events.PAUSE, () => {
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(playIcon) playIcon.classList.remove('hidden');
+                });
+
+                widget.bind(SC.Widget.Events.FINISH, () => {
+                    if(playIcon) playIcon.classList.remove('hidden');
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(progressFill) progressFill.style.width = '0%';
+                    if(progressBar) progressBar.value = 0;
+                    widget.seekTo(0);
+                });
+
+                if (playBtn) {
+                    playBtn.addEventListener('click', () => { widget.toggle(); });
+                }
+
+                if (progressBar) {
+                    progressBar.addEventListener('input', () => {
+                        widget.seekTo(progressBar.value * 1000);
+                    });
+                }
+            });
+        }
+
+        // Initialize on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePagination();
+            initAudioPlayer();
+        });
+
     </script>
 </body>
 </html>
