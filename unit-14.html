@@ -648,7 +648,7 @@
                             <div class="bg-teal-50/50 border border-teal-100 rounded-md p-4 text-[10px] sm:text-[11px] font-mono shadow-sm flex flex-col items-center">
                                 <h4 class="font-bold text-teal-800 mb-6 text-center text-sm font-sans uppercase tracking-widest">The processing of waste up until the 1900s</h4>
                                 
-                                <div class="flex flex-col lg:flex-row items-center lg:items-start gap-4 w-full justify-center">
+                                <div class="flex flex-col lg:flex-row flex-wrap items-center lg:items-start gap-4 w-full justify-center">
                                     <!-- Box 1 -->
                                     <div class="bg-white border border-slate-400 p-3 rounded shadow-sm text-center w-36 shrink-0">
                                         Waste collected by <br>(8) <input type="text" class="input-blank w-full mt-2 !text-[10px]" data-ex="test.2" data-ans='["private contractors"]'>
@@ -709,8 +709,18 @@
                             </div>
                         </div>
 
+                    </div>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">8</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 9: Question 14 ==================== -->
+                <div id="page-9" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        
                         <!-- Question 14 -->
-                        <div class="border-t border-slate-200 pt-6">
+                        <div>
                             <div class="flex justify-between items-end mb-2 border-b-2 border-slate-800 pb-1">
                                 <h3 class="text-lg font-bold text-slate-900">Question 14</h3>
                             </div>
@@ -735,8 +745,8 @@
                         </div>
 
                     </div>
-                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start">
-                        <span class="text-xs font-bold ui-font text-slate-400">8</span>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">9</span>
                     </div>
                 </div>
 
@@ -766,7 +776,7 @@
 
     <script>
         const REQUIRED_SCORE = 0.8;
-        const totalPages = 9; // Pages 0 to 8
+        const totalPages = 10; // Pages 0 to 9
         let currentSpread = 0; // For desktop (0 = pages 0,1; 1 = pages 2,3; etc.)
         let currentMobilePage = 0;
 
