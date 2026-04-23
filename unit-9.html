@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Unit 9: The Natural World - Textbook</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://w.soundcloud.com/player/api.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -288,6 +289,24 @@
                     <h3 class="text-xl font-bold text-slate-900 mt-8 mb-4 border-b-2 border-slate-800 pb-2">1.4 Listening: The Meerkat</h3>
                     <p class="mb-4 leading-relaxed text-sm text-slate-600 italic">Read the description of an animal called a meerkat and complete the table.</p>
                     
+                    <!-- Custom Audio Player 9a -->
+                    <div class="custom-audio-player bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mb-6 shadow-inner ui-font flex flex-col sm:flex-row items-center gap-4" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784767&auto_play=false&enable_api=1">
+                        <div class="text-xs font-bold text-slate-500 uppercase tracking-widest shrink-0">Track 9a</div>
+                        <div class="w-full flex items-center gap-3">
+                            <button class="audio-play-btn w-8 h-8 flex items-center justify-center bg-slate-700 hover:bg-slate-800 text-white rounded-full transition-colors shrink-0 focus:outline-none">
+                                <svg class="play-icon h-4 w-4 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                <svg class="pause-icon h-4 w-4 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                            </button>
+                            <span class="audio-current-time text-xs font-mono text-slate-500 w-9 text-right">00:00</span>
+                            <div class="relative w-full h-1.5 bg-slate-300 rounded-full cursor-pointer flex-1 group">
+                                 <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                 <div class="audio-progress-bar absolute h-full bg-slate-600 rounded-full group-hover:bg-slate-800 transition-colors" style="width: 0%;"></div>
+                            </div>
+                            <span class="audio-total-time text-xs font-mono text-slate-500 w-9">00:00</span>
+                        </div>
+                        <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+                    </div>
+
                     <div class="grid grid-cols-2 gap-4 bg-white border border-slate-300 p-4 rounded text-[13px] leading-relaxed shadow-sm">
                         <div class="border-r border-slate-200 pr-4">
                             <h4 class="font-bold border-b border-slate-200 pb-1 mb-2">Habitat</h4>
@@ -447,9 +466,30 @@
                         </table>
                     </div>
 
-                    <div class="flex items-center gap-3 mt-4">
+                    <div class="flex items-center gap-3 mt-4 mb-8">
                         <button id="btn-2.4" onclick="checkExercise('2.4')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.4</button>
                         <span id="score-2.4" class="ui-font text-sm font-bold hidden"></span>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-slate-900 mt-8 mb-4 border-b-2 border-slate-800 pb-2">Pronunciation</h3>
+                    <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">9b</span> Each of the words below has a weak sound (ə) or schwa, e.g., <em>about</em>. Listen and check your pronunciation.</p>
+                    
+                    <!-- Custom Audio Player 9b (Compact) -->
+                    <div class="custom-audio-player bg-white border border-slate-200 rounded px-3 py-2 mb-3 shadow-sm ui-font flex items-center gap-3" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784759&auto_play=false&enable_api=1">
+                        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest shrink-0 mr-1">9b</div>
+                        <button class="audio-play-btn w-6 h-6 flex items-center justify-center bg-slate-600 hover:bg-slate-700 text-white rounded-full transition-colors shrink-0 focus:outline-none">
+                            <svg class="play-icon h-3 w-3 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                            <svg class="pause-icon h-3 w-3 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                        </button>
+                        <div class="relative w-full h-1 bg-slate-200 rounded-full cursor-pointer flex-1 group">
+                            <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                            <div class="audio-progress-bar absolute h-full bg-slate-500 rounded-full group-hover:bg-slate-700 transition-colors" style="width: 0%;"></div>
+                        </div>
+                        <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+                    </div>
+
+                    <div class="bg-amber-50/50 p-4 border border-amber-100 rounded text-[13px] leading-relaxed mb-4 text-slate-700 font-medium tracking-wide">
+                        adapt • agriculture • catastrophe • chemical • climate • disastrous • endangered • genetically • human • natural • vulnerable
                     </div>
                 </div>
                 <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
@@ -903,9 +943,94 @@
         }
     }
 
+    // --- Audio Player Initialization via SoundCloud Widget API ---
+    function initAudioPlayer() {
+        const players = document.querySelectorAll('.custom-audio-player');
+        
+        players.forEach((playerEl) => {
+            const scUrl = playerEl.getAttribute('data-sc-url');
+            const iframeElement = playerEl.querySelector('.sc-widget-iframe');
+            
+            if (!iframeElement || !scUrl) return;
+            
+            iframeElement.src = scUrl;
+            
+            const widget = SC.Widget(iframeElement);
+            const playBtn = playerEl.querySelector('.audio-play-btn');
+            const playIcon = playerEl.querySelector('.play-icon');
+            const pauseIcon = playerEl.querySelector('.pause-icon');
+            const progressBar = playerEl.querySelector('.audio-progress');
+            const progressFill = playerEl.querySelector('.audio-progress-bar');
+            const currentTimeEl = playerEl.querySelector('.audio-current-time');
+            const totalTimeEl = playerEl.querySelector('.audio-total-time');
+
+            let durationSec = 0;
+
+            const formatTime = (timeInSeconds) => {
+                if (isNaN(timeInSeconds) || timeInSeconds === Infinity) return "00:00";
+                const min = Math.floor(timeInSeconds / 60);
+                const sec = Math.floor(timeInSeconds % 60);
+                return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+            };
+
+            const updateDuration = () => {
+                widget.getDuration((durationMs) => {
+                    if (durationMs) {
+                        durationSec = durationMs / 1000;
+                        if (totalTimeEl) totalTimeEl.textContent = formatTime(durationSec);
+                        if (progressBar) progressBar.max = durationSec;
+                    }
+                });
+            };
+
+            widget.bind(SC.Widget.Events.READY, () => { updateDuration(); });
+
+            widget.bind(SC.Widget.Events.PLAY_PROGRESS, (info) => {
+                if (!durationSec) updateDuration(); 
+                const currentPositionSec = info.currentPosition / 1000;
+                if (currentTimeEl) currentTimeEl.textContent = formatTime(currentPositionSec);
+                if (progressBar) progressBar.value = currentPositionSec;
+                if (durationSec > 0 && progressFill) {
+                    const percent = (currentPositionSec / durationSec) * 100;
+                    progressFill.style.width = `${percent}%`;
+                }
+            });
+
+            widget.bind(SC.Widget.Events.PLAY, () => {
+                if(playIcon) playIcon.classList.add('hidden');
+                if(pauseIcon) pauseIcon.classList.remove('hidden');
+                updateDuration();
+            });
+
+            widget.bind(SC.Widget.Events.PAUSE, () => {
+                if(pauseIcon) pauseIcon.classList.add('hidden');
+                if(playIcon) playIcon.classList.remove('hidden');
+            });
+
+            widget.bind(SC.Widget.Events.FINISH, () => {
+                if(playIcon) playIcon.classList.remove('hidden');
+                if(pauseIcon) pauseIcon.classList.add('hidden');
+                if(progressFill) progressFill.style.width = '0%';
+                if(progressBar) progressBar.value = 0;
+                widget.seekTo(0);
+            });
+
+            if (playBtn) {
+                playBtn.addEventListener('click', () => { widget.toggle(); });
+            }
+
+            if (progressBar) {
+                progressBar.addEventListener('input', () => {
+                    widget.seekTo(progressBar.value * 1000);
+                });
+            }
+        });
+    }
+
     // Initialize on Load
     document.addEventListener('DOMContentLoaded', () => {
         updatePagination();
+        initAudioPlayer();
     });
 
 </script>
