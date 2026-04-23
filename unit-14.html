@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 14: Urbanisation - Textbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Lora', serif; 
+            background-color: #d1d5db;
+            background-image: radial-gradient(#9ca3af 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .ui-font { font-family: 'Inter', sans-serif; }
+
+        /* Book & Paper Styles */
+        .book-wrapper {
+            background-color: #fdfcf8;
+            box-shadow: 
+                0 20px 40px -10px rgba(0,0,0,0.3), 
+                0 0 0 1px rgba(0,0,0,0.05),
+                inset 0 0 60px rgba(139, 115, 85, 0.05);
+            border-radius: 4px 8px 8px 4px;
+        }
+
+        .spine-shadow {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 80px;
+            transform: translateX(-50%);
+            background: linear-gradient(
+                to right,
+                transparent 0%,
+                rgba(0,0,0,0.02) 40%,
+                rgba(0,0,0,0.12) 50%,
+                rgba(0,0,0,0.02) 60%,
+                transparent 100%
+            );
+            pointer-events: none;
+            z-index: 10;
+            border-left: 1px solid rgba(255,255,255,0.4);
+            border-right: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* Sticky Nav for Desktop */
+        .sticky-nav-container {
+            position: sticky;
+            top: 50vh;
+            transform: translateY(-50%);
+            height: max-content;
+            z-index: 50;
+        }
+
+        /* Inputs */
+        .input-blank {
+            font-family: 'Inter', sans-serif;
+            border: none;
+            border-bottom: 2px dashed #94a3b8;
+            background: rgba(255,255,255,0.5);
+            outline: none;
+            text-align: center;
+            padding: 0.1rem 0.25rem;
+            margin: 0 0.25rem;
+            transition: all 0.2s;
+            font-weight: 600;
+            color: #1e293b;
+            border-radius: 2px 2px 0 0;
+        }
+        .input-blank:focus { 
+            border-bottom: 2px solid #0369a1; 
+            background: #f0f9ff;
+        }
+        select.input-blank {
+            text-align: left;
+            cursor: pointer;
+            padding-right: 1.2rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.1rem center;
+            background-size: 0.8em;
+        }
+
+        .correct { 
+            border-bottom: 2px solid #16a34a !important; 
+            color: #166534; 
+            background-color: #dcfce7; 
+        }
+        .incorrect { 
+            border-bottom: 2px solid #dc2626 !important; 
+            color: #991b1b; 
+            background-color: #fee2e2; 
+        }
+
+        /* Callouts / Notes */
+        .textbook-note {
+            background-color: #f8fafc;
+            border-left: 4px solid #94a3b8;
+            position: relative;
+        }
+        .textbook-note::before {
+            content: "✍🏼 Note";
+            position: absolute;
+            top: -12px;
+            left: 8px;
+            background: #fdfcf8;
+            padding: 0 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            font-family: 'Inter', sans-serif;
+            color: #475569;
+        }
+
+        /* Custom Vocab Table */
+        .vocab-table { width: 100%; text-align: left; border-collapse: collapse; }
+        .vocab-table th { 
+            border-bottom: 2px solid #475569; 
+            padding: 8px; 
+            font-family: 'Inter', sans-serif; 
+            text-transform: uppercase; 
+            font-size: 11px; 
+            font-weight: 700;
+            letter-spacing: 0.05em; 
+            color: #334155; 
+        }
+        .vocab-table td { 
+            border-bottom: 1px dashed #cbd5e1; 
+            padding: 8px; 
+            font-size: 13px;
+        }
+
+        /* Buttons & Toasts */
+        .check-btn { transition: transform 0.1s, box-shadow 0.1s; }
+        .check-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            backdrop-filter: blur(4px);
+            transition: all 0.2s;
+        }
+        .nav-btn:hover:not(:disabled) { background: #fff; transform: scale(1.05); }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+
+        .toast {
+            position: fixed; top: 20px; right: 20px;
+            padding: 15px 25px; border-radius: 8px;
+            color: white; font-weight: bold;
+            opacity: 0; transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000; pointer-events: none;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.error { background-color: #ef4444; }
+        .toast.success { background-color: #22c55e; }
+        .toast.warning { background-color: #f59e0b; }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb { background-color: #94a3b8; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col pt-4 lg:pt-10 pb-24 lg:pb-10">
+
+    <div id="toast" class="toast">Message</div>
+
+    <!-- Main Desk Area -->
+    <div class="w-full max-w-[1600px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
+        
+        <!-- Sticky Left Arrow -->
+        <div class="hidden lg:block w-10 shrink-0 mr-2 xl:mr-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="prev-btn" onclick="goPrev()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Previous Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- The Book -->
+        <div class="book-wrapper flex-1 w-full max-w-7xl flex flex-col lg:flex-row relative min-h-[85vh]">
+            <div class="spine-shadow hidden lg:block"></div>
+
+            <div id="pages-container" class="w-full flex relative">
+                
+                <!-- ==================== PAGE 0: Title & Intro ==================== -->
+                <div id="page-0" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow flex flex-col justify-center items-center text-center">
+                        <div class="w-32 h-32 bg-slate-100 rounded-full flex items-center justify-center mb-8 shadow-inner border border-slate-200 overflow-hidden relative">
+                            <!-- Cityscape Icon -->
+                            <svg class="w-16 h-16 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                        </div>
+                        <h4 class="text-sm uppercase tracking-widest text-slate-500 font-bold ui-font mb-2">Unit 14</h4>
+                        <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-slate-800 leading-tight">Urbanisation</h1>
+                        <h2 class="text-2xl italic text-slate-600 mb-8 border-b pb-8 border-slate-200">Problems and solutions, big city life</h2>
+                        
+                        <p class="text-[15px] text-slate-600 leading-relaxed max-w-md mx-auto">
+                            Welcome to Unit 14. Work through the exercises to improve your vocabulary, listening, and reading skills regarding modern cities, their infrastructure, and the challenges they face.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">i</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 1: Problems and Solutions ==================== -->
+                <div id="page-1" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">1. Problems and solutions</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <div class="mb-4">
+                            <p class="mb-2 leading-relaxed text-[13px]"><span class="font-bold">1.1</span> Consider whether you can ever have too much, too many, too little or too few of the following. <span class="italic text-slate-500">(Discussion)</span></p>
+                            <div class="flex flex-wrap gap-3 font-semibold text-slate-700 bg-slate-50 p-3 rounded border border-slate-200 shadow-inner text-sm">
+                                <span>time</span> <span>traffic</span> <span>people</span> <span>money</span> <span>space</span> <span>work</span> <span>rubbish</span>
+                            </div>
+                        </div>
+
+                        <!-- Audio Player -->
+                        <div class="custom-audio-player bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mb-6 shadow-inner ui-font flex flex-col sm:flex-row items-center gap-4" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784575&auto_play=false&enable_api=1">
+                            <div class="text-xs font-bold text-slate-500 uppercase tracking-widest shrink-0">Track 14a</div>
+                            <div class="w-full flex items-center gap-3">
+                                <button class="audio-play-btn w-8 h-8 flex items-center justify-center bg-slate-700 hover:bg-slate-800 text-white rounded-full transition-colors shrink-0 focus:outline-none">
+                                    <svg class="play-icon h-4 w-4 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                    <svg class="pause-icon h-4 w-4 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                </button>
+                                <span class="audio-current-time text-xs font-mono text-slate-500 w-9 text-right">00:00</span>
+                                <div class="relative w-full h-1.5 bg-slate-300 rounded-full cursor-pointer flex-1 group">
+                                     <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                     <div class="audio-progress-bar absolute h-full bg-slate-600 rounded-full group-hover:bg-slate-800 transition-colors" style="width: 0%;"></div>
+                                </div>
+                                <span class="audio-total-time text-xs font-mono text-slate-500 w-9">00:00</span>
+                            </div>
+                            <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+                        </div>
+
+                        <p class="mb-3 leading-relaxed text-[13px]"><span class="font-bold">1.2 & 1.3</span> Listen to a conversation between two women. Write down the topics they discuss, and any verbs used with the words 'problem' and 'issue'.</p>
+                        
+                        <div class="bg-white border border-slate-200 p-4 rounded mb-6 shadow-sm">
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Topics discussed:</label>
+                            <input type="text" class="input-blank w-full !text-[13px] mb-3" data-ex="1.3" data-ans='["work, traffic, time", "work, traffic", "work and traffic", "traffic and work"]'>
+                            
+                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Verbs used:</label>
+                            <input type="text" class="input-blank w-full !text-[13px]" data-ex="1.3" data-ans='["face, deal with, cause, tackle, address, raise, resolve, present, identify", "face, deal with, cause, tackle, address, raise, resolve, present", "face deal with cause tackle address raise resolve present identify"]' placeholder="e.g. face, deal with...">
+                        </div>
+
+                        <p class="mb-3 leading-relaxed text-[13px]"><span class="font-bold">1.4</span> Complete the sentences using the verbs you wrote above. Use a different verb for each sentence.</p>
+                        <ol class="list-decimal list-outside ml-4 space-y-3 text-slate-800 text-[13px] leading-snug">
+                            <li>One of the biggest problems <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["facing"]'> the world today is poverty.</li>
+                            <li>Your problems won't go away if you ignore them, you need to <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["address", "resolve", "deal with", "tackle", "address them"]'> them.</li>
+                            <li>The problem was <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["caused"]'> by a blocked pipe, which eventually burst.</li>
+                            <li>Here is a list of the issues that will be <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["raised", "addressed", "tackled"]'> during the meeting.</li>
+                            <li>Unfortunately we were unable to <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["resolve", "solve", "tackle"]'> the issue, even after two days of talks.</li>
+                            <li>The main speaker did not arrive, which <input type="text" class="input-blank w-24" data-ex="1.4" data-ans='["presented", "posed", "caused"]'> an awkward problem for the organisers.</li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-1.4" onclick="checkExercise('1.3'); checkExercise('1.4')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.3 & 1.4</button>
+                            <span id="score-1.3" class="hidden"></span>
+                            <span id="score-1.4" class="ui-font text-[11px] font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start lg:justify-end border-t border-slate-200">
+                        <span class="text-xs font-bold ui-font text-slate-400">1</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 2: Vocabulary Replacement ==================== -->
+                <div id="page-2" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Vocabulary Replacement</h3>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                            <!-- 1.5 -->
+                            <div>
+                                <p class="mb-3 leading-relaxed text-[13px]"><span class="font-bold">1.5</span> Match the verbs to the nouns.</p>
+                                <div class="bg-white border border-slate-200 p-4 rounded shadow-sm text-[12px]">
+                                    <ul class="space-y-3">
+                                        <li class="flex justify-between items-center"><span>find</span> &rarr; <select class="input-blank font-bold text-slate-700 w-32 !text-[11px]" data-ex="1.5" data-ans='["a solution", "a compromise"]'><option value=""></option><option value="a compromise">a compromise</option><option value="an issue">an issue</option><option value="a situation">a situation</option><option value="a difficulty">a difficulty</option><option value="a solution">a solution</option><option value="a problem">a problem</option></select></li>
+                                        <li class="flex justify-between items-center"><span>overcome</span> &rarr; <select class="input-blank font-bold text-slate-700 w-32 !text-[11px]" data-ex="1.5" data-ans='["a difficulty"]'><option value=""></option><option value="a compromise">a compromise</option><option value="an issue">an issue</option><option value="a situation">a situation</option><option value="a difficulty">a difficulty</option><option value="a solution">a solution</option><option value="a problem">a problem</option></select></li>
+                                        <li class="flex justify-between items-center"><span>solve</span> &rarr; <select class="input-blank font-bold text-slate-700 w-32 !text-[11px]" data-ex="1.5" data-ans='["a problem", "a situation"]'><option value=""></option><option value="a compromise">a compromise</option><option value="an issue">an issue</option><option value="a situation">a situation</option><option value="a difficulty">a difficulty</option><option value="a solution">a solution</option><option value="a problem">a problem</option></select></li>
+                                        <li class="flex justify-between items-center"><span>remedy</span> &rarr; <select class="input-blank font-bold text-slate-700 w-32 !text-[11px]" data-ex="1.5" data-ans='["a situation"]'><option value=""></option><option value="a compromise">a compromise</option><option value="an issue">an issue</option><option value="a situation">a situation</option><option value="a difficulty">a difficulty</option><option value="a solution">a solution</option><option value="a problem">a problem</option></select></li>
+                                        <li class="flex justify-between items-center"><span>resolve</span> &rarr; <select class="input-blank font-bold text-slate-700 w-32 !text-[11px]" data-ex="1.5" data-ans='["an issue", "a problem"]'><option value=""></option><option value="a compromise">a compromise</option><option value="an issue">an issue</option><option value="a situation">a situation</option><option value="a difficulty">a difficulty</option><option value="a solution">a solution</option><option value="a problem">a problem</option></select></li>
+                                        <li class="flex justify-between items-center"><span>reach</span> &rarr; <select class="input-blank font-bold text-slate-700 w-32 !text-[11px]" data-ex="1.5" data-ans='["a compromise"]'><option value=""></option><option value="a compromise">a compromise</option><option value="an issue">an issue</option><option value="a situation">a situation</option><option value="a difficulty">a difficulty</option><option value="a solution">a solution</option><option value="a problem">a problem</option></select></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- 1.6 -->
+                            <div>
+                                <p class="mb-3 leading-relaxed text-[13px]"><span class="font-bold">1.6</span> Correct the <strong>bold</strong> mistakes.</p>
+                                <ol class="list-decimal list-outside ml-4 space-y-2 text-slate-800 text-[12px] leading-snug">
+                                    <li>I am not sure we will ever <strong>solve</strong> <input type="text" class="input-blank w-20 !text-[11px]" data-ex="1.6" data-ans='["resolve"]'> the issue of unemployment.</li>
+                                    <li>We need to <strong>resolve</strong> <input type="text" class="input-blank w-20 !text-[11px]" data-ex="1.6" data-ans='["find", "solve"]'> a solution to this situation as soon as possible.</li>
+                                    <li>What can we do to <strong>solve</strong> <input type="text" class="input-blank w-20 !text-[11px]" data-ex="1.6" data-ans='["overcome"]'> this difficulty?</li>
+                                    <li>At last scientists have <strong>solution</strong> <input type="text" class="input-blank w-20 !text-[11px]" data-ex="1.6" data-ans='["solved", "resolved"]'> the problems associated with solar-powered cars.</li>
+                                    <li>Finally, the members of the city council were able to <strong>solve</strong> <input type="text" class="input-blank w-20 !text-[11px]" data-ex="1.6" data-ans='["reach", "find"]'> a compromise.</li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <!-- 1.7 Synonyms -->
+                        <div class="mb-6 border-t border-slate-200 pt-4">
+                            <p class="mb-3 leading-relaxed text-[13px]"><span class="font-bold">1.7</span> Choose the word that is <strong>NOT</strong> a synonym for the capitalized word.</p>
+                            <ol class="space-y-2 text-[12px] ui-font">
+                                <li><strong>1 PROBLEM:</strong> difficulty, dilemma, <select class="input-blank font-bold text-slate-700 w-24 !text-[11px]" data-ex="1.7" data-ans='["benefit"]'><option value=""></option><option value="challenge">challenge</option><option value="benefit">benefit</option><option value="obstacle">obstacle</option></select>, challenge, obstacle.</li>
+                                <li><strong>2 SOLUTION:</strong> answer, key, remedy, resolution, <select class="input-blank font-bold text-slate-700 w-24 !text-[11px]" data-ex="1.7" data-ans='["setback"]'><option value=""></option><option value="setback">setback</option><option value="remedy">remedy</option><option value="answer">answer</option></select>.</li>
+                                <li><strong>3 WORSEN:</strong> compound, deteriorate, <select class="input-blank font-bold text-slate-700 w-24 !text-[11px]" data-ex="1.7" data-ans='["enhance"]'><option value=""></option><option value="exacerbate">exacerbate</option><option value="enhance">enhance</option><option value="compound">compound</option></select>, exacerbate.</li>
+                                <li><strong>4 IMPROVE:</strong> advance, <select class="input-blank font-bold text-slate-700 w-24 !text-[11px]" data-ex="1.7" data-ans='["aggravate"]'><option value=""></option><option value="flourish">flourish</option><option value="aggravate">aggravate</option><option value="reform">reform</option></select>, flourish, progress, reform.</li>
+                                <li><strong>5 CHANGE:</strong> acclimatise, adapt, adjust, amend, <select class="input-blank font-bold text-slate-700 w-24 !text-[11px]" data-ex="1.7" data-ans='["linger"]'><option value=""></option><option value="linger">linger</option><option value="modify">modify</option><option value="transform">transform</option></select>, modify, transform.</li>
+                            </ol>
+                        </div>
+
+                        <!-- 1.8 Compound Words -->
+                        <div class="border-t border-slate-200 pt-4">
+                            <p class="mb-3 leading-relaxed text-[13px]"><span class="font-bold">1.8</span> Use a hyphen to combine a word from A (double, long, short, one) with a word from B (edged, sighted, sided, term). Then complete the sentences.</p>
+                            <ol class="list-decimal list-outside ml-4 space-y-2 text-slate-800 text-[12px] leading-snug">
+                                <li>We need a <input type="text" class="input-blank w-28 !text-[11px]" data-ex="1.8" data-ans='["long-term"]'> plan for our transport systems.</li>
+                                <li>A warning sign was put at the site as a <input type="text" class="input-blank w-28 !text-[11px]" data-ex="1.8" data-ans='["short-term"]'> measure.</li>
+                                <li>This argument appears to be a little <input type="text" class="input-blank w-28 !text-[11px]" data-ex="1.8" data-ans='["one-sided"]'>; I'd like to hear the other side as well.</li>
+                                <li>Employing five more staff was a very <input type="text" class="input-blank w-28 !text-[11px]" data-ex="1.8" data-ans='["short-sighted"]'> decision because we were still understaffed soon after.</li>
+                                <li>Globalisation is a <input type="text" class="input-blank w-28 !text-[11px]" data-ex="1.8" data-ans='["double-edged"]'> sword. It promotes multiculturalism while it erodes the local culture.</li>
+                            </ol>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-4">
+                            <button id="btn-1.5" onclick="checkExercise('1.5'); checkExercise('1.6'); checkExercise('1.7'); checkExercise('1.8')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check Exercises</button>
+                            <span id="score-1.8" class="ui-font text-[11px] font-bold hidden"></span>
+                            <span id="score-1.7" class="hidden"></span>
+                            <span id="score-1.6" class="hidden"></span>
+                            <span id="score-1.5" class="hidden"></span>
+                        </div>
+
+                    </div>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">2</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 3: Reading Passage ==================== -->
+                <div id="page-3" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">2. Big city life</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-[13px]"><span class="font-bold">2.1</span> Complete the text with suitable adjectives from the box. More than one adjective may be possible.</p>
+                        
+                        <div class="bg-white border border-slate-200 p-3 rounded mb-4 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] justify-center text-slate-500 shadow-inner">
+                            <span>adequate</span> <span>basic</span> <span>booming</span> <span>catastrophic</span>
+                            <span>decent</span> <span>enormous</span> <span>pressing</span> <span>staggering</span>
+                        </div>
+
+                        <div class="bg-slate-50 border border-slate-200 rounded-md p-5 text-slate-800 text-[13px] leading-relaxed shadow-sm mb-6">
+                            <h4 class="font-bold text-base mb-3 text-center font-serif">Megacities</h4>
+                            <p class="mb-2">The world's population is (1) <input type="text" class="input-blank w-24 !text-[12px]" data-ex="2.1" data-ans='["booming", "enormous", "staggering"]'>, no more so than in its cities. Today, there are 21 megacities, each containing more than 10 million inhabitants, three-quarters of them in developing nations. By 2020, there are expected to be at least 27 megacities. Such a (2) <input type="text" class="input-blank w-24 !text-[12px]" data-ex="2.1" data-ans='["staggering", "booming", "enormous"]'> rate of urbanisation brings its own problems, especially in developing nations, where the majority of the megacities will be found.</p>
+                            <p class="mb-2">Employment and educational opportunities are the main attraction of urban centres. But hopes for a better life are often dashed as overpopulation puts an (3) <input type="text" class="input-blank w-24 !text-[12px]" data-ex="2.1" data-ans='["enormous", "pressing", "catastrophic"]'> strain on the infrastructure of the cities and their ability to provide (4) <input type="text" class="input-blank w-20 !text-[12px]" data-ex="2.1" data-ans='["basic", "decent", "adequate"]'> necessities such as clean water and a place to live.</p>
+                            <p>Many rural migrants fail to find (5) <input type="text" class="input-blank w-20 !text-[12px]" data-ex="2.1" data-ans='["adequate", "decent", "basic"]'> work, and therefore cannot afford (6) <input type="text" class="input-blank w-20 !text-[12px]" data-ex="2.1" data-ans='["decent", "basic", "adequate"]'> housing. In some megacities up to 50 per cent of the residents live in slums. This problem is (7) <input type="text" class="input-blank w-24 !text-[12px]" data-ex="2.1" data-ans='["pressing", "enormous", "catastrophic"]'>, with the United Nations predicting that half the world's population will be living in cities by next year. If the infrastructure within those cities does not grow at the same rate the result will be (8) <input type="text" class="input-blank w-24 !text-[12px]" data-ex="2.1" data-ans='["catastrophic", "pressing", "enormous"]'>.</p>
+                        </div>
+
+                        <p class="mb-3 leading-relaxed text-[13px]"><span class="font-bold">2.2</span> Find words in the text that match these definitions.</p>
+                        
+                        <div class="bg-white border border-slate-200 shadow-sm rounded p-4 text-[13px] text-slate-800">
+                            <ol class="space-y-3">
+                                <li class="flex flex-col sm:flex-row sm:items-center gap-2 border-b border-slate-100 pb-1">
+                                    <span class="font-bold w-4 shrink-0 text-slate-400">1</span> <span class="flex-1">People that live in a particular place.</span>
+                                    <input type="text" class="input-blank w-40 !text-[12px]" data-ex="2.2" data-ans='["inhabitants"]'>
+                                </li>
+                                <li class="flex flex-col sm:flex-row sm:items-center gap-2 border-b border-slate-100 pb-1">
+                                    <span class="font-bold w-4 shrink-0 text-slate-400">2</span> <span class="flex-1">Areas of the world that are poorer and have less advanced industries.</span>
+                                    <input type="text" class="input-blank w-40 !text-[12px]" data-ex="2.2" data-ans='["developing nations"]'>
+                                </li>
+                                <li class="flex flex-col sm:flex-row sm:items-center gap-2 border-b border-slate-100 pb-1">
+                                    <span class="font-bold w-4 shrink-0 text-slate-400">3</span> <span class="flex-1">The process by which more people leave the countryside to live in the city.</span>
+                                    <input type="text" class="input-blank w-40 !text-[12px]" data-ex="2.2" data-ans='["urbanisation"]'>
+                                </li>
+                                <li class="flex flex-col sm:flex-row sm:items-center gap-2 border-b border-slate-100 pb-1">
+                                    <span class="font-bold w-4 shrink-0 text-slate-400">4</span> <span class="flex-1">The problem of having too many people.</span>
+                                    <input type="text" class="input-blank w-40 !text-[12px]" data-ex="2.2" data-ans='["overpopulation"]'>
+                                </li>
+                                <li class="flex flex-col sm:flex-row sm:items-center gap-2 border-b border-slate-100 pb-1">
+                                    <span class="font-bold w-4 shrink-0 text-slate-400">5</span> <span class="flex-1">The basic systems and services of a city.</span>
+                                    <input type="text" class="input-blank w-40 !text-[12px]" data-ex="2.2" data-ans='["infrastructure"]'>
+                                </li>
+                                <li class="flex flex-col sm:flex-row sm:items-center gap-2">
+                                    <span class="font-bold w-4 shrink-0 text-slate-400">6</span> <span class="flex-1">Very poor and crowded areas of a city.</span>
+                                    <input type="text" class="input-blank w-40 !text-[12px]" data-ex="2.2" data-ans='["slums"]'>
+                                </li>
+                            </ol>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4">
+                            <button id="btn-2.1" onclick="checkExercise('2.1'); checkExercise('2.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check 2.1 & 2.2</button>
+                            <span id="score-2.1" class="hidden"></span>
+                            <span id="score-2.2" class="ui-font text-[11px] font-bold hidden"></span>
+                        </div>
+
+                    </div>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">3</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 4: Vocabulary Definitions ==================== -->
+                <div id="page-4" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        
+                        <div class="mb-6">
+                            <p class="mb-4 leading-relaxed text-[13px]"><span class="font-bold">2.3</span> <strong>WORD BUILDING</strong> Complete the table.</p>
+                            
+                            <table class="vocab-table w-full bg-white shadow-sm rounded overflow-hidden">
+                                <thead class="bg-slate-50">
+                                    <tr><th class="w-1/3">Noun</th><th class="w-1/3">Verb</th><th class="w-1/3">Adjective</th></tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>competition</td><td><input type="text" class="input-blank w-full !text-[12px]" data-ex="2.3" data-ans='["compete"]'></td><td><input type="text" class="input-blank w-full !text-[12px]" data-ex="2.3" data-ans='["competitive"]'></td></tr>
+                                    <tr><td><input type="text" class="input-blank w-full !text-[12px]" data-ex="2.3" data-ans='["exclusion"]'></td><td>exclude</td><td>excluded</td></tr>
+                                    <tr><td>inclusion</td><td><input type="text" class="input-blank w-full !text-[12px]" data-ex="2.3" data-ans='["include"]'></td><td><input type="text" class="input-blank w-full !text-[12px]" data-ex="2.3" data-ans='["included"]'></td></tr>
+                                    <tr><td><input type="text" class="input-blank w-full !text-[12px]" data-ex="2.3" data-ans='["isolation"]'></td><td>isolate</td><td><input type="text" class="input-blank w-full !text-[12px]" data-ex="2.3" data-ans='["isolated"]'></td></tr>
+                                    <tr><td><input type="text" class="input-blank w-full !text-[12px]" data-ex="2.3" data-ans='["poverty"]'></td><td><span class="text-slate-400 italic">-</span></td><td>poor</td></tr>
+                                    <tr><td>responsibility</td><td>take/accept responsibility</td><td><input type="text" class="input-blank w-full !text-[12px]" data-ex="2.3" data-ans='["responsible"]'></td></tr>
+                                    <tr><td><input type="text" class="input-blank w-full !text-[12px]" data-ex="2.3" data-ans='["tolerance"]'></td><td><input type="text" class="input-blank w-full !text-[12px]" data-ex="2.3" data-ans='["tolerate"]'></td><td>tolerant</td></tr>
+                                </tbody>
+                            </table>
+                            <div class="flex items-center gap-3 mt-4">
+                                <button id="btn-2.3" onclick="checkExercise('2.3')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check 2.3</button>
+                                <span id="score-2.3" class="ui-font text-[11px] font-bold hidden"></span>
+                            </div>
+                        </div>
+
+                        <!-- Error warning Callout -->
+                        <div class="textbook-note p-3 mb-6 text-[12px] text-slate-700 leading-relaxed shadow-sm rounded-r ui-font bg-blue-50 border-l-blue-500">
+                            <p class="font-bold mb-1 text-slate-800">Vocabulary note</p>
+                            <p>To refer to a group of people we can use <strong>the + adjective</strong>: <i>the elderly, the poor, the young.</i> E.g. <i>We should look after the elderly.</i></p>
+                        </div>
+
+                        <p class="mb-3 leading-relaxed text-[13px]"><span class="font-bold">3.2</span> Complete these answers to the discussion questions with suitable words from 2.3. <span class="italic text-slate-500">(First letters given)</span></p>
+
+                        <div class="bg-slate-50 border border-slate-200 p-4 rounded text-slate-800 leading-loose text-[13px] shadow-sm mb-6">
+                            <p class="mb-2">1. Big cities can be overcrowded, so there are a lot of people c<input type="text" class="input-blank w-24 !text-[12px]" data-ex="3.2" data-ans='["competing"]'> for each job and for accommodation. The lack of jobs usually means that there is a lot of p<input type="text" class="input-blank w-20 !text-[12px]" data-ex="3.2" data-ans='["poverty"]'> in big cities. And although there are a lot of people around you, many people feel very i<input type="text" class="input-blank w-20 !text-[12px]" data-ex="3.2" data-ans='["isolated"]'> of each other. I think it helps if we try to create small communities within the bigger city so we should try to i<input type="text" class="input-blank w-20 !text-[12px]" data-ex="3.2" data-ans='["include"]'> people rather than e<input type="text" class="input-blank w-20 !text-[12px]" data-ex="3.2" data-ans='["exclude"]'> them.</p>
+                            <p class="mb-2">2. I think we need to be more t<input type="text" class="input-blank w-20 !text-[12px]" data-ex="3.2" data-ans='["tolerant"]'> in big cities and it's particularly difficult for the elderly.</p>
+                            <p>3. Well, we all have to t<input type="text" class="input-blank w-12 !text-[12px]" data-ex="3.2" data-ans='["take"]'> r<input type="text" class="input-blank w-32 !text-[12px]" data-ex="3.2" data-ans='["responsibility"]'> for these problems and we can all do something to help. But the government is also r<input type="text" class="input-blank w-28 !text-[12px]" data-ex="3.2" data-ans='["responsible"]'> to a certain extent as well. They need to make sure that the p<input type="text" class="input-blank w-16 !text-[12px]" data-ex="3.2" data-ans='["poor"]'> are looked after and that they have access to the facilities they need.</p>
+                        </div>
+                        <div class="flex items-center gap-3 mt-4">
+                            <button id="btn-3.2" onclick="checkExercise('3.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check 3.2</button>
+                            <span id="score-3.2" class="ui-font text-[11px] font-bold hidden"></span>
+                        </div>
+
+                    </div>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">4</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 5: Pronunciation ==================== -->
+                <div id="page-5" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Pronunciation</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <div class="bg-indigo-50/50 border border-indigo-100 rounded-md p-5 text-slate-800">
+                            <p class="text-[13px] text-indigo-800 mb-4 leading-relaxed">
+                                <span class="font-bold">4.</span> If we have <strong>-ed</strong> at the end of a word, it can be pronounced with a <strong>/t/</strong> or <strong>/d/</strong> sound. Look at the following words and write <strong>t</strong> or <strong>d</strong> depending on their sound. Listen and check your answers, then practise saying the words.
+                            </p>
+
+                            <!-- Audio Player -->
+                            <div class="custom-audio-player bg-white border border-indigo-200 rounded px-3 py-2 mb-5 shadow-sm ui-font flex items-center gap-3" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784551&auto_play=false&enable_api=1">
+                                <div class="text-[10px] font-bold text-indigo-500 uppercase tracking-widest shrink-0">Track 14b</div>
+                                <button class="audio-play-btn w-6 h-6 flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-full transition-colors shrink-0 focus:outline-none">
+                                    <svg class="play-icon h-3 w-3 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                    <svg class="pause-icon h-3 w-3 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                </button>
+                                <div class="relative w-full h-1 bg-indigo-200 rounded-full cursor-pointer flex-1 group">
+                                    <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                    <div class="audio-progress-bar absolute h-full bg-indigo-500 rounded-full group-hover:bg-indigo-700 transition-colors" style="width: 0%;"></div>
+                                </div>
+                                <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-x-6 gap-y-3 text-indigo-900 text-[13px] ui-font">
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>accepted</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[12px]" data-ex="4.1" data-ans='["d"]'><option value=""></option><option value="t">t</option><option value="d">d</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>overpriced</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[12px]" data-ex="4.1" data-ans='["t"]'><option value=""></option><option value="t">t</option><option value="d">d</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>crowded</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[12px]" data-ex="4.1" data-ans='["d"]'><option value=""></option><option value="t">t</option><option value="d">d</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>overworked</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[12px]" data-ex="4.1" data-ans='["t"]'><option value=""></option><option value="t">t</option><option value="d">d</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>developed</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[12px]" data-ex="4.1" data-ans='["t"]'><option value=""></option><option value="t">t</option><option value="d">d</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>resolved</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[12px]" data-ex="4.1" data-ans='["d"]'><option value=""></option><option value="t">t</option><option value="d">d</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>excluded</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[12px]" data-ex="4.1" data-ans='["d"]'><option value=""></option><option value="t">t</option><option value="d">d</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>stressed</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[12px]" data-ex="4.1" data-ans='["t"]'><option value=""></option><option value="t">t</option><option value="d">d</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>included</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[12px]" data-ex="4.1" data-ans='["d"]'><option value=""></option><option value="t">t</option><option value="d">d</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>solved</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[12px]" data-ex="4.1" data-ans='["d"]'><option value=""></option><option value="t">t</option><option value="d">d</option></select>
+                                </div>
+                                <div class="flex items-center justify-between border-b border-indigo-100 pb-1">
+                                    <span>isolated</span>
+                                    <select class="input-blank font-bold text-indigo-700 w-12 !text-[12px]" data-ex="4.1" data-ans='["d"]'><option value=""></option><option value="t">t</option><option value="d">d</option></select>
+                                </div>
+                            </div>
+                            <div class="mt-4"><button id="btn-4.1" onclick="checkExercise('4.1')" class="check-btn ui-font bg-white border border-indigo-200 shadow-sm text-indigo-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-indigo-50">Check Pronunciation</button> <span id="score-4.1" class="ui-font text-[11px] font-bold hidden"></span></div>
+                        </div>
+
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">5</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 6: Test Practice Reading ==================== -->
+                <div id="page-6" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-4 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Test Practice: Academic Reading</h3>
+                        </div>
+
+                        <div class="textbook-note p-3 mb-4 text-[11px] text-slate-700 leading-relaxed shadow-sm rounded-r ui-font bg-blue-50 border-l-blue-500">
+                            <p class="font-bold mb-1 text-slate-800">Test Tip</p>
+                            <p>This reading text is also good practice for General Training section 3.</p>
+                        </div>
+
+                        <div class="bg-amber-50/60 border border-amber-100 rounded-md p-5 text-slate-800 text-[12px] leading-relaxed shadow-sm mt-4">
+                            <h4 class="font-bold text-base mb-3 text-center font-serif">Rags, bones and recycling bins</h4>
+                            <p class="italic text-center text-[11px] mb-4">Tim Cooper investigates the history of waste recovery.</p>
+                            
+                            <p class="mb-3">As concern mounts that the consumer society may be ecologically unsustainable, historians have begun to interest themselves in past efforts to achieve efficient use of scarce resources. Far from being a recent innovation, recycling and reuse of household cast-offs have a long history. In early modern Britain, one of the most characteristic forms of recycling has been the trade in second-hand clothing, which has survived to the present day in the shape of the ubiquitous charity shop. The cost of buying new ensured that many among the lower orders of eighteenth-century English society relied on second-hand apparel. The rag fairs of the rapidly growing cities and a network of tradesmen and pawnbrokers supplied this trade. Some historians have argued that the second-hand trade played an important role in the nascent development of mass consumerism and fashion; demand was so high that there was a ready market for stolen clothes.</p>
+                            
+                            <p class="mb-3">Recycling was not restricted to the clothing trade. A much wider culture of reuse existed. This included, for example, the recycling of building materials from demolished buildings, the repair or reuse of most metal goods, and the use of old rags in the paper industry. The paper industry was almost wholly reliant upon recycling for its raw materials. Recycling was thus an important component of the pre-industrial economy, enabling it to cope with shortages of raw materials and aiding the poor. Pre-industrial recycling was largely a response to chronically low levels of production. After 1800, industrialisation, urbanisation and population growth would see the emergence of a new problem - waste - and give a new significance to recycling.</p>
+                            
+                            <p>Of course, the generation of urban waste was not new in itself, but the scale of waste production after 1800 certainly was. The treatment and disposal of domestic waste became a problem of the first order. From the 1850s the problem of human waste disposal was being addressed by the construction of sewerage systems; the domestic refuse problem, however, remained relatively neglected until 1875. Up until 1900 most urban areas relied on private contractors for waste disposal, who operated only with the minimum of environmental regulation. This was the context in which the Victorian dust-yards, immortalised in Charles Dickens' novel Our Mutual Friend, emerged.</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">6</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 7: Test Practice Reading Cont. ==================== -->
+                <div id="page-7" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow flex flex-col">
+                        
+                        <div class="bg-amber-50/60 border border-amber-100 rounded-md p-5 text-slate-800 text-[12px] leading-relaxed shadow-sm mb-6">
+                            <p class="mb-3">These yards sprang up either in or around many major cities in the nineteenth century, but were particularly characteristic of London. The dust-yards made their money by employing men, women and children to sift and sort through the filth in search of items of value, such as rags and metals. These were then sold to contract merchants. A large proportion of the material that remained after sorting was dust and cinders; where possible these were sold as a fertiliser or fuel source, but where no market existed they were dumped either on land or at sea.</p>
+
+                            <p>The dust-yards were the most notorious of the nineteenth-century waste trades. In Dangerous Trade (1902), industrial health expert Thomas Oliver stated that 'under all circumstances dust-sorting is dirty and disagreeable work'. The uniquely unpleasant conditions of the yards meant that dust-women formed 'a class by themselves, and so the work becomes more or less hereditary'. The workers also received marginal reward for their efforts. By 1900 the average wages of women in contractors' yards in London were only between seven and eight shillings per week. As a result the dust-yards were increasingly controversial by the end of the nineteenth century. At the same time, the waste continued to grow. The 1875 Public Health Act had given local authorities a legal responsibility to remove and dispose of domestic waste. However, the last years of the century saw a solution to the apparently insoluble problem of what to do with the refuse of Britain's cities. A means, in the eyes of experts, to achieve the perfect removal of waste without resort to either the dust-yard or the tip: the incinerator.</p>
+                        </div>
+
+                        <!-- Questions 1-7 -->
+                        <div class="mb-2">
+                            <div class="flex justify-between items-end mb-2 border-b-2 border-slate-800 pb-1">
+                                <h3 class="text-lg font-bold text-slate-900">Questions 1-7</h3>
+                                <span class="ui-font text-[10px] font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                            </div>
+
+                            <p class="mb-3 text-slate-800 text-[12px] italic">Complete the notes using <strong>NO MORE THAN TWO WORDS</strong> from the text.</p>
+                            
+                            <div class="bg-white border border-slate-200 rounded p-4 text-slate-800 text-[12px] shadow-sm">
+                                <h4 class="font-bold text-sm mb-2">The history of recycling in the UK</h4>
+                                
+                                <p class="font-bold mb-1">Eighteenth-century Britain</p>
+                                <ul class="list-disc pl-5 space-y-2 mb-4">
+                                    <li>People recycled products such as used (1) <input type="text" class="input-blank w-32 !text-[11px]" data-ex="test.1" data-ans='["clothing", "clothes", "apparel"]'>, (2) <input type="text" class="input-blank w-32 !text-[11px]" data-ex="test.1" data-ans='["building materials"]'>, anything made from (3) <input type="text" class="input-blank w-24 !text-[11px]" data-ex="test.1" data-ans='["metal"]'> and old cloth.</li>
+                                    <li>The (4) <input type="text" class="input-blank w-24 !text-[11px]" data-ex="test.1" data-ans='["paper"]'> business relied heavily on recycled materials.</li>
+                                    <li>Recycling had two main advantages:
+                                        <ul class="list-[circle] pl-5 mt-1 space-y-1">
+                                            <li>it provided necessary (5) <input type="text" class="input-blank w-32 !text-[11px]" data-ex="test.1" data-ans='["raw materials", "materials"]'></li>
+                                            <li>it helped (6) <input type="text" class="input-blank w-24 !text-[11px]" data-ex="test.1" data-ans='["the poor"]'></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+
+                                <p class="font-bold mb-1">Nineteenth-century Britain</p>
+                                <ul class="list-disc pl-5 space-y-2">
+                                    <li>More refuse was created by an increase in the number of:
+                                        <ul class="list-[circle] pl-5 mt-1 space-y-1">
+                                            <li>i) big cities</li>
+                                            <li>ii) <input type="text" class="input-blank w-32 !text-[11px] mb-1" data-ex="test.1" data-ans='["industrialisation"]'> and inhabitants</li>
+                                            <li>iii) increasing (7) <input type="text" class="input-blank w-32 !text-[11px]" data-ex="test.1" data-ans='["population growth"]'></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="flex items-center gap-3 mt-4">
+                                <button id="btn-test.1" onclick="checkExercise('test.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check Qs 1-7</button>
+                                <span id="score-test.1" class="ui-font text-[11px] font-bold hidden"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">7</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 8: Test Practice Flowchart ==================== -->
+                <div id="page-8" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        
+                        <div class="mb-6">
+                            <div class="flex justify-between items-end mb-2 border-b-2 border-slate-800 pb-1">
+                                <h3 class="text-lg font-bold text-slate-900">Questions 8-13</h3>
+                                <span class="ui-font text-[10px] font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                            </div>
+
+                            <p class="mb-3 text-slate-800 text-[12px] italic">Complete the flowchart below using <strong>NO MORE THAN TWO WORDS</strong> from the text.</p>
+
+                            <!-- Flowchart -->
+                            <div class="bg-teal-50/50 border border-teal-100 rounded-md p-4 text-[10px] sm:text-[11px] font-mono shadow-sm flex flex-col items-center">
+                                <h4 class="font-bold text-teal-800 mb-6 text-center text-sm font-sans uppercase tracking-widest">The processing of waste up until the 1900s</h4>
+                                
+                                <div class="flex flex-col lg:flex-row items-center lg:items-start gap-4 w-full justify-center">
+                                    <!-- Box 1 -->
+                                    <div class="bg-white border border-slate-400 p-3 rounded shadow-sm text-center w-36 shrink-0">
+                                        Waste collected by <br>(8) <input type="text" class="input-blank w-full mt-2 !text-[10px]" data-ex="test.2" data-ans='["private contractors"]'>
+                                    </div>
+                                    <div class="hidden lg:flex items-center text-slate-400 text-lg my-auto">&rarr;</div>
+                                    <div class="lg:hidden text-slate-400 text-lg">&darr;</div>
+                                    
+                                    <!-- Box 2 -->
+                                    <div class="bg-white border border-slate-400 p-3 rounded shadow-sm text-center w-36 shrink-0">
+                                        Waste taken to the <br>(9) <input type="text" class="input-blank w-full mt-2 !text-[10px]" data-ex="test.2" data-ans='["dust-yards", "dust-yard"]'>
+                                    </div>
+                                    <div class="hidden lg:flex items-center text-slate-400 text-lg my-auto">&rarr;</div>
+                                    <div class="lg:hidden text-slate-400 text-lg">&darr;</div>
+
+                                    <!-- Box 3 & 4 (Vertical Group) -->
+                                    <div class="flex flex-col items-center gap-2 shrink-0">
+                                        <div class="bg-white border border-slate-400 p-3 rounded shadow-sm text-center w-32">
+                                            Refuse checked for valuables
+                                        </div>
+                                        <div class="text-slate-400 text-lg">&darr;</div>
+                                        <div class="bg-white border border-slate-400 p-3 rounded shadow-sm text-center w-32">
+                                            Sold to merchants
+                                        </div>
+                                    </div>
+
+                                    <div class="hidden lg:flex items-center text-slate-400 text-lg my-auto">&rarr;</div>
+                                    <div class="lg:hidden text-slate-400 text-lg">&darr;</div>
+
+                                    <!-- Box 5 -->
+                                    <div class="bg-white border border-slate-400 p-3 rounded shadow-sm text-center w-36 shrink-0 flex flex-col justify-center">
+                                        (10) <input type="text" class="input-blank w-full mt-1 mb-1 !text-[10px]" data-ex="test.2" data-ans='["dust", "cinders"]'> and <br>
+                                        (11) <input type="text" class="input-blank w-full mt-1 mb-2 !text-[10px]" data-ex="test.2" data-ans='["cinders", "dust"]'> left behind
+                                    </div>
+
+                                    <div class="hidden lg:flex flex-col justify-center text-slate-400 text-sm font-bold mx-1 h-24 gap-8">
+                                        <span>&nearr;</span>
+                                        <span>&searr;</span>
+                                    </div>
+                                    <div class="lg:hidden text-slate-400 text-sm font-bold">OR</div>
+
+                                    <!-- Box 6 & 7 (Vertical Branches) -->
+                                    <div class="flex flex-col gap-4 w-40 shrink-0">
+                                        <div class="bg-teal-50 border border-teal-200 p-3 rounded shadow-sm text-center w-full">
+                                            Remains used in agriculture or as <br>(12) <input type="text" class="input-blank w-full mt-2 !text-[10px]" data-ex="test.2" data-ans='["fuel", "fuel source"]'>
+                                        </div>
+                                        <div class="font-bold text-center text-slate-500 hidden lg:block">or</div>
+                                        <div class="bg-white border border-slate-400 p-3 rounded shadow-sm text-center w-full">
+                                            Remains disposed of on the ground or in the <br>(13) <input type="text" class="input-blank w-full mt-2 !text-[10px]" data-ex="test.2" data-ans='["sea"]'>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-3 mt-4 mb-8">
+                                <button id="btn-test.2" onclick="checkExercise('test.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check Flowchart</button>
+                                <span id="score-test.2" class="ui-font text-[11px] font-bold hidden"></span>
+                            </div>
+                        </div>
+
+                        <!-- Question 14 -->
+                        <div class="border-t border-slate-200 pt-6">
+                            <div class="flex justify-between items-end mb-2 border-b-2 border-slate-800 pb-1">
+                                <h3 class="text-lg font-bold text-slate-900">Question 14</h3>
+                            </div>
+                            <p class="mb-3 text-slate-800 text-[12px] italic">Choose the correct answer <strong>A, B, C or D</strong>.</p>
+                            <p class="text-[13px] font-medium mb-2 text-slate-800">In the final paragraph, what are we told about waste disposal at the end of the nineteenth century?</p>
+                            <ol class="space-y-2 text-[12px] ml-4 text-slate-700">
+                                <li><strong>A</strong> It was a respected business.</li>
+                                <li><strong>B</strong> The work was relatively well-paid.</li>
+                                <li><strong>C</strong> Authorities decided to burn the waste.</li>
+                                <li><strong>D</strong> Disposal of waste had not yet been regulated.</li>
+                            </ol>
+                            <div class="mt-3 flex items-center gap-2">
+                                <span class="font-bold text-[12px] text-slate-600">Answer:</span>
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.3" data-ans='["c"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center gap-3 mt-4">
+                                <button id="btn-test.3" onclick="checkExercise('test.3')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check Q 14</button>
+                                <span id="score-test.3" class="ui-font text-[11px] font-bold hidden"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">8</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Sticky Right Arrow -->
+        <div class="hidden lg:block w-10 shrink-0 ml-2 xl:ml-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="next-btn" onclick="goNext()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Next Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Mobile Fixed Bottom Navigation -->
+    <div class="lg:hidden fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-slate-200 p-3 flex justify-between z-50 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.1)]">
+        <button id="prev-btn-mobile" onclick="goPrev()" class="ui-font font-bold px-5 py-2 rounded-lg text-slate-700 bg-slate-100 active:bg-slate-200 transition-colors flex items-center gap-2">
+            &larr; Prev
+        </button>
+        <button id="next-btn-mobile" onclick="goNext()" class="ui-font font-bold px-5 py-2 rounded-lg text-white bg-slate-800 active:bg-slate-700 transition-colors flex items-center gap-2 shadow-sm">
+            Next &rarr;
+        </button>
+    </div>
+
+    <script>
+        const REQUIRED_SCORE = 0.8;
+        const totalPages = 9; // Pages 0 to 8
+        let currentSpread = 0; // For desktop (0 = pages 0,1; 1 = pages 2,3; etc.)
+        let currentMobilePage = 0;
+
+        function updatePagination() {
+            const isDesktop = window.innerWidth >= 1024;
+            const pages = document.querySelectorAll('.page-content');
+            
+            // Hide all pages
+            pages.forEach(p => p.classList.add('hidden'));
+
+            if (isDesktop) {
+                let leftIdx = currentSpread * 2;
+                let rightIdx = leftIdx + 1;
+                
+                const leftPage = document.getElementById(`page-${leftIdx}`);
+                const rightPage = document.getElementById(`page-${rightIdx}`);
+                
+                if(leftPage) leftPage.classList.remove('hidden');
+                if(rightPage) rightPage.classList.remove('hidden');
+
+                // Update Nav Buttons
+                document.getElementById('prev-btn').disabled = currentSpread === 0;
+                document.getElementById('next-btn').disabled = currentSpread >= Math.ceil(totalPages/2) - 1;
+                
+            } else {
+                const activePage = document.getElementById(`page-${currentMobilePage}`);
+                if(activePage) activePage.classList.remove('hidden');
+
+                // Update Mobile Nav
+                const prevMob = document.getElementById('prev-btn-mobile');
+                const nextMob = document.getElementById('next-btn-mobile');
+                if(prevMob) prevMob.style.visibility = currentMobilePage === 0 ? 'hidden' : 'visible';
+                if(nextMob) nextMob.style.visibility = currentMobilePage === totalPages - 1 ? 'hidden' : 'visible';
+            }
+        }
+
+        function goNext() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread < Math.ceil(totalPages/2) - 1) currentSpread++;
+            } else {
+                if (currentMobilePage < totalPages - 1) currentMobilePage++;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goPrev() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread > 0) currentSpread--;
+            } else {
+                if (currentMobilePage > 0) currentMobilePage--;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('resize', () => {
+            const isDesktop = window.innerWidth >= 1024;
+            if(isDesktop) {
+                currentSpread = Math.floor(currentMobilePage / 2);
+            } else {
+                currentMobilePage = currentSpread * 2;
+            }
+            updatePagination();
+        });
+
+        // --- Core UI & Grading Logic ---
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function validateBlanks(inputs) {
+            let allFilled = true;
+            inputs.forEach(input => {
+                if (input.classList.contains('font-normal')) return; // skip subjective notes
+                const val = input.value !== undefined ? input.value : input.innerText;
+                if (val.trim() === "") {
+                    allFilled = false;
+                    input.style.borderBottomColor = '#f59e0b';
+                    input.style.backgroundColor = '#fef3c7';
+                    setTimeout(() => {
+                        input.style.borderBottomColor = '';
+                        input.style.backgroundColor = '';
+                    }, 1500);
+                }
+            });
+            return allFilled;
+        }
+
+        function checkExercise(exerciseId) {
+            const inputs = document.querySelectorAll(`[data-ex="${exerciseId}"]`);
+            if (!validateBlanks(inputs)) {
+                showToast("Please answer all required blanks before checking!", "warning");
+                return;
+            }
+
+            let correctCount = 0;
+            inputs.forEach(input => {
+                if(input.classList.contains('font-normal')) return;
+
+                const rawVal = input.value !== undefined ? input.value : input.innerText;
+                const userVal = rawVal.trim().toLowerCase().replace(/\s+/g, ' ');
+                const possibleAns = JSON.parse(input.getAttribute('data-ans'));
+                
+                if (possibleAns.includes(userVal)) {
+                    correctCount++;
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+
+            const scoreLabel = document.getElementById(`score-${exerciseId}`);
+            if(!scoreLabel) return;
+            
+            const totalCount = Array.from(inputs).filter(i => !i.classList.contains('font-normal')).length;
+            const percentage = correctCount / totalCount;
+            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
+            
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (percentage >= REQUIRED_SCORE) {
+                scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
+                
+                const btn = document.getElementById(`btn-${exerciseId}`);
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = "Passed";
+                }
+                showToast("Good job!", "success");
+            } else {
+                scoreLabel.textContent = `❌ Failed. ${scoreText}`;
+                scoreLabel.classList.add('text-red-600');
+                showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
+            }
+        }
+
+        // --- Audio Player Initialization via SoundCloud Widget API ---
+        function initAudioPlayer() {
+            const players = document.querySelectorAll('.custom-audio-player');
+            
+            players.forEach((playerEl) => {
+                const scUrl = playerEl.getAttribute('data-sc-url');
+                const iframeElement = playerEl.querySelector('.sc-widget-iframe');
+                
+                if (!iframeElement || !scUrl) return;
+                
+                iframeElement.src = scUrl;
+                
+                const widget = SC.Widget(iframeElement);
+                const playBtn = playerEl.querySelector('.audio-play-btn');
+                const playIcon = playerEl.querySelector('.play-icon');
+                const pauseIcon = playerEl.querySelector('.pause-icon');
+                const progressBar = playerEl.querySelector('.audio-progress');
+                const progressFill = playerEl.querySelector('.audio-progress-bar');
+                const currentTimeEl = playerEl.querySelector('.audio-current-time');
+                const totalTimeEl = playerEl.querySelector('.audio-total-time');
+
+                let durationSec = 0;
+
+                const formatTime = (timeInSeconds) => {
+                    if (isNaN(timeInSeconds) || timeInSeconds === Infinity) return "00:00";
+                    const min = Math.floor(timeInSeconds / 60);
+                    const sec = Math.floor(timeInSeconds % 60);
+                    return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+                };
+
+                const updateDuration = () => {
+                    widget.getDuration((durationMs) => {
+                        if (durationMs) {
+                            durationSec = durationMs / 1000;
+                            if (totalTimeEl) totalTimeEl.textContent = formatTime(durationSec);
+                            if (progressBar) progressBar.max = durationSec;
+                        }
+                    });
+                };
+
+                widget.bind(SC.Widget.Events.READY, () => { updateDuration(); });
+
+                widget.bind(SC.Widget.Events.PLAY_PROGRESS, (info) => {
+                    if (!durationSec) updateDuration(); 
+                    const currentPositionSec = info.currentPosition / 1000;
+                    if (currentTimeEl) currentTimeEl.textContent = formatTime(currentPositionSec);
+                    if (progressBar) progressBar.value = currentPositionSec;
+                    if (durationSec > 0 && progressFill) {
+                        const percent = (currentPositionSec / durationSec) * 100;
+                        progressFill.style.width = `${percent}%`;
+                    }
+                });
+
+                widget.bind(SC.Widget.Events.PLAY, () => {
+                    if(playIcon) playIcon.classList.add('hidden');
+                    if(pauseIcon) pauseIcon.classList.remove('hidden');
+                    updateDuration();
+                });
+
+                widget.bind(SC.Widget.Events.PAUSE, () => {
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(playIcon) playIcon.classList.remove('hidden');
+                });
+
+                widget.bind(SC.Widget.Events.FINISH, () => {
+                    if(playIcon) playIcon.classList.remove('hidden');
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(progressFill) progressFill.style.width = '0%';
+                    if(progressBar) progressBar.value = 0;
+                    widget.seekTo(0);
+                });
+
+                if (playBtn) {
+                    playBtn.addEventListener('click', () => { widget.toggle(); });
+                }
+
+                if (progressBar) {
+                    progressBar.addEventListener('input', () => {
+                        widget.seekTo(progressBar.value * 1000);
+                    });
+                }
+            });
+        }
+
+        // Initialize on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePagination();
+            initAudioPlayer();
+        });
+
+    </script>
+</body>
+</html>
