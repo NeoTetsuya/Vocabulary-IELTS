@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 22: Language building 2 - Textbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Lora', serif; 
+            background-color: #d1d5db;
+            background-image: radial-gradient(#9ca3af 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .ui-font { font-family: 'Inter', sans-serif; }
+
+        /* Book & Paper Styles */
+        .book-wrapper {
+            background-color: #fdfcf8;
+            box-shadow: 
+                0 20px 40px -10px rgba(0,0,0,0.3), 
+                0 0 0 1px rgba(0,0,0,0.05),
+                inset 0 0 60px rgba(139, 115, 85, 0.05);
+            border-radius: 4px 8px 8px 4px;
+        }
+
+        .spine-shadow {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 80px;
+            transform: translateX(-50%);
+            background: linear-gradient(
+                to right,
+                transparent 0%,
+                rgba(0,0,0,0.02) 40%,
+                rgba(0,0,0,0.12) 50%,
+                rgba(0,0,0,0.02) 60%,
+                transparent 100%
+            );
+            pointer-events: none;
+            z-index: 10;
+            border-left: 1px solid rgba(255,255,255,0.4);
+            border-right: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* Sticky Nav for Desktop */
+        .sticky-nav-container {
+            position: sticky;
+            top: 50vh;
+            transform: translateY(-50%);
+            height: max-content;
+            z-index: 50;
+        }
+
+        /* Inputs */
+        .input-blank {
+            font-family: 'Inter', sans-serif;
+            border: none;
+            border-bottom: 2px dashed #94a3b8;
+            background: rgba(255,255,255,0.5);
+            outline: none;
+            text-align: center;
+            padding: 0.1rem 0.25rem;
+            margin: 0 0.25rem;
+            transition: all 0.2s;
+            font-weight: 600;
+            color: #1e293b;
+            border-radius: 2px 2px 0 0;
+        }
+        .input-blank:focus { 
+            border-bottom: 2px solid #0d9488; /* teal-600 */
+            background: #f0fdfa; /* teal-50 */
+        }
+        .correct { 
+            border-bottom: 2px solid #16a34a !important; 
+            color: #166534; 
+            background-color: #dcfce7; 
+        }
+        .incorrect { 
+            border-bottom: 2px solid #dc2626 !important; 
+            color: #991b1b; 
+            background-color: #fee2e2; 
+        }
+
+        /* Click & Match Styles */
+        .word-choice { 
+            transition: all 0.2s; cursor: pointer; padding: 0.15rem 0.6rem; 
+            border-radius: 0.25rem; border: 1px solid #cbd5e1; font-weight: 600; 
+            background-color: white; color: #0f766e; /* teal-700 */ font-family: 'Inter', sans-serif;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .word-choice:hover:not(.used) { background-color: #ccfbf1; border-color: #5eead4; }
+        .word-choice.selected { background-color: #99f6e4; border-color: #0d9488; transform: scale(1.05); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .word-choice.used { opacity: 0.4; text-decoration: line-through; pointer-events: none; background: transparent; box-shadow: none; border-color: transparent;}
+        
+        .match-slot { 
+            display: inline-block; min-width: 6rem; height: 1.5rem; 
+            border-bottom: 2px dashed #94a3b8; text-align: center; cursor: pointer; 
+            padding: 0 0.25rem; font-weight: 600; color: #0f766e; vertical-align: bottom; 
+            transition: all 0.2s; line-height: 1.5rem; font-family: 'Inter', sans-serif;
+        }
+        .match-slot:hover { border-bottom-style: solid; border-bottom-color: #0d9488; background-color: #ccfbf1; border-radius: 2px 2px 0 0; }
+        .match-slot:empty::after { content: '...'; color: #cbd5e1; font-weight: normal; }
+
+        /* Vocabulary Highlight & Tooltip Styles */
+        .vocab-word {
+            position: relative;
+            cursor: pointer;
+            border-bottom: 2px dotted #0d9488;
+            color: #0f766e;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            padding-bottom: 1px;
+        }
+        .vocab-word:hover { background-color: #ccfbf1; border-bottom-style: solid; }
+        .vocab-tooltip {
+            visibility: hidden; background-color: #1e293b; color: #fff; text-align: center; border-radius: 6px;
+            padding: 6px 12px; position: absolute; z-index: 50; bottom: 130%; left: 50%; transform: translateX(-50%);
+            opacity: 0; transition: opacity 0.2s; font-size: 0.75rem; font-family: 'Inter', sans-serif; white-space: nowrap; font-weight: 500;
+            pointer-events: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .vocab-tooltip::after {
+            content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px;
+            border-style: solid; border-color: #1e293b transparent transparent transparent;
+        }
+        .vocab-word:hover .vocab-tooltip { visibility: visible; opacity: 1; }
+
+        /* Callouts / Notes */
+        .textbook-note {
+            background-color: #f8fafc;
+            border-left: 4px solid #0d9488;
+            position: relative;
+        }
+        .textbook-note::before {
+            content: "✍🏼 Note";
+            position: absolute;
+            top: -12px;
+            left: 8px;
+            background: #fdfcf8;
+            padding: 0 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            font-family: 'Inter', sans-serif;
+            color: #0f766e;
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb { background-color: #94a3b8; }
+
+        /* Buttons & Toasts */
+        .check-btn { transition: transform 0.1s, box-shadow 0.1s; }
+        .check-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            backdrop-filter: blur(4px);
+            transition: all 0.2s;
+        }
+        .nav-btn:hover:not(:disabled) { background: #fff; transform: scale(1.05); }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+
+        .toast {
+            position: fixed; top: 20px; right: 20px;
+            padding: 15px 25px; border-radius: 8px;
+            color: white; font-weight: bold;
+            opacity: 0; transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000; pointer-events: none;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.error { background-color: #ef4444; }
+        .toast.success { background-color: #22c55e; }
+        .toast.warning { background-color: #f59e0b; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col pt-4 lg:pt-10 pb-24 lg:pb-10">
+
+    <div id="toast" class="toast">Message</div>
+
+    <!-- Main Desk Area -->
+    <div class="w-full max-w-[1600px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
+        
+        <!-- Sticky Left Arrow (Desktop Only) -->
+        <div class="hidden lg:block w-10 shrink-0 mr-2 xl:mr-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="prev-btn" onclick="goPrev()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Previous Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- The Book -->
+        <div class="book-wrapper flex-1 w-full max-w-7xl flex flex-col lg:flex-row relative min-h-[85vh]">
+            
+            <!-- Spine Decoration (Desktop Only) -->
+            <div class="spine-shadow hidden lg:block"></div>
+
+            <!-- Page Container (Flexible Height) -->
+            <div id="pages-container" class="w-full flex relative">
+                
+                <!-- ==================== PAGE 0: Title & Intro ==================== -->
+                <div id="page-0" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow flex flex-col justify-center items-center text-center">
+                        <div class="w-24 h-24 bg-teal-50 rounded-full flex items-center justify-center mb-8 shadow-inner border border-teal-100">
+                            <svg class="w-12 h-12 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path></svg>
+                        </div>
+                        <h4 class="text-sm uppercase tracking-widest text-teal-600 font-bold ui-font mb-2">Unit 22</h4>
+                        <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-slate-800 leading-tight">Language building 2</h1>
+                        <h2 class="text-2xl italic text-slate-600 mb-8 border-b pb-8 border-slate-200">Learning vocabulary, collocation</h2>
+                        
+                        <p class="text-lg text-slate-600 leading-relaxed max-w-md mx-auto">
+                            Welcome to Unit 22. In this unit, we will explore strategies for learning vocabulary, building word families, understanding prefixes/suffixes, and mastering collocations.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">i</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 1: Learning Vocabulary ==================== -->
+                <div id="page-1" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">1. Learning vocabulary</h3>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">1.1</span> Each week, try to build up a list of new words. Here are ten useful words for this week.</p>
+                        
+                        <div class="bg-teal-50 border border-teal-200 p-3 rounded mb-6 flex flex-wrap gap-3 font-mono text-[13px] justify-center shadow-inner font-bold text-teal-800">
+                            <span>1. analysis</span>
+                            <span>2. benefit</span>
+                            <span>3. consistent</span>
+                            <span>4. create</span>
+                            <span>5. define</span>
+                            <span>6. environment</span>
+                            <span>7. occur</span>
+                            <span>8. period</span>
+                            <span>9. significant</span>
+                            <span>10. theory</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">1.2</span> Check the meaning. Which of them is closest in meaning to each of the following? <strong class="text-teal-700">Click a letter to select it, then place it.</strong></p>
+
+                        <div class="bg-slate-50 border border-slate-200 p-2.5 rounded mb-4 flex flex-wrap gap-2 font-mono text-[12px] justify-center shadow-inner" id="wb-1">
+                            <button class="word-choice" onclick="selectWord(this)" data-word="A">A: happen</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="B">B: make</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="C">C: reliable</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="D">D: close examination</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="E">E: important</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="F">F: length of time</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="G">G: advantage</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="H">H: opinion / explanation</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="I">I: clearly show</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="J">J: surroundings</button>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-y-3 gap-x-4 text-[13.5px] text-slate-800 mb-8">
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded shadow-sm">
+                                <span>1. analysis</span> <span class="match-slot !min-w-[3rem]" onclick="placeWord(this)" data-ex="1" data-ans='["d"]'></span>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded shadow-sm">
+                                <span>6. environment</span> <span class="match-slot !min-w-[3rem]" onclick="placeWord(this)" data-ex="1" data-ans='["j"]'></span>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded shadow-sm">
+                                <span>2. benefit</span> <span class="match-slot !min-w-[3rem]" onclick="placeWord(this)" data-ex="1" data-ans='["g"]'></span>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded shadow-sm">
+                                <span>7. occur</span> <span class="match-slot !min-w-[3rem]" onclick="placeWord(this)" data-ex="1" data-ans='["a"]'></span>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded shadow-sm">
+                                <span>3. consistent</span> <span class="match-slot !min-w-[3rem]" onclick="placeWord(this)" data-ex="1" data-ans='["c"]'></span>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded shadow-sm">
+                                <span>8. period</span> <span class="match-slot !min-w-[3rem]" onclick="placeWord(this)" data-ex="1" data-ans='["f"]'></span>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded shadow-sm">
+                                <span>4. create</span> <span class="match-slot !min-w-[3rem]" onclick="placeWord(this)" data-ex="1" data-ans='["b"]'></span>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded shadow-sm">
+                                <span>9. significant</span> <span class="match-slot !min-w-[3rem]" onclick="placeWord(this)" data-ex="1" data-ans='["e"]'></span>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded shadow-sm">
+                                <span>5. define</span> <span class="match-slot !min-w-[3rem]" onclick="placeWord(this)" data-ex="1" data-ans='["i"]'></span>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded shadow-sm">
+                                <span>10. theory</span> <span class="match-slot !min-w-[3rem]" onclick="placeWord(this)" data-ex="1" data-ans='["h"]'></span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-1" onclick="checkExercise('1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.2</button>
+                            <span id="score-1" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">1</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 2: Word Forms ==================== -->
+                <div id="page-2" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Word Forms</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-[13.5px]"><span class="font-bold">1.3</span> Find out the different forms of each word.</p>
+                        
+                        <div class="space-y-4 text-slate-800 text-[13.5px] mb-8">
+                            <div class="bg-white border border-slate-200 p-3 rounded shadow-sm flex items-center justify-between">
+                                <span>Which word can be a noun or a verb?</span>
+                                <input type="text" class="input-blank w-24 text-[12px]" data-ex="2" data-ans='["benefit"]'>
+                            </div>
+                            <div class="bg-white border border-slate-200 p-3 rounded shadow-sm">
+                                <div class="mb-2">Which of the words can have the following prefixes: <strong>in</strong>, <strong>re</strong>? Complete the new words below:</div>
+                                <div class="grid grid-cols-2 gap-2 text-[12px]">
+                                    <div><span class="font-bold text-slate-400">in-</span> <input type="text" class="input-blank w-28" data-ex="2" data-ans='["inconsistent"]' placeholder="consistent"></div>
+                                    <div><span class="font-bold text-slate-400">re-</span> <input type="text" class="input-blank w-28" data-ex="2" data-ans='["recreate"]' placeholder="create"></div>
+                                    <div><span class="font-bold text-slate-400">in-</span> <input type="text" class="input-blank w-28" data-ex="2" data-ans='["insignificant"]' placeholder="significant"></div>
+                                    <div><span class="font-bold text-slate-400">re-</span> <input type="text" class="input-blank w-28" data-ex="2" data-ans='["redefine"]' placeholder="define"></div>
+                                    <div></div>
+                                    <div><span class="font-bold text-slate-400">re-</span> <input type="text" class="input-blank w-28" data-ex="2" data-ans='["recur"]' placeholder="occur"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-[13.5px] border-t border-slate-200 pt-6"><span class="font-bold">1.4</span> Complete the table with the different forms of each of the words.</p>
+
+                        <div class="bg-white border border-slate-200 rounded shadow-sm mb-6 overflow-hidden">
+                            <table class="w-full text-left text-[11.5px] ui-font">
+                                <thead class="bg-slate-50 text-slate-500 uppercase text-[10px] tracking-wider">
+                                    <tr>
+                                        <th class="py-2 px-2 w-1/3">Noun</th>
+                                        <th class="py-2 px-2 w-1/3 border-l border-slate-200">Verb</th>
+                                        <th class="py-2 px-2 w-1/3 border-l border-slate-200">Adjective</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    <tr>
+                                        <td class="py-2 px-2 font-bold text-teal-700">analysis</td>
+                                        <td class="py-2 px-2 border-l border-slate-100"><input type="text" class="input-blank w-full text-[11px] !m-0" data-ex="3" data-ans='["analyse"]'></td>
+                                        <td class="py-2 px-2 border-l border-slate-100"><input type="text" class="input-blank w-full text-[11px] !m-0" data-ex="3" data-ans='["analytical"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-2 font-bold text-teal-700">benefit</td>
+                                        <td class="py-2 px-2 border-l border-slate-100"><input type="text" class="input-blank w-full text-[11px] !m-0" data-ex="3" data-ans='["benefit"]'></td>
+                                        <td class="py-2 px-2 border-l border-slate-100"><input type="text" class="input-blank w-full text-[11px] !m-0" data-ex="3" data-ans='["beneficial"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-2 border-l border-slate-100"><input type="text" class="input-blank w-full text-[11px] !m-0" data-ex="3" data-ans='["consistency"]'></td>
+                                        <td class="py-2 px-2 border-l border-slate-100"><input type="text" class="input-blank w-full text-[11px] !m-0" data-ex="3" data-ans='["consist"]'></td>
+                                        <td class="py-2 px-2 font-bold text-teal-700">consistent</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-2 border-l border-slate-100"><input type="text" class="input-blank w-full text-[11px] !m-0" data-ex="3" data-ans='["creation", "creator", "creativity"]'></td>
+                                        <td class="py-2 px-2 font-bold text-teal-700">create</td>
+                                        <td class="py-2 px-2 border-l border-slate-100"><input type="text" class="input-blank w-full text-[11px] !m-0" data-ex="3" data-ans='["creative"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-2 border-l border-slate-100"><input type="text" class="input-blank w-full text-[11px] !m-0" data-ex="3" data-ans='["definition"]'></td>
+                                        <td class="py-2 px-2 font-bold text-teal-700">define</td>
+                                        <td class="py-2 px-2 border-l border-slate-100"><input type="text" class="input-blank w-full text-[11px] !m-0" data-ex="3" data-ans='["definable", "definitive", "definite"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-2 font-bold text-teal-700">environment</td>
+                                        <td class="py-2 px-2 border-l border-slate-100 italic text-center text-slate-400">-</td>
+                                        <td class="py-2 px-2 border-l border-slate-100"><input type="text" class="input-blank w-full text-[11px] !m-0" data-ex="3" data-ans='["environmental"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-2 border-l border-slate-100"><input type="text" class="input-blank w-full text-[11px] !m-0" data-ex="3" data-ans='["occurrence"]'></td>
+                                        <td class="py-2 px-2 font-bold text-teal-700">occur</td>
+                                        <td class="py-2 px-2 border-l border-slate-100 italic text-center text-slate-400">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-2 font-bold text-teal-700">period</td>
+                                        <td class="py-2 px-2 border-l border-slate-100 italic text-center text-slate-400">-</td>
+                                        <td class="py-2 px-2 border-l border-slate-100"><input type="text" class="input-blank w-full text-[11px] !m-0" data-ex="3" data-ans='["periodical", "periodic"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-2 border-l border-slate-100"><input type="text" class="input-blank w-full text-[11px] !m-0" data-ex="3" data-ans='["significance"]'></td>
+                                        <td class="py-2 px-2 border-l border-slate-100"><input type="text" class="input-blank w-full text-[11px] !m-0" data-ex="3" data-ans='["signify"]'></td>
+                                        <td class="py-2 px-2 font-bold text-teal-700">significant</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-2 px-2 font-bold text-teal-700">theory</td>
+                                        <td class="py-2 px-2 border-l border-slate-100"><input type="text" class="input-blank w-full text-[11px] !m-0" data-ex="3" data-ans='["theorise"]'></td>
+                                        <td class="py-2 px-2 border-l border-slate-100"><input type="text" class="input-blank w-full text-[11px] !m-0" data-ex="3" data-ans='["theoretical"]'></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-2-3" onclick="checkExercise('2'); checkExercise('3')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Exercises</button>
+                            <span id="score-2" class="ui-font text-sm font-bold hidden"></span>
+                            <span id="score-3" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">2</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 3: Pronunciation & Spelling ==================== -->
+                <div id="page-3" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">1.5 Pronunciation</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <!-- Custom Audio Player 22a -->
+                        <div class="custom-audio-player bg-teal-50 border border-teal-200 rounded-lg px-4 py-2 mb-3 shadow-inner ui-font flex flex-col sm:flex-row items-center gap-4" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784431&auto_play=false&enable_api=1">
+                            <div class="text-xs font-bold text-teal-700 uppercase tracking-widest shrink-0">Track 22a</div>
+                            <div class="w-full flex items-center gap-3">
+                                <button class="audio-play-btn w-6 h-6 flex items-center justify-center bg-teal-600 hover:bg-teal-700 text-white rounded-full transition-colors shrink-0 focus:outline-none">
+                                    <svg class="play-icon h-3 w-3 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                    <svg class="pause-icon h-3 w-3 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                </button>
+                                <div class="relative w-full h-1.5 bg-slate-300 rounded-full cursor-pointer flex-1 group">
+                                     <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                     <div class="audio-progress-bar absolute h-full bg-teal-500 rounded-full group-hover:bg-teal-600 transition-colors" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                            <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+                        </div>
+
+                        <!-- Custom Audio Player 22b -->
+                        <div class="custom-audio-player bg-teal-50 border border-teal-200 rounded-lg px-4 py-2 mb-6 shadow-inner ui-font flex flex-col sm:flex-row items-center gap-4" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784419&auto_play=false&enable_api=1">
+                            <div class="text-xs font-bold text-teal-700 uppercase tracking-widest shrink-0">Track 22b</div>
+                            <div class="w-full flex items-center gap-3">
+                                <button class="audio-play-btn w-6 h-6 flex items-center justify-center bg-teal-600 hover:bg-teal-700 text-white rounded-full transition-colors shrink-0 focus:outline-none">
+                                    <svg class="play-icon h-3 w-3 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                    <svg class="pause-icon h-3 w-3 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                </button>
+                                <div class="relative w-full h-1.5 bg-slate-300 rounded-full cursor-pointer flex-1 group">
+                                     <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                     <div class="audio-progress-bar absolute h-full bg-teal-500 rounded-full group-hover:bg-teal-600 transition-colors" style="width: 0%;"></div>
+                                </div>
+                            </div>
+                            <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-[13.5px]">Listen to Track 22b. You will hear ten sentences (a-j). Each contains a word from the list, but in a different form. Write down the word and its form.</p>
+
+                        <div class="grid grid-cols-2 gap-3 text-[12.5px] mb-8">
+                            <div class="bg-white border border-slate-200 p-2 rounded shadow-sm flex justify-between items-center">
+                                <span class="font-bold text-slate-500 w-6">A</span> <input type="text" class="input-blank w-full" data-ex="4" data-ans='["environmentalist"]' placeholder="Word"> <input type="text" class="input-blank w-20" data-ex="4" data-ans='["noun"]' placeholder="Form">
+                            </div>
+                            <div class="bg-white border border-slate-200 p-2 rounded shadow-sm flex justify-between items-center">
+                                <span class="font-bold text-slate-500 w-6">F</span> <input type="text" class="input-blank w-full" data-ex="4" data-ans='["theory"]'> <input type="text" class="input-blank w-20" data-ex="4" data-ans='["noun"]'>
+                            </div>
+                            <div class="bg-white border border-slate-200 p-2 rounded shadow-sm flex justify-between items-center">
+                                <span class="font-bold text-slate-500 w-6">B</span> <input type="text" class="input-blank w-full" data-ex="4" data-ans='["beneficial"]'> <input type="text" class="input-blank w-20" data-ex="4" data-ans='["adjective", "adj"]'>
+                            </div>
+                            <div class="bg-white border border-slate-200 p-2 rounded shadow-sm flex justify-between items-center">
+                                <span class="font-bold text-slate-500 w-6">G</span> <input type="text" class="input-blank w-full" data-ex="4" data-ans='["consists"]'> <input type="text" class="input-blank w-20" data-ex="4" data-ans='["verb"]'>
+                            </div>
+                            <div class="bg-white border border-slate-200 p-2 rounded shadow-sm flex justify-between items-center">
+                                <span class="font-bold text-slate-500 w-6">C</span> <input type="text" class="input-blank w-full" data-ex="4" data-ans='["significance"]'> <input type="text" class="input-blank w-20" data-ex="4" data-ans='["noun"]'>
+                            </div>
+                            <div class="bg-white border border-slate-200 p-2 rounded shadow-sm flex justify-between items-center">
+                                <span class="font-bold text-slate-500 w-6">H</span> <input type="text" class="input-blank w-full" data-ex="4" data-ans='["periodically"]'> <input type="text" class="input-blank w-20" data-ex="4" data-ans='["adverb", "adv"]'>
+                            </div>
+                            <div class="bg-white border border-slate-200 p-2 rounded shadow-sm flex justify-between items-center">
+                                <span class="font-bold text-slate-500 w-6">D</span> <input type="text" class="input-blank w-full" data-ex="4" data-ans='["creative"]'> <input type="text" class="input-blank w-20" data-ex="4" data-ans='["adjective", "adj"]'>
+                            </div>
+                            <div class="bg-white border border-slate-200 p-2 rounded shadow-sm flex justify-between items-center">
+                                <span class="font-bold text-slate-500 w-6">I</span> <input type="text" class="input-blank w-full" data-ex="4" data-ans='["analysed"]'> <input type="text" class="input-blank w-20" data-ex="4" data-ans='["verb"]'>
+                            </div>
+                            <div class="bg-white border border-slate-200 p-2 rounded shadow-sm flex justify-between items-center">
+                                <span class="font-bold text-slate-500 w-6">E</span> <input type="text" class="input-blank w-full" data-ex="4" data-ans='["define"]'> <input type="text" class="input-blank w-20" data-ex="4" data-ans='["verb"]'>
+                            </div>
+                            <div class="bg-white border border-slate-200 p-2 rounded shadow-sm flex justify-between items-center">
+                                <span class="font-bold text-slate-500 w-6">J</span> <input type="text" class="input-blank w-full" data-ex="4" data-ans='["occurred"]'> <input type="text" class="input-blank w-20" data-ex="4" data-ans='["verb"]'>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-6">
+                            <h3 class="text-xl font-bold text-slate-900 mb-4">1.6 Know how to spell</h3>
+                            <p class="mb-4 leading-relaxed text-[13px]">Study the spellings, then type the correct spelling from the options given.</p>
+                            
+                            <div class="grid grid-cols-2 gap-3 text-[12px]">
+                                <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                    <span class="text-slate-400 italic">analasis / analysis / analisis</span>
+                                    <input type="text" class="input-blank w-24" data-ex="5" data-ans='["analysis"]'>
+                                </div>
+                                <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                    <span class="text-slate-400 italic">enviroment / environment / environement</span>
+                                    <input type="text" class="input-blank w-24" data-ex="5" data-ans='["environment"]'>
+                                </div>
+                                <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                    <span class="text-slate-400 italic">beneficial / benefitial / benefisial</span>
+                                    <input type="text" class="input-blank w-24" data-ex="5" data-ans='["beneficial"]'>
+                                </div>
+                                <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                    <span class="text-slate-400 italic">occurred / ocurred / ocured</span>
+                                    <input type="text" class="input-blank w-24" data-ex="5" data-ans='["occurred"]'>
+                                </div>
+                                <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                    <span class="text-slate-400 italic">consistent / consistant / concistent</span>
+                                    <input type="text" class="input-blank w-24" data-ex="5" data-ans='["consistent"]'>
+                                </div>
+                                <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                    <span class="text-slate-400 italic">periodicaly / periodicly / periodically</span>
+                                    <input type="text" class="input-blank w-24" data-ex="5" data-ans='["periodically"]'>
+                                </div>
+                                <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                    <span class="text-slate-400 italic">recretion / recreation / recration</span>
+                                    <input type="text" class="input-blank w-24" data-ex="5" data-ans='["recreation"]'>
+                                </div>
+                                <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                    <span class="text-slate-400 italic">sinificant / singificant / significant</span>
+                                    <input type="text" class="input-blank w-24" data-ex="5" data-ans='["significant"]'>
+                                </div>
+                                <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                    <span class="text-slate-400 italic">defined / defind / defende</span>
+                                    <input type="text" class="input-blank w-24" data-ex="5" data-ans='["defined"]'>
+                                </div>
+                                <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                    <span class="text-slate-400 italic">theoretical / theretical / theorretical</span>
+                                    <input type="text" class="input-blank w-24" data-ex="5" data-ans='["theoretical"]'>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-4-5" onclick="checkExercise('4'); checkExercise('5')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Page</button>
+                            <span id="score-4" class="ui-font text-sm font-bold hidden"></span>
+                            <span id="score-5" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">3</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 4: Use the Words ==================== -->
+                <div id="page-4" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">1.7 Use the words</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-[13px]">Complete this text with the correct form of the words from your list.</p>
+
+                        <div class="text-[13.5px] leading-[2.5rem] text-justify text-slate-800 mb-8 bg-white border border-slate-200 p-5 rounded shadow-sm font-serif">
+                            Nowadays we hear the word 'sustainable' being used a great deal in academic journals and (1) <input type="text" class="input-blank w-24 text-[12px]" data-ex="6" data-ans='["periodicals"]'>. (2) <input type="text" class="input-blank w-32 text-[12px]" data-ex="6" data-ans='["environmentalists"]'> in particular are very concerned that any development should be 'sustainable'. They argue that sustainable practices have great (3) <input type="text" class="input-blank w-24 text-[12px]" data-ex="6" data-ans='["benefits"]'> for us and can have a (4) <input type="text" class="input-blank w-28 text-[12px]" data-ex="6" data-ans='["significant"]'> impact on the future of our planet.
+                            <br><br>
+                            However, the word 'sustainable' needs to be clearly (5) <input type="text" class="input-blank w-24 text-[12px]" data-ex="6" data-ans='["defined"]'>. Sustainable development (6) <input type="text" class="input-blank w-24 text-[12px]" data-ex="6" data-ans='["consists"]'> in exploiting our natural resources without destroying them. We need to establish whether this can be put into practice or whether it is a mere (7) <input type="text" class="input-blank w-24 text-[12px]" data-ex="6" data-ans='["theory"]'>. There needs to be a thorough (8) <input type="text" class="input-blank w-24 text-[12px]" data-ex="6" data-ans='["analysis"]'> of any development plans before they are allowed to proceed, as once an area has been destroyed it is almost impossible to (9) <input type="text" class="input-blank w-24 text-[12px]" data-ex="6" data-ans='["recreate"]'> it. We should do our best to ensure that there is no (10) <input type="text" class="input-blank w-28 text-[12px]" data-ex="6" data-ans='["recurrence"]'> of the logging and land clearing that destroyed so many forests at the start of the twentieth century.
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-6">
+                            <h3 class="text-xl font-bold text-slate-900 mb-4">1.8 Remember the context</h3>
+                            <p class="mb-4 leading-relaxed text-[13px]">Look at the following ideas or contexts, which were all used in the sentences in 1.4 (Track 22b). Which words from 1.4 do you associate them with?</p>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 text-[13px] text-slate-800">
+                                <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                                    <span>1. very bad storms</span> <input type="text" class="input-blank w-28 text-[12px]" data-ex="7" data-ans='["occurred", "occur"]'>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                                    <span>6. studying chemistry</span> <input type="text" class="input-blank w-28 text-[12px]" data-ex="7" data-ans='["theory"]'>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                                    <span>2. global warming</span> <input type="text" class="input-blank w-28 text-[12px]" data-ex="7" data-ans='["environmentalists", "environment"]'>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                                    <span>7. video games and violence</span> <input type="text" class="input-blank w-28 text-[12px]" data-ex="7" data-ans='["analysed", "analysis"]'>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                                    <span>3. the student council</span> <input type="text" class="input-blank w-28 text-[12px]" data-ex="7" data-ans='["consists", "consist"]'>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                                    <span>8. space exploration & Mars</span> <input type="text" class="input-blank w-28 text-[12px]" data-ex="7" data-ans='["significance", "significant"]'>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                                    <span>4. growing plants</span> <input type="text" class="input-blank w-28 text-[12px]" data-ex="7" data-ans='["periodically", "period"]'>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                                    <span>9. teacher commenting</span> <input type="text" class="input-blank w-28 text-[12px]" data-ex="7" data-ans='["define"]'>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                                    <span>5. eating fish</span> <input type="text" class="input-blank w-28 text-[12px]" data-ex="7" data-ans='["beneficial", "benefit"]'>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-slate-100 pb-1">
+                                    <span>10. children & school impact</span> <input type="text" class="input-blank w-28 text-[12px]" data-ex="7" data-ans='["creative", "create"]'>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-6-7" onclick="checkExercise('6'); checkExercise('7')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Page</button>
+                            <span id="score-6" class="ui-font text-sm font-bold hidden"></span>
+                            <span id="score-7" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">4</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 5: Spelling Rules & Collocation ==================== -->
+                <div id="page-5" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Spelling & Collocation</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-[13px]"><span class="font-bold">1.9</span> Change these words by adding the endings in brackets.</p>
+                        
+                        <div class="grid grid-cols-2 gap-3 text-[12.5px] mb-8">
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">A. surprise (ing)</span>
+                                <input type="text" class="input-blank w-24 text-[12px]" data-ex="8" data-ans='["surprising"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">F. worry (ing)</span>
+                                <input type="text" class="input-blank w-24 text-[12px]" data-ex="8" data-ans='["worrying"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">B. true (ly)</span>
+                                <input type="text" class="input-blank w-24 text-[12px]" data-ex="8" data-ans='["truly"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">G. unplug (ed)</span>
+                                <input type="text" class="input-blank w-24 text-[12px]" data-ex="8" data-ans='["unplugged"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">C. advance (ment)</span>
+                                <input type="text" class="input-blank w-24 text-[12px]" data-ex="8" data-ans='["advancement"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">H. stop (ed)</span>
+                                <input type="text" class="input-blank w-24 text-[12px]" data-ex="8" data-ans='["stopped"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">D. happy (est)</span>
+                                <input type="text" class="input-blank w-24 text-[12px]" data-ex="8" data-ans='["happiest"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">I. slope (ed)</span>
+                                <input type="text" class="input-blank w-24 text-[12px]" data-ex="8" data-ans='["sloped"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">E. worry (ed)</span>
+                                <input type="text" class="input-blank w-24 text-[12px]" data-ex="8" data-ans='["worried"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">J. change (able)</span>
+                                <input type="text" class="input-blank w-24 text-[12px]" data-ex="8" data-ans='["changeable"]'>
+                            </div>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-[13px]">Add an appropriate prefix (<strong>dis</strong>, <strong>im</strong>, <strong>in</strong> or <strong>un</strong>) to these words.</p>
+
+                        <div class="grid grid-cols-2 gap-3 text-[12.5px] mb-8">
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">A. suitable</span>
+                                <input type="text" class="input-blank w-28 text-[12px]" data-ex="8" data-ans='["unsuitable"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">F. patient</span>
+                                <input type="text" class="input-blank w-28 text-[12px]" data-ex="8" data-ans='["impatient"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">B. appropriate</span>
+                                <input type="text" class="input-blank w-28 text-[12px]" data-ex="8" data-ans='["inappropriate"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">G. ability</span>
+                                <input type="text" class="input-blank w-28 text-[12px]" data-ex="8" data-ans='["disability", "inability", "disability / inability"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">C. similar</span>
+                                <input type="text" class="input-blank w-28 text-[12px]" data-ex="8" data-ans='["dissimilar"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">H. organised</span>
+                                <input type="text" class="input-blank w-28 text-[12px]" data-ex="8" data-ans='["disorganised", "unorganised", "disorganised / unorganised"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">D. noticed</span>
+                                <input type="text" class="input-blank w-28 text-[12px]" data-ex="8" data-ans='["unnoticed"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">I. polite</span>
+                                <input type="text" class="input-blank w-28 text-[12px]" data-ex="8" data-ans='["impolite"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">E. interested</span>
+                                <input type="text" class="input-blank w-28 text-[12px]" data-ex="8" data-ans='["disinterested", "uninterested", "disinterested / uninterested"]'>
+                            </div>
+                            <div class="flex justify-between items-center bg-white p-2 border border-slate-200 rounded">
+                                <span class="text-slate-500">J. employment</span>
+                                <input type="text" class="input-blank w-28 text-[12px]" data-ex="8" data-ans='["unemployment"]'>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-6">
+                            <h3 class="text-xl font-bold text-slate-900 mb-4">2.1 Collocation Errors</h3>
+                            <p class="mb-4 leading-relaxed text-[13px]">Correct the collocation errors in the bolded parts of these sentences. Type the correct phrase.</p>
+                            <ol class="space-y-3 text-slate-800 text-[13px]">
+                                <li>1. After a careful <strong>analysis from</strong> the situation... <input type="text" class="input-blank w-28 text-[12px]" data-ex="9" data-ans='["analysis of"]'></li>
+                                <li>2. Regular exercise can be <strong>to benefit</strong> for people... <input type="text" class="input-blank w-28 text-[12px]" data-ex="9" data-ans='["of benefit to", "of benefit", "beneficial"]'></li>
+                                <li>3. These results are <strong>consistent to</strong> the ones... <input type="text" class="input-blank w-28 text-[12px]" data-ex="9" data-ans='["consistent with"]'></li>
+                                <li>4. We need to <strong>create for a new design</strong>. <input type="text" class="input-blank w-36 text-[12px]" data-ex="9" data-ans='["create a new design"]'></li>
+                                <li>5. I am looking up the <strong>definition from</strong> this word. <input type="text" class="input-blank w-28 text-[12px]" data-ex="9" data-ans='["definition of"]'></li>
+                                <li>6. We should use products that are <strong>environmentally good</strong>. <input type="text" class="input-blank w-40 text-[12px]" data-ex="9" data-ans='["environmentally friendly"]'></li>
+                            </ol>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-8-9" onclick="checkExercise('8'); checkExercise('9')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Page</button>
+                            <span id="score-8" class="ui-font text-sm font-bold hidden"></span>
+                            <span id="score-9" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">5</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 6: Prepositions & Collocations (LEFT SIDE) ==================== -->
+                <div id="page-6" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">2.2 Prepositions</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-[13px]">Complete the sentences with the correct prepositions from the box. <strong class="text-teal-700">Click to select and place.</strong></p>
+
+                        <div class="bg-teal-50/50 border border-teal-200 p-2.5 rounded mb-4 flex gap-2 font-mono text-[12px] justify-center shadow-inner" id="wb-4">
+                            <button class="word-choice" onclick="selectWord(this)" data-word="about">about</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="for">for</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="in">in</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="on">on</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="to">to</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="with">with</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="of">of</button>
+                        </div>
+
+                        <ol class="list-decimal list-outside ml-4 space-y-4 text-slate-800 text-[13.5px] leading-loose mb-8">
+                            <li>The president refused to comment <span class="match-slot !min-w-[4rem]" onclick="placeWord(this)" data-ex="10" data-ans='["on"]'></span> the problem.</li>
+                            <li>I found out about the hotel <span class="match-slot !min-w-[4rem]" onclick="placeWord(this)" data-ex="10" data-ans='["on", "about"]'></span> the Internet.</li>
+                            <li>I would like to apply <span class="match-slot !min-w-[4rem]" onclick="placeWord(this)" data-ex="10" data-ans='["for"]'></span> the position of head chef.</li>
+                            <li>The students were allowed to participate <span class="match-slot !min-w-[4rem]" onclick="placeWord(this)" data-ex="10" data-ans='["in"]'></span> the basketball tournament.</li>
+                            <li>I was completely satisfied <span class="match-slot !min-w-[4rem]" onclick="placeWord(this)" data-ex="10" data-ans='["with"]'></span> the service at your hotel.</li>
+                            <li>My mother is concerned <span class="match-slot !min-w-[4rem]" onclick="placeWord(this)" data-ex="10" data-ans='["about"]'></span> the amount of money I spend each week.</li>
+                            <li>The cost <span class="match-slot !min-w-[4rem]" onclick="placeWord(this)" data-ex="10" data-ans='["of"]'></span> living has increased by 5 per cent this year.</li>
+                            <li>There are several reasons <span class="match-slot !min-w-[4rem]" onclick="placeWord(this)" data-ex="10" data-ans='["for"]'></span> this increase.</li>
+                        </ol>
+
+                        <div class="border-t border-slate-200 pt-6">
+                            <h3 class="text-xl font-bold text-slate-900 mb-4">2.3 Which word doesn't fit?</h3>
+                            <p class="mb-4 leading-relaxed text-[13px]">Which word in each list <strong>cannot</strong> collocate with the word in bold? Type it in the blank.</p>
+                            
+                            <div class="space-y-3 text-slate-800 text-[13px]">
+                                <div class="bg-white border border-slate-200 p-2.5 rounded shadow-sm">
+                                    <span class="font-bold text-teal-800 mr-2 w-16 inline-block">1. arise</span> difficulty / knowledge / need / opportunity / problem <br>
+                                    <span class="text-xs font-bold text-slate-500 uppercase mt-2 inline-block">Doesn't fit:</span> <input type="text" class="input-blank w-24 text-[12px]" data-ex="11" data-ans='["knowledge"]'>
+                                </div>
+                                <div class="bg-white border border-slate-200 p-2.5 rounded shadow-sm">
+                                    <span class="font-bold text-teal-800 mr-2 w-16 inline-block">2. attention</span> draw / have / need / pay / receive / seek <br>
+                                    <span class="text-xs font-bold text-slate-500 uppercase mt-2 inline-block">Doesn't fit:</span> <input type="text" class="input-blank w-24 text-[12px]" data-ex="11" data-ans='["need"]'>
+                                </div>
+                                <div class="bg-white border border-slate-200 p-2.5 rounded shadow-sm">
+                                    <span class="font-bold text-teal-800 mr-2 w-16 inline-block">3. damage</span> assess / cause / inflict / repair / take <br>
+                                    <span class="text-xs font-bold text-slate-500 uppercase mt-2 inline-block">Doesn't fit:</span> <input type="text" class="input-blank w-24 text-[12px]" data-ex="11" data-ans='["take"]'>
+                                </div>
+                                <div class="bg-white border border-slate-200 p-2.5 rounded shadow-sm">
+                                    <span class="font-bold text-teal-800 mr-2 w-16 inline-block">4. interest</span> attract / develop / excite / feign / give / lose <br>
+                                    <span class="text-xs font-bold text-slate-500 uppercase mt-2 inline-block">Doesn't fit:</span> <input type="text" class="input-blank w-24 text-[12px]" data-ex="11" data-ans='["give"]'>
+                                </div>
+                                <div class="bg-white border border-slate-200 p-2.5 rounded shadow-sm">
+                                    <span class="font-bold text-teal-800 mr-2 w-16 inline-block">5. language</span> acquire / learn / speak / tell / use <br>
+                                    <span class="text-xs font-bold text-slate-500 uppercase mt-2 inline-block">Doesn't fit:</span> <input type="text" class="input-blank w-24 text-[12px]" data-ex="11" data-ans='["tell"]'>
+                                </div>
+                                <div class="bg-white border border-slate-200 p-2.5 rounded shadow-sm">
+                                    <span class="font-bold text-teal-800 mr-2 w-16 inline-block">6. pass</span> control / an exam / a law / judgment / the time <br>
+                                    <span class="text-xs font-bold text-slate-500 uppercase mt-2 inline-block">Doesn't fit:</span> <input type="text" class="input-blank w-24 text-[12px]" data-ex="11" data-ans='["control"]'>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-10-11" onclick="checkExercise('10'); checkExercise('11')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Page</button>
+                            <span id="score-10" class="ui-font text-sm font-bold hidden"></span>
+                            <span id="score-11" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">6</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 7: Adverbs & Summary (RIGHT SIDE) ==================== -->
+                <div id="page-7" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">2.4 Adverbs</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <div class="textbook-note p-4 mb-6 text-[12.5px] text-slate-700 leading-relaxed shadow-sm rounded-r ui-font space-y-2 text-justify">
+                            <h4 class="font-bold text-slate-800">Vocabulary Note</h4>
+                            <p>When using an adverb with an adjective, note the following:</p>
+                            <ul class="list-disc list-inside space-y-1 text-slate-600">
+                                <li><strong>Extremely</strong> = 'to a large degree' so it should not be used with adjectives that have an extreme meaning, e.g. terrified. You need to use a neutral adverb, e.g. completely, really: <i>completely terrified</i>. NOT <del>extremely terrified</del>.</li>
+                                <li><strong>Slightly</strong> = 'to a small degree', so cannot be used with extreme adjectives: <i>slightly scared</i>. NOT <del>slightly terrified</del>.</li>
+                                <li><strong>Significantly</strong> is often used with comparative adjectives: <i>significantly greater</i>. NOT <del>significantly great</del>.</li>
+                                <li>Other collocations just have to be learned.</li>
+                            </ul>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-[13px]">Choose the correct adverb in each sentence.</p>
+
+                        <ol class="list-decimal list-outside ml-4 space-y-6 text-slate-800 text-[13.5px] leading-loose mb-8">
+                            <li>I was <input type="text" class="input-blank w-24 text-[12px]" data-ex="12" data-ans='["completely"]'> satisfied with my test result. <br><span class="text-xs font-bold text-slate-400 tracking-wide">(completely / utterly)</span></li>
+                            <li>It is highly <input type="text" class="input-blank w-24 text-[12px]" data-ex="12" data-ans='["likely"]'> that the president will resign today. <br><span class="text-xs font-bold text-slate-400 tracking-wide">(likely / possible)</span></li>
+                            <li>The machine was <input type="text" class="input-blank w-24 text-[12px]" data-ex="12" data-ans='["utterly"]'> useless. <br><span class="text-xs font-bold text-slate-400 tracking-wide">(slightly / utterly)</span></li>
+                            <li>I am <input type="text" class="input-blank w-24 text-[12px]" data-ex="12" data-ans='["extremely"]'> concerned about your behaviour. <br><span class="text-xs font-bold text-slate-400 tracking-wide">(extremely / totally)</span></li>
+                            <li>It was <input type="text" class="input-blank w-24 text-[12px]" data-ex="12" data-ans='["bitterly"]'> cold in the winter. <br><span class="text-xs font-bold text-slate-400 tracking-wide">(bitterly / completely)</span></li>
+                            <li>I was <input type="text" class="input-blank w-24 text-[12px]" data-ex="12" data-ans='["absolutely"]'> freezing by the time we arrived. <br><span class="text-xs font-bold text-slate-400 tracking-wide">(absolutely / totally)</span></li>
+                            <li>The oil spill had a <input type="text" class="input-blank w-24 text-[12px]" data-ex="12" data-ans='["big"]'> impact on the surrounding environment. <br><span class="text-xs font-bold text-slate-400 tracking-wide">(big / heavy)</span></li>
+                            <li>It is <input type="text" class="input-blank w-24 text-[12px]" data-ex="12" data-ans='["absolutely"]'> impossible to predict the future with any certainty. <br><span class="text-xs font-bold text-slate-400 tracking-wide">(absolutely / very)</span></li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-12" onclick="checkExercise('12')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.4</button>
+                            <span id="score-12" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">7</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Sticky Right Arrow (Desktop Only) -->
+        <div class="hidden lg:block w-10 shrink-0 ml-2 xl:ml-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="next-btn" onclick="goNext()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Next Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Mobile Fixed Bottom Navigation -->
+    <div class="lg:hidden fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-slate-200 p-3 flex justify-between z-50 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.1)]">
+        <button id="prev-btn-mobile" onclick="goPrev()" class="ui-font font-bold px-5 py-2 rounded-lg text-slate-700 bg-slate-100 active:bg-slate-200 transition-colors flex items-center gap-2">
+            &larr; Prev
+        </button>
+        <button id="next-btn-mobile" onclick="goNext()" class="ui-font font-bold px-5 py-2 rounded-lg text-white bg-teal-600 active:bg-teal-700 transition-colors flex items-center gap-2 shadow-sm">
+            Next &rarr;
+        </button>
+    </div>
+
+    <script>
+        const REQUIRED_SCORE = 0.8;
+        const totalPages = 8; // Pages 0 to 7
+        let currentSpread = 0; // For desktop (0 = pages 0,1; 1 = pages 2,3; etc.)
+        let currentMobilePage = 0;
+
+        function updatePagination() {
+            const isDesktop = window.innerWidth >= 1024;
+            const pages = document.querySelectorAll('.page-content');
+            
+            // Hide all pages
+            pages.forEach(p => p.classList.add('hidden'));
+
+            if (isDesktop) {
+                let leftIdx = currentSpread * 2;
+                let rightIdx = leftIdx + 1;
+                
+                const leftPage = document.getElementById(`page-${leftIdx}`);
+                const rightPage = document.getElementById(`page-${rightIdx}`);
+                
+                if(leftPage) leftPage.classList.remove('hidden');
+                if(rightPage) rightPage.classList.remove('hidden');
+
+                // Update Nav Buttons
+                document.getElementById('prev-btn').disabled = currentSpread === 0;
+                document.getElementById('next-btn').disabled = currentSpread >= Math.ceil(totalPages/2) - 1;
+                
+            } else {
+                const activePage = document.getElementById(`page-${currentMobilePage}`);
+                if(activePage) activePage.classList.remove('hidden');
+
+                // Update Mobile Nav
+                const prevMob = document.getElementById('prev-btn-mobile');
+                const nextMob = document.getElementById('next-btn-mobile');
+                if(prevMob) prevMob.style.visibility = currentMobilePage === 0 ? 'hidden' : 'visible';
+                if(nextMob) nextMob.style.visibility = currentMobilePage === totalPages - 1 ? 'hidden' : 'visible';
+            }
+        }
+
+        function goNext() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread < Math.ceil(totalPages/2) - 1) currentSpread++;
+            } else {
+                if (currentMobilePage < totalPages - 1) currentMobilePage++;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goPrev() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread > 0) currentSpread--;
+            } else {
+                if (currentMobilePage > 0) currentMobilePage--;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('resize', () => {
+            const isDesktop = window.innerWidth >= 1024;
+            if(isDesktop) {
+                currentSpread = Math.floor(currentMobilePage / 2);
+            } else {
+                currentMobilePage = currentSpread * 2;
+            }
+            updatePagination();
+        });
+
+        // --- Core UI & Grading Logic ---
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function validateBlanks(inputs) {
+            let allFilled = true;
+            inputs.forEach(input => {
+                if (input.classList.contains('font-normal')) return; // skip subjective notes
+                const val = input.value !== undefined ? input.value : input.innerText;
+                if (val.trim() === "" || val.trim() === "...") {
+                    allFilled = false;
+                    if(input.classList.contains('match-slot')) {
+                        input.style.borderBottomColor = '#ef4444';
+                        input.style.backgroundColor = '#fef2f2';
+                        setTimeout(() => { input.style.borderBottomColor = ''; input.style.backgroundColor = ''; }, 1500);
+                    } else {
+                        input.style.borderBottomColor = '#f59e0b';
+                        input.style.backgroundColor = '#fef3c7';
+                        setTimeout(() => {
+                            input.style.borderBottomColor = '';
+                            input.style.backgroundColor = '';
+                        }, 1500);
+                    }
+                }
+            });
+            return allFilled;
+        }
+
+        function processScore(exerciseId, correctCount, totalCount) {
+            const scoreLabel = document.getElementById(`score-${exerciseId}`);
+            const percentage = correctCount / totalCount;
+            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
+            
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (percentage >= REQUIRED_SCORE) {
+                scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
+                
+                const btn = document.getElementById(`btn-${exerciseId}`);
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = "Passed";
+                }
+                
+                // Handle multi-exercise buttons
+                if(document.getElementById(`btn-1-2`) && (exerciseId === '1' || exerciseId === '2')) {
+                   const btn12 = document.getElementById(`btn-1-2`);
+                   const sc1 = document.getElementById(`score-1`);
+                   const sc2 = document.getElementById(`score-2`);
+                   if(sc1 && sc2 && sc1.textContent.includes('Passed') && sc2.textContent.includes('Passed')) {
+                       btn12.disabled = true; btn12.textContent = "Passed";
+                   }
+                }
+                if(document.getElementById(`btn-2-3`) && (exerciseId === '2' || exerciseId === '3')) {
+                   const btn23 = document.getElementById(`btn-2-3`);
+                   const sc2 = document.getElementById(`score-2`);
+                   const sc3 = document.getElementById(`score-3`);
+                   if(sc2 && sc3 && sc2.textContent.includes('Passed') && sc3.textContent.includes('Passed')) {
+                       btn23.disabled = true; btn23.textContent = "Passed";
+                   }
+                }
+                if(document.getElementById(`btn-4-5`) && (exerciseId === '4' || exerciseId === '5')) {
+                   const btn45 = document.getElementById(`btn-4-5`);
+                   const sc4 = document.getElementById(`score-4`);
+                   const sc5 = document.getElementById(`score-5`);
+                   if(sc4 && sc5 && sc4.textContent.includes('Passed') && sc5.textContent.includes('Passed')) {
+                       btn45.disabled = true; btn45.textContent = "Passed";
+                   }
+                }
+                if(document.getElementById(`btn-6-7`) && (exerciseId === '6' || exerciseId === '7')) {
+                   const btn67 = document.getElementById(`btn-6-7`);
+                   const sc6 = document.getElementById(`score-6`);
+                   const sc7 = document.getElementById(`score-7`);
+                   if(sc6 && sc7 && sc6.textContent.includes('Passed') && sc7.textContent.includes('Passed')) {
+                       btn67.disabled = true; btn67.textContent = "Passed";
+                   }
+                }
+                if(document.getElementById(`btn-8-9`) && (exerciseId === '8' || exerciseId === '9')) {
+                   const btn89 = document.getElementById(`btn-8-9`);
+                   const sc8 = document.getElementById(`score-8`);
+                   const sc9 = document.getElementById(`score-9`);
+                   if(sc8 && sc9 && sc8.textContent.includes('Passed') && sc9.textContent.includes('Passed')) {
+                       btn89.disabled = true; btn89.textContent = "Passed";
+                   }
+                }
+                if(document.getElementById(`btn-10-11`) && (exerciseId === '10' || exerciseId === '11')) {
+                   const btn1011 = document.getElementById(`btn-10-11`);
+                   const sc10 = document.getElementById(`score-10`);
+                   const sc11 = document.getElementById(`score-11`);
+                   if(sc10 && sc11 && sc10.textContent.includes('Passed') && sc11.textContent.includes('Passed')) {
+                       btn1011.disabled = true; btn1011.textContent = "Passed";
+                   }
+                }
+
+                showToast("Good job!", "success");
+            } else {
+                scoreLabel.textContent = `❌ Failed. ${scoreText}`;
+                scoreLabel.classList.add('text-red-600');
+                showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
+            }
+        }
+
+        // Standard exercise checker (Handles text inputs and selects)
+        function checkExercise(exerciseId) {
+            const inputs = document.querySelectorAll(`[data-ex="${exerciseId}"]`);
+            if (!validateBlanks(inputs)) {
+                showToast("Please answer all required blanks before checking!", "warning");
+                return;
+            }
+
+            let correctCount = 0;
+            inputs.forEach(input => {
+                if(input.classList.contains('font-normal')) return;
+
+                const rawVal = input.value !== undefined ? input.value : input.innerText;
+                const userVal = rawVal.trim().toLowerCase().replace(/\s+/g, ' ');
+                const possibleAns = JSON.parse(input.getAttribute('data-ans'));
+                
+                if (possibleAns.includes(userVal)) {
+                    correctCount++;
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+
+            processScore(exerciseId, correctCount, inputs.length);
+        }
+
+        // --- Click & Match Logic ---
+        let selectedWordBtn = null;
+
+        function selectWord(btn) {
+            if (btn.classList.contains('used')) return;
+            
+            // Deselect all globally to keep it clean
+            document.querySelectorAll('.word-choice').forEach(b => b.classList.remove('selected'));
+            
+            if (selectedWordBtn === btn) {
+                selectedWordBtn = null; 
+                return;
+            }
+            
+            btn.classList.add('selected');
+            selectedWordBtn = btn;
+        }
+
+        function placeWord(slot) {
+            if (slot.innerText.trim() !== '' && slot.innerText.trim() !== '...') {
+                const existingWord = slot.innerText.trim();
+                const bankBtn = Array.from(slot.closest('.page-content').querySelectorAll('.word-choice'))
+                                     .find(b => b.getAttribute('data-word') === existingWord);
+                if (bankBtn) bankBtn.classList.remove('used');
+                slot.innerText = '';
+            }
+
+            if (selectedWordBtn) {
+                if (selectedWordBtn.closest('.page-content') === slot.closest('.page-content')) {
+                    slot.innerText = selectedWordBtn.getAttribute('data-word');
+                    selectedWordBtn.classList.add('used');
+                    selectedWordBtn.classList.remove('selected');
+                    selectedWordBtn = null;
+                }
+            }
+        }
+
+        // --- Audio Player Initialization via SoundCloud Widget API ---
+        function initAudioPlayer() {
+            const players = document.querySelectorAll('.custom-audio-player');
+            
+            players.forEach((playerEl) => {
+                const scUrl = playerEl.getAttribute('data-sc-url');
+                const iframeElement = playerEl.querySelector('.sc-widget-iframe');
+                
+                if (!iframeElement || !scUrl) return;
+                
+                iframeElement.src = scUrl;
+                
+                const widget = SC.Widget(iframeElement);
+                const playBtn = playerEl.querySelector('.audio-play-btn');
+                const playIcon = playerEl.querySelector('.play-icon');
+                const pauseIcon = playerEl.querySelector('.pause-icon');
+                const progressBar = playerEl.querySelector('.audio-progress');
+                const progressFill = playerEl.querySelector('.audio-progress-bar');
+                const currentTimeEl = playerEl.querySelector('.audio-current-time');
+                const totalTimeEl = playerEl.querySelector('.audio-total-time');
+
+                let durationSec = 0;
+
+                const formatTime = (timeInSeconds) => {
+                    if (isNaN(timeInSeconds) || timeInSeconds === Infinity) return "00:00";
+                    const min = Math.floor(timeInSeconds / 60);
+                    const sec = Math.floor(timeInSeconds % 60);
+                    return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+                };
+
+                const updateDuration = () => {
+                    widget.getDuration((durationMs) => {
+                        if (durationMs) {
+                            durationSec = durationMs / 1000;
+                            if (totalTimeEl) totalTimeEl.textContent = formatTime(durationSec);
+                            if (progressBar) progressBar.max = durationSec;
+                        }
+                    });
+                };
+
+                widget.bind(SC.Widget.Events.READY, () => { updateDuration(); });
+
+                widget.bind(SC.Widget.Events.PLAY_PROGRESS, (info) => {
+                    if (!durationSec) updateDuration(); 
+                    const currentPositionSec = info.currentPosition / 1000;
+                    if (currentTimeEl) currentTimeEl.textContent = formatTime(currentPositionSec);
+                    if (progressBar) progressBar.value = currentPositionSec;
+                    if (durationSec > 0 && progressFill) {
+                        const percent = (currentPositionSec / durationSec) * 100;
+                        progressFill.style.width = `${percent}%`;
+                    }
+                });
+
+                widget.bind(SC.Widget.Events.PLAY, () => {
+                    if(playIcon) playIcon.classList.add('hidden');
+                    if(pauseIcon) pauseIcon.classList.remove('hidden');
+                    updateDuration();
+                });
+
+                widget.bind(SC.Widget.Events.PAUSE, () => {
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(playIcon) playIcon.classList.remove('hidden');
+                });
+
+                widget.bind(SC.Widget.Events.FINISH, () => {
+                    if(playIcon) playIcon.classList.remove('hidden');
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(progressFill) progressFill.style.width = '0%';
+                    if(progressBar) progressBar.value = 0;
+                    widget.seekTo(0);
+                });
+
+                if (playBtn) {
+                    playBtn.addEventListener('click', () => { widget.toggle(); });
+                }
+
+                if (progressBar) {
+                    progressBar.addEventListener('input', () => {
+                        widget.seekTo(progressBar.value * 1000);
+                    });
+                }
+            });
+        }
+
+        // Initialize on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePagination();
+            initAudioPlayer();
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 23: Academic Writing Task 1 - Textbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Lora', serif; 
+            background-color: #d1d5db;
+            background-image: radial-gradient(#9ca3af 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .ui-font { font-family: 'Inter', sans-serif; }
+
+        /* Book & Paper Styles */
+        .book-wrapper {
+            background-color: #fdfcf8;
+            box-shadow: 
+                0 20px 40px -10px rgba(0,0,0,0.3), 
+                0 0 0 1px rgba(0,0,0,0.05),
+                inset 0 0 60px rgba(139, 115, 85, 0.05);
+            border-radius: 4px 8px 8px 4px;
+        }
+
+        .spine-shadow {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 80px;
+            transform: translateX(-50%);
+            background: linear-gradient(
+                to right,
+                transparent 0%,
+                rgba(0,0,0,0.02) 40%,
+                rgba(0,0,0,0.12) 50%,
+                rgba(0,0,0,0.02) 60%,
+                transparent 100%
+            );
+            pointer-events: none;
+            z-index: 10;
+            border-left: 1px solid rgba(255,255,255,0.4);
+            border-right: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* Sticky Nav for Desktop */
+        .sticky-nav-container {
+            position: sticky;
+            top: 50vh;
+            transform: translateY(-50%);
+            height: max-content;
+            z-index: 50;
+        }
+
+        /* Inputs */
+        .input-blank {
+            font-family: 'Inter', sans-serif;
+            border: none;
+            border-bottom: 2px dashed #94a3b8;
+            background: rgba(255,255,255,0.5);
+            outline: none;
+            text-align: center;
+            padding: 0.1rem 0.25rem;
+            margin: 0 0.25rem;
+            transition: all 0.2s;
+            font-weight: 600;
+            color: #1e293b;
+            border-radius: 2px 2px 0 0;
+        }
+        .input-blank:focus { 
+            border-bottom: 2px solid #e11d48; /* rose-600 */
+            background: #fff1f2; /* rose-50 */
+        }
+        .correct { 
+            border-bottom: 2px solid #16a34a !important; 
+            color: #166534; 
+            background-color: #dcfce7; 
+        }
+        .incorrect { 
+            border-bottom: 2px solid #dc2626 !important; 
+            color: #991b1b; 
+            background-color: #fee2e2; 
+        }
+
+        /* Click & Match Styles */
+        .word-choice { 
+            transition: all 0.2s; cursor: pointer; padding: 0.15rem 0.6rem; 
+            border-radius: 0.25rem; border: 1px solid #cbd5e1; font-weight: 600; 
+            background-color: white; color: #be123c; /* rose-700 */ font-family: 'Inter', sans-serif;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .word-choice:hover:not(.used) { background-color: #ffe4e6; border-color: #fda4af; }
+        .word-choice.selected { background-color: #fecdd3; border-color: #e11d48; transform: scale(1.05); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .word-choice.used { opacity: 0.4; text-decoration: line-through; pointer-events: none; background: transparent; box-shadow: none; border-color: transparent;}
+        
+        .match-slot { 
+            display: inline-block; min-width: 6rem; height: 1.5rem; 
+            border-bottom: 2px dashed #94a3b8; text-align: center; cursor: pointer; 
+            padding: 0 0.25rem; font-weight: 600; color: #be123c; vertical-align: bottom; 
+            transition: all 0.2s; line-height: 1.5rem; font-family: 'Inter', sans-serif;
+        }
+        .match-slot:hover { border-bottom-style: solid; border-bottom-color: #e11d48; background-color: #ffe4e6; border-radius: 2px 2px 0 0; }
+        .match-slot:empty::after { content: '...'; color: #cbd5e1; font-weight: normal; }
+
+        /* Callouts / Notes */
+        .textbook-note {
+            background-color: #f8fafc;
+            border-left: 4px solid #e11d48;
+            position: relative;
+        }
+        .textbook-note::before {
+            content: "✍🏼 Note";
+            position: absolute;
+            top: -12px;
+            left: 8px;
+            background: #fdfcf8;
+            padding: 0 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            font-family: 'Inter', sans-serif;
+            color: #be123c;
+        }
+
+        /* Buttons & Toasts */
+        .check-btn { transition: transform 0.1s, box-shadow 0.1s; }
+        .check-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            backdrop-filter: blur(4px);
+            transition: all 0.2s;
+        }
+        .nav-btn:hover:not(:disabled) { background: #fff; transform: scale(1.05); }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+
+        .toast {
+            position: fixed; top: 20px; right: 20px;
+            padding: 15px 25px; border-radius: 8px;
+            color: white; font-weight: bold;
+            opacity: 0; transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000; pointer-events: none;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.error { background-color: #ef4444; }
+        .toast.success { background-color: #22c55e; }
+        .toast.warning { background-color: #f59e0b; }
+
+        /* Custom Charts Styling */
+        .pie-chart {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: conic-gradient(#1e293b 0% 25%, #e11d48 25% 45%, #cbd5e1 45% 70%, #94a3b8 70% 100%);
+        }
+        .line-chart-svg { width: 100px; height: 60px; }
+        .bar-chart-col { width: 12px; background-color: #1e293b; margin: 0 2px; }
+        .bar-chart-col.light { background-color: #cbd5e1; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col pt-4 lg:pt-10 pb-24 lg:pb-10">
+
+    <div id="toast" class="toast">Message</div>
+
+    <!-- Main Desk Area -->
+    <div class="w-full max-w-[1600px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
+        
+        <!-- Sticky Left Arrow (Desktop Only) -->
+        <div class="hidden lg:block w-10 shrink-0 mr-2 xl:mr-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="prev-btn" onclick="goPrev()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Previous Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- The Book -->
+        <div class="book-wrapper flex-1 w-full max-w-7xl flex flex-col lg:flex-row relative min-h-[85vh]">
+            
+            <!-- Spine Decoration (Desktop Only) -->
+            <div class="spine-shadow hidden lg:block"></div>
+
+            <!-- Page Container -->
+            <div id="pages-container" class="w-full flex relative">
+                
+                <!-- ==================== PAGE 0: Title & Intro ==================== -->
+                <div id="page-0" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow flex flex-col justify-center items-center text-center">
+                        <div class="w-24 h-24 bg-rose-50 rounded-full flex items-center justify-center mb-8 shadow-inner border border-rose-100">
+                            <svg class="w-12 h-12 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
+                        </div>
+                        <h4 class="text-sm uppercase tracking-widest text-rose-700 font-bold ui-font mb-2">Unit 23</h4>
+                        <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-slate-800 leading-tight">Academic Writing Task 1</h1>
+                        <h2 class="text-xl italic text-slate-600 mb-8 border-b pb-8 border-slate-200">Data, graphs and tables, diagrams and processes</h2>
+                        
+                        <p class="text-lg text-slate-600 leading-relaxed max-w-md mx-auto">
+                            Welcome to Unit 23. In this unit, we will explore vocabulary and strategies for describing charts, tracking trends, and explaining multi-step processes.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">i</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 1: Graphs & Tables ==================== -->
+                <div id="page-1" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">1. Data, graphs and tables</h3>
+                        </div>
+
+                        <div class="textbook-note p-4 mb-6 text-[13px] text-slate-700 leading-relaxed shadow-sm rounded-r ui-font space-y-2">
+                            <h4 class="font-bold text-slate-800">Test Tip</h4>
+                            <p>Before you start writing, look carefully at the information you are given. Pay particular attention to any headings or information about the types of measurement used, e.g. millions / percentages. You should write about the most significant changes and differences. Don't copy words and phrases directly from the question. Use your own words. Try not to repeat the same words and phrases.</p>
+                            <h4 class="font-bold text-slate-800 mt-2">Error warning!</h4>
+                            <p>Make sure you spell these words correctly: <i>pie chart</i> NOT <del>pie/pie chat</del>; <i>graph</i> NOT <del>groft</del>.</p>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">1.1</span> Match the labels (1-6) to the correct illustrations (A-F).</p>
+                        
+                        <div class="grid grid-cols-2 gap-4 text-center text-sm font-bold text-slate-700 mb-6 ui-font">
+                            <div>1 pie chart <input type="text" class="input-blank w-10 text-[12px] uppercase" data-ex="1" data-ans='["b"]' placeholder="A-F"></div>
+                            <div>2 table <input type="text" class="input-blank w-10 text-[12px] uppercase" data-ex="1" data-ans='["f"]' placeholder="A-F"></div>
+                            <div>3 bar chart / bar graph <input type="text" class="input-blank w-10 text-[12px] uppercase" data-ex="1" data-ans='["a"]' placeholder="A-F"></div>
+                            <div>4 graph <input type="text" class="input-blank w-10 text-[12px] uppercase" data-ex="1" data-ans='["e"]' placeholder="A-F"></div>
+                            <div>5 diagram <input type="text" class="input-blank w-10 text-[12px] uppercase" data-ex="1" data-ans='["d"]' placeholder="A-F"></div>
+                            <div>6 flowchart <input type="text" class="input-blank w-10 text-[12px] uppercase" data-ex="1" data-ans='["c"]' placeholder="A-F"></div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 text-[11px] ui-font font-semibold">
+                            <!-- A -->
+                            <div class="bg-white border border-slate-200 p-3 rounded shadow-sm flex flex-col items-center">
+                                <div class="mb-2 text-rose-700 font-bold">A</div>
+                                <div class="flex items-end h-16 border-b border-l border-slate-400 pl-1 w-full justify-around pb-1">
+                                    <div class="flex items-end h-full"><div class="bar-chart-col h-full"></div><div class="bar-chart-col light h-1/2"></div></div>
+                                    <div class="flex items-end h-full"><div class="bar-chart-col h-[90%]"></div><div class="bar-chart-col light h-[60%]"></div></div>
+                                </div>
+                            </div>
+                            <!-- B -->
+                            <div class="bg-white border border-slate-200 p-3 rounded shadow-sm flex flex-col items-center">
+                                <div class="mb-2 text-rose-700 font-bold">B</div>
+                                <div class="pie-chart"></div>
+                            </div>
+                            <!-- C -->
+                            <div class="bg-white border border-slate-200 p-3 rounded shadow-sm flex flex-col items-center text-[10px]">
+                                <div class="mb-2 text-rose-700 font-bold">C</div>
+                                <div class="border border-slate-400 px-2 py-0.5 mb-1">1. collect rubbish</div>
+                                <div class="text-slate-400">↓</div>
+                                <div class="border border-slate-400 px-2 py-0.5 mb-1">2. sort</div>
+                                <div class="text-slate-400">↓</div>
+                                <div class="border border-slate-400 px-2 py-0.5">3. wash glass...</div>
+                            </div>
+                            <!-- D -->
+                            <div class="bg-white border border-slate-200 p-3 rounded shadow-sm flex flex-col items-center text-[10px] text-center">
+                                <div class="mb-2 text-rose-700 font-bold">D</div>
+                                <div class="w-full flex items-center justify-center gap-1">
+                                    <div class="border border-slate-400 p-1 w-1/2">sugar cane machine</div>
+                                    <span>→</span>
+                                    <div class="border border-slate-400 p-1 w-1/3">heater</div>
+                                </div>
+                            </div>
+                            <!-- E -->
+                            <div class="bg-white border border-slate-200 p-3 rounded shadow-sm flex flex-col items-center">
+                                <div class="mb-2 text-rose-700 font-bold">E</div>
+                                <svg class="line-chart-svg border-b border-l border-slate-400" viewBox="0 0 100 60">
+                                    <polyline fill="none" stroke="#1e293b" stroke-width="2" points="10,40 30,35 50,15 70,25 90,10"/>
+                                    <polyline fill="none" stroke="#94a3b8" stroke-width="2" points="10,50 30,45 50,45 70,10 90,30"/>
+                                    <circle cx="10" cy="40" r="2" fill="#1e293b"/><circle cx="30" cy="35" r="2" fill="#1e293b"/>
+                                </svg>
+                            </div>
+                            <!-- F -->
+                            <div class="bg-white border border-slate-200 p-3 rounded shadow-sm flex flex-col items-center">
+                                <div class="mb-2 text-rose-700 font-bold">F</div>
+                                <table class="w-full text-left border-collapse">
+                                    <tr class="border-b"><td class="py-1">Sydney</td><td>3.6</td></tr>
+                                    <tr class="border-b"><td class="py-1">Melbourne</td><td>2.9</td></tr>
+                                    <tr class="border-b"><td class="py-1">Brisbane</td><td>2.6</td></tr>
+                                    <tr><td class="py-1">Canberra</td><td>1.8</td></tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-1" onclick="checkExercise('1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.1</button>
+                            <span id="score-1" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">1</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 2: Interpreting Data ==================== -->
+                <div id="page-2" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Interpreting Data</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">1.2 & 1.3</span> Look at this writing task graph. Which <strong>two</strong> of the following sentences do NOT refer to significant information on the graph?</p>
+
+                        <!-- Graph Approximation -->
+                        <div class="bg-white border border-slate-200 rounded p-4 shadow-sm mb-6 ui-font">
+                            <h4 class="text-center font-bold text-sm mb-4">National Recycling Rates, 1960 to 2005</h4>
+                            <div class="relative w-full h-40 border-b border-l border-slate-800 text-[10px] text-slate-500 pl-1 pb-1">
+                                <!-- Y Axis Labels -->
+                                <div class="absolute -left-10 bottom-0">0 mty</div>
+                                <div class="absolute -left-10 bottom-[25%]">20 mty</div>
+                                <div class="absolute -left-10 bottom-[50%]">40 mty</div>
+                                <div class="absolute -left-10 bottom-[75%]">60 mty</div>
+                                <div class="absolute -left-10 top-0">80 mty</div>
+                                
+                                <div class="absolute -right-8 bottom-[10%]">10%</div>
+                                <div class="absolute -right-8 bottom-[20%]">20%</div>
+                                <div class="absolute -right-8 bottom-[30%]">30%</div>
+                                <div class="absolute -right-8 bottom-[40%]">40%</div>
+                                <div class="absolute -right-8 bottom-[50%]">50%</div>
+
+                                <!-- X Axis Labels -->
+                                <div class="absolute -bottom-5 left-[5%]">1960</div>
+                                <div class="absolute -bottom-5 left-[25%]">1970</div>
+                                <div class="absolute -bottom-5 left-[40%]">1980</div>
+                                <div class="absolute -bottom-5 left-[55%]">1990</div>
+                                <div class="absolute -bottom-5 left-[70%]">1995</div>
+                                <div class="absolute -bottom-5 left-[90%]">2005</div>
+
+                                <!-- Lines -->
+                                <svg class="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+                                    <!-- Total Waste (mty) - Light Blue Line -->
+                                    <polyline fill="none" stroke="#94a3b8" stroke-width="2" points="10,85 30,85 45,80 60,70 75,25 95,5"/>
+                                    <!-- Percent Recycling - Black Line -->
+                                    <polyline fill="none" stroke="#000000" stroke-width="2" points="10,95 30,95 45,85 60,60 75,70 95,65"/>
+                                </svg>
+                            </div>
+                            <div class="mt-6 text-[10px] flex justify-center gap-6">
+                                <div class="flex items-center gap-1"><div class="w-4 h-0.5 bg-slate-400"></div> Total Waste Recovery</div>
+                                <div class="flex items-center gap-1"><div class="w-4 h-0.5 bg-black"></div> Percent Recycling</div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4 text-slate-800 text-[13px] leading-loose mb-8">
+                            <div class="flex items-start gap-2">
+                                <input type="checkbox" id="q1_3_1" class="mt-2 text-rose-600 focus:ring-rose-500 w-4 h-4" data-ex="2" data-ans='["true"]'>
+                                <label for="q1_3_1"><strong>1.</strong> The amount of waste being recycled rose from 30% to 32% between 2000 and 2005.</label>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <input type="checkbox" id="q1_3_2" class="mt-2 text-rose-600 focus:ring-rose-500 w-4 h-4" data-ex="2" data-ans='["false"]'>
+                                <label for="q1_3_2"><strong>2.</strong> The amount of waste material being recycled reached a peak in 1990.</label>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <input type="checkbox" id="q1_3_3" class="mt-2 text-rose-600 focus:ring-rose-500 w-4 h-4" data-ex="2" data-ans='["false"]'>
+                                <label for="q1_3_3"><strong>3.</strong> The amount of garbage being collected annually rose from approximately 10 million tonnes to 55 million tonnes between 1990 and 1995.</label>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <input type="checkbox" id="q1_3_4" class="mt-2 text-rose-600 focus:ring-rose-500 w-4 h-4" data-ex="2" data-ans='["true"]'>
+                                <label for="q1_3_4"><strong>4.</strong> The amount of garbage being produced each year rose from 5.6 to 8 million tonnes between 1960 and 1970.</label>
+                            </div>
+                            <div class="flex items-start gap-2">
+                                <input type="checkbox" id="q1_3_5" class="mt-2 text-rose-600 focus:ring-rose-500 w-4 h-4" data-ex="2" data-ans='["false"]'>
+                                <label for="q1_3_5"><strong>5.</strong> The percentage of rubbish being recycled rose from 6.8% to 33.2% between 1970 and 1990.</label>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-2" onclick="checkCheckboxes('2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.3</button>
+                            <span id="score-2" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">2</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 3: Describing Trends ==================== -->
+                <div id="page-3" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Describing Trends</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">1.4</span> Put these words and phrases into the correct column according to the trend they can be used to describe. <strong class="text-rose-700">Click to select, then click an empty slot.</strong></p>
+
+                        <div class="bg-rose-50/50 border border-rose-200 p-2.5 rounded mb-5 flex flex-wrap gap-2 font-mono text-[11px] justify-center shadow-inner" id="wb-3">
+                            <button class="word-choice" onclick="selectWord(this)" data-word="unchanged">unchanged</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="fall">fall</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="rise">rise</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="drop">drop</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="remain steady">remain steady</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="reach a high">reach a high</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="fluctuate">fluctuate</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="plunge">plunge</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="upward trend">upward trend</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="downward trend">downward trend</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="plateau">plateau</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="sharp">sharp</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="steep">steep</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="unpredictable">unpredictable</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="static">static</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="significant">significant</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="wildly">wildly</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="constant">constant</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="reach a low">reach a low</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="steadily">steadily</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="rapidly">rapidly</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="fixed">fixed</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="peak">peak</button>
+                        </div>
+
+                        <!-- Trends Grid -->
+                        <div class="grid grid-cols-2 gap-3 text-center text-[12px] font-semibold">
+                            <!-- Fall -->
+                            <div class="bg-white border border-slate-200 rounded p-2 shadow-sm flex flex-col items-center">
+                                <div class="font-bold text-rose-800 text-sm mb-2 uppercase">Fall</div>
+                                <div class="flex flex-col gap-1.5 w-full items-center">
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["fall", "drop", "plunge", "downward trend", "sharp", "steep", "significant", "reach a low", "steadily", "rapidly"]'></span>
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["fall", "drop", "plunge", "downward trend", "sharp", "steep", "significant", "reach a low", "steadily", "rapidly"]'></span>
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["fall", "drop", "plunge", "downward trend", "sharp", "steep", "significant", "reach a low", "steadily", "rapidly"]'></span>
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["fall", "drop", "plunge", "downward trend", "sharp", "steep", "significant", "reach a low", "steadily", "rapidly"]'></span>
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["fall", "drop", "plunge", "downward trend", "sharp", "steep", "significant", "reach a low", "steadily", "rapidly"]'></span>
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["fall", "drop", "plunge", "downward trend", "sharp", "steep", "significant", "reach a low", "steadily", "rapidly"]'></span>
+                                </div>
+                            </div>
+
+                            <!-- Rise -->
+                            <div class="bg-white border border-slate-200 rounded p-2 shadow-sm flex flex-col items-center">
+                                <div class="font-bold text-rose-800 text-sm mb-2 uppercase">Rise</div>
+                                <div class="flex flex-col gap-1.5 w-full items-center">
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["rise", "upward trend", "sharp", "steep", "significant", "reach a high", "steadily", "rapidly", "peak"]'></span>
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["rise", "upward trend", "sharp", "steep", "significant", "reach a high", "steadily", "rapidly", "peak"]'></span>
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["rise", "upward trend", "sharp", "steep", "significant", "reach a high", "steadily", "rapidly", "peak"]'></span>
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["rise", "upward trend", "sharp", "steep", "significant", "reach a high", "steadily", "rapidly", "peak"]'></span>
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["rise", "upward trend", "sharp", "steep", "significant", "reach a high", "steadily", "rapidly", "peak"]'></span>
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["rise", "upward trend", "sharp", "steep", "significant", "reach a high", "steadily", "rapidly", "peak"]'></span>
+                                </div>
+                            </div>
+
+                            <!-- Unchanged -->
+                            <div class="bg-white border border-slate-200 rounded p-2 shadow-sm flex flex-col items-center">
+                                <div class="font-bold text-rose-800 text-sm mb-2 uppercase">Unchanged</div>
+                                <div class="flex flex-col gap-1.5 w-full items-center">
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["unchanged", "remain steady", "constant", "plateau", "fixed", "static"]'></span>
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["unchanged", "remain steady", "constant", "plateau", "fixed", "static"]'></span>
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["unchanged", "remain steady", "constant", "plateau", "fixed", "static"]'></span>
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["unchanged", "remain steady", "constant", "plateau", "fixed", "static"]'></span>
+                                </div>
+                            </div>
+
+                            <!-- Fluctuate -->
+                            <div class="bg-white border border-slate-200 rounded p-2 shadow-sm flex flex-col items-center">
+                                <div class="font-bold text-rose-800 text-sm mb-2 uppercase">Fluctuate</div>
+                                <div class="flex flex-col gap-1.5 w-full items-center">
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["fluctuate", "unpredictable", "wildly"]'></span>
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["fluctuate", "unpredictable", "wildly"]'></span>
+                                    <span class="match-slot w-full" onclick="placeWord(this)" data-ex="3" data-ans='["fluctuate", "unpredictable", "wildly"]'></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-3" onclick="checkExercise('3')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.4</button>
+                            <span id="score-3" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">3</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 4: Prepositions & Grammar ==================== -->
+                <div id="page-4" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Grammar & Prepositions</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+                        
+                        <div class="textbook-note p-4 mb-6 text-[12.5px] text-slate-700 leading-relaxed shadow-sm rounded-r ui-font space-y-2 text-justify">
+                            <h4 class="font-bold text-slate-800">Vocabulary Note</h4>
+                            <p>Note the way we use prepositions with numbers and dates:</p>
+                            <ul class="list-disc list-inside ml-2">
+                                <li>In 1997 the number fell <strong>to</strong> 10%</li>
+                                <li>In 1997 the number fell <strong>by</strong> 25%</li>
+                                <li>In 1997 the number fell <strong>from</strong> 35%</li>
+                            </ul>
+                            <p>NOT <del>in 35%</del>; The number dropped <strong>to</strong> 10% <strong>between</strong> 1995 and 1997. NOT <del>reduced to</del>; By 1997 the number had fallen <strong>to</strong> 10%.</p>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-[13px]"><span class="font-bold">1.5</span> Correct the preposition mistakes in the bolded phrases.</p>
+                        
+                        <div class="space-y-4 text-slate-800 text-[13px] mb-8">
+                            <div class="bg-white border border-slate-200 p-2.5 rounded shadow-sm">
+                                1. The amount of garbage being recycled rose <strong>to</strong> 32% between 1995 and 2005. <br>
+                                <span class="text-xs text-slate-400 font-bold uppercase mt-1 inline-block">Replace 'to' with:</span> <input type="text" class="input-blank w-16 text-[12px]" data-ex="4" data-ans='["by"]'>
+                            </div>
+                            <div class="bg-white border border-slate-200 p-2.5 rounded shadow-sm">
+                                2. The amount of garbage being recycled rose significantly <strong>in</strong> 1970 and 1990. <br>
+                                <span class="text-xs text-slate-400 font-bold uppercase mt-1 inline-block">Replace 'in' with:</span> <input type="text" class="input-blank w-24 text-[12px]" data-ex="4" data-ans='["between"]'>
+                            </div>
+                            <div class="bg-white border border-slate-200 p-2.5 rounded shadow-sm">
+                                3. The percentage of garbage being recycled rose <strong>from</strong> 3% between 1970 and 1980. <br>
+                                <span class="text-xs text-slate-400 font-bold uppercase mt-1 inline-block">Replace 'from' with:</span> <input type="text" class="input-blank w-16 text-[12px]" data-ex="4" data-ans='["by"]'>
+                            </div>
+                            <div class="bg-white border border-slate-200 p-2.5 rounded shadow-sm">
+                                4. The amount of garbage being produced rose <strong>to</strong> 16.2 million tonnes between 1995 and 2005. <br>
+                                <span class="text-xs text-slate-400 font-bold uppercase mt-1 inline-block">Replace 'to' with:</span> <input type="text" class="input-blank w-24 text-[12px]" data-ex="4" data-ans='["from"]'>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-slate-200 pt-6">
+                            <div class="textbook-note p-3 mb-4 text-[12px] text-slate-700 leading-relaxed shadow-sm rounded-r ui-font">
+                                <p>You can use a combination of verb + adverb, or adjective + noun, to avoid repeating the same phrases: <i>There was a significant increase...</i> / <i>The numbers increased significantly.</i></p>
+                            </div>
+                            
+                            <p class="mb-4 leading-relaxed text-[13px]"><span class="font-bold">1.6</span> Change the sentences below from adjective + noun to verb + adverb, or vice versa. Type the correct phrase.</p>
+                            <ol class="space-y-4 text-slate-800 text-[13px] leading-loose">
+                                <li>1. There was a significant increase in the number of birds in 1994. <br>&rarr; The number of birds <input type="text" class="input-blank w-40 text-[12px]" data-ex="5" data-ans='["increased significantly"]'> in 1994.</li>
+                                <li>2. The number of people attending fell considerably in 2002. <br>&rarr; There was a <input type="text" class="input-blank w-32 text-[12px]" data-ex="5" data-ans='["considerable fall"]'> in the number...</li>
+                                <li>3. The percentage of female students rose dramatically in 1990. <br>&rarr; There was a <input type="text" class="input-blank w-32 text-[12px]" data-ex="5" data-ans='["dramatic rise"]'> in the percentage...</li>
+                                <li>4. There was a noticeable drop in temperatures between 1880 and 1885. <br>&rarr; The temperatures <input type="text" class="input-blank w-36 text-[12px]" data-ex="5" data-ans='["dropped noticeably"]'> between...</li>
+                            </ol>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-4-5" onclick="checkExercise('4'); checkExercise('5')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Page</button>
+                            <span id="score-4" class="ui-font text-sm font-bold hidden"></span>
+                            <span id="score-5" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">4</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 5: Gap Fill Graph ==================== -->
+                <div id="page-5" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Describing the Graph</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-[13px]"><span class="font-bold">1.7</span> Complete the description of the graph in 1.2 with the correct form of the words in the box. <strong class="text-rose-700">Click a word to select it, then place it.</strong></p>
+
+                        <div class="bg-rose-50/50 border border-rose-200 p-2.5 rounded mb-5 flex flex-wrap gap-2 font-mono text-[11px] justify-center shadow-inner" id="wb-6">
+                            <button class="word-choice" onclick="selectWord(this)" data-word="between">between</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="static">static / steady</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="dramatic">dramatic</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="from">from</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="fall">fall</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="in">in</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="compare">compare</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="rise">rise</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="peak">peak</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="to">to</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="increase">increase</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="steady">steady / static</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="gradual">gradual</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="by">by</button>
+                        </div>
+
+                        <div class="bg-white border border-slate-200 p-5 rounded shadow-sm text-slate-800 text-[13.5px] leading-[2.2rem] text-justify font-serif">
+                            The graph shows the amount of garbage collected and recycled annually in America (1) <span class="match-slot" onclick="placeWord(this)" data-ex="6" data-ans='["between"]'></span> 1960 and 2005. From 1960 to 1970 the amount of waste being recycled remained fairly (2) <span class="match-slot" onclick="placeWord(this)" data-ex="6" data-ans='["static", "steady", "static / steady", "steady / static"]'></span> at just over 6%. However, this figure (3) <span class="match-slot" onclick="placeWord(this)" data-ex="6" data-ans='["rose", "increased"]'></span> significantly from 1970 to 1990 when it (4) <span class="match-slot" onclick="placeWord(this)" data-ex="6" data-ans='["peaked"]'></span> at approximately 32% of the total waste collected. 
+                            <br><br>
+                            On the other hand, the amount of waste being produced increased at around the same time, growing (5) <span class="match-slot" onclick="placeWord(this)" data-ex="6" data-ans='["dramatically"]'></span> from approximately 10 million tonnes per year (6) <span class="match-slot" onclick="placeWord(this)" data-ex="6" data-ans='["from"]'></span> 55 million tonnes within five years. Following this sharp (7) <span class="match-slot" onclick="placeWord(this)" data-ex="6" data-ans='["to"]'></span>, the amount of waste collected has risen (8) <span class="match-slot" onclick="placeWord(this)" data-ex="6" data-ans='["increase", "rise"]'></span> while the percentage of waste being recycled actually (9) <span class="match-slot" onclick="placeWord(this)" data-ex="6" data-ans='["steadily", "gradually"]'></span> from 32% to 26% (10) <span class="match-slot" onclick="placeWord(this)" data-ex="6" data-ans='["fell"]'></span> 1995. 
+                            <br><br>
+                            Fortunately, recycling has (11) <span class="match-slot" onclick="placeWord(this)" data-ex="6" data-ans='["in"]'></span> increased and (12) <span class="match-slot" onclick="placeWord(this)" data-ex="6" data-ans='["gradually", "steadily"]'></span> 2005 it had again reached the same figure as in 1990. However, this figure is still disappointing (13) <span class="match-slot" onclick="placeWord(this)" data-ex="6" data-ans='["by"]'></span> to the total amount of waste that is thrown away (14) <span class="match-slot" onclick="placeWord(this)" data-ex="6" data-ans='["compared"]'></span>.
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-6" onclick="checkExercise('6')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.7</button>
+                            <span id="score-6" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">5</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 6: Describing a Process (LEFT SIDE) ==================== -->
+                <div id="page-6" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">2. Diagrams & Processes</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <div class="textbook-note p-4 mb-6 text-[12.5px] text-slate-700 leading-relaxed shadow-sm rounded-r ui-font space-y-2 text-justify">
+                            <h4 class="font-bold text-slate-800">Test Tip</h4>
+                            <p>When you are describing a process you need to organise the steps logically. To help signal this, you should use words such as: <i>First, then, next, after this, finally.</i></p>
+                            <p>If you use the conjunction <strong>when</strong>, be careful to use the simple present tense: <i>The machine switches off when the bag is full.</i> NOT <del>when the bag will be full.</del></p>
+                        </div>
+
+                        <h4 class="font-bold text-center text-sm mb-4">How chewing gum is made</h4>
+                        
+                        <div class="bg-white border border-slate-200 p-4 rounded shadow-sm flex flex-col items-center mb-6">
+                            <img src="https://i.postimg.cc/zvPjfmrx/image.png" alt="Diagram showing how chewing gum is made" class="w-full max-w-sm h-auto" onerror="this.style.display='none'">
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-[13px]"><span class="font-bold">2.1</span> Look at the diagram and answer the questions.</p>
+
+                        <ol class="list-decimal list-outside ml-4 space-y-4 text-slate-800 text-[13px] leading-loose">
+                            <li>1. At what stage is something added? <br><input type="text" class="input-blank w-64 text-[12px]" data-ex="7" data-ans='["after the gum is strained", "after straining", "when it is strained"]'></li>
+                            <li>2. At what stage is something separated? <br><input type="text" class="input-blank w-full text-[12px]" data-ex="7" data-ans='["the liquid is separated from the solid when it is strained", "when it is strained", "straining"]'></li>
+                            <li>3. How many different stages are there altogether? <br><input type="text" class="input-blank w-24 text-[12px]" data-ex="7" data-ans='["seven", "7"]'></li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-7" onclick="checkExercise('7')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.1</button>
+                            <span id="score-7" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">6</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 7: Process Gap Fill (RIGHT SIDE) ==================== -->
+                <div id="page-7" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Process Description</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-[13px]"><span class="font-bold">2.2</span> Now complete the description of the diagram with the correct form of the words in the box. You will need to use some of the words more than once.</p>
+
+                        <div class="bg-rose-50/50 border border-rose-200 p-2.5 rounded mb-5 flex flex-wrap gap-2 font-mono text-[11px] justify-center shadow-inner" id="wb-8">
+                            <button class="word-choice" onclick="selectWord(this)" data-word="add">add</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="container">container</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="first">first</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="finally">finally</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="heat">heat</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="ingredients">ingredients</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="liquid">liquid</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="mixture">mixture</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="next">next</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="pass">pass</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="pieces">pieces</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="place">place</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="shapes">shapes</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="show">show</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="then">then</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="machine">machine</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="travel">travel</button>
+                        </div>
+
+                        <div class="bg-white border border-slate-200 p-5 rounded shadow-sm text-slate-800 text-[13px] leading-[2.3rem] text-justify font-serif">
+                            The diagram (1) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["shows"]'></span> how chewing gum is produced. (2) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["first"]'></span> the (3) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["ingredients", "pieces"]'></span> of gum are put into a (4) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["container"]'></span> and (5) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["heated"]'></span> until they form a single mass. This is (6) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["then"]'></span> strained until all of the (7) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["liquid"]'></span> has been eliminated. (8) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["next", "then"]'></span> the gum is (9) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["placed"]'></span> into another (10) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["container"]'></span> and the desired flavourings, sweeteners and softeners are (11) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["added"]'></span>. This (12) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["mixture"]'></span> is blended until all of the (13) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["ingredients"]'></span> are mixed together. 
+                            <br><br>
+                            The gum then (14) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["passes", "travels"]'></span> to a different (15) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["machine"]'></span> which uses rollers to flatten out the gum. (16) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["next", "then"]'></span> the thin sheets of gum are cut into rectangular (17) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["shapes", "pieces"]'></span> and broken into separate (18) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["pieces"]'></span>. (19) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["finally"]'></span> the gum (20) <span class="match-slot" onclick="placeWord(this)" data-ex="8" data-ans='["travels", "passes"]'></span> along a conveyor belt where it is enclosed in packaging ready for distribution.
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-8" onclick="checkExercise('8')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.2</button>
+                            <span id="score-8" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">7</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Sticky Right Arrow (Desktop Only) -->
+        <div class="hidden lg:block w-10 shrink-0 ml-2 xl:ml-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="next-btn" onclick="goNext()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Next Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Mobile Fixed Bottom Navigation -->
+    <div class="lg:hidden fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-slate-200 p-3 flex justify-between z-50 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.1)]">
+        <button id="prev-btn-mobile" onclick="goPrev()" class="ui-font font-bold px-5 py-2 rounded-lg text-slate-700 bg-slate-100 active:bg-slate-200 transition-colors flex items-center gap-2">
+            &larr; Prev
+        </button>
+        <button id="next-btn-mobile" onclick="goNext()" class="ui-font font-bold px-5 py-2 rounded-lg text-white bg-rose-600 active:bg-rose-700 transition-colors flex items-center gap-2 shadow-sm">
+            Next &rarr;
+        </button>
+    </div>
+
+    <script>
+        const REQUIRED_SCORE = 0.8;
+        const totalPages = 8; // Pages 0 to 7
+        let currentSpread = 0; // For desktop (0 = pages 0,1; 1 = pages 2,3; etc.)
+        let currentMobilePage = 0;
+
+        function updatePagination() {
+            const isDesktop = window.innerWidth >= 1024;
+            const pages = document.querySelectorAll('.page-content');
+            
+            // Hide all pages
+            pages.forEach(p => p.classList.add('hidden'));
+
+            if (isDesktop) {
+                let leftIdx = currentSpread * 2;
+                let rightIdx = leftIdx + 1;
+                
+                const leftPage = document.getElementById(`page-${leftIdx}`);
+                const rightPage = document.getElementById(`page-${rightIdx}`);
+                
+                if(leftPage) leftPage.classList.remove('hidden');
+                if(rightPage) rightPage.classList.remove('hidden');
+
+                // Update Nav Buttons
+                document.getElementById('prev-btn').disabled = currentSpread === 0;
+                document.getElementById('next-btn').disabled = currentSpread >= Math.ceil(totalPages/2) - 1;
+                
+            } else {
+                const activePage = document.getElementById(`page-${currentMobilePage}`);
+                if(activePage) activePage.classList.remove('hidden');
+
+                // Update Mobile Nav
+                const prevMob = document.getElementById('prev-btn-mobile');
+                const nextMob = document.getElementById('next-btn-mobile');
+                if(prevMob) prevMob.style.visibility = currentMobilePage === 0 ? 'hidden' : 'visible';
+                if(nextMob) nextMob.style.visibility = currentMobilePage === totalPages - 1 ? 'hidden' : 'visible';
+            }
+        }
+
+        function goNext() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread < Math.ceil(totalPages/2) - 1) currentSpread++;
+            } else {
+                if (currentMobilePage < totalPages - 1) currentMobilePage++;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goPrev() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread > 0) currentSpread--;
+            } else {
+                if (currentMobilePage > 0) currentMobilePage--;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('resize', () => {
+            const isDesktop = window.innerWidth >= 1024;
+            if(isDesktop) {
+                currentSpread = Math.floor(currentMobilePage / 2);
+            } else {
+                currentMobilePage = currentSpread * 2;
+            }
+            updatePagination();
+        });
+
+        // --- Core UI & Grading Logic ---
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function validateBlanks(inputs) {
+            let allFilled = true;
+            inputs.forEach(input => {
+                if (input.classList.contains('font-normal')) return; // skip subjective notes
+                
+                let val = "";
+                if(input.type === 'checkbox') {
+                    val = "checked"; // Checkboxes don't need to be filled, just evaluated
+                } else {
+                    val = input.value !== undefined ? input.value : input.innerText;
+                }
+
+                if ((input.type !== 'checkbox') && (val.trim() === "" || val.trim() === "...")) {
+                    allFilled = false;
+                    if(input.classList.contains('match-slot')) {
+                        input.style.borderBottomColor = '#ef4444';
+                        input.style.backgroundColor = '#fef2f2';
+                        setTimeout(() => { input.style.borderBottomColor = ''; input.style.backgroundColor = ''; }, 1500);
+                    } else {
+                        input.style.borderBottomColor = '#f59e0b';
+                        input.style.backgroundColor = '#fef3c7';
+                        setTimeout(() => {
+                            input.style.borderBottomColor = '';
+                            input.style.backgroundColor = '';
+                        }, 1500);
+                    }
+                }
+            });
+            return allFilled;
+        }
+
+        function processScore(exerciseId, correctCount, totalCount) {
+            const scoreLabel = document.getElementById(`score-${exerciseId}`);
+            const percentage = correctCount / totalCount;
+            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
+            
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (percentage >= REQUIRED_SCORE) {
+                scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
+                
+                const btn = document.getElementById(`btn-${exerciseId}`);
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = "Passed";
+                }
+                
+                showToast("Good job!", "success");
+            } else {
+                scoreLabel.textContent = `❌ Failed. ${scoreText}`;
+                scoreLabel.classList.add('text-red-600');
+                showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
+            }
+        }
+
+        function checkCheckboxes(exerciseId) {
+            const inputs = document.querySelectorAll(`[data-ex="${exerciseId}"]`);
+            let correctCount = 0;
+            inputs.forEach(input => {
+                const possibleAns = JSON.parse(input.getAttribute('data-ans'));
+                const isExpectedChecked = possibleAns.includes("true");
+                
+                if (input.checked === isExpectedChecked) {
+                    correctCount++;
+                    input.parentElement.classList.add('bg-green-50');
+                    input.parentElement.classList.remove('bg-red-50');
+                } else {
+                    input.parentElement.classList.add('bg-red-50');
+                    input.parentElement.classList.remove('bg-green-50');
+                }
+            });
+
+            processScore(exerciseId, correctCount, inputs.length);
+        }
+
+        // Standard exercise checker (Handles text inputs and selects)
+        function checkExercise(exerciseId) {
+            const inputs = document.querySelectorAll(`[data-ex="${exerciseId}"]`);
+            if (!validateBlanks(inputs)) {
+                showToast("Please answer all required blanks before checking!", "warning");
+                return;
+            }
+
+            let correctCount = 0;
+            inputs.forEach(input => {
+                if(input.classList.contains('font-normal') || input.type === 'checkbox') return;
+
+                const rawVal = input.value !== undefined ? input.value : input.innerText;
+                const userVal = rawVal.trim().toLowerCase().replace(/\s+/g, ' ');
+                const possibleAns = JSON.parse(input.getAttribute('data-ans'));
+                
+                if (possibleAns.includes(userVal)) {
+                    correctCount++;
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+
+            processScore(exerciseId, correctCount, inputs.length);
+        }
+
+        // --- Click & Match Logic ---
+        let selectedWordBtn = null;
+
+        function selectWord(btn) {
+            if (btn.classList.contains('used')) return;
+            
+            // Deselect all globally to keep it clean
+            document.querySelectorAll('.word-choice').forEach(b => b.classList.remove('selected'));
+            
+            if (selectedWordBtn === btn) {
+                selectedWordBtn = null; 
+                return;
+            }
+            
+            btn.classList.add('selected');
+            selectedWordBtn = btn;
+        }
+
+        function placeWord(slot) {
+            if (slot.innerText.trim() !== '' && slot.innerText.trim() !== '...') {
+                const existingWord = slot.innerText.trim();
+                const bankBtn = Array.from(slot.closest('.page-content').querySelectorAll('.word-choice'))
+                                     .find(b => b.getAttribute('data-word') === existingWord);
+                if (bankBtn) bankBtn.classList.remove('used');
+                slot.innerText = '';
+            }
+
+            if (selectedWordBtn) {
+                if (selectedWordBtn.closest('.page-content') === slot.closest('.page-content')) {
+                    slot.innerText = selectedWordBtn.getAttribute('data-word');
+                    selectedWordBtn.classList.add('used');
+                    selectedWordBtn.classList.remove('selected');
+                    selectedWordBtn = null;
+                }
+            }
+        }
+
+        // Initialize on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePagination();
+        });
+
+    </script>
+</body>
+</html>
