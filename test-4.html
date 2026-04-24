@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Four (Units 16-20) - Textbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Lora', serif; 
+            background-color: #d1d5db;
+            background-image: radial-gradient(#9ca3af 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .ui-font { font-family: 'Inter', sans-serif; }
+
+        /* Book & Paper Styles */
+        .book-wrapper {
+            background-color: #fdfcf8;
+            box-shadow: 
+                0 20px 40px -10px rgba(0,0,0,0.3), 
+                0 0 0 1px rgba(0,0,0,0.05),
+                inset 0 0 60px rgba(139, 115, 85, 0.05);
+            border-radius: 4px 8px 8px 4px;
+        }
+
+        .spine-shadow {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 80px;
+            transform: translateX(-50%);
+            background: linear-gradient(
+                to right,
+                transparent 0%,
+                rgba(0,0,0,0.02) 40%,
+                rgba(0,0,0,0.12) 50%,
+                rgba(0,0,0,0.02) 60%,
+                transparent 100%
+            );
+            pointer-events: none;
+            z-index: 10;
+            border-left: 1px solid rgba(255,255,255,0.4);
+            border-right: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* Sticky Nav for Desktop */
+        .sticky-nav-container {
+            position: sticky;
+            top: 50vh;
+            transform: translateY(-50%);
+            height: max-content;
+            z-index: 50;
+        }
+
+        /* Inputs */
+        .input-blank {
+            font-family: 'Inter', sans-serif;
+            border: none;
+            border-bottom: 2px dashed #94a3b8;
+            background: rgba(255,255,255,0.5);
+            outline: none;
+            text-align: center;
+            padding: 0.1rem 0.25rem;
+            margin: 0 0.25rem;
+            transition: all 0.2s;
+            font-weight: 600;
+            color: #1e293b;
+            border-radius: 2px 2px 0 0;
+        }
+        .input-blank:focus { 
+            border-bottom: 2px solid #0369a1; 
+            background: #f0f9ff;
+        }
+        select.input-blank {
+            text-align: left;
+            cursor: pointer;
+            padding-right: 1.2rem;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.1rem center;
+            background-size: 0.8em;
+        }
+
+        .correct { 
+            border-bottom: 2px solid #16a34a !important; 
+            color: #166534; 
+            background-color: #dcfce7; 
+        }
+        .incorrect { 
+            border-bottom: 2px solid #dc2626 !important; 
+            color: #991b1b; 
+            background-color: #fee2e2; 
+        }
+
+        /* Callouts / Notes */
+        .textbook-note {
+            background-color: #f8fafc;
+            border-left: 4px solid #94a3b8;
+            position: relative;
+        }
+        .textbook-note::before {
+            content: "✍🏼 Note";
+            position: absolute;
+            top: -12px;
+            left: 8px;
+            background: #fdfcf8;
+            padding: 0 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            font-family: 'Inter', sans-serif;
+            color: #475569;
+        }
+
+        /* Buttons & Toasts */
+        .check-btn { transition: transform 0.1s, box-shadow 0.1s; }
+        .check-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            backdrop-filter: blur(4px);
+            transition: all 0.2s;
+        }
+        .nav-btn:hover:not(:disabled) { background: #fff; transform: scale(1.05); }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+
+        .toast {
+            position: fixed; top: 20px; right: 20px;
+            padding: 15px 25px; border-radius: 8px;
+            color: white; font-weight: bold;
+            opacity: 0; transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000; pointer-events: none;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.error { background-color: #ef4444; }
+        .toast.success { background-color: #22c55e; }
+        .toast.warning { background-color: #f59e0b; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col pt-4 lg:pt-10 pb-24 lg:pb-10">
+
+    <div id="toast" class="toast">Message</div>
+
+    <!-- Main Desk Area -->
+    <div class="w-full max-w-[1600px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
+        
+        <!-- Sticky Left Arrow (Desktop Only) -->
+        <div class="hidden lg:block w-10 shrink-0 mr-2 xl:mr-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="prev-btn" onclick="goPrev()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Previous Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- The Book -->
+        <div class="book-wrapper flex-1 w-full max-w-7xl flex flex-col lg:flex-row relative min-h-[85vh]">
+            
+            <!-- Spine Decoration (Desktop Only) -->
+            <div class="spine-shadow hidden lg:block"></div>
+
+            <!-- Page Container -->
+            <div id="pages-container" class="w-full flex relative">
+                
+                <!-- ==================== PAGE 0: Title & Intro ==================== -->
+                <div id="page-0" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow flex flex-col justify-center items-center text-center">
+                        <div class="w-32 h-32 bg-slate-100 rounded-full flex items-center justify-center mb-8 shadow-inner border border-slate-200 overflow-hidden relative">
+                            <!-- Clipboard Icon -->
+                            <svg class="w-16 h-16 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+                        </div>
+                        <h4 class="text-sm uppercase tracking-widest text-slate-500 font-bold ui-font mb-2">Review Assessment</h4>
+                        <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-slate-800 leading-tight">Test Four</h1>
+                        <h2 class="text-2xl italic text-slate-600 mb-8 border-b pb-8 border-slate-200">Units 16-20</h2>
+                        
+                        <p class="text-[15px] text-slate-600 leading-relaxed max-w-md mx-auto">
+                            Choose the correct letter A, B, C or D to complete each sentence. This test covers vocabulary from Units 16 through 20.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">i</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 1: Questions 1-5 ==================== -->
+                <div id="page-1" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Questions 1-5</h3>
+                        </div>
+
+                        <ol class="list-decimal list-outside ml-4 space-y-8 text-slate-800 text-[14px] leading-snug font-medium ui-font">
+                            <!-- Q1 -->
+                            <li>People would use a lot less power if they bought household goods that were energy 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.1" data-ans='["b"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select>.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. effective</div><div>B. efficient</div><div>C. economical</div><div>D. ecological</div>
+                                </div>
+                            </li>
+                            <!-- Q2 -->
+                            <li>The 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.1" data-ans='["a"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> from car exhausts have a significant effect on global warming.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. emissions</div><div>B. smoke</div><div>C. gases</div><div>D. acid</div>
+                                </div>
+                            </li>
+                            <!-- Q3 -->
+                            <li>Our greatest problem is that we are 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.1" data-ans='["b"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> more and more fossil fuels each year and supplies are dwindling.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. conserving</div><div>B. consuming</div><div>C. producing</div><div>D. preserving</div>
+                                </div>
+                            </li>
+                            <!-- Q4 -->
+                            <li>We need to persuade people to change their habits so that they 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.1" data-ans='["b"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> more energy.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. consume</div><div>B. conserve</div><div>C. produce</div><div>D. use</div>
+                                </div>
+                            </li>
+                            <!-- Q5 -->
+                            <li>In the future we will need to use 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.1" data-ans='["c"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> energy sources such solar power.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. recycled</div><div>B. reinvented</div><div>C. renewable</div><div>D. reusable</div>
+                                </div>
+                            </li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-test.1" onclick="checkExercise('test.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[12px] font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1-5</button>
+                            <span id="score-test.1" class="ui-font text-[12px] font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start lg:justify-end border-t border-slate-200">
+                        <span class="text-xs font-bold ui-font text-slate-400">1</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 2: Questions 6-10 ==================== -->
+                <div id="page-2" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Questions 6-10</h3>
+                        </div>
+
+                        <ol class="list-decimal list-outside ml-4 space-y-8 text-slate-800 text-[14px] leading-snug font-medium ui-font" start="6">
+                            <!-- Q6 -->
+                            <li>If oil supplies run out in 2015 then we need to find 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.2" data-ans='["c"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> energy sources soon.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. alternate</div><div>B. alternating</div><div>C. alternative</div><div>D. altering</div>
+                                </div>
+                            </li>
+                            <!-- Q7 -->
+                            <li>I need to earn a lot more 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.2" data-ans='["d"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> before I can afford to buy that car.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. payment</div><div>B. salary</div><div>C. wages</div><div>D. money</div>
+                                </div>
+                            </li>
+                            <!-- Q8 -->
+                            <li>I am writing to complain about a recent problem I had with a member of your 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.2" data-ans='["c"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select>.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. company</div><div>B. employees</div><div>C. staff</div><div>D. workplace</div>
+                                </div>
+                            </li>
+                            <!-- Q9 -->
+                            <li>The company lost a great deal of money when one of their 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.2" data-ans='["b"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> was found to be faulty.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. goods</div><div>B. products</div><div>C. manufacture</div><div>D. business</div>
+                                </div>
+                            </li>
+                            <!-- Q10 -->
+                            <li>The government should do more to help the 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.2" data-ans='["d"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> find a job.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. employed</div><div>B. employment</div><div>C. unemployment</div><div>D. unemployed</div>
+                                </div>
+                            </li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-test.2" onclick="checkExercise('test.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[12px] font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 6-10</button>
+                            <span id="score-test.2" class="ui-font text-[12px] font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">2</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 3: Questions 11-15 ==================== -->
+                <div id="page-3" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Questions 11-15</h3>
+                        </div>
+
+                        <ol class="list-decimal list-outside ml-4 space-y-8 text-slate-800 text-[14px] leading-snug font-medium ui-font" start="11">
+                            <!-- Q11 -->
+                            <li>Taking a packed lunch to work can be a lot more 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.3" data-ans='["a"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> than buying it every day.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. economical</div><div>B. economics</div><div>C. expenditure</div><div>D. expenses</div>
+                                </div>
+                            </li>
+                            <!-- Q12 -->
+                            <li>I'd really like to find a 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.3" data-ans='["a"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> during the summer holidays.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. job</div><div>B. work</div><div>C. profession</div><div>D. career</div>
+                                </div>
+                            </li>
+                            <!-- Q13 -->
+                            <li>I think that people who 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.3" data-ans='["b"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> serious crimes should be punished.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. convict</div><div>B. commit</div><div>C. offend</div><div>D. offence</div>
+                                </div>
+                            </li>
+                            <!-- Q14 -->
+                            <li>I had to pay a 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.3" data-ans='["a"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> for parking my car in a restricted area.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. fine</div><div>B. find</div><div>C. fee</div><div>D. form</div>
+                                </div>
+                            </li>
+                            <!-- Q15 -->
+                            <li>Helping poor people to find a job may help to 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.3" data-ans='["d"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> crime.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. avoid</div><div>B. deter</div><div>C. impose</div><div>D. prevent</div>
+                                </div>
+                            </li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-test.3" onclick="checkExercise('test.3')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[12px] font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 11-15</button>
+                            <span id="score-test.3" class="ui-font text-[12px] font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">3</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 4: Questions 16-20 ==================== -->
+                <div id="page-4" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Questions 16-20</h3>
+                        </div>
+
+                        <ol class="list-decimal list-outside ml-4 space-y-8 text-slate-800 text-[14px] leading-snug font-medium ui-font" start="16">
+                            <!-- Q16 -->
+                            <li>I don't agree with 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.4" data-ans='["c"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> very young or petty criminals.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. committing</div><div>B. enforcing</div><div>C. imprisoning</div><div>D. offending</div>
+                                </div>
+                            </li>
+                            <!-- Q17 -->
+                            <li>In most countries, it is 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.4" data-ans='["a"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> the law to steal other people's property.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. against</div><div>B. by</div><div>C. for</div><div>D. with</div>
+                                </div>
+                            </li>
+                            <!-- Q18 -->
+                            <li>The government should 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.4" data-ans='["d"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> a law to make computer hacking illegal.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. abolish</div><div>B. bring</div><div>C. enter</div><div>D. pass</div>
+                                </div>
+                            </li>
+                            <!-- Q19 -->
+                            <li>I don't like this newspaper, the reports are really 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.4" data-ans='["a"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> towards the government.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. biased</div><div>B. prejudiced</div><div>C. reliable</div><div>D. well-informed</div>
+                                </div>
+                            </li>
+                            <!-- Q20 -->
+                            <li>Tabloid newspapers are a good example of 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.4" data-ans='["b"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> media.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. masses</div><div>B. mass</div><div>C. main</div><div>D. multi</div>
+                                </div>
+                            </li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-test.4" onclick="checkExercise('test.4')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[12px] font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 16-20</button>
+                            <span id="score-test.4" class="ui-font text-[12px] font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">4</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 5: Questions 21-25 ==================== -->
+                <div id="page-5" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Questions 21-25</h3>
+                        </div>
+
+                        <ol class="list-decimal list-outside ml-4 space-y-8 text-slate-800 text-[14px] leading-snug font-medium ui-font" start="21">
+                            <!-- Q21 -->
+                            <li>I think following celebrities on their holidays is an 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.5" data-ans='["d"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> of privacy.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. avoidance</div><div>B. invasive</div><div>C. intrusion</div><div>D. invasion</div>
+                                </div>
+                            </li>
+                            <!-- Q22 -->
+                            <li>The popular press often contains a lot more 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.5" data-ans='["a"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> than hard facts.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. speculation</div><div>B. realism</div><div>C. influence</div><div>D. tolerance</div>
+                                </div>
+                            </li>
+                            <!-- Q23 -->
+                            <li>When celebrities behave badly it can have a negative influence 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.5" data-ans='["c"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> young people.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. for</div><div>B. in</div><div>C. on</div><div>D. to</div>
+                                </div>
+                            </li>
+                            <!-- Q24 -->
+                            <li>I enjoy learning about celebrities in magazines and 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.5" data-ans='["d"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> TV.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. by</div><div>B. from</div><div>C. in</div><div>D. on</div>
+                                </div>
+                            </li>
+                            <!-- Q25 -->
+                            <li>I think successful writers and artists are very 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.5" data-ans='["a"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select>.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. imaginative</div><div>B. imagination</div><div>C. inspiration</div><div>D. inspire</div>
+                                </div>
+                            </li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-test.5" onclick="checkExercise('test.5')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[12px] font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 21-25</button>
+                            <span id="score-test.5" class="ui-font text-[12px] font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">5</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 6: Questions 26-30 ==================== -->
+                <div id="page-6" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Questions 26-30</h3>
+                        </div>
+
+                        <ol class="list-decimal list-outside ml-4 space-y-8 text-slate-800 text-[14px] leading-snug font-medium ui-font" start="26">
+                            <!-- Q26 -->
+                            <li>This artist helps to preserve our local 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.6" data-ans='["a"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> by using traditional themes in his work.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. culture</div><div>B. creation</div><div>C. events</div><div>D. skills</div>
+                                </div>
+                            </li>
+                            <!-- Q27 -->
+                            <li>I don't really appreciate classical music, I prefer the 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.6" data-ans='["d"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> arts such as painting and sculpture.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. festival</div><div>B. literary</div><div>C. performing</div><div>D. visual</div>
+                                </div>
+                            </li>
+                            <!-- Q28 -->
+                            <li>The 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.6" data-ans='["b"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> enjoyed the performance so much that they gave a 10-minute standing ovation.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. artists</div><div>B. audience</div><div>C. players</div><div>D. participants</div>
+                                </div>
+                            </li>
+                            <!-- Q29 -->
+                            <li>My friends and I have the same 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.6" data-ans='["d"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> in music.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. type</div><div>B. topic</div><div>C. theme</div><div>D. taste</div>
+                                </div>
+                            </li>
+                            <!-- Q30 -->
+                            <li>I was so embarrassed when my teacher made me 
+                                <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="test.6" data-ans='["c"]'>
+                                    <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option>
+                                </select> my song in front of the whole school.
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px] font-normal text-slate-600 mt-3 pl-1">
+                                    <div>A. participate</div><div>B. participant</div><div>C. perform</div><div>D. performance</div>
+                                </div>
+                            </li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-test.6" onclick="checkExercise('test.6')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[12px] font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 26-30</button>
+                            <span id="score-test.6" class="ui-font text-[12px] font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">6</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 7: Test Complete ==================== -->
+                <div id="page-7" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow flex flex-col justify-center items-center text-center">
+                        <div class="w-32 h-32 bg-green-50 rounded-full flex items-center justify-center mb-8 shadow-inner border border-green-200 overflow-hidden relative">
+                            <!-- Checkmark Icon -->
+                            <svg class="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h2 class="text-3xl font-bold mb-4 text-slate-800 leading-tight">End of Test Four</h2>
+                        <p class="text-[15px] text-slate-600 leading-relaxed max-w-sm mx-auto">
+                            You have completed the assessment for Units 16 through 20. You may go back and check your answers if needed.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start lg:justify-end border-t border-slate-200">
+                        <span class="text-xs font-bold ui-font text-slate-400">7</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Sticky Right Arrow (Desktop Only) -->
+        <div class="hidden lg:block w-10 shrink-0 ml-2 xl:ml-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="next-btn" onclick="goNext()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Next Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Mobile Fixed Bottom Navigation -->
+    <div class="lg:hidden fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-slate-200 p-3 flex justify-between z-50 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.1)]">
+        <button id="prev-btn-mobile" onclick="goPrev()" class="ui-font font-bold px-5 py-2 rounded-lg text-slate-700 bg-slate-100 active:bg-slate-200 transition-colors flex items-center gap-2">
+            &larr; Prev
+        </button>
+        <button id="next-btn-mobile" onclick="goNext()" class="ui-font font-bold px-5 py-2 rounded-lg text-white bg-slate-800 active:bg-slate-700 transition-colors flex items-center gap-2 shadow-sm">
+            Next &rarr;
+        </button>
+    </div>
+
+    <script>
+        const REQUIRED_SCORE = 0.8;
+        const totalPages = 8; // Pages 0 to 7
+        let currentSpread = 0; // For desktop (0 = pages 0,1; 1 = pages 2,3; etc.)
+        let currentMobilePage = 0;
+
+        function updatePagination() {
+            const isDesktop = window.innerWidth >= 1024;
+            const pages = document.querySelectorAll('.page-content');
+            
+            // Hide all pages
+            pages.forEach(p => p.classList.add('hidden'));
+
+            if (isDesktop) {
+                let leftIdx = currentSpread * 2;
+                let rightIdx = leftIdx + 1;
+                
+                const leftPage = document.getElementById(`page-${leftIdx}`);
+                const rightPage = document.getElementById(`page-${rightIdx}`);
+                
+                if(leftPage) leftPage.classList.remove('hidden');
+                if(rightPage) rightPage.classList.remove('hidden');
+
+                // Update Nav Buttons
+                document.getElementById('prev-btn').disabled = currentSpread === 0;
+                document.getElementById('next-btn').disabled = currentSpread >= Math.ceil(totalPages/2) - 1;
+                
+            } else {
+                const activePage = document.getElementById(`page-${currentMobilePage}`);
+                if(activePage) activePage.classList.remove('hidden');
+
+                // Update Mobile Nav
+                const prevMob = document.getElementById('prev-btn-mobile');
+                const nextMob = document.getElementById('next-btn-mobile');
+                if(prevMob) prevMob.style.visibility = currentMobilePage === 0 ? 'hidden' : 'visible';
+                if(nextMob) nextMob.style.visibility = currentMobilePage === totalPages - 1 ? 'hidden' : 'visible';
+            }
+        }
+
+        function goNext() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread < Math.ceil(totalPages/2) - 1) currentSpread++;
+            } else {
+                if (currentMobilePage < totalPages - 1) currentMobilePage++;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goPrev() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread > 0) currentSpread--;
+            } else {
+                if (currentMobilePage > 0) currentMobilePage--;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('resize', () => {
+            const isDesktop = window.innerWidth >= 1024;
+            if(isDesktop) {
+                currentSpread = Math.floor(currentMobilePage / 2);
+            } else {
+                currentMobilePage = currentSpread * 2;
+            }
+            updatePagination();
+        });
+
+        // --- Core UI & Grading Logic ---
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function validateBlanks(inputs) {
+            let allFilled = true;
+            inputs.forEach(input => {
+                if (input.classList.contains('font-normal')) return; // skip subjective notes
+                const val = input.value !== undefined ? input.value : input.innerText;
+                if (val.trim() === "") {
+                    allFilled = false;
+                    input.style.borderBottomColor = '#f59e0b';
+                    input.style.backgroundColor = '#fef3c7';
+                    setTimeout(() => {
+                        input.style.borderBottomColor = '';
+                        input.style.backgroundColor = '';
+                    }, 1500);
+                }
+            });
+            return allFilled;
+        }
+
+        function checkExercise(exerciseId) {
+            const inputs = document.querySelectorAll(`[data-ex="${exerciseId}"]`);
+            if (!validateBlanks(inputs)) {
+                showToast("Please answer all required blanks before checking!", "warning");
+                return;
+            }
+
+            let correctCount = 0;
+            inputs.forEach(input => {
+                if(input.classList.contains('font-normal')) return;
+
+                const rawVal = input.value !== undefined ? input.value : input.innerText;
+                const userVal = rawVal.trim().toLowerCase().replace(/\s+/g, ' ');
+                const possibleAns = JSON.parse(input.getAttribute('data-ans'));
+                
+                if (possibleAns.includes(userVal)) {
+                    correctCount++;
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+
+            const scoreLabel = document.getElementById(`score-${exerciseId}`);
+            const totalCount = Array.from(inputs).filter(i => !i.classList.contains('font-normal')).length;
+            const percentage = correctCount / totalCount;
+            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
+            
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (percentage >= REQUIRED_SCORE) {
+                scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
+                
+                const btn = document.getElementById(`btn-${exerciseId}`);
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = "Passed";
+                }
+                showToast("Good job!", "success");
+            } else {
+                scoreLabel.textContent = `❌ Failed. ${scoreText}`;
+                scoreLabel.classList.add('text-red-600');
+                showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
+            }
+        }
+
+        // Initialize on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePagination();
+        });
+
+    </script>
+</body>
+</html>
