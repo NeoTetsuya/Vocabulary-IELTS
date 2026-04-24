@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit 16: The Energy Crisis - Textbook</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Lora', serif; 
+            background-color: #d1d5db;
+            background-image: radial-gradient(#9ca3af 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .ui-font { font-family: 'Inter', sans-serif; }
+
+        /* Book & Paper Styles */
+        .book-wrapper {
+            background-color: #fdfcf8;
+            box-shadow: 
+                0 20px 40px -10px rgba(0,0,0,0.3), 
+                0 0 0 1px rgba(0,0,0,0.05),
+                inset 0 0 60px rgba(139, 115, 85, 0.05);
+            border-radius: 4px 8px 8px 4px;
+        }
+
+        .spine-shadow {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 80px;
+            transform: translateX(-50%);
+            background: linear-gradient(
+                to right,
+                transparent 0%,
+                rgba(0,0,0,0.02) 40%,
+                rgba(0,0,0,0.12) 50%,
+                rgba(0,0,0,0.02) 60%,
+                transparent 100%
+            );
+            pointer-events: none;
+            z-index: 10;
+            border-left: 1px solid rgba(255,255,255,0.4);
+            border-right: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* Sticky Nav for Desktop */
+        .sticky-nav-container {
+            position: sticky;
+            top: 50vh;
+            transform: translateY(-50%);
+            height: max-content;
+            z-index: 50;
+        }
+
+        /* Inputs */
+        .input-blank {
+            font-family: 'Inter', sans-serif;
+            border: none;
+            border-bottom: 2px dashed #94a3b8;
+            background: rgba(255,255,255,0.5);
+            outline: none;
+            text-align: center;
+            padding: 0.1rem 0.25rem;
+            margin: 0 0.25rem;
+            transition: all 0.2s;
+            font-weight: 600;
+            color: #1e293b;
+            border-radius: 2px 2px 0 0;
+        }
+        .input-blank:focus { 
+            border-bottom: 2px solid #10b981; /* emerald-500 */
+            background: #ecfdf5; /* emerald-50 */
+        }
+        .correct { 
+            border-bottom: 2px solid #16a34a !important; 
+            color: #166534; 
+            background-color: #dcfce7; 
+        }
+        .incorrect { 
+            border-bottom: 2px solid #dc2626 !important; 
+            color: #991b1b; 
+            background-color: #fee2e2; 
+        }
+
+        /* Click & Match Styles */
+        .word-choice { 
+            transition: all 0.2s; cursor: pointer; padding: 0.15rem 0.6rem; 
+            border-radius: 0.25rem; border: 1px solid #cbd5e1; font-weight: 600; 
+            background-color: white; color: #059669; /* emerald-600 */ font-family: 'Inter', sans-serif;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .word-choice:hover:not(.used) { background-color: #ecfdf5; border-color: #6ee7b7; }
+        .word-choice.selected { background-color: #d1fae5; border-color: #10b981; transform: scale(1.05); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .word-choice.used { opacity: 0.4; text-decoration: line-through; pointer-events: none; background: transparent; box-shadow: none; border-color: transparent;}
+        
+        .match-slot { 
+            display: inline-block; min-width: 6rem; height: 1.5rem; 
+            border-bottom: 2px dashed #94a3b8; text-align: center; cursor: pointer; 
+            padding: 0 0.25rem; font-weight: 600; color: #059669; vertical-align: bottom; 
+            transition: all 0.2s; line-height: 1.5rem; font-family: 'Inter', sans-serif;
+        }
+        .match-slot:hover { border-bottom-style: solid; border-bottom-color: #10b981; background-color: #ecfdf5; border-radius: 2px 2px 0 0; }
+        .match-slot:empty::after { content: '...'; color: #cbd5e1; font-weight: normal; }
+
+        /* Vocabulary Highlight & Tooltip Styles */
+        .vocab-word {
+            position: relative;
+            cursor: pointer;
+            border-bottom: 2px dotted #10b981;
+            color: #059669;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            padding-bottom: 1px;
+        }
+        .vocab-word:hover { background-color: #ecfdf5; border-bottom-style: solid; }
+        .vocab-tooltip {
+            visibility: hidden; background-color: #1e293b; color: #fff; text-align: center; border-radius: 6px;
+            padding: 6px 12px; position: absolute; z-index: 50; bottom: 130%; left: 50%; transform: translateX(-50%);
+            opacity: 0; transition: opacity 0.2s; font-size: 0.75rem; font-family: 'Inter', sans-serif; white-space: nowrap; font-weight: 500;
+            pointer-events: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .vocab-tooltip::after {
+            content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px;
+            border-style: solid; border-color: #1e293b transparent transparent transparent;
+        }
+        .vocab-word:hover .vocab-tooltip { visibility: visible; opacity: 1; }
+
+        /* Callouts / Notes */
+        .textbook-note {
+            background-color: #f8fafc;
+            border-left: 4px solid #10b981;
+            position: relative;
+        }
+        .textbook-note::before {
+            content: "✍🏼 Note";
+            position: absolute;
+            top: -12px;
+            left: 8px;
+            background: #fdfcf8;
+            padding: 0 6px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            font-family: 'Inter', sans-serif;
+            color: #059669;
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb { background-color: #94a3b8; }
+
+        /* Buttons & Toasts */
+        .check-btn { transition: transform 0.1s, box-shadow 0.1s; }
+        .check-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            backdrop-filter: blur(4px);
+            transition: all 0.2s;
+        }
+        .nav-btn:hover:not(:disabled) { background: #fff; transform: scale(1.05); }
+        .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+
+        .toast {
+            position: fixed; top: 20px; right: 20px;
+            padding: 15px 25px; border-radius: 8px;
+            color: white; font-weight: bold;
+            opacity: 0; transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 1000; pointer-events: none;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.error { background-color: #ef4444; }
+        .toast.success { background-color: #22c55e; }
+        .toast.warning { background-color: #f59e0b; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col pt-4 lg:pt-10 pb-24 lg:pb-10">
+
+    <div id="toast" class="toast">Message</div>
+
+    <!-- Main Desk Area -->
+    <div class="w-full max-w-[1600px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
+        
+        <!-- Sticky Left Arrow (Desktop Only) -->
+        <div class="hidden lg:block w-10 shrink-0 mr-2 xl:mr-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="prev-btn" onclick="goPrev()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Previous Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- The Book -->
+        <div class="book-wrapper flex-1 w-full max-w-7xl flex flex-col lg:flex-row relative min-h-[85vh]">
+            
+            <!-- Spine Decoration (Desktop Only) -->
+            <div class="spine-shadow hidden lg:block"></div>
+
+            <!-- Page Container (Flexible Height) -->
+            <div id="pages-container" class="w-full flex relative">
+                
+                <!-- ==================== PAGE 0: Title & Intro ==================== -->
+                <div id="page-0" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow flex flex-col justify-center items-center text-center">
+                        <div class="w-24 h-24 bg-emerald-50 rounded-full flex items-center justify-center mb-8 shadow-inner border border-emerald-100">
+                            <svg class="w-12 h-12 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        </div>
+                        <h4 class="text-sm uppercase tracking-widest text-emerald-600 font-bold ui-font mb-2">Unit 16</h4>
+                        <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-slate-800 leading-tight">The Energy Crisis</h1>
+                        <h2 class="text-2xl italic text-slate-600 mb-8 border-b pb-8 border-slate-200">Natural resources & alternative fuels</h2>
+                        
+                        <p class="text-lg text-slate-600 leading-relaxed max-w-md mx-auto">
+                            Welcome to Unit 16. In this unit, we will explore reading, listening, and vocabulary exercises concerning environmental impact, fuel efficiency, and the future of energy.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">i</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 1: Listening & Natural Resources ==================== -->
+                <div id="page-1" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">1. Natural Resources</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <!-- Custom Audio Player -->
+                        <div class="custom-audio-player bg-emerald-50/50 border border-emerald-200 rounded-lg px-4 py-3 mb-6 shadow-inner ui-font flex flex-col sm:flex-row items-center gap-4" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784523&auto_play=false&enable_api=1">
+                            <div class="text-xs font-bold text-emerald-600 uppercase tracking-widest shrink-0">Track 16a</div>
+                            <div class="w-full flex items-center gap-3">
+                                <button class="audio-play-btn w-8 h-8 flex items-center justify-center bg-emerald-600 hover:bg-emerald-700 text-white rounded-full transition-colors shrink-0 focus:outline-none">
+                                    <svg class="play-icon h-4 w-4 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                    <svg class="pause-icon h-4 w-4 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                </button>
+                                <span class="audio-current-time text-xs font-mono text-slate-500 w-9 text-right">00:00</span>
+                                <div class="relative w-full h-1.5 bg-slate-300 rounded-full cursor-pointer flex-1 group">
+                                     <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                     <div class="audio-progress-bar absolute h-full bg-emerald-500 rounded-full group-hover:bg-emerald-600 transition-colors" style="width: 0%;"></div>
+                                </div>
+                                <span class="audio-total-time text-xs font-mono text-slate-500 w-9">00:00</span>
+                            </div>
+                            <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">1.2</span> Listen to the answers to the quiz on environmental awareness, then complete the text below with one word in each gap.</p>
+
+                        <div class="bg-white border border-slate-200 p-5 rounded shadow-sm text-slate-800 text-[14px] leading-loose">
+                            <p>
+                                If we want to (1) <input type="text" class="input-blank w-24" data-ex="0" data-ans='["save", "conserve"]'> energy then we need to change the way we behave. We need to buy appliances that are more energy (2) <input type="text" class="input-blank w-24" data-ex="0" data-ans='["efficient"]'> and limit the amount of time we use them. 
+                            </p>
+                            <p class="mt-4">
+                                To reduce the (3) <input type="text" class="input-blank w-24" data-ex="0" data-ans='["effect", "impact"]'> greenhouse gases have on our (4) <input type="text" class="input-blank w-28" data-ex="0" data-ans='["atmosphere"]'> we should plant more trees. Trees can (5) <input type="text" class="input-blank w-24" data-ex="0" data-ans='["absorb"]'> carbon dioxide and so they help to (6) <input type="text" class="input-blank w-24" data-ex="0" data-ans='["counter", "offset"]'> the fumes produced by our cars. 
+                            </p>
+                            <p class="mt-4">
+                                Turning off lights even for a few minutes can (7) <input type="text" class="input-blank w-24" data-ex="0" data-ans='["offset", "counter"]'> the negative effects of turning them on again later.
+                            </p>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-0" onclick="checkExercise('0')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.2</button>
+                            <span id="score-0" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">1</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 2: The Future of Energy (Reading) ==================== -->
+                <div id="page-2" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">2. The Future of Energy</h3>
+                        </div>
+
+                        <p class="mb-4 text-[13px] text-slate-500 italic text-center">Read the text to answer the questions on the next page. Hover over dotted words for definitions.</p>
+
+                        <!-- Reading Text -->
+                        <div class="bg-emerald-50/40 border border-emerald-100 rounded-md p-6 text-slate-800 text-[14px] leading-loose shadow-sm font-serif">
+                            <p class="mb-4">CO₂ plays a critical role in maintaining the balance in the Earth's atmosphere and the air that we breathe. It is also a waste product of the <span class="vocab-word" onclick="speakWord('fossil fuels')">fossil fuels<span class="vocab-tooltip">fuels like coal and oil 🔊</span></span> that almost every person on the planet uses for transport and other energy requirements. Because we create CO₂ every time we drive a car, cook a meal or turn on a light, and because the gas lasts around a century in the atmosphere, the proportion of CO₂ in the atmosphere is rapidly increasing.</p>
+                            
+                            <p class="mb-4">The best evidence indicates that we need to reduce carbon dioxide <span class="vocab-word" onclick="speakWord('emissions')">emissions<span class="vocab-tooltip">gases sent into the air 🔊</span></span> by 70 per cent by 2050. If you own a four-wheel-drive car and replace it with a <span class="vocab-word" onclick="speakWord('hybrid')">hybrid<span class="vocab-tooltip">uses electricity and petrol 🔊</span></span> car - a car that is powered by a combination of electricity and petrol or a smaller standard-fuel car, you can achieve a reduction of that magnitude in a day rather than half a century. Unfortunately, our past history of change is considerably slower than this. Samuel Bowser first invented the petrol pump in 1885 but it wasn't until 1988 that all new cars manufactured in the UK were required to use unleaded petrol only.</p>
+                            
+                            <p>Not only do fossil fuels pose an environmental hazard but there is also a pressing need to find an alternative energy source that is <span class="vocab-word" onclick="speakWord('renewable')">renewable<span class="vocab-tooltip">can be produced at any time 🔊</span></span>. Opinions as to how much oil remains vary considerably. Some say that the Earth has produced only 18 per cent of its potential yield of oil; others say supplies may run out as early as 2015. Many countries are exploring alternative energy sources such as solar energy or wind power, which uses large <span class="vocab-word" onclick="speakWord('turbines')">turbines<span class="vocab-tooltip">a large engine or windmill 🔊</span></span> to capture the energy of the wind.</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">2</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 3: Reading Comprehension ==================== -->
+                <div id="page-3" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Reading Comprehension</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.1</span> Answer the questions below using information from the text on the opposite page.</p>
+
+                        <ol class="list-decimal list-outside ml-4 space-y-5 text-slate-800 text-[14px]">
+                            <li class="pl-2">
+                                <div class="mb-1">How do you write CO₂ in full?</div>
+                                <input type="text" class="input-blank w-48" data-ex="1" data-ans='["carbon dioxide"]'>
+                            </li>
+                            <li class="pl-2">
+                                <div class="mb-1">What do we call fuels such as coal and oil?</div>
+                                <input type="text" class="input-blank w-48" data-ex="1" data-ans='["fossil fuels", "fossil fuel"]'>
+                            </li>
+                            <li class="pl-2">
+                                <div class="mb-1">What are two names for the substance that comes out of the exhaust of a car?</div>
+                                <input type="text" class="input-blank w-64" data-ex="1" data-ans='["exhaust fumes", "emissions", "fumes and emissions", "exhaust fumes and emissions"]' placeholder="Type one or both">
+                            </li>
+                            <li class="pl-2">
+                                <div class="mb-1">What do we call fuels that can be produced at any time?</div>
+                                <input type="text" class="input-blank w-48" data-ex="1" data-ans='["renewable", "renewable fuels", "renewables"]'>
+                            </li>
+                            <li class="pl-2">
+                                <div class="mb-1">Name two types of alternative energy.</div>
+                                <input type="text" class="input-blank w-64" data-ex="1" data-ans='["solar power and wind power", "solar energy and wind power", "solar and wind power", "solar power, wind power"]'>
+                            </li>
+                            <li class="pl-2">
+                                <div class="mb-1">What is a turbine most similar to? (A: large engine, B: windmill, C: car)</div>
+                                <input type="text" class="input-blank w-24" data-ex="1" data-ans='["b", "windmill", "a windmill"]' placeholder="A, B or C">
+                            </li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-1" onclick="checkExercise('1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.1</button>
+                            <span id="score-1" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">3</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 4: Alternative Fuels (Vocabulary) ==================== -->
+                <div id="page-4" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">3. Alternative Fuels</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+                        
+                        <div class="textbook-note p-4 mt-4 mb-6 text-sm text-slate-700 leading-relaxed shadow-sm rounded-r ui-font">
+                            <h4 class="font-bold mb-1 text-slate-800">Error Warning!</h4>
+                            <p><strong>Gas</strong> is the American word for petrol. <strong>Smoke</strong> is produced when something burns. <strong>Fumes</strong> are the gases produced by chemicals such as petrol: <i>Older cars generate a great deal of fumes.</i> (NOT a great deal of gas / smoke)</p>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.2</span> Complete the text with words from the box. <strong class="text-emerald-700">Click a word to select it, then click a blank line to place it.</strong></p>
+                        
+                        <div class="bg-emerald-50/50 border border-emerald-200 p-4 rounded mb-6 flex flex-wrap gap-2.5 font-mono text-[11px] justify-center shadow-inner" id="wb-2">
+                            <button class="word-choice" onclick="selectWord(this)" data-word="alternative">alternative</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="converting">converting</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="eco-friendly">eco-friendly</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="emit">emit</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="engine">engine</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="fuel">fuel</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="fumes">fumes</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="greenhouse gases">greenhouse gases</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="plant">plant</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="solar">solar</button>
+                        </div>
+
+                        <div class="text-slate-800 text-[14px] leading-loose text-justify font-serif">
+                            Our love of the fuel-burning car with its poisonous exhaust (1) <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["fumes"]'></span> has had a devastating effect both on our environment and on oil supplies. It is unlikely we will abandon our cars in large enough numbers to resolve this problem, so there is a pressing need to find an (2) <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["alternative", "eco-friendly"]'></span> fuel. Many car companies are exploring (3) <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["eco-friendly", "alternative"]'></span> energy sources. Hybrid cars were first developed in 1997 and these are likely to become more commonplace in the future. 
+                            <br><br>
+                            Hydrogen vehicles that use (4) <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["solar"]'></span> panels to extract hydrogen from water are also likely to be readily available in the near future. These vehicles (5) <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["emit"]'></span> only water vapour and so do not contribute to (6) <span class="match-slot !min-w-[8rem]" onclick="placeWord(this)" data-ex="2" data-ans='["greenhouse gases"]'></span>. However, critics say that building a network of fuelling stations and (7) <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["converting"]'></span> existing petrol stations to hydrogen will prove too costly and will limit this vehicle's potential. 
+                            <br><br>
+                            Others believe that biofuels are the future. These fuels are based on (8) <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["plant"]'></span> oils and so can be grown. The concept of using vegetable oil as a (9) <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["fuel"]'></span> dates back to 1895 when Dr Rudolf Diesel developed the first diesel (10) <span class="match-slot" onclick="placeWord(this)" data-ex="2" data-ans='["engine"]'></span> to run on vegetable oil.
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-2" onclick="checkExercise('2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.2</button>
+                            <span id="score-2" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">4</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 5: True / False ==================== -->
+                <div id="page-5" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">4. Language Check</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.3</span> Decide whether these sentences are <strong>True</strong> or <strong>False</strong> based on the text on the previous page. Select the correct label for each.</p>
+
+                        <div class="bg-emerald-50/50 border border-emerald-200 p-3 rounded mb-6 flex gap-4 font-mono text-[12px] justify-center shadow-inner" id="wb-3">
+                            <button class="word-choice" onclick="selectWord(this)" data-word="True">True</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="False">False</button>
+                        </div>
+
+                        <div class="space-y-6 text-slate-800 text-[14px] leading-loose">
+                            <div class="flex items-start gap-3 bg-white border border-slate-200 p-4 rounded shadow-sm">
+                                <span class="font-bold text-slate-400 w-4 shrink-0">1.</span>
+                                <div class="flex-1">Cars that run on electricity and petrol appeared in 1997.</div>
+                                <span class="match-slot !min-w-[4rem] ml-2" onclick="placeWord(this)" data-ex="3" data-ans='["true"]'></span>
+                            </div>
+                            
+                            <div class="flex items-start gap-3 bg-white border border-slate-200 p-4 rounded shadow-sm">
+                                <span class="font-bold text-slate-400 w-4 shrink-0">2.</span>
+                                <div class="flex-1">Water is produced from the exhausts of hydrogen cars.</div>
+                                <span class="match-slot !min-w-[4rem] ml-2" onclick="placeWord(this)" data-ex="3" data-ans='["true"]'></span>
+                            </div>
+
+                            <div class="flex items-start gap-3 bg-white border border-slate-200 p-4 rounded shadow-sm">
+                                <span class="font-bold text-slate-400 w-4 shrink-0">3.</span>
+                                <div class="flex-1">It will be relatively inexpensive to change current petrol stations for hydrogen cars.</div>
+                                <span class="match-slot !min-w-[4rem] ml-2" onclick="placeWord(this)" data-ex="3" data-ans='["false"]'></span>
+                            </div>
+
+                            <div class="flex items-start gap-3 bg-white border border-slate-200 p-4 rounded shadow-sm">
+                                <span class="font-bold text-slate-400 w-4 shrink-0">4.</span>
+                                <div class="flex-1">Biofuels are non-renewable.</div>
+                                <span class="match-slot !min-w-[4rem] ml-2" onclick="placeWord(this)" data-ex="3" data-ans='["false"]'></span>
+                            </div>
+
+                            <div class="flex items-start gap-3 bg-white border border-slate-200 p-4 rounded shadow-sm">
+                                <span class="font-bold text-slate-400 w-4 shrink-0">5.</span>
+                                <div class="flex-1">In 1912 diesel was seen as an important fuel source.</div>
+                                <span class="match-slot !min-w-[4rem] ml-2" onclick="placeWord(this)" data-ex="3" data-ans='["false"]'></span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-3" onclick="checkExercise('3')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.3</button>
+                            <span id="score-3" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">5</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 6: Vocabulary (LEFT SIDE) ==================== -->
+                <div id="page-6" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">5. Vocabulary Check</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+                        
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.4</span> Which is the odd one out? Type the word in the blank. <i>(Optional: type your reason why)</i></p>
+                        
+                        <ol class="space-y-3 text-slate-800 text-[13px] h-[55vh] overflow-y-auto pr-2 custom-scrollbar">
+                            <li class="bg-emerald-50 p-2.5 rounded border border-emerald-100">
+                                <div class="font-mono text-emerald-800 mb-1.5 text-[11px] font-bold tracking-wide">1. curb / limit / promote / restrict</div>
+                                <div class="flex flex-col sm:flex-row gap-2">
+                                    <div class="font-bold text-xs shrink-0 pt-1">Odd one: <span class="text-emerald-700 ml-1">promote</span></div>
+                                    <div class="text-slate-500 italic text-[11px] pt-1">Why? The other words mean 'to reduce'.</div>
+                                </div>
+                            </li>
+                            <li class="bg-white p-2.5 rounded shadow-sm border border-slate-200">
+                                <div class="font-mono text-slate-600 mb-1.5 text-[11px] font-bold tracking-wide">2. electricity / nuclear energy / solar energy / wind power</div>
+                                <div class="flex items-center gap-2">
+                                    <label class="font-bold text-xs shrink-0">Odd one:</label>
+                                    <input type="text" class="input-blank w-24 text-[12px]" data-ex="5" data-ans='["electricity"]'>
+                                    <input type="text" class="input-blank font-normal text-slate-400 w-full text-[11px]" placeholder="Why?">
+                                </div>
+                            </li>
+                            <li class="bg-white p-2.5 rounded shadow-sm border border-slate-200">
+                                <div class="font-mono text-slate-600 mb-1.5 text-[11px] font-bold tracking-wide">3. economical / effective / efficient / emission</div>
+                                <div class="flex items-center gap-2">
+                                    <label class="font-bold text-xs shrink-0">Odd one:</label>
+                                    <input type="text" class="input-blank w-24 text-[12px]" data-ex="5" data-ans='["emission"]'>
+                                    <input type="text" class="input-blank font-normal text-slate-400 w-full text-[11px]" placeholder="Why?">
+                                </div>
+                            </li>
+                            <li class="bg-white p-2.5 rounded shadow-sm border border-slate-200">
+                                <div class="font-mono text-slate-600 mb-1.5 text-[11px] font-bold tracking-wide">4. carbon / fuel / gas / petrol</div>
+                                <div class="flex items-center gap-2">
+                                    <label class="font-bold text-xs shrink-0">Odd one:</label>
+                                    <input type="text" class="input-blank w-24 text-[12px]" data-ex="5" data-ans='["carbon"]'>
+                                    <input type="text" class="input-blank font-normal text-slate-400 w-full text-[11px]" placeholder="Why?">
+                                </div>
+                            </li>
+                            <li class="bg-white p-2.5 rounded shadow-sm border border-slate-200">
+                                <div class="font-mono text-slate-600 mb-1.5 text-[11px] font-bold tracking-wide">5. emit / discharge / release / retain</div>
+                                <div class="flex items-center gap-2">
+                                    <label class="font-bold text-xs shrink-0">Odd one:</label>
+                                    <input type="text" class="input-blank w-24 text-[12px]" data-ex="5" data-ans='["retain"]'>
+                                    <input type="text" class="input-blank font-normal text-slate-400 w-full text-[11px]" placeholder="Why?">
+                                </div>
+                            </li>
+                            <li class="bg-white p-2.5 rounded shadow-sm border border-slate-200">
+                                <div class="font-mono text-slate-600 mb-1.5 text-[11px] font-bold tracking-wide">6. renewable / disposable / rechargeable</div>
+                                <div class="flex items-center gap-2">
+                                    <label class="font-bold text-xs shrink-0">Odd one:</label>
+                                    <input type="text" class="input-blank w-24 text-[12px]" data-ex="5" data-ans='["disposable"]'>
+                                    <input type="text" class="input-blank font-normal text-slate-400 w-full text-[11px]" placeholder="Why?">
+                                </div>
+                            </li>
+                            <li class="bg-white p-2.5 rounded shadow-sm border border-slate-200">
+                                <div class="font-mono text-slate-600 mb-1.5 text-[11px] font-bold tracking-wide">7. diminish / dwindle / deplete / drastic</div>
+                                <div class="flex items-center gap-2">
+                                    <label class="font-bold text-xs shrink-0">Odd one:</label>
+                                    <input type="text" class="input-blank w-24 text-[12px]" data-ex="5" data-ans='["drastic"]'>
+                                    <input type="text" class="input-blank font-normal text-slate-400 w-full text-[11px]" placeholder="Why?">
+                                </div>
+                            </li>
+                            <li class="bg-white p-2.5 rounded shadow-sm border border-slate-200">
+                                <div class="font-mono text-slate-600 mb-1.5 text-[11px] font-bold tracking-wide">8. consume / extend / exhaust / expend</div>
+                                <div class="flex items-center gap-2">
+                                    <label class="font-bold text-xs shrink-0">Odd one:</label>
+                                    <input type="text" class="input-blank w-24 text-[12px]" data-ex="5" data-ans='["extend"]'>
+                                    <input type="text" class="input-blank font-normal text-slate-400 w-full text-[11px]" placeholder="Why?">
+                                </div>
+                            </li>
+                            <li class="bg-white p-2.5 rounded shadow-sm border border-slate-200">
+                                <div class="font-mono text-slate-600 mb-1.5 text-[11px] font-bold tracking-wide">9. conserve / preserve / reserve / save</div>
+                                <div class="flex items-center gap-2">
+                                    <label class="font-bold text-xs shrink-0">Odd one:</label>
+                                    <input type="text" class="input-blank w-24 text-[12px]" data-ex="5" data-ans='["reserve"]'>
+                                    <input type="text" class="input-blank font-normal text-slate-400 w-full text-[11px]" placeholder="Why?">
+                                </div>
+                            </li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-5" onclick="checkExercise('5')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.4</button>
+                            <span id="score-5" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">6</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 7: Speaking Practice (RIGHT SIDE) ==================== -->
+                <div id="page-7" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">6. Speaking Practice</h3>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.5</span> Answer these questions using as many new words and phrases from this unit as you can. If possible, record yourself and then listen to your answers.</p>
+
+                        <div class="textbook-note p-4 mt-4 mb-8 text-sm text-slate-700 leading-relaxed shadow-sm rounded-r ui-font">
+                            <h4 class="font-bold mb-1 text-slate-800">Test Tip</h4>
+                            <p>In the speaking test you will be assessed on your 'lexical resource' - in other words, whether you can use a wide range of vocabulary accurately. Think about your answers to these questions. Did you have to hesitate to search for words? Which words did you manage to use? Which words do you still need to practise?</p>
+                        </div>
+
+                        <div class="space-y-4 text-slate-800 text-[14px] leading-loose">
+                            <div class="flex gap-3 items-start bg-emerald-50/50 p-4 rounded-lg border border-emerald-100">
+                                <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold shrink-0 shadow-sm">1</div>
+                                <p class="pt-1">Do you think that you waste too much energy in the home?</p>
+                            </div>
+                            <div class="flex gap-3 items-start bg-emerald-50/50 p-4 rounded-lg border border-emerald-100">
+                                <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold shrink-0 shadow-sm">2</div>
+                                <p class="pt-1">What can the government do to encourage people to save energy?</p>
+                            </div>
+                            <div class="flex gap-3 items-start bg-emerald-50/50 p-4 rounded-lg border border-emerald-100">
+                                <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold shrink-0 shadow-sm">3</div>
+                                <p class="pt-1">Why do you think people prefer to drive a car instead of using public transport?</p>
+                            </div>
+                            <div class="flex gap-3 items-start bg-emerald-50/50 p-4 rounded-lg border border-emerald-100">
+                                <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold shrink-0 shadow-sm">4</div>
+                                <p class="pt-1">Do you feel optimistic about the future in terms of energy?</p>
+                            </div>
+                            <div class="flex gap-3 items-start bg-emerald-50/50 p-4 rounded-lg border border-emerald-100">
+                                <div class="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold shrink-0 shadow-sm">5</div>
+                                <p class="pt-1">What changes do you think will happen in the next 20 years?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">7</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 8: Academic Reading (LEFT SIDE) ==================== -->
+                <div id="page-8" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">7. Academic Reading</h3>
+                        </div>
+
+                        <div class="text-[12px] text-slate-800 leading-relaxed font-serif text-justify space-y-3">
+                            <p>America is abuzz with talk of replacing imported oil with 'biofuels' produced from homegrown materials. The US Environmental Protection Agency recently honoured famous country and western singer Willie Nelson for his efforts to promote the use of biodiesel through his own 'BioWillie' brand, a vegetable oil-based fuel which is now being distributed at filling stations nationally. Clearly, many hurdles stand in the way of making such biofuels commercially viable with traditional sources. Indeed, it remains very difficult to forecast whether powering our vehicles with crop derivatives will ever be a truly economic proposition. Nevertheless, it is not too early to ponder what impact the widespread adoption of biofuels would have on our environment.</p>
+
+                            <p>Michael S. Briggs, a biodiesel advocate at the University of New Hampshire, has estimated that the United States would need about 140 billion gallons of biodiesel each year to replace all the petroleum-based transportation fuels currently being used. This calculation is premised on the idea that Americans could, over time, switch to using diesel vehicles, as European drivers are clearly doing - half of the new cars sold there now run on standard diesel. Although one could make a similar appraisal for the amount of sugar-derived ethanol needed to meet our needs, it is unlikely that drivers would ever want to fill up their tanks entirely with ethanol, which contains only two-thirds of the energy of gasoline, whereas biodiesel is only 2 per cent less fuel-efficient than petroleum-based diesel. Hence a switch to biofuels would demand no new technology and would not significantly reduce the driving range of a car or truck.</p>
+
+                            <p>The main source of biodiesel is plant oil derived from crops such as rapeseed. An acre of rapeseed could provide about 100 gallons of biodiesel per year. To fuel America in this way would thus require 1.4 billion acres of rapeseed fields. This number is a sizeable fraction of the total US land area (2.4 billion acres) and considerably more than the 400 million acres currently under cultivation. Consequently, the burden on freshwater supplies and the general disruption that would accompany such a switch in fuel sources would be immense.</p>
+
+                            <p>Such calculations are sobering. They suggest that weaning ourselves off petroleum fuels and growing rapeseed instead would be an environmental catastrophe. Are more productive oil crops the answer? Oil palms currently top the list because they can provide enough oil to produce about 500 gallons of biodiesel per acre per year, which reduces the land requirement fivefold. Yet its cultivation demands a tropical climate, and its large-scale production, which currently comes from such countries as Malaysia and Indonesia, is a significant factor in the ongoing destruction of what rainforest remains there. Conservationists have been warning that palm oil production poses a dire threat to the dwindling population of orang-utans, for example, which exist only in the wild in Borneo and Sumatra. So here again, the prospect of dedicating sufficient land to growing feedstock for the world's transportation needs promises to be an environmental nightmare.</p>
+
+                            <p>There is, however, a 'crop' that is widely recognised as having the potential to meet the demands of a biodiesel-based transportation fleet without devastating the natural landscape: algae. Algae is a single-celled plant, some varieties of which can contain 50 per cent or more oil. They also grow much more rapidly than ordinary plants and can double in quantity within several hours.</p>
+
+                            <p>The US Department of Energy funded considerable research on biofuel production using algae after the oil problems of the 1970s, an effort known as the Aquatic Species Program. Although this programme was terminated in the 1990s, a lot of experience was gained through research and various demonstration projects. The results suggested that algae can be grown in sufficient density to produce several thousand gallons of biodiesel per acre per year a full order of magnitude better than can be expected using palm oil and two orders of magnitude better than soybeans.</p>
+
+                            <p>It is not surprising then that many scientists and entrepreneurs are once again looking hard at the prospects for using algae to produce transportation fuels and sizeable amounts of money are being invested in various schemes for doing so. David Bayless, a professor of mechanical engineering at Ohio University, has been working with scientists to engineer a device that can grow cyanobacteria (blue-green algae). It uses carbon dioxide from the gases emitted from power-plant chimneys and sunlight that is distributed to the growing surfaces through optical fibres. Bayless uses an enclosed bioreactor and claims to be able to produce as much as 60 grams of biomass per square metre of growing surface per day.</p>
+
+                            <p>Another recent effort is being carried out in San Diego by KentSeaTech Corporation. This company gained experience growing algae as a part of its aquaculture operations so was quick to respond when the California state government started looking for ways to treat the huge quantities of nutrient-laden water which runs off from adjacent farm lands. 'It's no real difficult feat to turn nutrients into algae,' says director of research Jon Van Olst, 'but how do you get it out of the water?' This is what Van Olst and his co-workers have been trying to achieve.</p>
+
+                            <p>The people working on these ventures are clearly eager to make growing algae a commercial success. Yet it is not hard to find experts who view such prospects as dim indeed. John Benemann, a private consultant in California, has decades of experience in this area. He is particularly sceptical about attempts to make algae production more economical by using enclosed bioreactors rather than open ponds. He points out that Japan spent hundreds of millions of dollars on such research, which never went anywhere. Even Van Olst has serious reservations. 'It may work,' he says, 'but it is going to take a while and a lot of research before we get anywhere.'</p>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">8</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 9: Reading Questions (RIGHT SIDE) ==================== -->
+                <div id="page-9" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">Reading Questions</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <div>
+                            <h5 class="font-bold mt-2 mb-3 text-emerald-800 uppercase text-xs tracking-wider">Classification</h5>
+                            <p class="text-[13px] mb-3">Classify the following characteristics as belonging to: <br>
+                                <strong>A</strong> = biodiesel, <strong>B</strong> = ethanol, <strong>C</strong> = ordinary diesel
+                            </p>
+                            
+                            <ul class="space-y-4 pl-1 text-[13.5px] text-slate-800">
+                                <li class="flex items-center justify-between">
+                                    <span>1. Produced by a popular American entertainer.</span>
+                                    <input type="text" class="input-blank w-12 text-[13px]" data-ex="6" data-ans='["a"]'>
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <span>2. 50% of new cars in Europe use this fuel.</span>
+                                    <input type="text" class="input-blank w-12 text-[13px]" data-ex="6" data-ans='["c"]'>
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <span>3. Provides two thirds of the power of standard petrol.</span>
+                                    <input type="text" class="input-blank w-12 text-[13px]" data-ex="6" data-ans='["b"]'>
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <span class="pr-2">4. Your car's performance will be almost unchanged if you change to this fuel.</span>
+                                    <input type="text" class="input-blank w-12 text-[13px] shrink-0" data-ex="6" data-ans='["a"]'>
+                                </li>
+                                <li class="flex items-center justify-between">
+                                    <span>5. Production can have a negative impact on water resources.</span>
+                                    <input type="text" class="input-blank w-12 text-[13px]" data-ex="6" data-ans='["a"]'>
+                                </li>
+                            </ul>
+
+                            <h5 class="font-bold mt-8 mb-3 text-emerald-800 uppercase text-xs tracking-wider">Yes / No / Not Given</h5>
+                            <p class="text-[13px] mb-3">Do the following statements agree with the claims of the writer?</p>
+                            
+                            <ul class="space-y-4 pl-1 text-[13.5px] text-slate-800">
+                                <li>
+                                    <div class="mb-1">6. 2% of Americans already use biodiesel.</div>
+                                    <input type="text" class="input-blank w-24 text-[13px]" data-ex="6" data-ans='["not given"]'>
+                                </li>
+                                <li>
+                                    <div class="mb-1">7. At present in America, 400 million acres of land are used for agriculture.</div>
+                                    <input type="text" class="input-blank w-24 text-[13px]" data-ex="6" data-ans='["yes", "true"]'>
+                                </li>
+                                <li>
+                                    <div class="mb-1">8. The use of palm oil as a fuel source will require more land than using rapeseed oil.</div>
+                                    <input type="text" class="input-blank w-24 text-[13px]" data-ex="6" data-ans='["no", "false"]'>
+                                </li>
+                                <li>
+                                    <div class="mb-1">9. Growing biodiesel crops has had a positive effect on local wildlife in some areas.</div>
+                                    <input type="text" class="input-blank w-24 text-[13px]" data-ex="6" data-ans='["no", "false"]'>
+                                </li>
+                                <li>
+                                    <div class="mb-1">10. One advantage of algae is the speed with which it grows.</div>
+                                    <input type="text" class="input-blank w-24 text-[13px]" data-ex="6" data-ans='["yes", "true"]'>
+                                </li>
+                                <li>
+                                    <div class="mb-1">11. David Bayless believes that algae can produce more energy than solar power.</div>
+                                    <input type="text" class="input-blank w-24 text-[13px]" data-ex="6" data-ans='["not given"]'>
+                                </li>
+                                <li>
+                                    <div class="mb-1">12. It is easy to grow algae using agricultural waste water.</div>
+                                    <input type="text" class="input-blank w-24 text-[13px]" data-ex="6" data-ans='["yes", "true"]'>
+                                </li>
+                            </ul>
+
+                            <h5 class="font-bold mt-8 mb-3 text-emerald-800 uppercase text-xs tracking-wider">Multiple Choice</h5>
+                            <ul class="space-y-4 pl-1 text-[13.5px] text-slate-800">
+                                <li>
+                                    <div class="mb-2">13. What is the main purpose of this article?</div>
+                                    <div class="pl-4 space-y-1 text-[13px] text-slate-600 mb-2">
+                                        <div><strong>A</strong> To prove that biofuels could totally replace petrol in America.</div>
+                                        <div><strong>B</strong> To examine the environmental impact of standard fuel sources.</div>
+                                        <div><strong>C</strong> To assess the advantages and disadvantages of different types of fuel.</div>
+                                        <div><strong>D</strong> To show that an international effort is required to solve the fuel crisis.</div>
+                                    </div>
+                                    <input type="text" class="input-blank w-16 text-[13px]" data-ex="6" data-ans='["c"]' placeholder="A, B, C or D">
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-6">
+                            <button id="btn-6" onclick="checkExercise('6')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 6.1</button>
+                            <span id="score-6" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
+                        <span class="text-xs font-bold ui-font text-slate-400">9</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Sticky Right Arrow (Desktop Only) -->
+        <div class="hidden lg:block w-10 shrink-0 ml-2 xl:ml-4 relative">
+            <div class="sticky-nav-container flex justify-center">
+                <button id="next-btn" onclick="goNext()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Next Page">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Mobile Fixed Bottom Navigation -->
+    <div class="lg:hidden fixed bottom-0 left-0 w-full bg-white/90 backdrop-blur-md border-t border-slate-200 p-3 flex justify-between z-50 shadow-[0_-4px_10px_-1px_rgba(0,0,0,0.1)]">
+        <button id="prev-btn-mobile" onclick="goPrev()" class="ui-font font-bold px-5 py-2 rounded-lg text-slate-700 bg-slate-100 active:bg-slate-200 transition-colors flex items-center gap-2">
+            &larr; Prev
+        </button>
+        <button id="next-btn-mobile" onclick="goNext()" class="ui-font font-bold px-5 py-2 rounded-lg text-white bg-emerald-600 active:bg-emerald-700 transition-colors flex items-center gap-2 shadow-sm">
+            Next &rarr;
+        </button>
+    </div>
+
+    <script>
+        const REQUIRED_SCORE = 0.8;
+        const totalPages = 10; // Pages 0 to 9
+        let currentSpread = 0; // For desktop (0 = pages 0,1; 1 = pages 2,3; etc.)
+        let currentMobilePage = 0;
+
+        function updatePagination() {
+            const isDesktop = window.innerWidth >= 1024;
+            const pages = document.querySelectorAll('.page-content');
+            
+            // Hide all pages
+            pages.forEach(p => p.classList.add('hidden'));
+
+            if (isDesktop) {
+                let leftIdx = currentSpread * 2;
+                let rightIdx = leftIdx + 1;
+                
+                const leftPage = document.getElementById(`page-${leftIdx}`);
+                const rightPage = document.getElementById(`page-${rightIdx}`);
+                
+                if(leftPage) leftPage.classList.remove('hidden');
+                if(rightPage) rightPage.classList.remove('hidden');
+
+                // Update Nav Buttons
+                document.getElementById('prev-btn').disabled = currentSpread === 0;
+                document.getElementById('next-btn').disabled = currentSpread >= Math.ceil(totalPages/2) - 1;
+                
+            } else {
+                const activePage = document.getElementById(`page-${currentMobilePage}`);
+                if(activePage) activePage.classList.remove('hidden');
+
+                // Update Mobile Nav
+                const prevMob = document.getElementById('prev-btn-mobile');
+                const nextMob = document.getElementById('next-btn-mobile');
+                if(prevMob) prevMob.style.visibility = currentMobilePage === 0 ? 'hidden' : 'visible';
+                if(nextMob) nextMob.style.visibility = currentMobilePage === totalPages - 1 ? 'hidden' : 'visible';
+            }
+        }
+
+        function goNext() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread < Math.ceil(totalPages/2) - 1) currentSpread++;
+            } else {
+                if (currentMobilePage < totalPages - 1) currentMobilePage++;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function goPrev() {
+            const isDesktop = window.innerWidth >= 1024;
+            if (isDesktop) {
+                if (currentSpread > 0) currentSpread--;
+            } else {
+                if (currentMobilePage > 0) currentMobilePage--;
+            }
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('resize', () => {
+            const isDesktop = window.innerWidth >= 1024;
+            if(isDesktop) {
+                currentSpread = Math.floor(currentMobilePage / 2);
+            } else {
+                currentMobilePage = currentSpread * 2;
+            }
+            updatePagination();
+        });
+
+        // --- Core UI & Grading Logic ---
+        function showToast(message, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function validateBlanks(inputs) {
+            let allFilled = true;
+            inputs.forEach(input => {
+                if (input.classList.contains('font-normal')) return; // skip subjective notes
+                const val = input.value !== undefined ? input.value : input.innerText;
+                if (val.trim() === "" || val.trim() === "...") {
+                    allFilled = false;
+                    if(input.classList.contains('match-slot')) {
+                        input.style.borderBottomColor = '#ef4444';
+                        input.style.backgroundColor = '#fef2f2';
+                        setTimeout(() => { input.style.borderBottomColor = ''; input.style.backgroundColor = ''; }, 1500);
+                    } else {
+                        input.style.borderBottomColor = '#f59e0b';
+                        input.style.backgroundColor = '#fef3c7';
+                        setTimeout(() => {
+                            input.style.borderBottomColor = '';
+                            input.style.backgroundColor = '';
+                        }, 1500);
+                    }
+                }
+            });
+            return allFilled;
+        }
+
+        function processScore(exerciseId, correctCount, totalCount) {
+            const scoreLabel = document.getElementById(`score-${exerciseId}`);
+            const percentage = correctCount / totalCount;
+            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
+            
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (percentage >= REQUIRED_SCORE) {
+                scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
+                
+                const btn = document.getElementById(`btn-${exerciseId}`);
+                if (btn) {
+                    btn.disabled = true;
+                    btn.textContent = "Passed";
+                }
+                showToast("Good job!", "success");
+            } else {
+                scoreLabel.textContent = `❌ Failed. ${scoreText}`;
+                scoreLabel.classList.add('text-red-600');
+                showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
+            }
+        }
+
+        // Standard exercise checker (Handles text inputs and selects)
+        function checkExercise(exerciseId) {
+            const inputs = document.querySelectorAll(`[data-ex="${exerciseId}"]`);
+            if (!validateBlanks(inputs)) {
+                showToast("Please answer all required blanks before checking!", "warning");
+                return;
+            }
+
+            let correctCount = 0;
+            inputs.forEach(input => {
+                if(input.classList.contains('font-normal')) return;
+
+                const rawVal = input.value !== undefined ? input.value : input.innerText;
+                const userVal = rawVal.trim().toLowerCase().replace(/\s+/g, ' ');
+                const possibleAns = JSON.parse(input.getAttribute('data-ans'));
+                
+                if (possibleAns.includes(userVal)) {
+                    correctCount++;
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+
+            processScore(exerciseId, correctCount, inputs.length);
+        }
+
+        // --- Click & Match Logic ---
+        let selectedWordBtn = null;
+
+        function selectWord(btn) {
+            if (btn.classList.contains('used')) return;
+            
+            // Deselect all globally to keep it clean
+            document.querySelectorAll('.word-choice').forEach(b => b.classList.remove('selected'));
+            
+            if (selectedWordBtn === btn) {
+                selectedWordBtn = null; 
+                return;
+            }
+            
+            btn.classList.add('selected');
+            selectedWordBtn = btn;
+        }
+
+        function placeWord(slot) {
+            if (slot.innerText.trim() !== '' && slot.innerText.trim() !== '...') {
+                const existingWord = slot.innerText.trim();
+                const bankBtn = Array.from(slot.closest('.page-content').querySelectorAll('.word-choice'))
+                                     .find(b => b.getAttribute('data-word') === existingWord);
+                if (bankBtn) bankBtn.classList.remove('used');
+                slot.innerText = '';
+            }
+
+            if (selectedWordBtn) {
+                if (selectedWordBtn.closest('.page-content') === slot.closest('.page-content')) {
+                    slot.innerText = selectedWordBtn.getAttribute('data-word');
+                    selectedWordBtn.classList.add('used');
+                    selectedWordBtn.classList.remove('selected');
+                    selectedWordBtn = null;
+                }
+            }
+        }
+
+        // --- Audio Pronunciation Logic ---
+        function speakWord(word) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); 
+                const utterance = new SpeechSynthesisUtterance(word);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85; 
+                window.speechSynthesis.speak(utterance);
+            } else {
+                showToast("Audio pronunciation is not supported in your browser.", "error");
+            }
+        }
+
+        // --- Audio Player Initialization via SoundCloud Widget API ---
+        function initAudioPlayer() {
+            const players = document.querySelectorAll('.custom-audio-player');
+            
+            players.forEach((playerEl) => {
+                const scUrl = playerEl.getAttribute('data-sc-url');
+                const iframeElement = playerEl.querySelector('.sc-widget-iframe');
+                
+                if (!iframeElement || !scUrl) return;
+                
+                iframeElement.src = scUrl;
+                
+                const widget = SC.Widget(iframeElement);
+                const playBtn = playerEl.querySelector('.audio-play-btn');
+                const playIcon = playerEl.querySelector('.play-icon');
+                const pauseIcon = playerEl.querySelector('.pause-icon');
+                const progressBar = playerEl.querySelector('.audio-progress');
+                const progressFill = playerEl.querySelector('.audio-progress-bar');
+                const currentTimeEl = playerEl.querySelector('.audio-current-time');
+                const totalTimeEl = playerEl.querySelector('.audio-total-time');
+
+                let durationSec = 0;
+
+                const formatTime = (timeInSeconds) => {
+                    if (isNaN(timeInSeconds) || timeInSeconds === Infinity) return "00:00";
+                    const min = Math.floor(timeInSeconds / 60);
+                    const sec = Math.floor(timeInSeconds % 60);
+                    return `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+                };
+
+                const updateDuration = () => {
+                    widget.getDuration((durationMs) => {
+                        if (durationMs) {
+                            durationSec = durationMs / 1000;
+                            if (totalTimeEl) totalTimeEl.textContent = formatTime(durationSec);
+                            if (progressBar) progressBar.max = durationSec;
+                        }
+                    });
+                };
+
+                widget.bind(SC.Widget.Events.READY, () => { updateDuration(); });
+
+                widget.bind(SC.Widget.Events.PLAY_PROGRESS, (info) => {
+                    if (!durationSec) updateDuration(); 
+                    const currentPositionSec = info.currentPosition / 1000;
+                    if (currentTimeEl) currentTimeEl.textContent = formatTime(currentPositionSec);
+                    if (progressBar) progressBar.value = currentPositionSec;
+                    if (durationSec > 0 && progressFill) {
+                        const percent = (currentPositionSec / durationSec) * 100;
+                        progressFill.style.width = `${percent}%`;
+                    }
+                });
+
+                widget.bind(SC.Widget.Events.PLAY, () => {
+                    if(playIcon) playIcon.classList.add('hidden');
+                    if(pauseIcon) pauseIcon.classList.remove('hidden');
+                    updateDuration();
+                });
+
+                widget.bind(SC.Widget.Events.PAUSE, () => {
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(playIcon) playIcon.classList.remove('hidden');
+                });
+
+                widget.bind(SC.Widget.Events.FINISH, () => {
+                    if(playIcon) playIcon.classList.remove('hidden');
+                    if(pauseIcon) pauseIcon.classList.add('hidden');
+                    if(progressFill) progressFill.style.width = '0%';
+                    if(progressBar) progressBar.value = 0;
+                    widget.seekTo(0);
+                });
+
+                if (playBtn) {
+                    playBtn.addEventListener('click', () => { widget.toggle(); });
+                }
+
+                if (progressBar) {
+                    progressBar.addEventListener('input', () => {
+                        widget.seekTo(progressBar.value * 1000);
+                    });
+                }
+            });
+        }
+
+        // Initialize on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePagination();
+            initAudioPlayer();
+        });
+
+    </script>
+</body>
+</html>
