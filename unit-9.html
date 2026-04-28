@@ -163,10 +163,10 @@
 
 <div id="toast" class="toast">Message</div>
 
-<!-- Main Desk Area -->
-<div class="w-full max-w-[1600px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
+<!-- Main Desk Area - Increased Max Width -->
+<div class="w-full max-w-[1920px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
     
-    <!-- Sticky Left Arrow -->
+    <!-- Sticky Left Arrow (Desktop Only) -->
     <div class="hidden lg:block w-10 shrink-0 mr-2 xl:mr-4 relative">
         <div class="sticky-nav-container flex justify-center">
             <button id="prev-btn" onclick="goPrev()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Previous Page">
@@ -175,10 +175,10 @@
         </div>
     </div>
 
-    <!-- The Book -->
-    <div class="book-wrapper flex-1 w-full max-w-7xl flex flex-col lg:flex-row relative min-h-[85vh]">
+    <!-- The Book - Increased Max Width -->
+    <div class="book-wrapper flex-1 w-full max-w-[1700px] flex flex-col lg:flex-row relative min-h-[85vh]">
         
-        <!-- Spine Decoration -->
+        <!-- Spine Decoration (Desktop Only) -->
         <div class="spine-shadow hidden lg:block"></div>
 
         <!-- Pages Container -->
@@ -780,15 +780,23 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    window.addEventListener('resize', () => {
-        const isDesktop = window.innerWidth >= 1024;
-        if(isDesktop) {
-            currentSpread = Math.floor(currentMobilePage / 2);
-        } else {
-            currentMobilePage = currentSpread * 2;
-        }
-        updatePagination();
-    });
+        // Keep track of desktop state to prevent accidental resets when scrolling/zooming
+        let isDesktopState = window.innerWidth >= 1024;
+
+        window.addEventListener('resize', () => {
+            const currentIsDesktop = window.innerWidth >= 1024;
+            
+            // Only recalculate pagination if we cross the mobile/desktop breakpoint
+            if (currentIsDesktop !== isDesktopState) {
+                if(currentIsDesktop) {
+                    currentSpread = Math.floor(currentMobilePage / 2);
+                } else {
+                    currentMobilePage = currentSpread * 2;
+                }
+                isDesktopState = currentIsDesktop;
+                updatePagination();
+            }
+        });
 
     // --- Core UI & Grading Logic ---
     function showToast(message, type) {

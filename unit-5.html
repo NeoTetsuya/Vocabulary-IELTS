@@ -75,8 +75,8 @@
             border-radius: 2px 2px 0 0;
         }
         .input-blank:focus { 
-            border-bottom: 2px solid #0369a1; 
-            background: #f0f9ff;
+            border-bottom: 2px solid #8b5cf6; 
+            background: #f5f3ff;
         }
         select.input-blank {
             text-align: left;
@@ -100,24 +100,25 @@
             background-color: #fee2e2; 
         }
 
-        /* Callouts / Notes */
-        .textbook-note {
-            background-color: #f8fafc;
-            border-left: 4px solid #94a3b8;
-            position: relative;
+        /* Click & Match Styles */
+        .word-choice { 
+            transition: all 0.2s; cursor: pointer; padding: 0.15rem 0.6rem; 
+            border-radius: 0.25rem; border: 1px solid #cbd5e1; font-weight: 600; 
+            background-color: white; color: #6d28d9; font-family: 'Inter', sans-serif;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
-        .textbook-note::before {
-            content: "✍🏼 Note";
-            position: absolute;
-            top: -12px;
-            left: 8px;
-            background: #fdfcf8;
-            padding: 0 6px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            font-family: 'Inter', sans-serif;
-            color: #475569;
+        .word-choice:hover:not(.used) { background-color: #f5f3ff; border-color: #a78bfa; }
+        .word-choice.selected { background-color: #ede9fe; border-color: #8b5cf6; transform: scale(1.05); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .word-choice.used { opacity: 0.4; text-decoration: line-through; pointer-events: none; background: transparent; box-shadow: none; border-color: transparent;}
+        
+        .match-slot { 
+            display: inline-block; min-width: 6rem; height: 1.5rem; 
+            border-bottom: 2px dashed #94a3b8; text-align: center; cursor: pointer; 
+            padding: 0 0.25rem; font-weight: 600; color: #6d28d9; vertical-align: bottom; 
+            transition: all 0.2s; line-height: 1.5rem; font-family: 'Inter', sans-serif;
         }
+        .match-slot:hover { border-bottom-style: solid; border-bottom-color: #8b5cf6; background-color: #f5f3ff; border-radius: 2px 2px 0 0; }
+        .match-slot:empty::after { content: '...'; color: #cbd5e1; font-weight: normal; }
 
         /* Custom Vocab Table */
         .vocab-table { width: 100%; text-align: left; border-collapse: collapse; }
@@ -176,8 +177,8 @@
 
     <div id="toast" class="toast">Message</div>
 
-    <!-- Main Desk Area -->
-    <div class="w-full max-w-[1600px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
+    <!-- Main Desk Area - Increased Max Width -->
+    <div class="w-full max-w-[1920px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
         
         <!-- Sticky Left Arrow (Desktop Only) -->
         <div class="hidden lg:block w-10 shrink-0 mr-2 xl:mr-4 relative">
@@ -188,27 +189,27 @@
             </div>
         </div>
 
-        <!-- The Book -->
-        <div class="book-wrapper flex-1 w-full max-w-7xl flex flex-col lg:flex-row relative min-h-[85vh]">
+        <!-- The Book - Increased Max Width -->
+        <div class="book-wrapper flex-1 w-full max-w-[1700px] flex flex-col lg:flex-row relative min-h-[85vh]">
             
             <!-- Spine Decoration (Desktop Only) -->
             <div class="spine-shadow hidden lg:block"></div>
 
-            <!-- Page Container (Flexible Height) -->
+            <!-- Page Container -->
             <div id="pages-container" class="w-full flex relative">
                 
                 <!-- ==================== PAGE 0: Title & Intro ==================== -->
                 <div id="page-0" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
                     <div class="flex-grow flex flex-col justify-center items-center text-center">
-                        <div class="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-8 shadow-inner border border-slate-200">
-                            <svg class="w-12 h-12 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                        <div class="w-24 h-24 bg-violet-50 rounded-full flex items-center justify-center mb-8 shadow-inner border border-violet-100">
+                            <svg class="w-12 h-12 text-violet-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"></path></svg>
                         </div>
-                        <h4 class="text-sm uppercase tracking-widest text-slate-500 font-bold ui-font mb-2">Unit 5</h4>
+                        <h4 class="text-sm uppercase tracking-widest text-violet-600 font-bold ui-font mb-2">Unit 5</h4>
                         <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-slate-800 leading-tight">Student Life</h1>
-                        <h2 class="text-2xl italic text-slate-600 mb-8 border-b pb-8 border-slate-200">Study, Education, Research</h2>
+                        <h2 class="text-2xl italic text-slate-600 mb-8 border-b pb-8 border-slate-200">Higher Education & Independence</h2>
                         
                         <p class="text-lg text-slate-600 leading-relaxed max-w-md mx-auto">
-                            Welcome to Unit 5. Work through the exercises on the following pages to improve your vocabulary and reading skills regarding academic life and continuing education.
+                            Welcome to Unit 5. Explore vocabulary, listening, and reading exercises focused on university life, campus environments, and studying abroad on the following pages.
                         </p>
                     </div>
                     <div class="mt-8 pt-4 flex w-full justify-start">
@@ -216,26 +217,31 @@
                     </div>
                 </div>
 
-                <!-- ==================== PAGE 1: Study Basics ==================== -->
+                <!-- ==================== PAGE 1: Higher Education ==================== -->
                 <div id="page-1" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
                     <div class="flex-grow">
                         <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
-                            <h3 class="text-2xl font-bold text-slate-900">1. Study Basics</h3>
+                            <h3 class="text-2xl font-bold text-slate-900">1. Higher Education</h3>
                             <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
                         </div>
 
-                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">1.1</span> Complete the text with the <strong>correct form</strong> of the verbs in the box.</p>
+                        <p class="mb-4 leading-relaxed text-sm font-bold">1.1 Complete the sentences using the words in the box.</p>
                         
-                        <div class="bg-white border border-slate-200 p-4 rounded mb-6 flex flex-wrap gap-x-4 gap-y-2 font-mono text-xs justify-center font-bold text-slate-600 shadow-inner">
-                            <span>concentrate</span> <span>do</span> <span>learn</span> <span>overcome</span> <span>organise</span>
-                            <span>study</span> <span>take</span> <span>teach</span> <span>review</span> <span>revise</span>
+                        <div class="bg-violet-50 border border-violet-100 p-4 rounded mb-6 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[12px] justify-center font-bold text-violet-700 shadow-inner">
+                            <span>assignment</span> <span>campus</span> <span>degree</span> <span>faculty</span>
+                            <span>lecture</span> <span>seminar</span> <span>tuition</span> <span>undergraduate</span>
                         </div>
 
-                        <div class="space-y-4 text-slate-800 leading-loose text-[15px]">
-                            <p>Even the most studious among you will probably have difficulty studying at some stage in your academic career. If or when this happens, the only way to (1) <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["overcome"]'> this problem is to go back to basics. First, make sure you have a comfortable environment to (2) <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["study"]'> in. Some students need to have a quiet space to themselves and can't (3) <input type="text" class="input-blank w-28" data-ex="1.1" data-ans='["concentrate", "study"]'> if there are too many distractions. Others need some sort of background noise, such as music or the company of friends. Whatever your personal preference is, you need to (4) <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["organise"]'> this first of all.</p>
-                            <p>Next, make sure you have all of the equipment or tools that you need. For example, if you are (5) <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["taking", "studying"]'> a geography course and you have to (6) <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["learn"]'> about countries and their capital cities then you will need to have your atlas to hand. If you're (7) <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["doing"]'> your maths homework then be sure to find your calculator, ruler, protractor and compass before you start.</p>
-                            <p>Perhaps you're not preparing a homework assignment or project, but are trying to (8) <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["revise"]'> for an exam. If so, you need to know exactly what is on your curriculum. You should also (9) <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["review"]'> your notes and make sure that you have a clear understanding of what your lecturers have (10) <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["taught"]'> you. Of course, people with a learning disorder such as dyslexia may need to work harder than others at their studies as they often struggle to read even relatively simple texts.</p>
-                        </div>
+                        <ol class="list-decimal list-outside ml-4 space-y-4 text-slate-800 text-[14px] leading-loose">
+                            <li>A large formal class where a professor speaks to many students is a <input type="text" class="input-blank w-28" data-ex="1.1" data-ans='["lecture"]'>.</li>
+                            <li>A smaller, more interactive discussion group is called a <input type="text" class="input-blank w-28" data-ex="1.1" data-ans='["seminar"]'>.</li>
+                            <li>The land and buildings belonging to a university form the <input type="text" class="input-blank w-28" data-ex="1.1" data-ans='["campus"]'>.</li>
+                            <li>A student studying for their very first degree is an <input type="text" class="input-blank w-36" data-ex="1.1" data-ans='["undergraduate"]'>.</li>
+                            <li>The money you pay for your university teaching is called <input type="text" class="input-blank w-28" data-ex="1.1" data-ans='["tuition"]'>.</li>
+                            <li>A piece of written work or research given to students is an <input type="text" class="input-blank w-32" data-ex="1.1" data-ans='["assignment"]'>.</li>
+                            <li>A group of related university departments (e.g. Science) is a <input type="text" class="input-blank w-28" data-ex="1.1" data-ans='["faculty"]'>.</li>
+                            <li>When you successfully finish your course, you receive a <input type="text" class="input-blank w-28" data-ex="1.1" data-ans='["degree"]'>.</li>
+                        </ol>
 
                         <div class="flex items-center gap-3 mt-8">
                             <button id="btn-1.1" onclick="checkExercise('1.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.1</button>
@@ -247,27 +253,33 @@
                     </div>
                 </div>
 
-                <!-- ==================== PAGE 2: Study Definitions ==================== -->
+                <!-- ==================== PAGE 2: Campus Vocabulary ==================== -->
                 <div id="page-2" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
                     <div class="flex-grow">
                         <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
-                            <h3 class="text-2xl font-bold text-slate-900">Study Vocabulary</h3>
+                            <h3 class="text-2xl font-bold text-slate-900">2. Campus Vocabulary</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
                         </div>
 
-                        <p class="mb-6 leading-relaxed text-sm"><span class="font-bold">1.2</span> Now read the text on the previous page again and find a <strong>word or phrase</strong> to match these definitions.</p>
+                        <p class="mb-6 leading-relaxed text-sm font-bold">1.2 Match the following meanings to the correct words. <strong class="text-violet-700">Click a word to select it, then click a blank line to place it.</strong></p>
 
-                        <ol class="list-decimal list-outside ml-4 space-y-6 text-slate-800 text-[15px] leading-loose">
-                            <li>describes someone who studies a lot: <input type="text" class="input-blank w-36" data-ex="1.2" data-ans='["studious"]'></li>
-                            <li>things that stop you from working: <input type="text" class="input-blank w-36" data-ex="1.2" data-ans='["distractions"]'></li>
-                            <li>a sound you can hear, but do not actively listen to: <input type="text" class="input-blank w-40" data-ex="1.2" data-ans='["background noise"]'></li>
-                            <li>two different types of homework or school task: <input type="text" class="input-blank w-32" data-ex="1.2" data-ans='["project", "assignment"]'> and <input type="text" class="input-blank w-32" data-ex="1.2" data-ans='["assignment", "project"]'></li>
-                            <li>to study for an exam: <input type="text" class="input-blank w-32" data-ex="1.2" data-ans='["revise"]'></li>
-                            <li>another word for syllabus: <input type="text" class="input-blank w-40" data-ex="1.2" data-ans='["curriculum"]'></li>
-                            <li>to check your work: <input type="text" class="input-blank w-32" data-ex="1.2" data-ans='["review"]'></li>
-                            <li>to do something with great difficulty: <input type="text" class="input-blank w-32" data-ex="1.2" data-ans='["struggle"]'></li>
+                        <div class="bg-violet-50/50 border border-violet-200 p-4 rounded mb-6 flex flex-wrap gap-2.5 font-mono text-[11px] justify-center shadow-inner" id="wb-1">
+                            <button class="word-choice" onclick="selectWord(this)" data-word="postgraduate">postgraduate</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="professor">professor</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="dormitory">dormitory</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="semester">semester</button>
+                            <button class="word-choice" onclick="selectWord(this)" data-word="scholarship">scholarship</button>
+                        </div>
+
+                        <ol class="list-decimal list-outside ml-4 space-y-6 text-slate-800 text-[14px] leading-loose">
+                            <li>A student who has already received one degree and is studying for another: <br><span class="match-slot mt-1" onclick="placeWord(this)" data-ex="1.2" data-ans='["postgraduate"]'></span></li>
+                            <li>A teacher of high rank in an American or British university: <br><span class="match-slot mt-1" onclick="placeWord(this)" data-ex="1.2" data-ans='["professor"]'></span></li>
+                            <li>A large building at a college or university where students live: <br><span class="match-slot mt-1" onclick="placeWord(this)" data-ex="1.2" data-ans='["dormitory"]'></span></li>
+                            <li>A period of study at university (usually half a year): <br><span class="match-slot mt-1" onclick="placeWord(this)" data-ex="1.2" data-ans='["semester"]'></span></li>
+                            <li>Money given to a student by a school or organization to pay for their studies: <br><span class="match-slot mt-1" onclick="placeWord(this)" data-ex="1.2" data-ans='["scholarship"]'></span></li>
                         </ol>
 
-                        <div class="flex items-center gap-3 mt-8">
+                        <div class="flex items-center gap-3 mt-10">
                             <button id="btn-1.2" onclick="checkExercise('1.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.2</button>
                             <span id="score-1.2" class="ui-font text-sm font-bold hidden"></span>
                         </div>
@@ -277,69 +289,64 @@
                     </div>
                 </div>
 
-                <!-- ==================== PAGE 3: Study Focus ==================== -->
+                <!-- ==================== PAGE 3: Listening - Orientation ==================== -->
                 <div id="page-3" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
                     <div class="flex-grow">
                         <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
-                            <h3 class="text-2xl font-bold text-slate-900">2. Study Focus</h3>
-                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                            <h3 class="text-2xl font-bold text-slate-900">3. Listening (Orientation)</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
                         </div>
 
-                        <div class="textbook-note p-4 mt-4 mb-6 text-sm text-slate-700 leading-relaxed shadow-sm rounded-r ui-font">
-                            <p class="font-bold mb-1 text-slate-800">Error warning:</p>
-                            <ul class="list-disc list-inside space-y-1 ml-1 text-xs">
-                                <li><strong>Know</strong> = already have the information; <strong>find out</strong> = get the information.</li>
-                                <li><strong>Study</strong> = learn about a subject through books/a course. We don't use any other prepositions after study. (NOT <i>I am studying about law</i>).</li>
-                                <li><strong>Learn</strong> = get new knowledge or skills. Note that we say you are <i>taking</i> a course, NOT learning a course. Prepositions after learn: <i>learn about, learn from, learn to</i>.</li>
-                            </ul>
+                        <!-- Custom Audio Player -->
+                        <div class="custom-audio-player bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mb-6 shadow-inner ui-font flex flex-col sm:flex-row items-center gap-4" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784891&auto_play=false&enable_api=1">
+                            <div class="text-xs font-bold text-violet-600 uppercase tracking-widest shrink-0">Track 5a</div>
+                            <div class="w-full flex items-center gap-3">
+                                <button class="audio-play-btn w-8 h-8 flex items-center justify-center bg-violet-600 hover:bg-violet-700 text-white rounded-full transition-colors shrink-0 focus:outline-none">
+                                    <svg class="play-icon h-4 w-4 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
+                                    <svg class="pause-icon h-4 w-4 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
+                                </button>
+                                <span class="audio-current-time text-xs font-mono text-slate-500 w-9 text-right">00:00</span>
+                                <div class="relative w-full h-1.5 bg-slate-300 rounded-full cursor-pointer flex-1 group">
+                                     <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
+                                     <div class="audio-progress-bar absolute h-full bg-violet-500 rounded-full group-hover:bg-violet-600 transition-colors" style="width: 0%;"></div>
+                                </div>
+                                <span class="audio-total-time text-xs font-mono text-slate-500 w-9">00:00</span>
+                            </div>
+                            <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
                         </div>
 
-                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">2.1</span> Select the correct words to complete each sentence.</p>
+                        <p class="mb-4 leading-relaxed text-sm font-bold">2.1 Listen to the orientation guide for new students and complete the schedule. Write NO MORE THAN ONE WORD.</p>
                         
-                        <ol class="list-decimal list-outside ml-4 space-y-5 text-slate-800 text-[15px] leading-loose">
-                            <li>I would really like to <select class="input-blank font-bold text-slate-700 w-32 text-xs" data-ex="2.1" data-ans='["learn about"]'>
-                                    <option value="" disabled selected>Choose...</option>
-                                    <option value="learn about">learn about</option>
-                                    <option value="study about">study about</option>
-                                </select> the ancient Egyptians.</li>
-                            <li>We need to <select class="input-blank font-bold text-slate-700 w-28 text-xs" data-ex="2.1" data-ans='["find out"]'>
-                                    <option value="" disabled selected>Choose...</option>
-                                    <option value="find out">find out</option>
-                                    <option value="know">know</option>
-                                </select> where to buy the tickets for the concert.</li>
-                            <li>I got into trouble at school because I didn't <select class="input-blank font-bold text-slate-700 w-28 text-xs" data-ex="2.1" data-ans='["know"]'>
-                                    <option value="" disabled selected>Choose...</option>
-                                    <option value="know">know</option>
-                                    <option value="find out">find out</option>
-                                </select> my multiplication tables.</li>
-                            <li>I did well in the test because I had <select class="input-blank font-bold text-slate-700 w-28 text-xs" data-ex="2.1" data-ans='["learned"]'>
-                                    <option value="" disabled selected>Choose...</option>
-                                    <option value="known">known</option>
-                                    <option value="learned">learned</option>
-                                </select> how to spell all of the words on the list.</li>
-                            <li>Excuse me, do you <select class="input-blank font-bold text-slate-700 w-28 text-xs" data-ex="2.1" data-ans='["know"]'>
-                                    <option value="" disabled selected>Choose...</option>
-                                    <option value="find out">find out</option>
-                                    <option value="know">know</option>
-                                </select> where the nearest post office is?</li>
-                            <li>It was difficult for me to <select class="input-blank font-bold text-slate-700 w-28 text-xs" data-ex="2.1" data-ans='["study"]'>
-                                    <option value="" disabled selected>Choose...</option>
-                                    <option value="learn">learn</option>
-                                    <option value="study">study</option>
-                                </select> at home, because we didn't have a lot of space.</li>
-                            <li>I want to <select class="input-blank font-bold text-slate-700 w-28 text-xs" data-ex="2.1" data-ans='["learn how"]'>
-                                    <option value="" disabled selected>Choose...</option>
-                                    <option value="learn how">learn how</option>
-                                    <option value="study how">study how</option>
-                                </select> to drive a car.</li>
-                            <li>I think you can only really <select class="input-blank font-bold text-slate-700 w-28 text-xs" data-ex="2.1" data-ans='["learn from"]'>
-                                    <option value="" disabled selected>Choose...</option>
-                                    <option value="learn from">learn from</option>
-                                    <option value="learn with">learn with</option>
-                                </select> experience.</li>
-                        </ol>
+                        <div class="bg-white border border-slate-200 shadow-sm rounded overflow-hidden">
+                            <table class="vocab-table">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="w-1/4">Time</th>
+                                        <th class="w-1/3">Event</th>
+                                        <th class="w-[41%]">Location</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="font-semibold text-violet-700">9:00 AM</td>
+                                        <td>Welcome Speech</td>
+                                        <td>Main (1) <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["hall"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-semibold text-violet-700">10:30 AM</td>
+                                        <td>Campus (2) <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["tour"]'></td>
+                                        <td>Starting at the (3) <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["library"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-semibold text-violet-700">12:30 PM</td>
+                                        <td>Lunch break</td>
+                                        <td>Student (4) <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["cafeteria"]'></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                        <div class="flex items-center gap-3 mt-8">
+                        <div class="flex items-center gap-3 mt-6">
                             <button id="btn-2.1" onclick="checkExercise('2.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.1</button>
                             <span id="score-2.1" class="ui-font text-sm font-bold hidden"></span>
                         </div>
@@ -349,41 +356,57 @@
                     </div>
                 </div>
 
-                <!-- ==================== PAGE 4: Education Listening ==================== -->
+                <!-- ==================== PAGE 4: Word Building ==================== -->
                 <div id="page-4" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
                     <div class="flex-grow">
                         <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
-                            <h3 class="text-2xl font-bold text-slate-900">3. Education</h3>
+                            <h3 class="text-2xl font-bold text-slate-900">4. Word Building</h3>
                             <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
                         </div>
 
-                        <!-- Custom Audio Player -->
-                        <div class="custom-audio-player bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mb-6 shadow-inner ui-font flex flex-col sm:flex-row items-center gap-4" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784859&auto_play=false&enable_api=1">
-                            <div class="text-xs font-bold text-slate-500 uppercase tracking-widest shrink-0">Track 5a</div>
-                            <div class="w-full flex items-center gap-3">
-                                <button class="audio-play-btn w-8 h-8 flex items-center justify-center bg-slate-700 hover:bg-slate-800 text-white rounded-full transition-colors shrink-0 focus:outline-none">
-                                    <svg class="play-icon h-4 w-4 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
-                                    <svg class="pause-icon h-4 w-4 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
-                                </button>
-                                <span class="audio-current-time text-xs font-mono text-slate-500 w-9 text-right">00:00</span>
-                                <div class="relative w-full h-1.5 bg-slate-300 rounded-full cursor-pointer flex-1 group">
-                                     <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
-                                     <div class="audio-progress-bar absolute h-full bg-slate-600 rounded-full group-hover:bg-slate-800 transition-colors" style="width: 0%;"></div>
-                                </div>
-                                <span class="audio-total-time text-xs font-mono text-slate-500 w-9">00:00</span>
-                            </div>
-                            <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
-                        </div>
-                        
-                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">3.1</span> Listen to the recording. Replace the words in brackets with <strong>ONE</strong> word.</p>
-                        
-                        <div class="p-5 bg-white border border-slate-200 shadow-sm rounded text-slate-800 leading-loose text-[14px]">
-                            <p><strong>Teacher:</strong> Can you tell me about your early education?</p>
-                            <p class="mt-2"><strong>Student:</strong> Well, I went to a (1) <span class="text-xs text-slate-500 italic">[school for very young children]</span> <input type="text" class="input-blank w-28 text-sm" data-ex="3.1" data-ans='["kindergarten", "nursery"]'> from the age of four and I remember that I didn't enjoy it very much at all. My (2) <span class="text-xs text-slate-500 italic">[from the age of 5 to 11]</span> <input type="text" class="input-blank w-24 text-sm" data-ex="3.1" data-ans='["primary", "elementary"]'> school was a little better, especially because my mum was a teacher in the school. She taught in the (3) <span class="text-xs text-slate-500 italic">[younger part of the school]</span> <input type="text" class="input-blank w-20 text-sm" data-ex="3.1" data-ans='["junior"]'> and she was actually my teacher in (4) <span class="text-xs text-slate-500 italic">[first level]</span> <input type="text" class="input-blank w-20 text-sm" data-ex="3.1" data-ans='["grade"]'>, but when I went up to the (5) <span class="text-xs text-slate-500 italic">[older part of the school]</span> <input type="text" class="input-blank w-20 text-sm" data-ex="3.1" data-ans='["senior"]'> I didn't see very much of her. After that I was lucky enough to receive a (6) <span class="text-xs text-slate-500 italic">[chance to go to school without paying fees]</span> <input type="text" class="input-blank w-28 text-sm" data-ex="3.1" data-ans='["scholarship", "grant"]'> for a very good (7) <span class="text-xs text-slate-500 italic">[from age 11 to 18]</span> <input type="text" class="input-blank w-24 text-sm" data-ex="3.1" data-ans='["high", "secondary"]'> school. My parents couldn't have afforded to send me to a (8) <span class="text-xs text-slate-500 italic">[not free school]</span> <input type="text" class="input-blank w-20 text-sm" data-ex="3.1" data-ans='["private", "public"]'> so it was a really great opportunity for me. It was a (9) <span class="text-xs text-slate-500 italic">[only for one sex]</span> <input type="text" class="input-blank w-28 text-sm" data-ex="3.1" data-ans='["single-sex", "single sex"]'> school, so there were no boys. I'm glad I didn't go to a (10) <span class="text-xs text-slate-500 italic">[for boys and girls]</span> <input type="text" class="input-blank w-20 text-sm" data-ex="3.1" data-ans='["mixed"]'> school because I think there are fewer distractions so everyone can just concentrate on their studies.</p>
+                        <p class="mb-4 leading-relaxed text-sm font-bold">3.1 Complete the table below.</p>
+
+                        <div class="bg-white border border-slate-200 shadow-sm rounded overflow-hidden">
+                            <table class="vocab-table">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="w-1/3">Noun</th>
+                                        <th class="w-1/3 border-l border-slate-200">Verb</th>
+                                        <th class="w-1/3 border-l border-slate-200">Adjective</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>education</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["educate"]'></td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["educational"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["graduation"]'></td>
+                                        <td class="border-l border-slate-200">graduate</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["graduating", "graduate"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>student</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["study"]'></td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["studious"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td>accommodation</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["accommodate"]'></td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["accommodating"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["assignment"]'></td>
+                                        <td class="border-l border-slate-200">assign</td>
+                                        <td class="border-l border-slate-200">assigned</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
 
                         <div class="flex items-center gap-3 mt-6">
-                            <button id="btn-3.1" onclick="checkExercise('3.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 3.1</button>
+                            <button id="btn-3.1" onclick="checkExercise('3.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 4</button>
                             <span id="score-3.1" class="ui-font text-sm font-bold hidden"></span>
                         </div>
                     </div>
@@ -392,87 +415,21 @@
                     </div>
                 </div>
 
-                <!-- ==================== PAGE 5: Word Building Table ==================== -->
+                <!-- ==================== PAGE 5: Reading Practice ==================== -->
                 <div id="page-5" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
                     <div class="flex-grow">
                         <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
-                            <h3 class="text-2xl font-bold text-slate-900">Word Building</h3>
+                            <h3 class="text-2xl font-bold text-slate-900">5. Reading Practice</h3>
                         </div>
 
-                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">3.2</span> Complete the table.</p>
-
-                        <div class="bg-white border border-slate-200 shadow-sm rounded overflow-hidden">
-                            <table class="vocab-table">
-                                <thead class="bg-slate-50">
-                                    <tr>
-                                        <th>Subject</th>
-                                        <th>Person</th>
-                                        <th>Adjective</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>architecture</td>
-                                        <td>architect</td>
-                                        <td>architectural</td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["archaeology"]'></td>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["archaeologist"]'></td>
-                                        <td>archaeological</td>
-                                    </tr>
-                                    <tr>
-                                        <td>biology</td>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["biologist"]'></td>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["biological"]'></td>
-                                    </tr>
-                                    <tr>
-                                        <td>economics</td>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["economist"]'></td>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["economic"]'></td>
-                                    </tr>
-                                    <tr>
-                                        <td>geology</td>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["geologist"]'></td>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["geological"]'></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["geography"]'></td>
-                                        <td>geographer</td>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["geographical"]'></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["journalism"]'></td>
-                                        <td>journalist</td>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["journalistic"]'></td>
-                                    </tr>
-                                    <tr>
-                                        <td>languages</td>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["linguist"]'></td>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["linguistic"]'></td>
-                                    </tr>
-                                    <tr>
-                                        <td>law</td>
-                                        <td>lawyer</td>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["legal"]'></td>
-                                    </tr>
-                                    <tr>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["mathematics", "maths"]'></td>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["mathematician"]'></td>
-                                        <td>mathematical</td>
-                                    </tr>
-                                    <tr>
-                                        <td>science</td>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["scientist"]'></td>
-                                        <td><input type="text" class="input-blank w-full !text-[13px]" data-ex="3.2" data-ans='["scientific"]'></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="flex items-center gap-3 mt-6">
-                            <button id="btn-3.2" onclick="checkExercise('3.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 3.2</button>
-                            <span id="score-3.2" class="ui-font text-sm font-bold hidden"></span>
+                        <h4 class="font-bold text-[15px] mb-3 text-center font-serif">The Benefits of Studying Abroad</h4>
+                        
+                        <div class="bg-violet-50/60 border border-violet-100 rounded-md p-5 text-slate-800 text-[13.5px] leading-[1.8] shadow-sm font-serif">
+                            <p class="mb-3">Studying abroad is an experience that many university students consider to be a vital part of their higher education journey. Leaving the comfort of your home campus to spend a semester or a full academic year in a foreign country can be daunting, but the rewards often outweigh the challenges.</p>
+                            
+                            <p class="mb-3">One of the most obvious benefits is the opportunity to learn a new language or improve existing language skills through full immersion. Research indicates that students who study in a country where their target language is natively spoken acquire fluency up to twice as fast as those who remain in standard classroom environments back home.</p>
+                            
+                            <p>Beyond academics, studying abroad fosters a profound sense of independence. Without the immediate support network of family and long-term friends, students must navigate foreign administrative systems, secure accommodation, and manage their own finances. Consequently, these students frequently return with heightened problem-solving abilities and a greater degree of self-reliance, attributes highly valued by prospective employers.</p>
                         </div>
                     </div>
                     <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
@@ -480,220 +437,67 @@
                     </div>
                 </div>
 
-                <!-- ==================== PAGE 6: Sentences & Pronunciation ==================== -->
+                <!-- ==================== PAGE 6: Test Practice Questions ==================== -->
                 <div id="page-6" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
                     <div class="flex-grow">
                         <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
-                            <h3 class="text-2xl font-bold text-slate-900">Vocabulary Practice</h3>
+                            <h3 class="text-2xl font-bold text-slate-900">6. Reading Questions</h3>
+                            <span class="ui-font text-[10px] font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
                         </div>
 
-                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">3.3</span> Complete the sentences with suitable words from the previous page's table.</p>
+                        <p class="mb-4 text-slate-800 text-[13px] italic">Do the following statements agree with the information given? Select <strong>True</strong>, <strong>False</strong>, or <strong>NG (Not Given)</strong>.</p>
                         
-                        <ol class="list-decimal list-outside ml-4 space-y-4 text-slate-800 text-[14px] leading-loose mb-8">
-                            <li>I've always wanted to go on an <input type="text" class="input-blank w-36" data-ex="3.3" data-ans='["archaeological"]'> dig to try to find fossils and ancient artefacts.</li>
-                            <li>Have you seen a copy of the <input type="text" class="input-blank w-36" data-ex="3.3" data-ans='["architectural"]'> plan for the new building?</li>
-                            <li>My daughter is a <input type="text" class="input-blank w-32" data-ex="3.3" data-ans='["linguist"]'>; she speaks six different languages.</li>
-                            <li>The government has a good <input type="text" class="input-blank w-32" data-ex="3.3" data-ans='["economic"]'> policy. I'm sure the recession will be over soon.</li>
-                            <li>I'm studying <input type="text" class="input-blank w-32" data-ex="3.3" data-ans='["journalism"]'> to be a political writer.</li>
-                            <li>I'm not very familiar with the <input type="text" class="input-blank w-32" data-ex="3.3" data-ans='["geography"]'> of that part of the world.</li>
+                        <ol class="list-decimal list-outside ml-4 space-y-6 text-slate-800 text-[14px] leading-snug">
+                            <li>Studying abroad guarantees that a student will secure a higher-paying job after graduation.
+                                <div class="ml-1 mt-2 flex gap-4 ui-font text-[13px]">
+                                    <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q1" value="true" class="mr-1.5 w-3.5 h-3.5 accent-violet-600">True</label>
+                                    <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q1" value="false" class="mr-1.5 w-3.5 h-3.5 accent-violet-600">False</label>
+                                    <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q1" value="ng" class="mr-1.5 w-3.5 h-3.5 accent-violet-600">NG</label>
+                                </div>
+                                <input type="hidden" id="ans_q1" data-ans='["ng"]'>
+                            </li>
+                            <li>Students who study in a foreign country can learn the local language more quickly than they would at home.
+                                <div class="ml-1 mt-2 flex gap-4 ui-font text-[13px]">
+                                    <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q2" value="true" class="mr-1.5 w-3.5 h-3.5 accent-violet-600">True</label>
+                                    <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q2" value="false" class="mr-1.5 w-3.5 h-3.5 accent-violet-600">False</label>
+                                    <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q2" value="ng" class="mr-1.5 w-3.5 h-3.5 accent-violet-600">NG</label>
+                                </div>
+                                <input type="hidden" id="ans_q2" data-ans='["true"]'>
+                            </li>
+                            <li>Students returning from abroad generally have poorer problem-solving skills due to stress.
+                                <div class="ml-1 mt-2 flex gap-4 ui-font text-[13px]">
+                                    <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q3" value="true" class="mr-1.5 w-3.5 h-3.5 accent-violet-600">True</label>
+                                    <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q3" value="false" class="mr-1.5 w-3.5 h-3.5 accent-violet-600">False</label>
+                                    <label class="flex items-center cursor-pointer transition-colors"><input type="radio" name="q3" value="ng" class="mr-1.5 w-3.5 h-3.5 accent-violet-600">NG</label>
+                                </div>
+                                <input type="hidden" id="ans_q3" data-ans='["false"]'>
+                            </li>
                         </ol>
 
-                        <div class="flex items-center gap-3 mt-4 mb-8">
-                            <button id="btn-3.3" onclick="checkExercise('3.3')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 3.3</button>
-                            <span id="score-3.3" class="ui-font text-sm font-bold hidden"></span>
-                        </div>
-
-                        <!-- Pronunciation Section -->
-                        <div class="bg-indigo-50/50 border border-indigo-100 rounded-md p-4 mt-4">
-                            <h4 class="font-bold text-indigo-900 mb-1 text-sm">Pronunciation Practice</h4>
-                            <p class="text-[12px] text-indigo-700 mb-3 italic">Listen and practice, paying attention to the stressed syllables.</p>
-                            
-                            <div class="custom-audio-player bg-white border border-indigo-200 rounded px-3 py-2 mb-3 shadow-sm ui-font flex items-center gap-3" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784839&auto_play=false&enable_api=1">
-                                <button class="audio-play-btn w-6 h-6 flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-full transition-colors shrink-0 focus:outline-none">
-                                    <svg class="play-icon h-3 w-3 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
-                                    <svg class="pause-icon h-3 w-3 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
-                                </button>
-                                <div class="relative w-full h-1 bg-indigo-200 rounded-full cursor-pointer flex-1 group">
-                                    <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
-                                    <div class="audio-progress-bar absolute h-full bg-indigo-500 rounded-full group-hover:bg-indigo-700 transition-colors" style="width: 0%;"></div>
-                                </div>
-                                <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
-                            </div>
-
-                            <div class="grid grid-cols-3 gap-2 text-indigo-900 font-medium text-[11px] ui-font">
-                                <div class="bg-white px-2 py-1.5 rounded text-center shadow-sm">a·ca·<strong>de</strong>·mic</div>
-                                <div class="bg-white px-2 py-1.5 rounded text-center shadow-sm">as·<strong>sign</strong>·ment</div>
-                                <div class="bg-white px-2 py-1.5 rounded text-center shadow-sm">con·sid·er·<strong>a</strong>·tion</div>
-                                <div class="bg-white px-2 py-1.5 rounded text-center shadow-sm"><strong>con</strong>·cen·trate</div>
-                                <div class="bg-white px-2 py-1.5 rounded text-center shadow-sm"><strong>con</strong>·tro·ver·sy</div>
-                                <div class="bg-white px-2 py-1.5 rounded text-center shadow-sm">con·<strong>duct</strong> (v)</div>
-                                <div class="bg-white px-2 py-1.5 rounded text-center shadow-sm">dis·<strong>trac</strong>·tion</div>
-                                <div class="bg-white px-2 py-1.5 rounded text-center shadow-sm">dis·ser·<strong>ta</strong>·tion</div>
-                                <div class="bg-white px-2 py-1.5 rounded text-center shadow-sm">e·<strong>con</strong>·o·mist</div>
-                                <div class="bg-white px-2 py-1.5 rounded text-center shadow-sm">e·du·<strong>ca</strong>·tion·al</div>
-                                <div class="bg-white px-2 py-1.5 rounded text-center shadow-sm"><strong>e</strong>·du·cat·ed</div>
-                                <div class="bg-white px-2 py-1.5 rounded text-center shadow-sm">re·<strong>search</strong> (n)</div>
-                                <div class="bg-white px-2 py-1.5 rounded text-center shadow-sm"><strong>the</strong>·sis</div>
-                                <div class="bg-white px-2 py-1.5 rounded text-center shadow-sm"><strong>the</strong>·o·ry</div>
-                                <div class="bg-white px-2 py-1.5 rounded text-center shadow-sm">the·o·<strong>ret</strong>·i·cal</div>
-                            </div>
+                        <div class="flex items-center gap-3 mt-10">
+                            <button id="btn-6.1" onclick="checkRadios('6.1', 1, 3)" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[13px] font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check Qs 1-3</button>
+                            <span id="score-6.1" class="ui-font text-[13px] font-bold hidden"></span>
                         </div>
                     </div>
-                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start shrink-0">
                         <span class="text-xs font-bold ui-font text-slate-400">6</span>
                     </div>
                 </div>
 
-                <!-- ==================== PAGE 7: Research Listening ==================== -->
+                <!-- ==================== PAGE 7: Test Complete ==================== -->
                 <div id="page-7" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
-                    <div class="flex-grow">
-                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
-                            <h3 class="text-2xl font-bold text-slate-900">4. Research</h3>
-                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                    <div class="flex-grow flex flex-col justify-center items-center text-center">
+                        <div class="w-32 h-32 bg-green-50 rounded-full flex items-center justify-center mb-8 shadow-inner border border-green-200 overflow-hidden relative">
+                            <!-- Checkmark Icon -->
+                            <svg class="w-16 h-16 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
-                        
-                        <!-- Audio Player -->
-                        <div class="custom-audio-player bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mb-6 shadow-inner ui-font flex flex-col sm:flex-row items-center gap-4" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784847&auto_play=false&enable_api=1">
-                            <div class="text-xs font-bold text-slate-500 uppercase tracking-widest shrink-0">Track 5b</div>
-                            <div class="w-full flex items-center gap-3">
-                                <button class="audio-play-btn w-8 h-8 flex items-center justify-center bg-slate-700 hover:bg-slate-800 text-white rounded-full transition-colors shrink-0 focus:outline-none">
-                                    <svg class="play-icon h-4 w-4 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
-                                    <svg class="pause-icon h-4 w-4 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
-                                </button>
-                                <span class="audio-current-time text-xs font-mono text-slate-500 w-9 text-right">00:00</span>
-                                <div class="relative w-full h-1.5 bg-slate-300 rounded-full cursor-pointer flex-1 group">
-                                     <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
-                                     <div class="audio-progress-bar absolute h-full bg-slate-600 rounded-full group-hover:bg-slate-800 transition-colors" style="width: 0%;"></div>
-                                </div>
-                                <span class="audio-total-time text-xs font-mono text-slate-500 w-9">00:00</span>
-                            </div>
-                            <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
-                        </div>
-
-                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">4.1</span> You will hear part of a talk. Listen and complete the notes below. Write <strong>NO MORE THAN TWO WORDS</strong> for each answer.</p>
-                        
-                        <div class="border border-slate-300 rounded p-6 bg-slate-50 ui-font shadow-sm">
-                            <h4 class="text-center font-bold text-lg mb-4 text-slate-800 border-b border-slate-200 pb-2">Continuing your studies after graduation</h4>
-                            
-                            <h5 class="font-bold text-sm mb-2 text-slate-700 uppercase tracking-wide">Writing your dissertation</h5>
-                            <p class="mb-2 text-sm text-slate-600"><strong>Important considerations:</strong></p>
-                            <ul class="list-disc pl-5 space-y-3 text-slate-800 text-[14px]">
-                                <li>Many students struggle to find a research (1) <input type="text" class="input-blank w-28 text-sm" data-ex="4.1" data-ans='["topic"]'></li>
-                                <li>Writing a (2) <input type="text" class="input-blank w-28 text-sm" data-ex="4.1" data-ans='["thesis"]'> is easier if you make the right choice.</li>
-                            </ul>
-
-                            <p class="mt-4 mb-2 text-sm text-slate-600"><strong>You need to:</strong></p>
-                            <ul class="list-disc pl-5 space-y-3 text-slate-800 text-[14px]">
-                                <li>Study the (3) <input type="text" class="input-blank w-36 text-sm" data-ex="4.1" data-ans='["literature", "current literature"]'> of your field of study.</li>
-                                <li>Have a wide (4) <input type="text" class="input-blank w-36 text-sm" data-ex="4.1" data-ans='["knowledge", "broad knowledge"]'>.</li>
-                                <li>Establish what is (5) <input type="text" class="input-blank w-28 text-sm" data-ex="4.1" data-ans='["relevant"]'> in your field.</li>
-                                <li>Have a clear idea of the (6) <input type="text" class="input-blank w-28 text-sm" data-ex="4.1" data-ans='["limits", "scope"]'> of your study.</li>
-                                <li>Consider whether there are any (7) <input type="text" class="input-blank w-36 text-sm" data-ex="4.1" data-ans='["controversies"]'> in existing research.</li>
-                                <li>Think about your (8) <input type="text" class="input-blank w-36 text-sm" data-ex="4.1" data-ans='["financial resources"]'> carefully.</li>
-                                <li>Ask about (9) <input type="text" class="input-blank w-28 text-sm" data-ex="4.1" data-ans='["funding", "a grant", "grant"]'> from outside sources.</li>
-                                <li>Ask your (10) <input type="text" class="input-blank w-28 text-sm" data-ex="4.1" data-ans='["tutor"]'> to check your results.</li>
-                            </ul>
-                        </div>
-                        <div class="flex items-center gap-3 mt-6">
-                            <button id="btn-4.1" onclick="checkExercise('4.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 4.1</button>
-                            <span id="score-4.1" class="ui-font text-sm font-bold hidden"></span>
-                        </div>
+                        <h2 class="text-3xl font-bold mb-4 text-slate-800 leading-tight">End of Unit 5</h2>
+                        <p class="text-[15px] text-slate-600 leading-relaxed max-w-sm mx-auto">
+                            You have completed Unit 5 (Student Life). You may go back and check your answers if needed.
+                        </p>
                     </div>
-                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
+                    <div class="mt-8 pt-4 flex w-full justify-start lg:justify-end border-t border-slate-200">
                         <span class="text-xs font-bold ui-font text-slate-400">7</span>
-                    </div>
-                </div>
-
-                <!-- ==================== PAGE 8: Test Practice Reading ==================== -->
-                <div id="page-8" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
-                    <div class="flex-grow">
-                        <div class="flex justify-between items-end mb-4 border-b-2 border-slate-800 pb-2">
-                            <h3 class="text-2xl font-bold text-slate-900">5. Test Practice: Reading</h3>
-                        </div>
-
-                        <!-- 2-column layout to fit the text elegantly -->
-                        <div class="bg-amber-50/60 border border-amber-100 rounded-md p-5 text-slate-800 text-[12px] leading-relaxed shadow-sm columns-2 gap-5 mt-4">
-                            <h4 class="font-bold text-base mb-3 text-center font-serif col-span-2" style="column-span: all;">Work experience and internship programs</h4>
-                            
-                            <p class="mb-3">Through our student work experience program, the education authority provides over 9,000 work experience placements for young people each year. Our program is designed to offer employment opportunities for students that will enrich their academic studies and help them gain valuable work-related skills thereby improving their chances of finding a good job after graduation. A placement does not need to be related to a particular field of study and so participants may even discover areas of work they have never considered before.</p>
-                            
-                            <p class="mb-3">All secondary and post-secondary school students in full-time education are eligible to apply for the program. Individual case managers will determine the minimum level of academic achievement required for each job. During an academic term, a student may work part-time. During the summer holidays a student may work full-time or part-time. The education authority is responsible for the recruitment of all students under the work experience program. Applicants apply in person to our office and we refer candidates to the appropriate department.</p>
-                            
-                            <p>Our internship program is designed specifically for post-secondary students, whether part-time or full-time. Students on the internship program are given an assignment related to their research area offering them the chance to use their academic knowledge in an actual work setting. The academic institution plays an important role in the placement of students under this program and they will determine the duration of a work assignment. These traditionally last four months but internship assignments may vary from 4 to 18 months. Students in this program normally work full-time.</p>
-                        </div>
-                    </div>
-                    <div class="mt-6 border-t border-slate-200 pt-4 flex w-full justify-start">
-                        <span class="text-xs font-bold ui-font text-slate-400">8</span>
-                    </div>
-                </div>
-
-                <!-- ==================== PAGE 9: Test Practice Questions ==================== -->
-                <div id="page-9" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
-                    <div class="flex-grow flex flex-col justify-between">
-                        
-                        <!-- Questions 1-3 -->
-                        <div class="mb-4">
-                            <div class="flex justify-between items-end mb-2 border-b-2 border-slate-800 pb-1">
-                                <h3 class="text-lg font-bold text-slate-900">Questions 1-3</h3>
-                                <span class="ui-font text-[10px] font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
-                            </div>
-
-                            <p class="mb-2 text-slate-800 text-[12px] italic">Complete the sentence with the correct ending <strong>A-E</strong>.</p>
-                            
-                            <div class="bg-white border border-slate-200 rounded p-3 mb-4 text-slate-700 shadow-inner">
-                                <ul class="space-y-1 text-[11px] font-bold ui-font">
-                                    <li>A. if you have high academic results from your educational institution.</li>
-                                    <li>B. if you are a full-time student.</li>
-                                    <li>C. outside of normal term time.</li>
-                                    <li>D. when you have graduated from university.</li>
-                                    <li>E. if you have finished your secondary education.</li>
-                                </ul>
-                            </div>
-
-                            <ol class="list-decimal list-outside ml-4 space-y-3 text-slate-800 text-[13px] leading-snug">
-                                <li>You can apply for the work experience program 
-                                    <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="5.1" data-ans='["b"]'>
-                                        <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option>
-                                    </select>
-                                </li>
-                                <li>You can work on the student work experience program full-time 
-                                    <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="5.1" data-ans='["c"]'>
-                                        <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option>
-                                    </select>
-                                </li>
-                                <li>You can only join the internship program 
-                                    <select class="input-blank font-bold text-slate-700 w-16 text-xs" data-ex="5.1" data-ans='["e"]'>
-                                        <option value="" disabled selected>-</option><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option><option value="e">E</option>
-                                    </select>
-                                </li>
-                            </ol>
-                            <div class="flex items-center gap-3 mt-4">
-                                <button id="btn-5.1" onclick="checkExercise('5.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check Qs 1-3</button>
-                                <span id="score-5.1" class="ui-font text-[11px] font-bold hidden"></span>
-                            </div>
-                        </div>
-
-                        <!-- Questions 4-8 -->
-                        <div class="mt-4">
-                            <div class="flex justify-between items-end mb-2 border-b-2 border-slate-800 pb-1">
-                                <h3 class="text-lg font-bold text-slate-900">Questions 4-8</h3>
-                            </div>
-
-                            <p class="mb-3 text-slate-800 text-[12px] italic">Complete the summary below. Choose <strong>NO MORE THAN TWO WORDS AND/OR A NUMBER</strong> from the text for each answer.</p>
-                            
-                            <div class="bg-slate-50 border border-slate-200 rounded p-4 text-slate-800 leading-loose text-[13px] shadow-sm">
-                                To take part in the work experience program, first you need to apply to the (4) <input type="text" class="input-blank w-36" data-ex="5.2" data-ans='["education authority"]'>. Your (5) <input type="text" class="input-blank w-28" data-ex="5.2" data-ans='["case manager"]'> will tell you what qualifications you need. The internship program allows undergraduates to gain work experience in their (6) <input type="text" class="input-blank w-28" data-ex="5.2" data-ans='["research area"]'>. The maximum length of an internship assignment is (7) <input type="text" class="input-blank w-24" data-ex="5.2" data-ans='["18 months"]'>. This is decided by the (8) <input type="text" class="input-blank w-36" data-ex="5.2" data-ans='["academic institution"]'>.
-                            </div>
-                            
-                            <div class="flex items-center gap-3 mt-4">
-                                <button id="btn-5.2" onclick="checkExercise('5.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check Qs 4-8</button>
-                                <span id="score-5.2" class="ui-font text-[11px] font-bold hidden"></span>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="mt-4 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end shrink-0">
-                        <span class="text-xs font-bold ui-font text-slate-400">9</span>
                     </div>
                 </div>
 
@@ -701,7 +505,7 @@
         </div>
 
         <!-- Sticky Right Arrow (Desktop Only) -->
-        <div class="hidden lg:block w-10 shrink-0 ml-2 xl:ml-4 relative">
+        <div class="hidden lg:block w-10 shrink-0 ml-2 xl:mr-4 relative">
             <div class="sticky-nav-container flex justify-center">
                 <button id="next-btn" onclick="goNext()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Next Page">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
@@ -716,14 +520,14 @@
         <button id="prev-btn-mobile" onclick="goPrev()" class="ui-font font-bold px-5 py-2 rounded-lg text-slate-700 bg-slate-100 active:bg-slate-200 transition-colors flex items-center gap-2">
             &larr; Prev
         </button>
-        <button id="next-btn-mobile" onclick="goNext()" class="ui-font font-bold px-5 py-2 rounded-lg text-white bg-slate-800 active:bg-slate-700 transition-colors flex items-center gap-2 shadow-sm">
+        <button id="next-btn-mobile" onclick="goNext()" class="ui-font font-bold px-5 py-2 rounded-lg text-white bg-violet-600 active:bg-violet-700 transition-colors flex items-center gap-2 shadow-sm">
             Next &rarr;
         </button>
     </div>
 
     <script>
         const REQUIRED_SCORE = 0.8;
-        const totalPages = 10; // Pages 0 to 9
+        const totalPages = 8; // 0 to 7
         let currentSpread = 0; // For desktop (0 = pages 0,1; 1 = pages 2,3; etc.)
         let currentMobilePage = 0;
 
@@ -782,14 +586,36 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // Keep track of desktop state to prevent accidental resets when scrolling/zooming
+        let isDesktopState = window.innerWidth >= 1024;
+
         window.addEventListener('resize', () => {
-            const isDesktop = window.innerWidth >= 1024;
-            if(isDesktop) {
-                currentSpread = Math.floor(currentMobilePage / 2);
-            } else {
-                currentMobilePage = currentSpread * 2;
+            const currentIsDesktop = window.innerWidth >= 1024;
+            
+            // Only recalculate pagination if we cross the mobile/desktop breakpoint
+            if (currentIsDesktop !== isDesktopState) {
+                if(currentIsDesktop) {
+                    currentSpread = Math.floor(currentMobilePage / 2);
+                } else {
+                    currentMobilePage = currentSpread * 2;
+                }
+                isDesktopState = currentIsDesktop;
+                updatePagination();
             }
-            updatePagination();
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            // Do not override arrow keys if user has an input or select dropdown active
+            if (document.activeElement && ['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                return;
+            }
+            
+            if (e.key === 'ArrowRight') {
+                goNext();
+            } else if (e.key === 'ArrowLeft') {
+                goPrev();
+            }
         });
 
         // --- Core UI & Grading Logic ---
@@ -803,7 +629,7 @@
         function validateBlanks(inputs) {
             let allFilled = true;
             inputs.forEach(input => {
-                if (input.classList.contains('font-normal')) return; // skip subjective notes
+                if (input.classList.contains('font-normal')) return; 
                 const val = input.value !== undefined ? input.value : input.innerText;
                 if (val.trim() === "") {
                     allFilled = false;
@@ -818,6 +644,88 @@
             return allFilled;
         }
 
+        // Setup Radio Buttons Sync to Hidden Inputs
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const name = e.target.name;
+                const hiddenInput = document.getElementById(`ans_${name}`);
+                if (hiddenInput) {
+                    hiddenInput.value = e.target.value;
+                }
+            });
+        });
+
+        // Grading multiple choice (radio buttons) with Start/End bounds
+        function checkRadios(exerciseId, startQ, endQ) {
+            let correctCount = 0;
+            let allAnswered = true;
+            const totalQs = endQ - startQ + 1;
+
+            for (let i = startQ; i <= endQ; i++) {
+                const hiddenInput = document.getElementById(`ans_q${i}`);
+                if (!hiddenInput || !hiddenInput.value) {
+                    allAnswered = false;
+                    const radio = document.querySelector(`input[name="q${i}"]`);
+                    if(radio) {
+                        const container = radio.closest('ol > li > div') || radio.closest('ol > li');
+                        if (container) {
+                            container.style.borderLeft = "4px solid #f59e0b";
+                            container.style.paddingLeft = "8px";
+                            setTimeout(() => {
+                                container.style.borderLeft = "";
+                                container.style.paddingLeft = "";
+                            }, 1500);
+                        }
+                    }
+                }
+            }
+
+            if (!allAnswered) {
+                showToast("Please answer all questions before checking!", "warning");
+                return;
+            }
+
+            for (let i = startQ; i <= endQ; i++) {
+                const hiddenInput = document.getElementById(`ans_q${i}`);
+                const userVal = hiddenInput.value.toLowerCase();
+                const possibleAns = JSON.parse(hiddenInput.getAttribute('data-ans')).map(a => a.toLowerCase());
+                
+                const checkedRadio = document.querySelector(`input[name="q${i}"]:checked`);
+                const label = checkedRadio.closest('label');
+                
+                // Clear previous highlights
+                document.querySelectorAll(`input[name="q${i}"]`).forEach(r => {
+                    r.closest('label').classList.remove('text-green-700', 'font-bold', 'text-red-700', 'bg-green-100', 'bg-red-100');
+                });
+
+                if (possibleAns.includes(userVal)) {
+                    correctCount++;
+                    label.classList.add('text-green-700', 'font-bold', 'bg-green-100');
+                } else {
+                    label.classList.add('text-red-700', 'font-bold', 'bg-red-100');
+                }
+            }
+
+            const scoreLabel = document.getElementById(`score-${exerciseId}`);
+            const percentage = correctCount / totalQs;
+            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalQs})`;
+            
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (percentage >= REQUIRED_SCORE) {
+                scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
+                const btn = document.getElementById(`btn-${exerciseId}`);
+                if (btn) { btn.disabled = true; btn.textContent = "Passed"; }
+                showToast("Good job!", "success");
+            } else {
+                scoreLabel.textContent = `❌ Failed. ${scoreText}`;
+                scoreLabel.classList.add('text-red-600');
+                showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
+            }
+        }
+
+        // Standard exercise checking (inputs, select boxes)
         function checkExercise(exerciseId) {
             const inputs = document.querySelectorAll(`[data-ex="${exerciseId}"]`);
             if (!validateBlanks(inputs)) {
@@ -864,6 +772,43 @@
                 scoreLabel.textContent = `❌ Failed. ${scoreText}`;
                 scoreLabel.classList.add('text-red-600');
                 showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
+            }
+        }
+
+        // --- Click & Match Logic ---
+        let selectedWordBtn = null;
+
+        function selectWord(btn) {
+            if (btn.classList.contains('used')) return;
+            
+            // Deselect all globally to keep it clean
+            document.querySelectorAll('.word-choice').forEach(b => b.classList.remove('selected'));
+            
+            if (selectedWordBtn === btn) {
+                selectedWordBtn = null; 
+                return;
+            }
+            
+            btn.classList.add('selected');
+            selectedWordBtn = btn;
+        }
+
+        function placeWord(slot) {
+            if (slot.innerText.trim() !== '' && slot.innerText.trim() !== '...') {
+                const existingWord = slot.innerText.trim();
+                const bankBtn = Array.from(slot.closest('.page-content').querySelectorAll('.word-choice'))
+                                     .find(b => b.getAttribute('data-word') === existingWord);
+                if (bankBtn) bankBtn.classList.remove('used');
+                slot.innerText = '';
+            }
+
+            if (selectedWordBtn) {
+                if (selectedWordBtn.closest('.page-content') === slot.closest('.page-content')) {
+                    slot.innerText = selectedWordBtn.getAttribute('data-word');
+                    selectedWordBtn.classList.add('used');
+                    selectedWordBtn.classList.remove('selected');
+                    selectedWordBtn = null;
+                }
             }
         }
 

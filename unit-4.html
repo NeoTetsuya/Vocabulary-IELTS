@@ -75,8 +75,8 @@
             border-radius: 2px 2px 0 0;
         }
         .input-blank:focus { 
-            border-bottom: 2px solid #4f46e5; 
-            background: #e0e7ff;
+            border-bottom: 2px solid #6366f1; 
+            background: #eef2ff;
         }
         select.input-blank {
             text-align: left;
@@ -98,25 +98,6 @@
             border-bottom: 2px solid #dc2626 !important; 
             color: #991b1b; 
             background-color: #fee2e2; 
-        }
-
-        /* Callouts / Notes */
-        .textbook-note {
-            background-color: #f8fafc;
-            border-left: 4px solid #94a3b8;
-            position: relative;
-        }
-        .textbook-note::before {
-            content: "✍🏼 Note";
-            position: absolute;
-            top: -12px;
-            left: 8px;
-            background: #fdfcf8;
-            padding: 0 6px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            font-family: 'Inter', sans-serif;
-            color: #475569;
         }
 
         /* Custom Vocab Table */
@@ -176,8 +157,8 @@
 
     <div id="toast" class="toast">Message</div>
 
-    <!-- Main Desk Area -->
-    <div class="w-full max-w-[1600px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
+    <!-- Main Desk Area - Increased Max Width -->
+    <div class="w-full max-w-[1920px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
         
         <!-- Sticky Left Arrow (Desktop Only) -->
         <div class="hidden lg:block w-10 shrink-0 mr-2 xl:mr-4 relative">
@@ -188,8 +169,8 @@
             </div>
         </div>
 
-        <!-- The Book -->
-        <div class="book-wrapper flex-1 w-full max-w-7xl flex flex-col lg:flex-row relative min-h-[85vh]">
+        <!-- The Book - Increased Max Width -->
+        <div class="book-wrapper flex-1 w-full max-w-[1700px] flex flex-col lg:flex-row relative min-h-[85vh]">
             
             <!-- Spine Decoration (Desktop Only) -->
             <div class="spine-shadow hidden lg:block"></div>
@@ -201,14 +182,14 @@
                 <div id="page-0" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
                     <div class="flex-grow flex flex-col justify-center items-center text-center">
                         <div class="w-24 h-24 bg-indigo-50 rounded-full flex items-center justify-center mb-8 shadow-inner border border-indigo-100">
-                            <svg class="w-12 h-12 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path></svg>
+                            <svg class="w-12 h-12 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                         </div>
-                        <h4 class="text-sm uppercase tracking-widest text-indigo-500 font-bold ui-font mb-2">Unit 4</h4>
+                        <h4 class="text-sm uppercase tracking-widest text-indigo-600 font-bold ui-font mb-2">Unit 4</h4>
                         <h1 class="text-4xl sm:text-5xl font-bold mb-4 text-slate-800 leading-tight">Lifestyles</h1>
-                        <h2 class="text-2xl italic text-slate-600 mb-8 border-b pb-8 border-slate-200">Self Study & Balance</h2>
+                        <h2 class="text-2xl italic text-slate-600 mb-8 border-b pb-8 border-slate-200">Balance, Leisure & Fulfillment</h2>
                         
                         <p class="text-lg text-slate-600 leading-relaxed max-w-md mx-auto">
-                            Welcome to Unit 4. Explore vocabulary, listening, and reading exercises focused on everyday life, balance, and leisure activities on the following pages.
+                            Welcome to Unit 4. Explore vocabulary, listening, and reading exercises focused on modern lifestyles, hobbies, and achieving a healthy work-life balance on the following pages.
                         </p>
                     </div>
                     <div class="mt-8 pt-4 flex w-full justify-start">
@@ -216,16 +197,105 @@
                     </div>
                 </div>
 
-                <!-- ==================== PAGE 1: Listening - Life Phrases ==================== -->
+                <!-- ==================== PAGE 1: Life in the slow lane ==================== -->
                 <div id="page-1" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
                     <div class="flex-grow">
                         <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
-                            <h3 class="text-2xl font-bold text-slate-900">1. Listening (Phrases)</h3>
+                            <h3 class="text-2xl font-bold text-slate-900">1. Life in the Slow Lane</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                        </div>
+
+                        <p class="mb-4 leading-relaxed text-sm font-bold">1.1 Complete the sentences using the words in the box.</p>
+                        
+                        <div class="bg-indigo-50 border border-indigo-100 p-4 rounded mb-6 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[12px] justify-center font-bold text-indigo-700 shadow-inner">
+                            <span>hobbies</span> <span>insight</span> <span>leisure</span> <span>lifestyle</span>
+                            <span>opportunity</span> <span>outlook</span> <span>personality</span> <span>priority</span>
+                        </div>
+
+                        <ol class="list-decimal list-outside ml-4 space-y-4 text-slate-800 text-[14px] leading-loose">
+                            <li>I'm usually very busy so I don't have much <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["leisure"]'> time.</li>
+                            <li>My sister has a very positive <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["outlook"]'> on life.</li>
+                            <li>My <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["priority"]'> is to find a job that I really enjoy.</li>
+                            <li>I like to spend my free time on <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["hobbies"]'> like gardening and painting.</li>
+                            <li>The book gives a fascinating <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["insight"]'> into the lives of the rich and famous.</li>
+                            <li>Traveling gives you the <input type="text" class="input-blank w-28" data-ex="1.1" data-ans='["opportunity"]'> to experience different cultures.</li>
+                            <li>She has a very outgoing <input type="text" class="input-blank w-28" data-ex="1.1" data-ans='["personality"]'> and makes friends easily.</li>
+                            <li>Living in the country is a very different <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["lifestyle"]'> to living in the city.</li>
+                        </ol>
+
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-1.1" onclick="checkExercise('1.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.1</button>
+                            <span id="score-1.1" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-4 flex w-full justify-start lg:justify-end">
+                        <span class="text-xs font-bold ui-font text-slate-400">1</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 2: Lifestyle Definitions ==================== -->
+                <div id="page-2" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">2. Lifestyle Collocations</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
+                        </div>
+
+                        <p class="mb-6 leading-relaxed text-sm font-bold">1.2 Match the following adjectives to the noun 'lifestyle'.</p>
+
+                        <div class="grid grid-cols-1 gap-y-5 text-slate-800 text-[14px] leading-loose">
+                            <div class="flex items-center">
+                                <span class="w-48">A life of luxury</span>
+                                <span class="mx-2 text-slate-400">→</span>
+                                <input type="text" class="input-blank w-36" data-ex="1.2" data-ans='["luxurious"]'> lifestyle
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-48">A life with little money</span>
+                                <span class="mx-2 text-slate-400">→</span>
+                                <input type="text" class="input-blank w-36" data-ex="1.2" data-ans='["simple"]'> lifestyle
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-48">A life spent mostly sitting</span>
+                                <span class="mx-2 text-slate-400">→</span>
+                                <input type="text" class="input-blank w-36" data-ex="1.2" data-ans='["sedentary"]'> lifestyle
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-48">A life that is very busy</span>
+                                <span class="mx-2 text-slate-400">→</span>
+                                <input type="text" class="input-blank w-36" data-ex="1.2" data-ans='["hectic"]'> lifestyle
+                            </div>
+                            <div class="flex items-center">
+                                <span class="w-48">A life that is full of activity</span>
+                                <span class="mx-2 text-slate-400">→</span>
+                                <input type="text" class="input-blank w-36" data-ex="1.2" data-ans='["active"]'> lifestyle
+                            </div>
+                             <div class="flex items-center">
+                                <span class="w-48">A life that is lonely</span>
+                                <span class="mx-2 text-slate-400">→</span>
+                                <input type="text" class="input-blank w-36" data-ex="1.2" data-ans='["solitary"]'> lifestyle
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 mt-10">
+                            <button id="btn-1.2" onclick="checkExercise('1.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.2</button>
+                            <span id="score-1.2" class="ui-font text-sm font-bold hidden"></span>
+                        </div>
+                    </div>
+                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
+                        <span class="text-xs font-bold ui-font text-slate-400">2</span>
+                    </div>
+                </div>
+
+                <!-- ==================== PAGE 3: Listening - Hobbies ==================== -->
+                <div id="page-3" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
+                    <div class="flex-grow">
+                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
+                            <h3 class="text-2xl font-bold text-slate-900">3. Listening (Leisure)</h3>
                             <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
                         </div>
 
                         <!-- Custom Audio Player -->
-                        <div class="custom-audio-player bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mb-6 shadow-inner ui-font flex flex-col sm:flex-row items-center gap-4" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784875&auto_play=false&enable_api=1">
+                        <div class="custom-audio-player bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mb-6 shadow-inner ui-font flex flex-col sm:flex-row items-center gap-4" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784891&auto_play=false&enable_api=1">
                             <div class="text-xs font-bold text-indigo-600 uppercase tracking-widest shrink-0">Track 4a</div>
                             <div class="w-full flex items-center gap-3">
                                 <button class="audio-play-btn w-8 h-8 flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-full transition-colors shrink-0 focus:outline-none">
@@ -242,88 +312,40 @@
                             <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
                         </div>
 
-                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">1.1</span> Listen to the speakers and complete the following phrases.</p>
+                        <p class="mb-4 leading-relaxed text-sm font-bold">2.1 Listen to three people talking about their hobbies and complete the table. Write NO MORE THAN TWO WORDS.</p>
                         
-                        <div class="bg-white border border-slate-200 shadow-sm p-6 rounded text-slate-700 leading-loose space-y-6 text-[15px]">
-                            <div>
-                                <strong class="text-indigo-800">Speaker 1:</strong> 
-                                Work hard for <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["a living"]'> ; 
-                                <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["achieve"]'> something in life ; 
-                                life has its <input type="text" class="input-blank w-36" data-ex="1.1" data-ans='["ups and downs"]'>.
-                            </div>
-                            <div>
-                                <strong class="text-indigo-800">Speaker 2:</strong> 
-                                Live life on <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["the edge"]'> ; 
-                                feel <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["alive"]'> ; 
-                                your quality <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["of life"]'>.
-                            </div>
-                            <div>
-                                <strong class="text-indigo-800">Speaker 3:</strong> 
-                                Have a <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["negative"]'> attitude ; 
-                                life is full of <input type="text" class="input-blank w-40" data-ex="1.1" data-ans='["disappointments"]'>.
-                            </div>
-                            <div>
-                                <strong class="text-indigo-800">Speaker 4:</strong> 
-                                Have a positive <input type="text" class="input-blank w-36" data-ex="1.1" data-ans='["outlook on life", "outlook"]'> ; 
-                                live life to <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["the full", "the fullest"]'> ; 
-                                <input type="text" class="input-blank w-24" data-ex="1.1" data-ans='["lead"]'> a happy life.
-                            </div>
+                        <div class="bg-white border border-slate-200 shadow-sm rounded overflow-hidden">
+                            <table class="vocab-table">
+                                <thead class="bg-slate-50">
+                                    <tr>
+                                        <th class="w-1/4">Speaker</th>
+                                        <th class="w-1/4">Hobby</th>
+                                        <th class="w-1/2">Why they enjoy it</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="font-semibold text-indigo-700">1</td>
+                                        <td>(1) <input type="text" class="input-blank w-full" data-ex="2.1" data-ans='["surfing"]'></td>
+                                        <td>it's very (2) <input type="text" class="input-blank w-full" data-ex="2.1" data-ans='["relaxing"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-semibold text-indigo-700">2</td>
+                                        <td>(3) <input type="text" class="input-blank w-full" data-ex="2.1" data-ans='["gardening"]'></td>
+                                        <td>a great way to (4) <input type="text" class="input-blank w-full" data-ex="2.1" data-ans='["unwind"]'></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="font-semibold text-indigo-700">3</td>
+                                        <td>(5) <input type="text" class="input-blank w-full" data-ex="2.1" data-ans='["pottery"]'></td>
+                                        <td>gives a sense of (6) <input type="text" class="input-blank w-full" data-ex="2.1" data-ans='["fulfillment", "fulfilment"]'></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
 
-                        <div class="flex items-center gap-3 mt-8">
-                            <button id="btn-1.1" onclick="checkExercise('1.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 1.1</button>
-                            <span id="score-1.1" class="ui-font text-sm font-bold hidden"></span>
-                        </div>
-                    </div>
-                    <div class="mt-8 pt-4 flex w-full justify-start lg:justify-end">
-                        <span class="text-xs font-bold ui-font text-slate-400">1</span>
-                    </div>
-                </div>
-
-                <!-- ==================== PAGE 2: Collocations ==================== -->
-                <div id="page-2" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
-                    <div class="flex-grow">
-                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
-                            <h3 class="text-2xl font-bold text-slate-900">2. Collocations</h3>
-                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
-                        </div>
-
-                        <p class="mb-6 leading-relaxed text-sm"><span class="font-bold">2.1</span> Complete the words or phrases in the sentences with <strong>life</strong> or <strong>living</strong>. Which answers are written as one word?</p>
-
-                        <ol class="list-decimal list-outside ml-4 space-y-6 text-slate-800 text-[15px] leading-loose">
-                            <li>Going to Egypt and seeing the pyramids was a once in a <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["lifetime"]'> opportunity for me.</li>
-                            <li>The standard of <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["living"]'> in my country is very good; there are not many poor people there.</li>
-                            <li>In my job as a nurse I get to meet people from all walks of <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["life"]'>.</li>
-                            <li>For me, being a vegetarian is not just about diet, it has become a way of <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["life"]'>.</li>
-                            <li>Many people only think about bills they need to pay and forget to allow for everyday <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["living"]'> expenses when they calculate a budget.</li>
-                            <li>It was a <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["lifelong"]'> ambition of mine to travel to the Arctic Circle and see the northern lights.</li>
-                            <li>A rise in petrol prices inevitably leads to a rise in the cost of <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["living"]'>.</li>
-                            <li>The happiest people are those who have found a way to make a <input type="text" class="input-blank w-24" data-ex="2.1" data-ans='["living"]'> from their hobby.</li>
-                        </ol>
-
-                        <div class="flex items-center gap-3 mt-8">
+                        <div class="flex items-center gap-3 mt-6">
                             <button id="btn-2.1" onclick="checkExercise('2.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 2.1</button>
                             <span id="score-2.1" class="ui-font text-sm font-bold hidden"></span>
-                        </div>
-                    </div>
-                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
-                        <span class="text-xs font-bold ui-font text-slate-400">2</span>
-                    </div>
-                </div>
-
-                <!-- ==================== PAGE 3: Reading Text ==================== -->
-                <div id="page-3" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
-                    <div class="flex-grow">
-                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
-                            <h3 class="text-2xl font-bold text-slate-900">3. Reading - Leisure</h3>
-                        </div>
-
-                        <div class="bg-indigo-50/60 border border-indigo-100 rounded-md p-6 text-slate-800 text-[14px] leading-relaxed shadow-sm">
-                            <p class="mb-4"><span class="font-semibold underline text-indigo-700">Leisure activity</span> isn't just for fun, says a University of Florida psychologist who has developed a scale that classifies hobbies based on needs they satisfy in people. The scale can help people find more <span class="font-semibold underline text-indigo-700">personal fulfilment</span> by giving them <span class="font-semibold underline text-indigo-700">insight</span> into what they really like. 'The surprising thing is that activities you might think are very different have similar effects on people,' said Howard E.A. Tinsley, a UF psychology professor who developed the measurement. 'Probably no one would consider acting to have the same characteristics as roller-skating or playing baseball, but men and women who act as a hobby report feeling an intense sense of belonging to a group, much the same way others do in playing sports.'</p>
-                            
-                            <p class="mb-4">And activities providing the strongest sense of competition are not sports, but card, arcade and computer games, he found. Participating in soccer satisfies our desire for a sense of 'belonging' and coin collecting and baking fulfil their need for 'creativity'. With so many people in jobs they don't care for, leisure is a prized <span class="font-semibold underline text-indigo-700">aspect</span> of people's lives,' Tinsley said. 'Yet it's not something psychologists really study. Economists tell us how much money people spend skiing, but nobody explains why skiing really appeals to people.'</p>
-                            
-                            <p>Or how one activity relates to another, perhaps in unexpected ways, Tinsley said. Fishing, generally considered more of an outdoor recreational activity for example, is a form of self-expression like quilting or stamp collecting, because it gives people the opportunity to express some aspect of their personality by doing something completely different from their <span class="font-semibold underline text-indigo-700">daily routine</span>, he said.</p>
                         </div>
                     </div>
                     <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
@@ -331,166 +353,112 @@
                     </div>
                 </div>
 
-                <!-- ==================== PAGE 4: Reading Questions ==================== -->
+                <!-- ==================== PAGE 4: Vocabulary - Fulfillment ==================== -->
                 <div id="page-4" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
                     <div class="flex-grow">
                         <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
-                            <h3 class="text-2xl font-bold text-slate-900">Reading Questions</h3>
-                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                            <h3 class="text-2xl font-bold text-slate-900">4. Fulfillment (Vocabulary)</h3>
+                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 100%</span>
                         </div>
 
-                        <!-- Part A -->
-                        <div class="mb-8">
-                            <h4 class="font-bold text-lg mb-2 text-slate-800">Part A: True or False</h4>
-                            <p class="text-[13px] text-slate-600 mb-4 italic">Decide whether the sentences below are true or false based on the text. Look at the words in bold to help you.</p>
-                            
-                            <ol class="list-decimal list-outside ml-4 space-y-4 text-slate-800 text-[14px]">
-                                <li>Both acting and roller-skating give people a <strong>strong feeling</strong> of being part of a team.
-                                    <select class="input-blank font-bold text-slate-700 text-xs w-20" data-ex="3.1" data-ans='["true"]'>
-                                        <option value="" disabled selected>Select</option><option value="true">True</option><option value="false">False</option>
-                                    </select>
-                                </li>
-                                <li><strong>Taking part</strong> in sports gives you the strongest <strong>desire to win</strong>.
-                                    <select class="input-blank font-bold text-slate-700 text-xs w-20" data-ex="3.1" data-ans='["false"]'>
-                                        <option value="" disabled selected>Select</option><option value="true">True</option><option value="false">False</option>
-                                    </select>
-                                </li>
-                                <li><strong>Collecting things</strong> satisfies people's desire for <strong>making things</strong>.
-                                    <select class="input-blank font-bold text-slate-700 text-xs w-20" data-ex="3.1" data-ans='["true"]'>
-                                        <option value="" disabled selected>Select</option><option value="true">True</option><option value="false">False</option>
-                                    </select>
-                                </li>
-                                <li>Researchers already know why a hobby <strong>attracts</strong> a person.
-                                    <select class="input-blank font-bold text-slate-700 text-xs w-20" data-ex="3.1" data-ans='["false"]'>
-                                        <option value="" disabled selected>Select</option><option value="true">True</option><option value="false">False</option>
-                                    </select>
-                                </li>
-                                <li>Fishing allows you to show the <strong>type of person you are</strong>.
-                                    <select class="input-blank font-bold text-slate-700 text-xs w-20" data-ex="3.1" data-ans='["true"]'>
-                                        <option value="" disabled selected>Select</option><option value="true">True</option><option value="false">False</option>
-                                    </select>
-                                </li>
-                            </ol>
+                        <p class="mb-4 leading-relaxed text-sm font-bold">2.2 Match the following words with their meanings.</p>
 
-                            <div class="flex items-center gap-3 mt-4">
-                                <button id="btn-3.1" onclick="checkExercise('3.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check Part A</button>
-                                <span id="score-3.1" class="ui-font text-[11px] font-bold hidden"></span>
-                            </div>
-                        </div>
+                        <ol class="list-decimal list-outside ml-4 space-y-5 text-slate-800 text-[14px] leading-loose">
+                            <li>fulfillment <span class="mx-2 text-slate-400">→</span> <select class="input-blank w-48 text-xs" data-ex="2.2" data-ans='["c"]'><option value="">-</option><option value="a">A. stop worrying</option><option value="b">B. highly enjoy</option><option value="c">C. sense of satisfaction</option></select></li>
+                            <li>unwind <span class="mx-2 text-slate-400">→</span> <select class="input-blank w-48 text-xs" data-ex="2.2" data-ans='["a"]'><option value="">-</option><option value="a">A. relax</option><option value="b">B. highly enjoy</option><option value="c">C. sense of satisfaction</option></select></li>
+                            <li>appreciate <span class="mx-2 text-slate-400">→</span> <select class="input-blank w-48 text-xs" data-ex="2.2" data-ans='["b"]'><option value="">-</option><option value="a">A. relax</option><option value="b">B. value or enjoy</option><option value="c">C. sense of satisfaction</option></select></li>
+                        </ol>
 
-                        <!-- Part B -->
-                        <div>
-                            <h4 class="font-bold text-lg mb-2 text-slate-800 border-t border-slate-200 pt-4">Part B: Vocabulary Definitions</h4>
-                            <p class="text-[13px] text-slate-600 mb-4 italic">Look at the <u>underlined</u> words in the text and match them to these definitions.</p>
-                            
-                            <ul class="space-y-4 text-slate-800 text-[14px]">
-                                <li>1. A feeling of doing what you have always wanted to do: <br>
-                                    → <input type="text" class="input-blank w-48 mt-1" data-ex="3.2" data-ans='["personal fulfilment", "fulfilment"]'></li>
-                                <li>2. A deep understanding: <br>
-                                    → <input type="text" class="input-blank w-48 mt-1" data-ex="3.2" data-ans='["insight"]'></li>
-                                <li>3. A feature of: <br>
-                                    → <input type="text" class="input-blank w-48 mt-1" data-ex="3.2" data-ans='["aspect"]'></li>
-                                <li>4. Something that is done for enjoyment in your free time: <br>
-                                    → <input type="text" class="input-blank w-64 mt-1" data-ex="3.2" data-ans='["leisure activity", "hobby", "recreational activity"]'></li>
-                                <li>5. Things you do every day: <br>
-                                    → <input type="text" class="input-blank w-48 mt-1" data-ex="3.2" data-ans='["daily routine"]'></li>
+                        <p class="mt-8 mb-4 leading-relaxed text-sm font-bold">2.3 Complete the sentences using the verbs in the correct form.</p>
+                        
+                        <div class="p-6 bg-slate-50 border border-slate-200 shadow-sm rounded text-slate-800 leading-loose text-[14px]">
+                            <ul class="space-y-4">
+                                <li>I really (1) <input type="text" class="input-blank w-24" data-ex="2.3" data-ans='["enjoy"]'> playing tennis at the weekend.</li>
+                                <li>My brother (2) <input type="text" class="input-blank w-24" data-ex="2.3" data-ans='["takes"]'> part in a lot of local competitions.</li>
+                                <li>I (3) <input type="text" class="input-blank w-32" data-ex="2.3" data-ans='["prefer"]'> reading to watching television.</li>
+                                <li>He (4) <input type="text" class="input-blank w-28" data-ex="2.3" data-ans='["hates"]'> having to work on Saturdays.</li>
+                                <li>I (5) <input type="text" class="input-blank w-28" data-ex="2.3" data-ans='["would rather", "d rather"]'> spend my time outdoors.</li>
                             </ul>
-
-                            <div class="flex items-center gap-3 mt-5">
-                                <button id="btn-3.2" onclick="checkExercise('3.2')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-[11px] font-semibold py-1 px-3 rounded hover:bg-slate-50">Check Part B</button>
-                                <span id="score-3.2" class="ui-font text-[11px] font-bold hidden"></span>
-                            </div>
                         </div>
 
+                        <div class="flex items-center gap-3 mt-8">
+                            <button id="btn-2.2-2.3" onclick="checkExercise('2.2'); checkExercise('2.3');" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 4</button>
+                            <span id="score-2.2" class="ui-font text-xs font-bold hidden mr-2"></span>
+                            <span id="score-2.3" class="ui-font text-xs font-bold hidden"></span>
+                        </div>
                     </div>
                     <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
                         <span class="text-xs font-bold ui-font text-slate-400">4</span>
                     </div>
                 </div>
 
-                <!-- ==================== PAGE 5: Verbs & Nouns ==================== -->
+                <!-- ==================== PAGE 5: Word Building ==================== -->
                 <div id="page-5" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
                     <div class="flex-grow">
                         <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
-                            <h3 class="text-2xl font-bold text-slate-900">4. Collocations (Verbs & Nouns)</h3>
+                            <h3 class="text-2xl font-bold text-slate-900">5. Word Building</h3>
                             <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
                         </div>
 
-                        <p class="mb-4 text-[14px] text-slate-700">Match the verbs with nouns from the box. You may use the nouns more than once.</p>
-                        
-                        <div class="bg-white border border-slate-200 p-4 rounded mb-6 flex flex-wrap gap-x-4 gap-y-2 font-mono text-[11px] justify-center font-bold text-slate-600 shadow-inner">
-                            <span>a need</span> <span>a balance</span> <span>a choice</span> <span>a change</span> <span>a chance</span> <span>a decision</span> <span>a goal</span> <span>a living</span> <span>a role</span> <span>an opportunity</span> <span>pressure (on)</span>
-                        </div>
+                        <p class="mb-4 leading-relaxed text-sm font-bold">3.1 Complete the table below.</p>
 
-                        <div class="bg-white border border-slate-200 shadow-sm rounded overflow-hidden" id="ex-container-4.1">
+                        <div class="bg-white border border-slate-200 shadow-sm rounded overflow-hidden">
                             <table class="vocab-table">
                                 <thead class="bg-slate-50">
                                     <tr>
-                                        <th class="w-1/4">Verb</th>
-                                        <th class="w-3/4 border-l border-slate-200">Matching Nouns</th>
+                                        <th class="w-1/3">Noun</th>
+                                        <th class="w-1/3 border-l border-slate-200">Verb</th>
+                                        <th class="w-1/3 border-l border-slate-200">Adjective</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="font-bold text-indigo-700">achieve</td>
-                                        <td class="border-l border-slate-200 space-x-2">
-                                            <input type="text" class="input-blank w-28 text-[13px]" data-ex="4.1" data-ans='["a goal", "goal"]'>
-                                            <input type="text" class="input-blank w-28 text-[13px]" data-ex="4.1" data-ans='["a balance", "balance"]'>
-                                        </td>
+                                        <td>benefit</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["benefit"]'></td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["beneficial"]'></td>
                                     </tr>
                                     <tr>
-                                        <td class="font-bold text-indigo-700">make</td>
-                                        <td class="border-l border-slate-200 space-x-2 leading-8">
-                                            <input type="text" class="input-blank w-28 text-[13px] mb-1" data-ex="4.1" data-ans='["a decision", "decision"]'>
-                                            <input type="text" class="input-blank w-28 text-[13px] mb-1" data-ex="4.1" data-ans='["a change", "change"]'>
-                                            <input type="text" class="input-blank w-28 text-[13px]" data-ex="4.1" data-ans='["a choice", "choice"]'>
-                                        </td>
+                                        <td>choice</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["choose"]'></td>
+                                        <td class="border-l border-slate-200 bg-slate-50 text-slate-400 italic text-[11px]">No common adj</td>
                                     </tr>
                                     <tr>
-                                        <td class="font-bold text-indigo-700">meet</td>
-                                        <td class="border-l border-slate-200">
-                                            <input type="text" class="input-blank w-28 text-[13px]" data-ex="4.1" data-ans='["a need", "need"]'>
-                                        </td>
+                                        <td>decision</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["decide"]'></td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["decisive"]'></td>
                                     </tr>
                                     <tr>
-                                        <td class="font-bold text-indigo-700">miss</td>
-                                        <td class="border-l border-slate-200 space-x-2">
-                                            <input type="text" class="input-blank w-28 text-[13px]" data-ex="4.1" data-ans='["a chance", "chance"]'>
-                                            <input type="text" class="input-blank w-32 text-[13px]" data-ex="4.1" data-ans='["an opportunity", "opportunity"]'>
-                                        </td>
+                                        <td>fulfillment</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["fulfill", "fulfil"]'></td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["fulfilling"]'></td>
                                     </tr>
                                     <tr>
-                                        <td class="font-bold text-indigo-700">play</td>
-                                        <td class="border-l border-slate-200">
-                                            <input type="text" class="input-blank w-28 text-[13px]" data-ex="4.1" data-ans='["a role", "role"]'>
-                                        </td>
+                                        <td>lifestyle</td>
+                                        <td class="border-l border-slate-200 bg-slate-50 text-slate-400 italic text-[11px]">No verb</td>
+                                        <td class="border-l border-slate-200 bg-slate-50 text-slate-400 italic text-[11px]">No adj</td>
                                     </tr>
                                     <tr>
-                                        <td class="font-bold text-indigo-700">put</td>
-                                        <td class="border-l border-slate-200">
-                                            <input type="text" class="input-blank w-32 text-[13px]" data-ex="4.1" data-ans='["pressure", "pressure (on)", "pressure on"]'>
-                                        </td>
+                                        <td>leisure</td>
+                                        <td class="border-l border-slate-200 bg-slate-50 text-slate-400 italic text-[11px]">No verb</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["leisurely"]'></td>
                                     </tr>
                                     <tr>
-                                        <td class="font-bold text-indigo-700">set</td>
-                                        <td class="border-l border-slate-200">
-                                            <input type="text" class="input-blank w-28 text-[13px]" data-ex="4.1" data-ans='["a goal", "goal"]'>
-                                        </td>
+                                        <td>pleasure</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["please"]'></td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["pleasant"]'></td>
                                     </tr>
                                     <tr>
-                                        <td class="font-bold text-indigo-700">take</td>
-                                        <td class="border-l border-slate-200 space-x-2">
-                                            <input type="text" class="input-blank w-28 text-[13px]" data-ex="4.1" data-ans='["a chance", "chance"]'>
-                                            <input type="text" class="input-blank w-32 text-[13px]" data-ex="4.1" data-ans='["an opportunity", "opportunity"]'>
-                                        </td>
+                                        <td>priority</td>
+                                        <td class="border-l border-slate-200"><input type="text" class="input-blank w-full text-[13px]" data-ex="3.1" data-ans='["prioritise", "prioritize"]'></td>
+                                        <td class="border-l border-slate-200 bg-slate-50 text-slate-400 italic text-[11px]">No common adj</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
 
                         <div class="flex items-center gap-3 mt-6">
-                            <button id="btn-4.1" onclick="checkUnorderedGroup('4.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 4.1</button>
-                            <span id="score-4.1" class="ui-font text-sm font-bold hidden"></span>
+                            <button id="btn-3.1" onclick="checkExercise('3.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 3.1</button>
+                            <span id="score-3.1" class="ui-font text-sm font-bold hidden"></span>
                         </div>
                     </div>
                     <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
@@ -498,29 +466,42 @@
                     </div>
                 </div>
 
-                <!-- ==================== PAGE 6: Vocab Corrections ==================== -->
+                <!-- ==================== PAGE 6: Reading Practice ==================== -->
                 <div id="page-6" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pr-16 hidden flex flex-col">
                     <div class="flex-grow">
                         <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
-                            <h3 class="text-2xl font-bold text-slate-900">5. Vocab Corrections</h3>
-                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
+                            <h3 class="text-2xl font-bold text-slate-900">6. Reading Practice</h3>
                         </div>
 
-                        <p class="mb-4 text-[14px] text-slate-700 italic">Correct the 14 vocabulary mistakes in the text below. Enter the correct word in the blank next to the crossed-out mistake.</p>
+                        <h4 class="font-bold text-lg mb-3 text-slate-800">Part A: Sentence Matching</h4>
+                        <p class="mb-4 text-slate-700 text-[13px]">Match the sentence halves from the text about lifestyle trends.</p>
                         
-                        <div class="bg-indigo-50/50 border border-indigo-100 p-6 rounded text-slate-800 leading-[2.5rem] text-[15px] shadow-inner">
-                            <p class="mb-4"><b><i>Although we have a better standard of living nowadays, in many ways our quality of life is not as good as in the past because we are always too busy to enjoy what we have.</i></b></p>
-                            
-                            <p class="mb-4">Everyday life today is much more complicated than in the past. Even in our leisure time we have to <del class="text-red-500 line-through opacity-70 decoration-2">take</del> <input type="text" class="input-blank w-20" data-ex="5.1" data-ans='["make"]'> so many choices about what to do or even what to watch on TV. We are often spoilt for choice and this can leave us feeling confused and dissatisfied. We all know that it is important to <del class="text-red-500 line-through opacity-70 decoration-2">get</del> <input type="text" class="input-blank w-24" data-ex="5.1" data-ans='["achieve"]'> a balance between work and play, but many of us do not succeed. Instead, we <del class="text-red-500 line-through opacity-70 decoration-2">make</del> <input type="text" class="input-blank w-20" data-ex="5.1" data-ans='["put"]'> extra pressure <del class="text-red-500 line-through opacity-70 decoration-2">for</del> <input type="text" class="input-blank w-16" data-ex="5.1" data-ans='["on"]'> ourselves by trying to be as successful in our work life as in our personal life.</p>
-                            
-                            <p class="mb-4">Life in the past was much simpler as many people worked to <del class="text-red-500 line-through opacity-70 decoration-2">get</del> <input type="text" class="input-blank w-20" data-ex="5.1" data-ans='["meet"]'> their basic needs. Today, for many of us, our job is not just a way of making a <del class="text-red-500 line-through opacity-70 decoration-2">life</del> <input type="text" class="input-blank w-24" data-ex="5.1" data-ans='["living"]'>. For many, work <del class="text-red-500 line-through opacity-70 decoration-2">is</del> <input type="text" class="input-blank w-20" data-ex="5.1" data-ans='["plays"]'> an important role in our everyday life and gives us a strong sense of personal fulfilment. What is more, we have become much more materialistic. Many people <del class="text-red-500 line-through opacity-70 decoration-2">get</del> <input type="text" class="input-blank w-20" data-ex="5.1" data-ans='["set"]'> themselves goals such as buying a new house or car and so we measure our success by the material things we own. Desiring these luxuries is what motivates us to work much harder than in the past, so in many ways we <del class="text-red-500 line-through opacity-70 decoration-2">choice</del> <input type="text" class="input-blank w-24" data-ex="5.1" data-ans='["choose"]'> this way of life.</p>
-                            
-                            <p>We have worked hard to improve our standard of living, but it may have come at a very high price. We need to <del class="text-red-500 line-through opacity-70 decoration-2">take</del> <input type="text" class="input-blank w-20" data-ex="5.1" data-ans='["make"]'> some changes in our priorities so that family occasions are as important as business meetings. We should also <del class="text-red-500 line-through opacity-70 decoration-2">make</del> <input type="text" class="input-blank w-20" data-ex="5.1" data-ans='["take"]'> every possible opportunity to relax and enjoy our leisure time. Once you have <del class="text-red-500 line-through opacity-70 decoration-2">given</del> <input type="text" class="input-blank w-20" data-ex="5.1" data-ans='["made"]'> the decision to do this, you should find that your quality of life also improves. My ultimate aim is to have a happy family life. If I <del class="text-red-500 line-through opacity-70 decoration-2">get</del> <input type="text" class="input-blank w-24" data-ex="5.1" data-ans='["achieve"]'> this goal then I know I will not regret any chances I have <del class="text-red-500 line-through opacity-70 decoration-2">lost</del> <input type="text" class="input-blank w-24" data-ex="5.1" data-ans='["missed"]'> to stay longer at the office.</p>
+                        <div class="space-y-4 text-slate-800 text-[14.5px] leading-loose">
+                            <div class="flex items-start">
+                                <span class="mr-2 font-bold">1.</span>
+                                <div>Modern technology allows us to work from home, but... <select class="input-blank w-48 text-xs ml-1" data-ex="4.1" data-ans='["b"]'><option value="">Choose...</option><option value="a">A. people still struggle to unwind.</option><option value="b">B. it can be hard to separate work and leisure.</option><option value="c">C. it leads to a sedentary lifestyle.</option></select></div>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="mr-2 font-bold">2.</span>
+                                <div>A lot of people feel that their priorities have shifted... <select class="input-blank w-48 text-xs ml-1" data-ex="4.1" data-ans='["a"]'><option value="">Choose...</option><option value="a">A. towards spending more time with family.</option><option value="b">B. because they have a luxurious lifestyle.</option><option value="c">C. so they decide to move to the city.</option></select></div>
+                            </div>
+                            <div class="flex items-start">
+                                <span class="mr-2 font-bold">3.</span>
+                                <div>Moving to the countryside offers the opportunity... <select class="input-blank w-48 text-xs ml-1" data-ex="4.1" data-ans='["c"]'><option value="">Choose...</option><option value="a">A. to live in a hectic environment.</option><option value="b">B. to earn a higher salary.</option><option value="c">C. to lead a much simpler life.</option></select></div>
+                            </div>
+                        </div>
+
+                        <h4 class="font-bold text-lg mb-3 border-t border-slate-200 pt-8 text-slate-800">Part B: Vocabulary in Context</h4>
+                        <p class="mb-4 text-slate-700 text-[13px] italic">Complete the paragraph with words from the unit.</p>
+                        
+                        <div class="p-6 bg-indigo-50/50 border border-indigo-100 rounded text-slate-800 text-[14px] leading-loose shadow-inner font-serif">
+                            <p>Many people today lead a (1) <input type="text" class="input-blank w-24" data-ex="4.2" data-ans='["hectic"]'> lifestyle, constantly rushing from one appointment to the next. This can make it very difficult to (2) <input type="text" class="input-blank w-24" data-ex="4.2" data-ans='["unwind"]'> at the end of the day. To counter this, some choose to (3) <input type="text" class="input-blank w-28" data-ex="4.2" data-ans='["prioritise"]'> their health and (4) <input type="text" class="input-blank w-24" data-ex="4.2" data-ans='["leisure"]'> time, making a conscious (5) <input type="text" class="input-blank w-28" data-ex="4.2" data-ans='["decision"]'> to spend more time on their hobbies.</p>
                         </div>
 
                         <div class="flex items-center gap-3 mt-6">
-                            <button id="btn-5.1" onclick="checkExercise('5.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 5.1</button>
-                            <span id="score-5.1" class="ui-font text-sm font-bold hidden"></span>
+                            <button id="btn-4" onclick="checkExercise('4.1'); checkExercise('4.2');" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 6</button>
+                            <span id="score-4.1" class="ui-font text-xs font-bold hidden"></span>
+                            <span id="score-4.2" class="ui-font text-xs font-bold hidden"></span>
                         </div>
                     </div>
                     <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start">
@@ -528,72 +509,11 @@
                     </div>
                 </div>
 
-                <!-- ==================== PAGE 7: Test Practice - Listening ==================== -->
-                <div id="page-7" class="page-content w-full lg:w-1/2 p-6 sm:p-10 lg:p-14 lg:pl-16 hidden flex flex-col border-l border-transparent lg:border-slate-200">
-                    <div class="flex-grow">
-                        <div class="flex justify-between items-end mb-6 border-b-2 border-slate-800 pb-2">
-                            <h3 class="text-2xl font-bold text-slate-900">6. Test Practice (Listening)</h3>
-                            <span class="ui-font text-xs font-bold tracking-wider text-slate-500 uppercase bg-slate-100 px-2 py-1 rounded">Target: 80%</span>
-                        </div>
-                        
-                        <!-- Custom Audio Player -->
-                        <div class="custom-audio-player bg-slate-50 border border-slate-200 rounded-lg px-4 py-3 mb-6 shadow-inner ui-font flex flex-col sm:flex-row items-center gap-4" data-sc-url="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1583784867&auto_play=false&enable_api=1">
-                            <div class="text-xs font-bold text-indigo-600 uppercase tracking-widest shrink-0">Track 4b</div>
-                            <div class="w-full flex items-center gap-3">
-                                <button class="audio-play-btn w-8 h-8 flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-full transition-colors shrink-0 focus:outline-none">
-                                    <svg class="play-icon h-4 w-4 ml-0.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" /></svg>
-                                    <svg class="pause-icon h-4 w-4 hidden" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" /></svg>
-                                </button>
-                                <span class="audio-current-time text-xs font-mono text-slate-500 w-9 text-right">00:00</span>
-                                <div class="relative w-full h-1.5 bg-slate-300 rounded-full cursor-pointer flex-1 group">
-                                     <input type="range" class="audio-progress absolute w-full h-full opacity-0 cursor-pointer z-10" min="0" max="100" value="0" step="0.1">
-                                     <div class="audio-progress-bar absolute h-full bg-indigo-500 rounded-full group-hover:bg-indigo-600 transition-colors" style="width: 0%;"></div>
-                                </div>
-                                <span class="audio-total-time text-xs font-mono text-slate-500 w-9">00:00</span>
-                            </div>
-                            <iframe class="sc-widget-iframe hidden" src="" allow="autoplay"></iframe>
-                        </div>
-
-                        <p class="mb-4 leading-relaxed text-sm"><span class="font-bold">6.1</span> Complete the notes using <strong>NO MORE THAN ONE WORD AND/OR A NUMBER</strong> for each answer.</p>
-                        
-                        <div class="border border-slate-300 rounded p-6 bg-slate-50 ui-font shadow-sm text-[14px]">
-                            <h4 class="text-center font-bold text-lg mb-6 text-slate-800 border-b border-slate-200 pb-2">Things to do in the holidays</h4>
-                            
-                            <p class="mb-4 text-slate-700"><strong>Main problem</strong> — children do not have a traditional (1) <input type="text" class="input-blank w-28 text-sm" data-ex="6.1" data-ans='["hobby"]'>.</p>
-                            
-                            <h5 class="font-bold mt-6 mb-3 text-indigo-800 text-sm uppercase tracking-wide">Some ideas</h5>
-                            <ul class="space-y-3 pl-5 list-disc text-slate-800">
-                                <li>Give children jobs, for example cleaning the (2) <input type="text" class="input-blank w-28 text-sm" data-ex="6.1" data-ans='["car"]'>.</li>
-                                <li>At home, ask children to help in the (3) <input type="text" class="input-blank w-28 text-sm" data-ex="6.1" data-ans='["kitchen"]'>.</li>
-                                <li>Get children to make (4) <input type="text" class="input-blank w-28 text-sm" data-ex="6.1" data-ans='["presents", "gifts"]'> ahead of time.</li>
-                                <li>Get children involved in community work such as visiting the (5) <input type="text" class="input-blank w-28 text-sm" data-ex="6.1" data-ans='["elderly"]'>.</li>
-                                <li>Involve older children in long-term (6) <input type="text" class="input-blank w-28 text-sm" data-ex="6.1" data-ans='["projects"]'> in your community.</li>
-                                <li>You may get some ideas from the (7) <input type="text" class="input-blank w-28 text-sm" data-ex="6.1" data-ans='["internet"]'>.</li>
-                                <li>The local (8) <input type="text" class="input-blank w-28 text-sm" data-ex="6.1" data-ans='["library"]'> is often the best place to find ideas.</li>
-                            </ul>
-
-                            <h5 class="font-bold mt-6 mb-3 text-indigo-800 text-sm uppercase tracking-wide border-t border-slate-200 pt-4">Things to remember</h5>
-                            <ul class="space-y-3 pl-5 list-disc text-slate-800">
-                                <li>Make sure children stay (9) <input type="text" class="input-blank w-28 text-sm" data-ex="6.1" data-ans='["active", "busy"]'>.</li>
-                                <li>Children up to the age of (10) <input type="text" class="input-blank w-20 text-sm" data-ex="6.1" data-ans='["12", "twelve"]'> need to be supervised by an adult.</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="flex items-center gap-3 mt-6">
-                            <button id="btn-6.1" onclick="checkExercise('6.1')" class="check-btn ui-font bg-white border border-slate-300 shadow-sm text-slate-700 text-sm font-semibold py-1.5 px-4 rounded hover:bg-slate-50">Check 6.1</button>
-                            <span id="score-6.1" class="ui-font text-sm font-bold hidden"></span>
-                        </div>
-                    </div>
-                    <div class="mt-8 border-t border-slate-200 pt-4 flex w-full justify-start lg:justify-end">
-                        <span class="text-xs font-bold ui-font text-slate-400">7</span>
-                    </div>
-                </div>
-
             </div>
         </div>
 
         <!-- Sticky Right Arrow (Desktop Only) -->
-        <div class="hidden lg:block w-10 shrink-0 ml-2 xl:ml-4 relative">
+        <div class="hidden lg:block w-10 shrink-0 ml-2 xl:mr-4 relative">
             <div class="sticky-nav-container flex justify-center">
                 <button id="next-btn" onclick="goNext()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Next Page">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
@@ -615,7 +535,7 @@
 
     <script>
         const REQUIRED_SCORE = 0.8;
-        const totalPages = 8; // Pages 0 to 7
+        const totalPages = 7; // 0 to 6
         let currentSpread = 0; // For desktop (0 = pages 0,1; 1 = pages 2,3; etc.)
         let currentMobilePage = 0;
 
@@ -674,14 +594,36 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // Keep track of desktop state to prevent accidental resets when scrolling/zooming
+        let isDesktopState = window.innerWidth >= 1024;
+
         window.addEventListener('resize', () => {
-            const isDesktop = window.innerWidth >= 1024;
-            if(isDesktop) {
-                currentSpread = Math.floor(currentMobilePage / 2);
-            } else {
-                currentMobilePage = currentSpread * 2;
+            const currentIsDesktop = window.innerWidth >= 1024;
+            
+            // Only recalculate pagination if we cross the mobile/desktop breakpoint
+            if (currentIsDesktop !== isDesktopState) {
+                if(currentIsDesktop) {
+                    currentSpread = Math.floor(currentMobilePage / 2);
+                } else {
+                    currentMobilePage = currentSpread * 2;
+                }
+                isDesktopState = currentIsDesktop;
+                updatePagination();
             }
-            updatePagination();
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            // Do not override arrow keys if user has an input or select dropdown active
+            if (document.activeElement && ['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                return;
+            }
+            
+            if (e.key === 'ArrowRight') {
+                goNext();
+            } else if (e.key === 'ArrowLeft') {
+                goPrev();
+            }
         });
 
         // --- Core UI & Grading Logic ---
@@ -695,7 +637,7 @@
         function validateBlanks(inputs) {
             let allFilled = true;
             inputs.forEach(input => {
-                if (input.classList.contains('font-normal')) return; // skip subjective notes
+                if (input.classList.contains('font-normal')) return; 
                 const val = input.value !== undefined ? input.value : input.innerText;
                 if (val.trim() === "") {
                     allFilled = false;
@@ -710,31 +652,6 @@
             return allFilled;
         }
 
-        function processScore(exerciseId, correctCount, totalCount) {
-            const scoreLabel = document.getElementById(`score-${exerciseId}`);
-            const percentage = correctCount / totalCount;
-            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
-            
-            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
-            
-            if (percentage >= REQUIRED_SCORE) {
-                scoreLabel.textContent = `✅ Passed! ${scoreText}`;
-                scoreLabel.classList.add('text-green-600');
-                
-                const btn = document.getElementById(`btn-${exerciseId}`);
-                if (btn) {
-                    btn.disabled = true;
-                    btn.textContent = "Passed";
-                }
-                showToast("Good job!", "success");
-            } else {
-                scoreLabel.textContent = `❌ Failed. ${scoreText}`;
-                scoreLabel.classList.add('text-red-600');
-                showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
-            }
-        }
-
-        // Standard exercise checker (Handles text inputs and selects)
         function checkExercise(exerciseId) {
             const inputs = document.querySelectorAll(`[data-ex="${exerciseId}"]`);
             if (!validateBlanks(inputs)) {
@@ -760,71 +677,22 @@
                 }
             });
 
-            processScore(exerciseId, correctCount, inputs.length);
-        }
-
-        // Specific checker for unordered answers within a table row (Verbs & Nouns)
-        function checkUnorderedGroup(exerciseId) {
-            const container = document.getElementById(`ex-container-${exerciseId}`);
-            if (!container) return;
+            const scoreLabel = document.getElementById(`score-${exerciseId}`);
+            const totalCount = Array.from(inputs).filter(i => !i.classList.contains('font-normal')).length;
+            const percentage = correctCount / totalCount;
+            const scoreText = `${Math.round(percentage * 100)}% (${correctCount}/${totalCount})`;
             
-            const rows = container.querySelectorAll('tbody tr');
-            let allFilled = true;
-            let correctCount = 0;
-            let totalInputs = 0;
-
-            rows.forEach(row => {
-                const inputs = row.querySelectorAll(`[data-ex="${exerciseId}"]`);
-                if(inputs.length === 0) return;
-                totalInputs += inputs.length;
-
-                let validAnswersPool = [];
-                inputs.forEach(inp => {
-                    validAnswersPool.push(JSON.parse(inp.getAttribute('data-ans') || '[]'));
-                });
-
-                let matchedIndices = new Set();
-
-                inputs.forEach(input => {
-                    const userVal = input.value.trim().toLowerCase().replace(/\s+/g, ' ');
-                    
-                    if (userVal === "") {
-                        allFilled = false;
-                        input.style.borderBottomColor = '#f59e0b';
-                        input.style.backgroundColor = '#fef3c7';
-                        setTimeout(() => {
-                            input.style.borderBottomColor = '';
-                            input.style.backgroundColor = '';
-                        }, 1500);
-                    } else {
-                        // Check against available unused answer pools in this row
-                        let foundIndex = -1;
-                        for(let i=0; i<validAnswersPool.length; i++) {
-                            if(!matchedIndices.has(i) && validAnswersPool[i].includes(userVal)) {
-                                foundIndex = i;
-                                break;
-                            }
-                        }
-
-                        if (foundIndex !== -1) {
-                            correctCount++;
-                            matchedIndices.add(foundIndex);
-                            input.classList.add('correct');
-                            input.classList.remove('incorrect');
-                        } else {
-                            input.classList.add('incorrect');
-                            input.classList.remove('correct');
-                        }
-                    }
-                });
-            });
-
-            if (!allFilled) {
-                showToast("Please fill in all blanks before checking!", "warning");
-                return;
+            scoreLabel.classList.remove('hidden', 'text-green-600', 'text-red-600');
+            
+            if (percentage >= REQUIRED_SCORE) {
+                scoreLabel.textContent = `✅ Passed! ${scoreText}`;
+                scoreLabel.classList.add('text-green-600');
+                showToast("Good job!", "success");
+            } else {
+                scoreLabel.textContent = `❌ Failed. ${scoreText}`;
+                scoreLabel.classList.add('text-red-600');
+                showToast(`You scored ${Math.round(percentage * 100)}%. Keep trying!`, "error");
             }
-
-            processScore(exerciseId, correctCount, totalInputs);
         }
 
         // --- Audio Player Initialization via SoundCloud Widget API ---

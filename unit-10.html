@@ -176,23 +176,23 @@
 
     <div id="toast" class="toast">Message</div>
 
-    <!-- Main Desk Area -->
-    <div class="w-full max-w-[1600px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
-        
-        <!-- Sticky Left Arrow (Desktop Only) -->
-        <div class="hidden lg:block w-10 shrink-0 mr-2 xl:mr-4 relative">
-            <div class="sticky-nav-container flex justify-center">
-                <button id="prev-btn" onclick="goPrev()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Previous Page">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
-                </button>
-            </div>
+<!-- Main Desk Area - Increased Max Width -->
+<div class="w-full max-w-[1920px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
+    
+    <!-- Sticky Left Arrow (Desktop Only) -->
+    <div class="hidden lg:block w-10 shrink-0 mr-2 xl:mr-4 relative">
+        <div class="sticky-nav-container flex justify-center">
+            <button id="prev-btn" onclick="goPrev()" class="nav-btn w-10 h-10 flex items-center justify-center rounded-full text-slate-700 focus:outline-none" aria-label="Previous Page">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            </button>
         </div>
+    </div>
 
-        <!-- The Book -->
-        <div class="book-wrapper flex-1 w-full max-w-7xl flex flex-col lg:flex-row relative min-h-[85vh]">
-            
-            <!-- Spine Decoration (Desktop Only) -->
-            <div class="spine-shadow hidden lg:block"></div>
+    <!-- The Book - Increased Max Width -->
+    <div class="book-wrapper flex-1 w-full max-w-[1700px] flex flex-col lg:flex-row relative min-h-[85vh]">
+        
+        <!-- Spine Decoration (Desktop Only) -->
+        <div class="spine-shadow hidden lg:block"></div>
 
             <!-- Page Container (Flexible Height) -->
             <div id="pages-container" class="w-full flex relative">
@@ -870,14 +870,36 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
+        // Keep track of desktop state to prevent accidental resets when scrolling/zooming
+        let isDesktopState = window.innerWidth >= 1024;
+
         window.addEventListener('resize', () => {
-            const isDesktop = window.innerWidth >= 1024;
-            if(isDesktop) {
-                currentSpread = Math.floor(currentMobilePage / 2);
-            } else {
-                currentMobilePage = currentSpread * 2;
+            const currentIsDesktop = window.innerWidth >= 1024;
+            
+            // Only recalculate pagination if we cross the mobile/desktop breakpoint
+            if (currentIsDesktop !== isDesktopState) {
+                if(currentIsDesktop) {
+                    currentSpread = Math.floor(currentMobilePage / 2);
+                } else {
+                    currentMobilePage = currentSpread * 2;
+                }
+                isDesktopState = currentIsDesktop;
+                updatePagination();
             }
-            updatePagination();
+        });
+
+        // Add keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            // Do not override arrow keys if user has an input or select dropdown active
+            if (document.activeElement && ['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                return;
+            }
+            
+            if (e.key === 'ArrowRight') {
+                goNext();
+            } else if (e.key === 'ArrowLeft') {
+                goPrev();
+            }
         });
 
         // --- Core UI & Grading Logic ---
