@@ -184,11 +184,34 @@
         .toast.error { background-color: #ef4444; }
         .toast.success { background-color: #22c55e; }
         .toast.warning { background-color: #f59e0b; }
+        .toast.success { background-color: #22c55e; }
+        .toast.warning { background-color: #f59e0b; }
+
+        /* Premium Animations */
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .page-content:not(.hidden) { 
+            animation: fadeInPage 0.4s ease forwards; 
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-4px); }
+            40%, 80% { transform: translateX(4px); }
+        }
+        .shake { 
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; 
+        }
     </style>
 </head>
 <body class="text-slate-800 antialiased min-h-screen flex flex-col pt-4 lg:pt-10 pb-24 lg:pb-10">
 
-    <div id="toast" class="toast">Message</div>
+    <div id="toast" class="toast flex items-center gap-3" role="alert" aria-live="assertive">
+    <div id="toast-icon"></div>
+    <span id="toast-message">Message</span>
+    </div>
 
     <!-- Main Desk Area - Increased Max Width -->
     <div class="w-full max-w-[1920px] mx-auto px-2 sm:px-4 flex items-stretch justify-center relative">
@@ -897,11 +920,35 @@
         });
 
         // --- Core UI & Grading Logic ---
+        let toastTimeout;
+
         function showToast(message, type) {
             const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = `toast ${type} show`;
-            setTimeout(() => toast.classList.remove('show'), 3000);
+            const toastMessage = document.getElementById('toast-message');
+            const toastIcon = document.getElementById('toast-icon');
+
+            if (toastMessage) {
+                toastMessage.textContent = message;
+            } else {
+                toast.textContent = message;
+            }
+
+            toast.className = `toast ${type} show flex items-center gap-3`;
+            
+            if (type === 'success') {
+                toastIcon.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
+            } else if (type === 'error') {
+                toastIcon.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`;
+            } else if (type === 'warning') {
+                toastIcon.innerHTML = `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>`;
+            } else {
+                toastIcon.innerHTML = '';
+            }
+
+            if (toastTimeout) {
+                clearTimeout(toastTimeout);
+            }
+            toastTimeout = setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
         function validateBlanks(inputs) {
